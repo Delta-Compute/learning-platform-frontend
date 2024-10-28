@@ -9,12 +9,18 @@ import { TeacherConversationsContextProvider } from "./context/teacher-conversat
 import App from "./App.tsx";
 import "./index.css";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const client = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <TeacherConversationsContextProvider>
-        <App />
-      </TeacherConversationsContextProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={client}>
+      <BrowserRouter>
+        <TeacherConversationsContextProvider>
+          <App />
+        </TeacherConversationsContextProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>,
 )
