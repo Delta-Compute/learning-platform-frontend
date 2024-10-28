@@ -6,6 +6,8 @@ import { useRef, useState } from 'react';
 const JoinYourSchoolPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('School: choose');
+  const [firstName, setFirstName] = useState('');
+  const [secondName, setSecondName] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>) => {
@@ -30,10 +32,10 @@ const JoinYourSchoolPage = () => {
       <div className="flex flex-col flex-grow min-h-0 mt-20 p-4 max-w-md mx-auto w-full space-y-4">
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
           <div>
-            <label className="block text-sm font-normal mb-1">Choose your school</label>
+            <label className="block text-sm font-normal mb-2">Choose your school</label>
             <div className="relative" ref={dropdownRef}>
               <div
-                className={`w-full border-[0.5px] rounded-[40px] p-3 bg-white cursor-pointer flex justify-between items-center ${selected === 'School: choose' ? 'text-gray-400' : 'text-gray-700'
+                className={`w-full border-[0.5px] rounded-[40px] p-[16px] bg-white cursor-pointer flex justify-between items-center ${selected === 'School: choose' ? 'text-gray-400' : 'text-gray-700'
                   }`}
                 tabIndex={0}
                 onClick={() => setIsOpen((prev) => !prev)}
@@ -46,7 +48,7 @@ const JoinYourSchoolPage = () => {
                 />
               </div>
               <div
-                className={`absolute z-10 mt-2 w-full bg-white border rounded-[10px] shadow-lg overflow-hidden transition-all duration-300 ease-out transform origin-top ${isOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+                className={`absolute z-10 mt-2 w-full bg-white border-[0.5px] rounded-[10px] shadow-lg overflow-hidden transition-all duration-300 ease-out transform origin-top ${isOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
                   }`}
                 style={{ transformOrigin: 'top' }}
               >
@@ -68,20 +70,24 @@ const JoinYourSchoolPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-normal mb-1">Your first name</label>
+            <label className="block text-sm font-normal mb-2">Your first name</label>
             <input
               type="text"
               placeholder="Enter your first name"
-              className="w-full border-[0.5px] rounded-[40px] p-3 text-gray-700 focus:outline-none focus:ring-none"
+              className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value.trim())}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-normal mb-1">Your second name</label>
+            <label className="block text-sm font-normal mb-2">Your second name</label>
             <input
               type="text"
               placeholder="Enter your second name"
-              className="w-full border-[0.5px] rounded-[40px] p-3 text-gray-700 focus:outline-none focus:ring-none"
+              className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
+              value={secondName}
+              onChange={(e) => setSecondName(e.target.value.trim())}
             />
           </div>
         </div>
