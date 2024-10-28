@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import { ConversationPage, LearningPlanPage } from "./pages";
+import ClassesPage from './pages/ClassesPage';
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
       <Routes>
         <Route path="/ai-conversation" element={<ConversationPage />} />
         <Route path="/teacher-tasks" element={<LearningPlanPage />} />
+        <Route path="/classes" element={<ClassesPage />} />
         <Route path="/*" element={<Navigate to="/teacher-tasks" replace />} />
       </Routes>
     </>
