@@ -32,7 +32,11 @@ export const SignUpPage = () => {
   };
 
   const onSignUp = () => {
-    alert("Sign up is not implemented yet");
+    // TODO: api call to sign up
+
+    // alert("Sign up is not implemented yet");
+
+    navigate("/follow-link");
   };
 
   const onSignInClick = () => {

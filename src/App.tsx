@@ -1,14 +1,19 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import { ConversationPage, LearningPlanPage } from "./pages";
-import { InitialPage } from "./pages/Initial/InitialPage";
-import { SignUpPage } from "./pages/SignUp/SignUpPage";
+import {
+  ConversationPage,
+  FollowLinkPage,
+  LearningPlanPage,
+  InitialPage,
+  SignUpPage,
+} from "./pages";
 
 const App = () => {
   return (
     <>
       <Routes>
         <Route path="/initial" element={<InitialPage />} />
+        <Route path="/follow-link" element={<FollowLinkPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/ai-conversation" element={<ConversationPage />} />
         <Route path="/teacher-tasks" element={<LearningPlanPage />} />
