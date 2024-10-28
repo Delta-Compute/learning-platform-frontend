@@ -6,9 +6,9 @@ import { useRef, useState } from 'react';
 const JoinYourSchoolPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('School: choose');
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.relatedTarget)) {
       setIsOpen(false);
     }
