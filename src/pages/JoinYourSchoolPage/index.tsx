@@ -32,7 +32,7 @@ const JoinYourSchoolPage = () => {
       <div className="flex flex-col flex-grow min-h-0 mt-20 p-4 max-w-md mx-auto w-full space-y-4">
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
           <div>
-            <label className="block text-sm font-normal mb-2">Choose your school</label>
+            <label className="block text-sm font-normal mb-2">Select your school</label>
             <div className="relative" ref={dropdownRef}>
               <div
                 className={`w-full border-[0.5px] rounded-[40px] p-[16px] bg-white cursor-pointer flex justify-between items-center ${selected === 'School: choose' ? 'text-gray-400' : 'text-gray-700'
