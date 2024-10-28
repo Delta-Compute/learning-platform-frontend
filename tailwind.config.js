@@ -13,6 +13,7 @@ export default {
         "text-color": "rgba(52, 58, 64, 1)",
         border: "rgba(206, 212, 218, 1)",
         placholderText: "rgba(134, 142, 150, 1)",
+        brownText: "rgba(54, 45, 46, 1)",
 
         // contentBrandPrimaryMedium: 'black',
       },
