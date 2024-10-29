@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { User } from "../pages/api/types";
+import { User } from "../services/api/types";
 
 interface UserContext {
   user: User | null;

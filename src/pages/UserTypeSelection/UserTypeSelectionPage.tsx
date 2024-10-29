@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import UserType from "../../assets/icons/user-type-icon.svg";
 import { Button, Loader } from "../../components";
 import { useContext, useState } from "react";
-import { updateUser } from "../api/auth";
+import { updateUser } from "../../services/api/auth";
 import UserContext from "../../context/UserContext";
 
 export const UserTypeSelectionPage = () => {

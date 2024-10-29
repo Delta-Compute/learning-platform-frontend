@@ -6,8 +6,8 @@ import { useContext, useState } from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
-import { AuthProvider } from "../api/types";
-import { signIn } from "../api/auth";
+import { AuthProvider } from "../../services/api/types";
+import { signIn } from "../../services/api/auth";
 import UserContext from "../../context/UserContext";
 
 type UserInfo = {
