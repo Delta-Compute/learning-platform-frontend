@@ -1,15 +1,88 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { UsersApiService } from "../../services";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { User } from "../../types";
+
+export const useUpdateUser = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (data: {
+      id: string;
+      firstName?: string;
+      lastName?: string;
+      role?: string;
+    }) =>
+      UsersApiService.updateUser(
+        data.id,
+        data.firstName,
+        data.lastName,
+        data.role
+      ),
+    onSuccess: (data: User) => {
+      if (data.role) {
+      navigate("/join-your-school");
+      }
+      if (data.firstName && data.lastName) {
+        navigate("/classes");
+      }
+    },
+    onError: (error) => {
+      console.error("Update user failed:", error);
+    },
+  });
+};
 
 export const useGetUser = (id: string) => {
-  const { ...rest} = useQuery({
+  return useQuery({
     queryFn: () => UsersApiService.getUser(id),
     queryKey: ["users"],
     staleTime: 5_000_000,
   });
+};
 
-  return {
-    ...rest,
-  };
+export const useLogin = () => {
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (credentials: { email: string; password: string }) =>
+      UsersApiService.signIn(credentials),
+    onSuccess: async (data) => {
+      localStorage.setItem("token", data.accessToken);
+      const user: User | null = await UsersApiService.getUser(data.id);
+      if (user) {
+        await setUser(user);
+        if (!user.role) {
+          navigate("/user-type-selection");
+        } else {
+          navigate("/classes");
+        }
+      }
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
+    },
+  });
+};
+
+export const useSingUp = () => {
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (data: { email: string; password: string }) =>
+      UsersApiService.signUp(data),
+    onSuccess: async (data) => {
+      localStorage.setItem("token", data.accessToken);
+      const user: User | null = await UsersApiService.getUser(data.id);
+      if (user) {
+        setUser(user);
+        navigate("/user-type-selection");
+      }
+    },
+    onError: (error) => {
+      console.error("Sign up failed:", error);
+    },
+  });
 };

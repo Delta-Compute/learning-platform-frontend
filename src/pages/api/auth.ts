@@ -1,6 +1,7 @@
 import axios from "axios";
-import { SignUpDto, SignUpResponse, UpdateUserDto, User } from "./types";
+import { SignUpDto, SignUpResponse, UpdateUserDto } from "./types";
 import { API_URL } from "./constants";
+import { User } from '../../types';
 
 export const signUp = async (data: SignUpDto): Promise<SignUpResponse> => {
   const resp = await axios.post<SignUpResponse>(`${API_URL}/auth/sign-up`, {

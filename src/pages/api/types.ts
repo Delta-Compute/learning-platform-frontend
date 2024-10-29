@@ -5,14 +5,6 @@ export type SignUpDto = {
   password: string;
 };
 
-export type User = {
-  id: string;
-  email: string;
-  accessToken: string;
-  refreshToken: string;
-  role?: string;
-};
-
 export enum AuthProvider {
   Google = "google",
   Facebook = "facebook",

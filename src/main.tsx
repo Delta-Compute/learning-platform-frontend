@@ -9,7 +9,6 @@ import { TeacherConversationsContextProvider } from "./context/teacher-conversat
 import App from "./App.tsx";
 import "./index.css";
 import { UserContextProvider } from "./context/UserContext.tsx";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const client = new QueryClient();
