@@ -4,28 +4,28 @@ import { Link } from "react-router-dom";
 
 import TeacherConversations from "../../context/teacher-conversations";
 
-// import { useGetUser } from "../../hooks";
-// import { updateUser } from "../../services";
-// import { useMutation } from "@tanstack/react-query";
+import { useGetUser } from "../../hooks";
+import { updateUser } from "../../services";
+import { useMutation } from "@tanstack/react-query";
 
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 
 export const LearningPlanPage = () => {
   const { teacherConversations } = useContext(TeacherConversations);
 
-  // get user data
-  // const { data: user } = useGetUser("XSY9IOoOlaL6JlLQJxZj");
+  const { data: user } = useGetUser("XSY9IOoOlaL6JlLQJxZj");
 
-  // mutation to update user
-  // const { mutate: userMutation, isPending } = useMutation({
-  //   mutationFn: (user: { firstName: string }) => updateUser("XSY9IOoOlaL6JlLQJxZj", user.firstName),
-  //   onSuccess: () => {
-  //     console.log("success");
-  //   },
-  // });
+  const { mutate: userMutation, isPending } = useMutation({
+    mutationFn: (user: { firstName: string }) =>
+      updateUser("XSY9IOoOlaL6JlLQJxZj", user.firstName),
+    onSuccess: () => {
+      console.log("success");
+    },
+  });
 
-  // mutation using
-  // const changeUser = () => { userMutation({ firstName: "some first name" }); }
+  const changeUser = () => {
+    userMutation({ firstName: "some first name" });
+  };
 
   return (
     <div>
@@ -35,7 +35,9 @@ export const LearningPlanPage = () => {
 
       <div className="pt-[100px] ">
         <div>
-          <p className="font-semibold text-center">Task based on learning plan</p>
+          <p className="font-semibold text-center">
+            Task based on learning plan
+          </p>
 
           {teacherConversations.length > 0 ? (
             <ul className="py-[20px] flex flex-col items-center gap-[8px]">
@@ -61,8 +63,11 @@ export const LearningPlanPage = () => {
           "
         >
           <p className="text-[15px] font-semibold">Let's create a new task</p>
-          <Link to="/ai-conversation" className="border-[1px] p-[10px] rounded-[50%] mt-[20px]">
-            <img src={`${MicrophoneIcon}`} alt="microphone"/>
+          <Link
+            to="/ai-conversation"
+            className="border-[1px] p-[10px] rounded-[50%] mt-[20px]"
+          >
+            <img src={`${MicrophoneIcon}`} alt="microphone" />
           </Link>
         </div>
       </div>
