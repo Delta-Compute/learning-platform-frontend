@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import Input from "../../components/ui/input/Input";
 import { Button, Loader } from "../../components";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
 import { AuthProvider } from "../api/types";
-import { signIn } from "../api/auth";
-import UserContext from "../../context/UserContext";
+import { useLogin } from "../../hooks/api/users"
+
 
 type UserInfo = {
   email: string;
@@ -20,42 +20,31 @@ export const SignInPage = () => {
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { isPending, mutate, isSuccess } = useLogin();
 
   const onSocialAuth = (provider: AuthProvider) => {
     alert(`Sign in with ${provider} is not implemented yet`);
-  };
-
-  const onSignIn = async () => {
-    if (isLoading) return;
-
-    setIsLoading(true);
-
-    try {
-      const response = await signIn({
-        email: userInfo.email,
-        password: userInfo.password,
-      });
-      console.log(response);
-      setUser(response);
-      navigate("/user-type-selection");
-    } catch (error) {
-      alert(error?.message ? "Wrong email or password" : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const onSignUpClick = () => {
     navigate("/sign-up");
   };
 
+  const handleLogin = async () => {
+    await mutate({
+      email: userInfo.email,
+      password: userInfo.password,
+    });
+
+    if(isSuccess) {
+      navigate("/user-type-selection");
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen py-12 bg-bg-color">
-      {isLoading && <Loader />}
+      {isPending && <Loader />}
       <Header linkTo="/" title="Sign In" />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">E-mail</h3>
@@ -80,7 +69,7 @@ export const SignInPage = () => {
         />
         <Button
           className={`mt-10 bg-primary bg-main-red text-white`}
-          onClick={onSignIn}
+          onClick={() => handleLogin()}
         >
           Sign in
         </Button>
