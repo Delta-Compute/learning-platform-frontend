@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  useContext,
-} from "react";
+import { useEffect, useRef, useCallback, useState, useContext } from "react";
 
 import { RealtimeClient } from "@openai/realtime-api-beta";
 // @ts-ignore
@@ -96,7 +90,9 @@ export const ConversationPage = () => {
     // ]);
 
     if (client.getTurnDetectionType() === "server_vad") {
-      await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
+      await wavRecorder.record((data: any) =>
+        client.appendInputAudio(data.mono)
+      );
     }
   }, []);
 
@@ -266,72 +262,86 @@ export const ConversationPage = () => {
               </div>
             )}
 
-            {items.length > 0 && <div>
-              <div className="py-[10px] flex flex-col gap-[15px]" data-conversation-content>
-                {items.map((conversationItem) => {
-                  return (
-                    <div className={`${conversationItem.role === "user" && "justify-end"} flex`} key={conversationItem.id}>
-                      <div className="max-w-[90%] flex flex-col gap-[8px]">
-                        <div>
-                          <div className={`${conversationItem.role === "user" && "justify-end"} flex`}>
-                            <span className="border-[1px] bg-gray-200 p-[10px] rounded-[8px]">
-                              {(
-                                conversationItem.role || conversationItem.type
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="bg-gray-300 rounded-[10px] p-[8px]">
-                          {/* tool response */}
-                          {conversationItem.type === 'function_call_output' && (
-                            <div>{conversationItem.formatted.output}</div>
-                          )}
-                          {/* tool call */}
-                          {!!conversationItem.formatted.tool && (
-                            <div>
-                              {conversationItem.formatted.tool.name}(
-                              {conversationItem.formatted.tool.arguments})
+            {items.length > 0 && (
+              <div>
+                <div
+                  className="py-[10px] flex flex-col gap-[15px]"
+                  data-conversation-content
+                >
+                  {items.map((conversationItem) => {
+                    return (
+                      <div
+                        className={`${
+                          conversationItem.role === "user" && "justify-end"
+                        } flex`}
+                        key={conversationItem.id}
+                      >
+                        <div className="max-w-[90%] flex flex-col gap-[8px]">
+                          <div>
+                            <div
+                              className={`${
+                                conversationItem.role === "user" &&
+                                "justify-end"
+                              } flex`}
+                            >
+                              <span className="border-[1px] bg-gray-200 p-[10px] rounded-[8px]">
+                                {conversationItem.role || conversationItem.type}
+                              </span>
                             </div>
-                          )}
-                          {!conversationItem.formatted.tool &&
-                            conversationItem.role === 'user' && (
-                              <div className="bg-red">
-                                {conversationItem.formatted.transcript ||
-                                  (conversationItem.formatted.audio?.length
-                                    ? '(awaiting transcript)'
-                                    : conversationItem.formatted.text ||
-                                    '(item sent)')}
-                              </div>
+                          </div>
+                          <div className="bg-gray-300 rounded-[10px] p-[8px]">
+                            {/* tool response */}
+                            {conversationItem.type ===
+                              "function_call_output" && (
+                              <div>{conversationItem.formatted.output}</div>
                             )}
-                          {!conversationItem.formatted.tool &&
-                            conversationItem.role === 'assistant' && (
+                            {/* tool call */}
+                            {!!conversationItem.formatted.tool && (
                               <div>
-                                {conversationItem.formatted.transcript ||
-                                  conversationItem.formatted.text ||
-                                  '(truncated)'}
+                                {conversationItem.formatted.tool.name}(
+                                {conversationItem.formatted.tool.arguments})
                               </div>
                             )}
-                        </div>
+                            {!conversationItem.formatted.tool &&
+                              conversationItem.role === "user" && (
+                                <div className="bg-red">
+                                  {conversationItem.formatted.transcript ||
+                                    (conversationItem.formatted.audio?.length
+                                      ? "(awaiting transcript)"
+                                      : conversationItem.formatted.text ||
+                                        "(item sent)")}
+                                </div>
+                              )}
+                            {!conversationItem.formatted.tool &&
+                              conversationItem.role === "assistant" && (
+                                <div>
+                                  {conversationItem.formatted.transcript ||
+                                    conversationItem.formatted.text ||
+                                    "(truncated)"}
+                                </div>
+                              )}
+                          </div>
 
-                        {/*{conversationItem.formatted.file && (*/}
-                        {/*  <audio*/}
-                        {/*    src={conversationItem.formatted.file.url}*/}
-                        {/*    controls*/}
-                        {/*  />*/}
-                        {/*)}*/}
+                          {/*{conversationItem.formatted.file && (*/}
+                          {/*  <audio*/}
+                          {/*    src={conversationItem.formatted.file.url}*/}
+                          {/*    controls*/}
+                          {/*  />*/}
+                          {/*)}*/}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>}
+            )}
 
             {/*{summary !== "" && <p className="border-[1px] bg-gray-200 p-[10px] rounded-[8px]">{summary}</p>}*/}
           </div>
         ) : (
-           <div className="flex items-center justify-center">
-             <p>Conversation</p>
-           </div>
+          <div className="flex items-center justify-center">
+            <p>Conversation</p>
+          </div>
         )}
       </div>
 
@@ -348,16 +358,22 @@ export const ConversationPage = () => {
             className="relative z-[2] bg-main-red p-[12px] rounded-[50%]"
             onClick={disconnectConversation}
           >
-            <img src={`${CrossIconWhite}`} alt="close"/>
+            <img src={`${CrossIconWhite}`} alt="close" />
           </button>
         )}
 
         <div className="absolute top-[0] left-[10px] w-[calc(100%-20px)] z-[1] flex justify-center">
           <button
-            className={`${!isConnected && "border-[1px]"} rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]`}
+            className={`${
+              !isConnected && "border-[1px]"
+            } rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]`}
             style={{
-              boxShadow: isConnected ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)" : "",
-              backgroundImage: isConnected ? `url(${PauseIcon})` : `url(${MicrophoneIcon})`,
+              boxShadow: isConnected
+                ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
+                : "",
+              backgroundImage: isConnected
+                ? `url(${PauseIcon})`
+                : `url(${MicrophoneIcon})`,
               backgroundPositionX: "center",
               backgroundPositionY: "center",
               backgroundRepeat: "no-repeat",
@@ -368,7 +384,7 @@ export const ConversationPage = () => {
         </div>
 
         {items.length > 1 && !isConnected && (
-          <div className="self-end relative z-[2]" >
+          <div className="self-end relative z-[2]">
             <Button
               className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
               onClick={() => setIsAssignmentModalOpen(true)}
@@ -383,7 +399,9 @@ export const ConversationPage = () => {
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
       >
-        <p className="text-center font-semibold text-[18px] text-dark-blue">Assignment</p>
+        <p className="text-center font-semibold text-[18px] text-dark-blue">
+          Assignment
+        </p>
 
         <div className="flex flex-col gap-[10px] pt-[20px]">
           <label>Assignment details</label>
