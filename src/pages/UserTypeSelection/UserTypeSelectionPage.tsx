@@ -18,7 +18,7 @@ export const UserTypeSelectionPage = () => {
     try {
       await updateUser(user?.id as string, { role: userType });
 
-      navigate(userType === "student" ? "/classes" : "/teacher-tasks");
+      navigate(userType === "student" ? "/join-your-school" : "/teacher-tasks");
     } catch (error) {
       alert("An error occurred");
     } finally {
