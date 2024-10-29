@@ -6,9 +6,9 @@ import { useContext, useState } from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
-import { signUp } from "../api/auth";
 import { AuthProvider } from "../api/types";
-import UserContext from "../../context/UserContext";
+import { useSingUp } from '../../hooks';
+import UserContext from '../../context/UserContext';
 
 type UserInfo = {
   email: string;
@@ -22,36 +22,24 @@ export const SignUpPage = () => {
     password: "",
     confirmPassword: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const { data, isPending, mutate } = useSingUp();
 
   const onSocialAuth = (provider: AuthProvider) => {
     alert(`Sign up with ${provider} is not implemented yet`);
   };
 
   const onSignUp = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
+    await mutate({
+      email: userInfo.email,
+      password: userInfo.password,
+    });
 
-    if (userInfo.password !== userInfo.confirmPassword) {
-      setIsLoading(false);
-      alert("Passwords do not match");
-      return;
-    }
-
-    try {
-      const user = await signUp({
-        email: userInfo.email,
-        password: userInfo.password,
-      });
-      console.log(user);
-      setUser(user);
-      navigate("/user-type-selection");
-    } catch (error) {
-      alert(error?.message ?? "An error occurred");
-    } finally {
-      setIsLoading(false);
+    if (data) {
+      console.log('user', user);
+      
+      // navigate("/user-type-selection");
     }
   };
 
@@ -61,7 +49,7 @@ export const SignUpPage = () => {
 
   return (
     <div className="flex flex-col h-screen py-12 bg-bg-color">
-      {isLoading && <Loader />}
+      {isPending && <Loader />}
       <Header linkTo="/" title="Sign Up" />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">E-mail</h3>

@@ -2,28 +2,19 @@ import { useNavigate } from "react-router-dom";
 import UserType from "../../assets/icons/user-type-icon.svg";
 import { Button, Loader } from "../../components";
 import { useContext, useState } from "react";
-import { updateUser } from "../api/auth";
 import UserContext from "../../context/UserContext";
+import { useUpdateUser } from "../../hooks/api/users";
 
 export const UserTypeSelectionPage = () => {
-  const user = useContext(UserContext).user;
+  const { user } = useContext(UserContext);
+  console.log("user", user);
+  
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { mutate, isPending } = useUpdateUser();
 
   const onUserTypeSelected = async (userType: string) => {
-    if (isLoading) return;
-
-    setIsLoading(true);
-
-    try {
-      await updateUser(user?.id as string, { role: userType });
-
-      navigate(userType === "student" ? "/join-your-school" : "/teacher-tasks");
-    } catch (error) {
-      alert("An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
+    await mutate({ id: user?.id as string, role: userType });
   };
 
   return (
