@@ -10,21 +10,6 @@ interface TeacherConversationsContextTypes {
   addTeacherTask: (title: string) => void;
 }
 
-const dummyTeacherTasks = [
-  {
-    id: "1",
-    title: "Explain Present Simple in a game",
-  },
-  {
-    id: "2",
-    title: "Explain Present Simple in a game",
-  },
-  {
-    id: "3",
-    title: "What is Gerund explain like i am 6",
-  },
-];
-
 const TeacherConversationsContext = React.createContext(
   {} as TeacherConversationsContextTypes
 );
@@ -35,7 +20,7 @@ export const TeacherConversationsContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [teacherConversations, setTeacherConversations] =
-    useState<TeacherTask[]>(dummyTeacherTasks);
+    useState<TeacherTask[]>([]);
 
   const addTeacherTask = (title: string) => {
     setTeacherConversations((prevItems) => {

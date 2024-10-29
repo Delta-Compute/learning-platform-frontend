@@ -7,8 +7,8 @@ import {
   InitialPage,
   SignUpPage,
   UserTypeSelectionPage,
+  SignInPage,
 } from "./pages";
-import { SignInPage } from "./pages/SignInPage/SignInPage";
 
 const App = () => {
   return (

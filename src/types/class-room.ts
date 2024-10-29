@@ -7,4 +7,4 @@ export type ClassRoom = {
   assignmentIds: string[];
   learningPlan: string;
   createdAt: number;
-}
+};
