@@ -8,6 +8,7 @@ import {
   SignUpPage,
   UserTypeSelectionPage,
 } from "./pages";
+import { SignInPage } from "./pages/SignInPage/SignInPage";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           element={<UserTypeSelectionPage />}
         />
         <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/ai-conversation" element={<ConversationPage />} />
         <Route path="/teacher-tasks" element={<LearningPlanPage />} />
         <Route path="/*" element={<Navigate to="/initial" replace />} />

@@ -27,7 +27,7 @@ export const InitialPage = () => {
         </Button>
         <Button
           className={`w-[360px] mt-2 bg-primary text-main-red border-[1px] border-main-red`}
-          onClick={() => console.log("sign in clicked")}
+          onClick={() => navigate("/sign-in")}
         >
           Sign in
         </Button>

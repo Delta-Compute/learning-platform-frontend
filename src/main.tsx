@@ -8,13 +8,16 @@ import { TeacherConversationsContextProvider } from "./context/teacher-conversat
 
 import App from "./App.tsx";
 import "./index.css";
+import { UserContextProvider } from "./context/UserContext.tsx";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <TeacherConversationsContextProvider>
-        <App />
-      </TeacherConversationsContextProvider>
+      <UserContextProvider>
+        <TeacherConversationsContextProvider>
+          <App />
+        </TeacherConversationsContextProvider>
+      </UserContextProvider>
     </BrowserRouter>
-  </StrictMode>,
-)
+  </StrictMode>
+);

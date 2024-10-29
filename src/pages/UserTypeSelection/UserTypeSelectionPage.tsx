@@ -1,16 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import UserType from "../../assets/icons/user-type-icon.svg";
-import { Button } from "../../components";
+import { Button, Loader } from "../../components";
+import { useContext, useState } from "react";
+import { updateUser } from "../api/auth";
+import UserContext from "../../context/UserContext";
 
 export const UserTypeSelectionPage = () => {
+  const user = useContext(UserContext).user;
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onUserTypeSelected = (userType: string) => {
-    alert(`User type selected: ${userType}`);
+  const onUserTypeSelected = async (userType: string) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
+    try {
+      await updateUser(user?.id as string, { role: userType });
+    } catch (error) {
+      alert("An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="flex flex-col items-center h-screen justify-center  py-12">
+      {isLoading && <Loader />}
       <img src={`${UserType}`} alt="microphone" className="mt-24" />
       <div className="flex flex-col items-center justify-center mt-auto">
         <Button
