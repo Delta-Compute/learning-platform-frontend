@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import arrowDropdown from "../../assets/icons/arrow_dropdown.svg";
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 
 const JoinYourSchoolPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('School: choose');
-  const [firstName, setFirstName] = useState('');
-  const [secondName, setSecondName] = useState('');
+  const [selected, setSelected] = useState("School: choose");
+  const [firstName, setFirstName] = useState("");
+  const [secondName, setSecondName] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>) => {
@@ -16,7 +16,7 @@ const JoinYourSchoolPage = () => {
     }
   };
 
-  const options = ['School 1', 'School 2', 'School 3'];
+  const options = ["School 1", "School 2", "School 3"];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -26,17 +26,24 @@ const JoinYourSchoolPage = () => {
             <img src={LeftArrowIcon} alt="Back" className="w-6 h-6" />
           </Link>
         </div>
-        <h2 className="text-center text-[24px] font-semibold text-[#524344]">Join your school</h2>
+        <h2 className="text-center text-[24px] font-semibold text-[#524344]">
+          Join your school
+        </h2>
       </div>
 
       <div className="flex flex-col flex-grow min-h-0 mt-20 p-4 max-w-md mx-auto w-full space-y-4">
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
           <div>
-            <label className="block text-sm font-normal mb-2">Select your school</label>
+            <label className="block text-sm font-normal mb-2">
+              Select your school
+            </label>
             <div className="relative" ref={dropdownRef}>
               <div
-                className={`w-full border-[0.5px] rounded-[40px] p-[16px] bg-white cursor-pointer flex justify-between items-center ${selected === 'School: choose' ? 'text-gray-400' : 'text-gray-700'
-                  }`}
+                className={`w-full border-[0.5px] rounded-[40px] p-[16px] bg-white cursor-pointer flex justify-between items-center ${
+                  selected === "School: choose"
+                    ? "text-gray-400"
+                    : "text-gray-700"
+                }`}
                 tabIndex={0}
                 onClick={() => setIsOpen((prev) => !prev)}
                 onBlur={handleBlur}
@@ -44,13 +51,16 @@ const JoinYourSchoolPage = () => {
                 {selected}
                 <img
                   src={arrowDropdown}
-                  className={`w-4 h-4 transform ${isOpen ? 'rotate-180' : 'rotate-0'} transition-transform duration-300`}
+                  className={`w-4 h-4 transform ${
+                    isOpen ? "rotate-180" : "rotate-0"
+                  } transition-transform duration-300`}
                 />
               </div>
               <div
-                className={`absolute z-10 mt-2 w-full bg-white border-[0.5px] rounded-[10px] shadow-lg overflow-hidden transition-all duration-300 ease-out transform origin-top ${isOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
-                  }`}
-                style={{ transformOrigin: 'top' }}
+                className={`absolute z-10 mt-2 w-full bg-white border-[0.5px] rounded-[10px] shadow-lg overflow-hidden transition-all duration-300 ease-out transform origin-top ${
+                  isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
+                }`}
+                style={{ transformOrigin: "top" }}
               >
                 {options.map((option, index) => (
                   <div
@@ -70,7 +80,9 @@ const JoinYourSchoolPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-normal mb-2">Your first name</label>
+            <label className="block text-sm font-normal mb-2">
+              Your first name
+            </label>
             <input
               type="text"
               placeholder="Enter your first name"
@@ -81,7 +93,9 @@ const JoinYourSchoolPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-normal mb-2">Your second name</label>
+            <label className="block text-sm font-normal mb-2">
+              Your second name
+            </label>
             <input
               type="text"
               placeholder="Enter your second name"
@@ -98,6 +112,6 @@ const JoinYourSchoolPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default JoinYourSchoolPage;
