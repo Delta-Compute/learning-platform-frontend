@@ -14,18 +14,18 @@ import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
 import { teacherInstructions } from "../../utils/conversation_config.js";
 
+import { useMutation } from "@tanstack/react-query";
+
 import { Link } from "react-router-dom";
 
 import TeacherConversationsContext from "../../context/teacher-conversations.tsx";
 
-import { Modal, Button } from "../../components";
+import { Modal, Button } from "../../components/index.ts";
 
 import PauseIcon from "../../assets/icons/pause-icon.svg";
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-
-// import { openai } from "../../vars/open-ai.ts";
 
 interface RealtimeEvent {
   time: string;
@@ -38,6 +38,8 @@ const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
 export const ConversationPage = () => {
   const { addTeacherTask } = useContext(TeacherConversationsContext);
+
+  // const [] = useQuery();
 
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
@@ -59,9 +61,9 @@ export const ConversationPage = () => {
   const [items, setItems] = useState<ItemType[]>([]);
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
-
-  const [isAssignmentCreated, setIsAssignmentCreated] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+
+  // const [isAssignmentCreated, setIsAssignmentCreated] = useState(false);
   // const [summary, setSummary] = useState("");
 
   const connectConversation = useCallback(async () => {
@@ -99,40 +101,6 @@ export const ConversationPage = () => {
       await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
     }
   }, []);
-
-  // for teacher role
-  // const generateSummary = async () => {
-  //   try {
-  //     const conversationItems = [...items];
-  //
-  //     console.log('gen for items', items);
-  //
-  //     const conversationText = conversationItems
-  //       .map(item => `${item.role}: ${item.formatted.text || item.formatted.transcript || ''}`)
-  //       .join('\n');
-  //
-  //     const completion = await openai.chat.completions.create({
-  //       messages: [
-  //         {
-  //           role: "system",
-  //           content: "You are an AI assistant. You need to determine if there is enough, generate the summary and assignment; otherwise, indicate what additional information is needed."
-  //         },
-  //         {
-  //           role: "user",
-  //           content: `Based on the following conversation, determine if there is enough information to generate a summary and assignment:\n\n${conversationText}`
-  //         }
-  //       ],
-  //       model: "gpt-4o-mini",
-  //     });
-  //
-  //     const generatedSummary = completion.choices[0]?.message?.content || "No response generated.";
-  //
-  //     setSummary(generatedSummary);
-  //     setIsAssignmentCreated(true);
-  //   } catch (error) {
-  //     console.error('Failed to generate summary:', error);
-  //   }
-  // };
 
   const disconnectConversation = useCallback(async () => {
     setIsConnected(false);
