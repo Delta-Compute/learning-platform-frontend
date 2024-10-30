@@ -28,7 +28,19 @@ export const createClass = async (data: {name?: string, teacherId?: string, logo
   }
 }
 
+export const getClassById = async (id: string): Promise<Class> => {
+  try {
+    const response = await apiClient.get<Class>(`/class-room/${id}`);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export const ClassesApiService = {
   getClassesTeacherId,
   createClass,
+  getClassById,
 };

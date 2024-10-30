@@ -19,6 +19,7 @@ import PauseIcon from "../../assets/icons/pause-icon.svg";
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
+import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
 
 interface RealtimeEvent {
   time: string;
@@ -289,8 +290,8 @@ export const ConversationPage = () => {
             )}
           </div>
         ) : (
-          <div className="flex items-center justify-center">
-            <p>Conversation</p>
+          <div className="h-screen flex items-center justify-center">
+            <SpeakingDots isConnected={isConnected}/>
           </div>
         )}
       </div>

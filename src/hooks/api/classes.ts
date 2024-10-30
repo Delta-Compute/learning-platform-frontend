@@ -21,3 +21,12 @@ export const useGetClassesTeacherId = (teacherId: string) => {
         staleTime: 5_000_000,
     });
 }
+
+export const useClassById = (id: string) => {
+    return useQuery({
+        queryFn: () => ClassesApiService.getClassById(id),
+        queryKey: ["class", id],
+        enabled: !!id,
+        staleTime: 5_000_000,
+    });
+}
