@@ -6,3 +6,4 @@ export * from "./FollowLink/FollowLinkPage";
 export * from "./UserTypeSelection/UserTypeSelectionPage";
 export * from "./ClassDetail/ClassDetailPage";
 export * from "./AssignmentDetail/AssignmentDetailPage";
+export * from "./SignInPage/SignInPage";

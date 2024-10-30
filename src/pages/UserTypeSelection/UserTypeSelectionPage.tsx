@@ -15,7 +15,6 @@ export const UserTypeSelectionPage = () => {
 
   return (
     <div className="flex flex-col items-center h-screen justify-center  py-12">
-      {isPending && <Loader />}
       <img src={`${UserType}`} alt="microphone" className="mt-24" />
       <div className="flex flex-col items-center justify-center mt-auto">
         <Button

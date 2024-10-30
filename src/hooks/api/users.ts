@@ -25,6 +25,7 @@ export const useUpdateUser = () => {
       if (data.role) {
       navigate("/join-your-school");
       }
+
       if (data.firstName && data.lastName) {
         navigate("/classes");
       }
@@ -48,6 +49,7 @@ export const useGetUser = (id: string) => {
 export const useLogin = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
   return useMutation({
     mutationFn: (credentials: { email: string; password: string }) =>
       UsersApiService.signIn(credentials),
@@ -72,6 +74,7 @@ export const useLogin = () => {
 export const useSingUp = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  
   return useMutation({
     mutationFn: (data: { email: string; password: string }) =>
       UsersApiService.signUp(data),

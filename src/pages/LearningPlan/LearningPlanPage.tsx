@@ -4,28 +4,10 @@ import { Link } from "react-router-dom";
 
 import TeacherConversations from "../../context/teacher-conversations";
 
-import { useGetUser } from "../../hooks";
-import { updateUser } from "../../services";
-import { useMutation } from "@tanstack/react-query";
-
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 
 export const LearningPlanPage = () => {
   const { teacherConversations } = useContext(TeacherConversations);
-
-  const { data: user } = useGetUser("XSY9IOoOlaL6JlLQJxZj");
-
-  const { mutate: userMutation, isPending } = useMutation({
-    mutationFn: (user: { firstName: string }) =>
-      updateUser("XSY9IOoOlaL6JlLQJxZj", user.firstName),
-    onSuccess: () => {
-      console.log("success");
-    },
-  });
-
-  const changeUser = () => {
-    userMutation({ firstName: "some first name" });
-  };
 
   return (
     <div>

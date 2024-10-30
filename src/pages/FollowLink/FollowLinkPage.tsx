@@ -1,10 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import FollowLinkIcon from "../../assets/icons/follow-link-icon.svg";
 
 export const FollowLinkPage = () => {
-  const navigate = useNavigate();
-
   // TODO: get user email from the store
   const userEmail = "something@email.com";
 
