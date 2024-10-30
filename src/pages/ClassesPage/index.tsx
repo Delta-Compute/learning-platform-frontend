@@ -12,6 +12,8 @@ const ClassesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
   const { data, isPending } = useGetClassesTeacherId(user?.id as string);
+  console.log(data, 'data');
+  
   const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
@@ -31,7 +33,7 @@ const ClassesPage = () => {
         <div className="space-y-4 pb-[60px]">
           {data?.map((classItem: Class, index) => (
             <div
-              onClick={() => navigate(`/classes/${classItem.name}`)}
+              onClick={() => navigate(`/classes/${classItem.id}`, { state: { classItem } })}
               key={index}
               className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data.length - 1 ? 'mb-[60px]' : ''
                 }`}

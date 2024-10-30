@@ -12,6 +12,7 @@ import {
   AssignmentDetailPage,
 } from "./pages";
 import { SignInPage } from "./pages/SignInPage/SignInPage";
+import JoinYourSchoolPage from './pages/JoinYourSchoolPage';
 
 const App = () => {
   return (

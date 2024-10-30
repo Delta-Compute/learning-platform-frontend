@@ -1,19 +1,19 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { assignmentsData, classesData, TAssignment } from "../../utils/mock";
 import Header from "../../components/ui/header/Header";
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import Assignment from "../../components/ui/assignment/Assisgnment";
+import { Class } from '../../types/class';
 
 export const ClassDetailPage = () => {
   const navigate = useNavigate();
-  const classId = useParams().id;
-  const classItem = classesData.find((item) => item.name === classId);
+  const { state } = useLocation();
 
-  if (!classItem) {
-    return <h1>Class not found</h1>;
-  }
+  const { classItem } = state as { classItem: Class };
+
+  console.log(state, 'state');
 
   const onAssignmentClick = (assignment: TAssignment) => {
     navigate(`/classes/${classItem.id}/assignments/${assignment.id}`);
@@ -33,10 +33,10 @@ export const ClassDetailPage = () => {
           </h2>
           <div className="flex justify-between">
             <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
-              {classItem.students} Students
+              {classItem.studentEmails?.length} Students
             </span>
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-3 rounded-full text-sm">
-              {classItem.assignments} assignments
+              {classItem.assignmentIds?.length} assignments
             </span>
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-1 rounded-full text-sm">
               <img src={settingsIcon} alt="settings" />
