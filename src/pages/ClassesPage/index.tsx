@@ -11,9 +11,7 @@ import { useNavigate } from "react-router-dom";
 const ClassesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
-  const { data, isPending } = useGetClassesTeacherId(user?.id as string);
-  console.log(data, 'data');
-  
+  const { data, isPending } = useGetClassesTeacherId(user?.id as string);  
   const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);

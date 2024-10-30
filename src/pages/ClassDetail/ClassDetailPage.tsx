@@ -13,8 +13,6 @@ export const ClassDetailPage = () => {
 
   const { classItem } = state as { classItem: Class };
 
-  console.log(state, 'state');
-
   const onAssignmentClick = (assignment: TAssignment) => {
     navigate(`/classes/${classItem.id}/assignments/${assignment.id}`);
   };

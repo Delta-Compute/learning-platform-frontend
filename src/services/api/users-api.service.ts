@@ -3,9 +3,9 @@ import { UserResponse } from '../../types/userResponse.ts';
 
 import { apiClient } from "../../vars/axios-var.ts";
 
-export const getUser = async (id: string): Promise<User | null> => {
+export const getUser = async (id: string): Promise<User> => {
   try {
-    const response = await apiClient.get<User>(
+    const response = await apiClient.get<User | null>(
       `/users/${id}`,
     );
 
@@ -14,9 +14,8 @@ export const getUser = async (id: string): Promise<User | null> => {
     return data;
   } catch (error) {
     console.log(error);
+    
   }
-
-  return null;
 };
 
 export const updateUser = async (id: string, firstName?: string, lastName?: string, role?: string): Promise<User> => {

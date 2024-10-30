@@ -38,8 +38,10 @@ export const useUpdateUser = () => {
 export const useGetUser = (id: string) => {
   return useQuery({
     queryFn: () => UsersApiService.getUser(id),
-    queryKey: ["users"],
+    queryKey: ["user", id],
+    enabled: !!id,
     staleTime: 5_000_000,
+
   });
 };
 
