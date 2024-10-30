@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback, useState, useContext } from "react";
 
 import { RealtimeClient } from "@openai/realtime-api-beta";
 // @ts-ignore
@@ -7,6 +7,8 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
 import { teacherInstructions } from "../../utils/conversation_config.js";
+
+import UserContext from "../../context/UserContext";
 
 import { Link } from "react-router-dom";
 
@@ -29,6 +31,7 @@ interface RealtimeEvent {
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
 export const ConversationPage = () => {
+  const { user } = useContext(UserContext);
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
   );
@@ -210,7 +213,7 @@ export const ConversationPage = () => {
       <div className="pt-[100px]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
-            <Link to="/teacher-tasks">
+            <Link to={user?.role === "teacher" ? "/teacher-tasks" : "/student-assignments"}>
               <img src={`${LeftArrowIcon}`} />
             </Link>
           </div>
