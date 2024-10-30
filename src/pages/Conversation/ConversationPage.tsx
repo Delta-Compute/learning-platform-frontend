@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState, useContext } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 
 import { RealtimeClient } from "@openai/realtime-api-beta";
 // @ts-ignore
@@ -10,17 +10,14 @@ import { teacherInstructions } from "../../utils/conversation_config.js";
 
 import { Link } from "react-router-dom";
 
-import TeacherConversationsContext from "../../context/teacher-conversations.tsx";
-
-import { Modal, Button } from "../../components";
+import { Button } from "../../components";
+import { AssignmentModal } from "./AssignmentModal";
 
 import PauseIcon from "../../assets/icons/pause-icon.svg";
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
-
-// import { openai } from "../../vars/open-ai.ts";
 
 interface RealtimeEvent {
   time: string;
@@ -32,8 +29,6 @@ interface RealtimeEvent {
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
 export const ConversationPage = () => {
-  const { addTeacherTask } = useContext(TeacherConversationsContext);
-
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
   );
@@ -55,8 +50,9 @@ export const ConversationPage = () => {
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
-  const [isAssignmentCreated, setIsAssignmentCreated] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+
+  // const [isAssignmentCreated, setIsAssignmentCreated] = useState(false);
   // const [summary, setSummary] = useState("");
 
   const connectConversation = useCallback(async () => {
@@ -96,40 +92,6 @@ export const ConversationPage = () => {
       );
     }
   }, []);
-
-  // for teacher role
-  // const generateSummary = async () => {
-  //   try {
-  //     const conversationItems = [...items];
-  //
-  //     console.log('gen for items', items);
-  //
-  //     const conversationText = conversationItems
-  //       .map(item => `${item.role}: ${item.formatted.text || item.formatted.transcript || ''}`)
-  //       .join('\n');
-  //
-  //     const completion = await openai.chat.completions.create({
-  //       messages: [
-  //         {
-  //           role: "system",
-  //           content: "You are an AI assistant. You need to determine if there is enough, generate the summary and assignment; otherwise, indicate what additional information is needed."
-  //         },
-  //         {
-  //           role: "user",
-  //           content: `Based on the following conversation, determine if there is enough information to generate a summary and assignment:\n\n${conversationText}`
-  //         }
-  //       ],
-  //       model: "gpt-4o-mini",
-  //     });
-  //
-  //     const generatedSummary = completion.choices[0]?.message?.content || "No response generated.";
-  //
-  //     setSummary(generatedSummary);
-  //     setIsAssignmentCreated(true);
-  //   } catch (error) {
-  //     console.error('Failed to generate summary:', error);
-  //   }
-  // };
 
   const disconnectConversation = useCallback(async () => {
     setIsConnected(false);
@@ -269,75 +231,60 @@ export const ConversationPage = () => {
                   className="py-[10px] flex flex-col gap-[15px]"
                   data-conversation-content
                 >
-                  {items.map((conversationItem) => {
-                    return (
-                      <div
-                        className={`${
-                          conversationItem.role === "user" && "justify-end"
-                        } flex`}
-                        key={conversationItem.id}
-                      >
-                        <div className="max-w-[90%] flex flex-col gap-[8px]">
-                          <div>
-                            <div
-                              className={`${
-                                conversationItem.role === "user" &&
-                                "justify-end"
-                              } flex`}
-                            >
-                              <span className="border-[1px] bg-gray-200 p-[10px] rounded-[8px]">
-                                {conversationItem.role || conversationItem.type}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="bg-gray-300 rounded-[10px] p-[8px]">
-                            {/* tool response */}
-                            {conversationItem.type ===
-                              "function_call_output" && (
-                              <div>{conversationItem.formatted.output}</div>
-                            )}
-                            {/* tool call */}
-                            {!!conversationItem.formatted.tool && (
-                              <div>
-                                {conversationItem.formatted.tool.name}(
-                                {conversationItem.formatted.tool.arguments})
-                              </div>
-                            )}
-                            {!conversationItem.formatted.tool &&
-                              conversationItem.role === "user" && (
-                                <div className="bg-red">
-                                  {conversationItem.formatted.transcript ||
-                                    (conversationItem.formatted.audio?.length
-                                      ? "(awaiting transcript)"
-                                      : conversationItem.formatted.text ||
-                                        "(item sent)")}
-                                </div>
-                              )}
-                            {!conversationItem.formatted.tool &&
-                              conversationItem.role === "assistant" && (
-                                <div>
-                                  {conversationItem.formatted.transcript ||
-                                    conversationItem.formatted.text ||
-                                    "(truncated)"}
-                                </div>
-                              )}
-                          </div>
-
-                          {/*{conversationItem.formatted.file && (*/}
-                          {/*  <audio*/}
-                          {/*    src={conversationItem.formatted.file.url}*/}
-                          {/*    controls*/}
-                          {/*  />*/}
-                          {/*)}*/}
+                  <div
+                    className={`
+                      ${items.at(-1)?.role === "user" && "justify-end"} 
+                      flex
+                    `}
+                  >
+                    <div className="max-w-[95%] flex gap-[8px]">
+                      <div>
+                        <div
+                          className={`${
+                            items.at(-1)?.role === "user" &&
+                            "justify-end"
+                          } flex`}
+                        >
+                          <span className="border-[1px] bg-gray-200 px-[10px] py-[6px] rounded-[8px]">
+                            {(items.at(-1)?.role === "assistant" ? "AI" : items.at(-1)?.role) || items.at(-1)?.type}
+                          </span>
                         </div>
                       </div>
-                    );
-                  })}
+                      <div className="bg-gray-300 rounded-[10px] p-[8px]">
+                        {items.at(-1)?.type ===
+                          "function_call_output" && (
+                          <div>{items.at(-1)?.formatted.output}</div>
+                        )}
+                        {!!items.at(-1)?.formatted.tool && (
+                          <div>
+                            {items.at(-1)?.formatted?.tool?.name}(
+                            {items.at(-1)?.formatted?.tool?.arguments})
+                          </div>
+                        )}
+                        {!items.at(-1)?.formatted.tool &&
+                          items.at(-1)?.role === "user" && (
+                            <div className="bg-red">
+                              {items.at(-1)?.formatted.transcript ||
+                                (items.at(-1)?.formatted.audio?.length
+                                  ? "(awaiting transcript)"
+                                  : items.at(-1)?.formatted.text ||
+                                    "(item sent)")}
+                            </div>
+                          )}
+                        {!items.at(-1)?.formatted.tool &&
+                          items.at(-1)?.role === "assistant" && (
+                            <div>
+                              {items.at(-1)?.formatted.transcript ||
+                                items.at(-1)?.formatted.text ||
+                                "(truncated)"}
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
-
-            {/*{summary !== "" && <p className="border-[1px] bg-gray-200 p-[10px] rounded-[8px]">{summary}</p>}*/}
           </div>
         ) : (
           <div className="h-screen flex items-center justify-center">
@@ -365,9 +312,10 @@ export const ConversationPage = () => {
 
         <div className="absolute top-[0] left-[10px] w-[calc(100%-20px)] z-[1] flex justify-center">
           <button
-            className={`${
-              !isConnected && "border-[1px]"
-            } rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]`}
+            className={`
+              ${!isConnected && "border-[1px]"} 
+              rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]
+            `}
             style={{
               boxShadow: isConnected
                 ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
@@ -384,7 +332,7 @@ export const ConversationPage = () => {
           />
         </div>
 
-        {items.length > 1 && !isConnected && (
+        {items.length > 0 && !isConnected && (
           <div className="self-end relative z-[2]">
             <Button
               className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
@@ -396,35 +344,11 @@ export const ConversationPage = () => {
         )}
       </div>
 
-      <Modal
-        isOpen={isAssignmentModalOpen}
-        onClose={() => setIsAssignmentModalOpen(false)}
-      >
-        <p className="text-center font-semibold text-[18px] text-dark-blue">
-          Assignment
-        </p>
-
-        <div className="flex flex-col gap-[10px] pt-[20px]">
-          <label>Assignment details</label>
-
-          <p className="flex gap-[10px]">
-            <span className="text-gray-500">Deadline:</span>
-            <span>12/12/1222</span>
-          </p>
-
-          <div className="flex justify-center">
-            <Button
-              className="bg-main-red text-white w-full border-main-red sm:w-[120px] "
-              onClick={() => {
-                addTeacherTask("some title");
-                setIsAssignmentModalOpen(false);
-              }}
-            >
-              Assign
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      <AssignmentModal 
+        isOpen={isAssignmentModalOpen} 
+        onClose={() => setIsAssignmentModalOpen(false)} 
+        assignment={items.at(-1)?.formatted.transcript ?? "Not enough information"}
+      />
     </div>
   );
 };
