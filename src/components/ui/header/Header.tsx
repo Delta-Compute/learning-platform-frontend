@@ -9,8 +9,8 @@ type Props = {
 
 const Header: FC<Props> = ({ linkTo, title }) => {
   return (
-    <div className="p-5 fixed z-[1] top-0 w-full bg-bg-color">
-      <div className="absolute top-5 left-p-5">
+    <div className="p-5 fixed z-[1] top-0 w-full bg-[#FBF9F9]">
+      <div className="absolute top-[26px] left-p-5">
         <Link to={linkTo}>
           <img src={`${LeftArrowIcon}`} />
         </Link>

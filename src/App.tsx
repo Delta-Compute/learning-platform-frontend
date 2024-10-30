@@ -32,7 +32,7 @@ const App = () => {
         <Route path="/classes" element={<ClassesPage />} />
         <Route path="/classes/:id" element={<ClassDetailPage />} />
         <Route
-          path="/classes/:classId/assignments/:assignmentId"
+          path="/assignments/:id"
           element={<AssignmentDetailPage />}
         />
         <Route path="/*" element={<Navigate to="/teacher-tasks" replace />} />

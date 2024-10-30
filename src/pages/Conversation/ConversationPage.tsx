@@ -18,6 +18,7 @@ import PauseIcon from "../../assets/icons/pause-icon.svg";
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
+import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
 
 // import { openai } from "../../vars/open-ai.ts";
 
@@ -339,8 +340,8 @@ export const ConversationPage = () => {
             {/*{summary !== "" && <p className="border-[1px] bg-gray-200 p-[10px] rounded-[8px]">{summary}</p>}*/}
           </div>
         ) : (
-          <div className="flex items-center justify-center">
-            <p>Conversation</p>
+          <div className="h-screen flex items-center justify-center">
+            <SpeakingDots isConnected={isConnected}/>
           </div>
         )}
       </div>

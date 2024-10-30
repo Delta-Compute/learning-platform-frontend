@@ -1,25 +1,35 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { assignmentsData, classesData, TAssignment } from "../../utils/mock";
+import { useNavigate, useParams } from "react-router-dom";
+import { assignmentsData, TAssignment } from "../../utils/mock";
 import Header from "../../components/ui/header/Header";
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import Assignment from "../../components/ui/assignment/Assisgnment";
 import { Class } from '../../types/class';
+import { useEffect, useState } from 'react';
+import { useClassById } from '../../hooks/api/classes';
+import { Loader } from '../../components';
 
 export const ClassDetailPage = () => {
+  const [classItem, setClassItem] = useState<Class | null>(null);
   const navigate = useNavigate();
-  const { state } = useLocation();
-
-  const { classItem } = state as { classItem: Class };
+  const { id } = useParams();
+  const { data, isPending } = useClassById(id as string);
 
   const onAssignmentClick = (assignment: TAssignment) => {
-    navigate(`/classes/${classItem.id}/assignments/${assignment.id}`);
+    navigate(`/assignments/${assignment.id}`);
   };
+
+  useEffect(() => {
+    if (data) {
+      setClassItem(data);
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
-      <Header title={classItem.name} linkTo="/classes" />
+      {isPending && <Loader />}
+      <Header title={classItem?.name as string} linkTo="/classes" />
       <div className=" px-4 mt-12">
         <div
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2`}
@@ -31,10 +41,10 @@ export const ClassDetailPage = () => {
           </h2>
           <div className="flex justify-between">
             <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
-              {classItem.studentEmails?.length} Students
+              {classItem?.studentEmails?.length} Students
             </span>
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-3 rounded-full text-sm">
-              {classItem.assignmentIds?.length} assignments
+              {classItem?.assignmentIds?.length} assignments
             </span>
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-1 rounded-full text-sm">
               <img src={settingsIcon} alt="settings" />
