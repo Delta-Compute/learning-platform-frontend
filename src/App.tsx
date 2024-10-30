@@ -1,4 +1,4 @@
-import { useContext } from "react";
+// import { useContext } from "react";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -17,10 +17,10 @@ import {
 import { SignInPage } from "./pages/SignInPage/SignInPage";
 import JoinYourSchoolPage from './pages/JoinYourSchoolPage';
 
-import UserContext from "./context/UserContext";
+// import UserContext from "./context/UserContext";
 
 const App = () => {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
 
   return (
     <>
@@ -34,10 +34,11 @@ const App = () => {
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/ai-conversation" element={<ConversationPage />} />
-        {user?.role === "student" && <Route path="/student-assignments" element={<StudentAssignmentsPage />} />}
-        {user?.role === "teacher" && <Route path="/teacher-tasks" element={<LearningPlanPage />} />}
+        {<Route path="/student-assignments" element={<StudentAssignmentsPage />} />}
+        {<Route path="/student-assignments/:assignmentId" element={<div><ConversationPage /></div>} />}
+        {<Route path="/teacher-tasks" element={<LearningPlanPage />} />}
         <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
-        <Route path="/classes" element={<ClassesPage />} />
+        {<Route path="/classes" element={<ClassesPage />} />}
         <Route path="/classes/:id" element={<ClassDetailPage />} />
         <Route
           path="/assignments/:id"

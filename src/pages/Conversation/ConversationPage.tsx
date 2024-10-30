@@ -10,7 +10,7 @@ import { teacherInstructions } from "../../utils/conversation_config.js";
 
 import UserContext from "../../context/UserContext";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { Button } from "../../components";
 import { AssignmentModal } from "./AssignmentModal";
@@ -20,6 +20,7 @@ import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
+import { useGetStudentAssignments } from "../../hooks/index.ts";
 
 interface RealtimeEvent {
   time: string;
@@ -32,6 +33,7 @@ const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
 export const ConversationPage = () => {
   const { user } = useContext(UserContext);
+  const { assignmentId } = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
   );
@@ -44,6 +46,30 @@ export const ConversationPage = () => {
       dangerouslyAllowAPIKeyInBrowser: true,
     })
   );
+
+  const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
+
+  useEffect(() => {
+    if (user?.email) {
+      refetch();
+    }
+  }, [user]);
+
+  const [studentInstructions, setStudentInstructions] = useState("");
+
+  useEffect(() => {
+    if (user && user.role === "student" && assignments) {
+      for (const item of assignments) {
+        if (item.id === assignmentId) {
+          setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
+        }
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log(studentInstructions);
+  }, [studentInstructions]);
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -62,11 +88,11 @@ export const ConversationPage = () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
     const wavStreamPlayer = wavStreamPlayerRef.current;
-    client.defaultSessionConfig = {
-      modalities: ["text", "audio"],
-      instructions: "Please communicate in English only.",
-      voice: "en-US",
-    };
+    // client.defaultSessionConfig = {
+    //   modalities: ["text", "audio"],
+    //   instructions: "Please communicate in English only.",
+    //   voice: "en-US",
+    // };
     client.updateSession({ turn_detection: { type: "server_vad" } });
 
     // Set state variables
@@ -146,7 +172,7 @@ export const ConversationPage = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: teacherInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" ? teacherInstructions : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -335,7 +361,7 @@ export const ConversationPage = () => {
           />
         </div>
 
-        {items.length > 0 && !isConnected && (
+        {items.length > 0 && !isConnected && user?.role !== "student" && (
           <div className="self-end relative z-[2]">
             <Button
               className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
@@ -347,11 +373,11 @@ export const ConversationPage = () => {
         )}
       </div>
 
-      <AssignmentModal 
+      {user?.role !== "student" && <AssignmentModal 
         isOpen={isAssignmentModalOpen} 
         onClose={() => setIsAssignmentModalOpen(false)} 
         assignment={items.at(-1)?.formatted.transcript ?? "Not enough information"}
-      />
+      />}
     </div>
   );
 };

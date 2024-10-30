@@ -10,47 +10,39 @@ import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 
 export const StudentAssignmentsPage = () => {
   const { user } = useContext(UserContext);
-  const { data: assignments, refetch } = useGetStudentAssignments(user?.id);
+  const { data: assignments, refetch, isPending } = useGetStudentAssignments(user?.email ?? "");
 
   useEffect(() => {
-    if (user && user.id) {
+    if (user?.email) {
       refetch();
     }
-    
-    console.log('assignments', assignments);
-  }, [assignments]);
-
-  // add end assignment button
-  // 
+  }, [user]);
 
   return (
     <div>
       <div className="fixed top-0 w-full py-[20px] border-b-[1px]">
-        <h2 className="text-center text-[20px]">Teacher tasks</h2>
+        <h2 className="text-center text-[20px]">Student assignments</h2>
       </div>
 
       <div className="pt-[100px] ">
         <div>
-          <p className="font-semibold text-center">
-            Task based on learning plan
-          </p>
-
-          {/* {assignments?.length > 0 ? (
+          {!isPending ? (
             <ul className="py-[20px] flex flex-col items-center gap-[8px]">
-              {assignments.map((assignment) => (
-                <li
-                  key={assignment.id}
-                  className="w-[400px] py-[8px] rounded-[20px] text-center bg-gray-200"
-                >
-                  {assignment.description}
-                </li>
+              {assignments?.map((assignment) => (
+                <Link key={assignment.id} to={`/student-assignments/${assignment.id}`}>
+                  <li
+                    className="w-[400px] py-[8px] rounded-[20px] text-center bg-gray-200"
+                  >
+                    {assignment.description}
+                  </li>
+                </Link>
               ))}
             </ul>
           ) : (
             <div className="py-[30px]">
-              <p className="text-center text-gray-500">No tasks yet</p>
+              <p className="text-center text-gray-500">{isPending ? "Loading..." : "No tasks yet"}</p>
             </div>
-          )} */}
+          )}
         </div>
         <div
           className="

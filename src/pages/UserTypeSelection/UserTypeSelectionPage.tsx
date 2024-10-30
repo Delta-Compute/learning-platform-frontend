@@ -1,5 +1,5 @@
 import UserType from "../../assets/icons/user-type-icon.svg";
-import { Button, Loader } from "../../components";
+import { Button } from "../../components";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 import { useUpdateUser } from "../../hooks/api/users";
@@ -7,7 +7,7 @@ import { useUpdateUser } from "../../hooks/api/users";
 export const UserTypeSelectionPage = () => {
   const { user } = useContext(UserContext);
 
-  const { mutate, isPending } = useUpdateUser();
+  const { mutate } = useUpdateUser();
 
   const onUserTypeSelected = async (userType: string) => {
     await mutate({ id: user?.id as string, role: userType });
