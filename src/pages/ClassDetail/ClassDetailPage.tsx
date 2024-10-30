@@ -18,7 +18,7 @@ export const ClassDetailPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen py-6 px-2 bg-bg-color">
+    <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
       <Header title={classItem.name} linkTo="/classes" />
       <div className=" px-4 mt-12">
         <div

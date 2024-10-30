@@ -28,6 +28,8 @@ export const UserContextProvider = ({
         const decoded = jwtDecode(token);
         if (decoded?.sub) {
           setUserId(decoded.sub);
+          console.log("Decoded token:", decoded);
+          
         } else {
           console.error("Token does not contain 'sub'");
         }
