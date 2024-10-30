@@ -14,7 +14,7 @@ export default {
         border: "rgba(206, 212, 218, 1)",
         placholderText: "rgba(134, 142, 150, 1)",
         brownText: "rgba(54, 45, 46, 1)",
-
+        blueText: "rgba(6, 126, 207, 1)",
         // contentBrandPrimaryMedium: 'black',
       },
     },

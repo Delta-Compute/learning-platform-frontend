@@ -8,6 +8,8 @@ import {
   InitialPage,
   SignUpPage,
   UserTypeSelectionPage,
+  ClassDetailPage,
+  AssignmentDetailPage,
 } from "./pages";
 import { SignInPage } from "./pages/SignInPage/SignInPage";
 
@@ -26,6 +28,11 @@ const App = () => {
         <Route path="/ai-conversation" element={<ConversationPage />} />
         <Route path="/teacher-tasks" element={<LearningPlanPage />} />
         <Route path="/classes" element={<ClassesPage />} />
+        <Route path="/classes/:id" element={<ClassDetailPage />} />
+        <Route
+          path="/classes/:classId/assignments/:assignmentId"
+          element={<AssignmentDetailPage />}
+        />
         <Route path="/*" element={<Navigate to="/teacher-tasks" replace />} />
         <Route path="/*" element={<Navigate to="/initial" replace />} />
       </Routes>
