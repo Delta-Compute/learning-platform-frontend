@@ -11,7 +11,7 @@ const JoinYourSchoolPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const { user } = useContext(UserContext);
-  const { mutate, isPending } = useUpdateUser();
+  const { mutate } = useUpdateUser();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -29,8 +29,6 @@ const JoinYourSchoolPage = () => {
     });
     navigate("/classes")
   };
-
-
 
   const options = ["School 1", "School 2", "School 3"];
 

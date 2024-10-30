@@ -11,12 +11,12 @@ import { teacherInstructions } from "../../utils/conversation_config.js";
 import { Link } from "react-router-dom";
 
 import { Button } from "../../components";
+import { AssignmentModal } from "./AssignmentModal";
 
 import PauseIcon from "../../assets/icons/pause-icon.svg";
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-import { AssignmentModal } from "./AssignmentModal.js";
 
 interface RealtimeEvent {
   time: string;
