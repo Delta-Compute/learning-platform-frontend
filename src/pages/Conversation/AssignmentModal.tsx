@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Assignment } from "../../types";
 
@@ -9,6 +9,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Modal, Button } from "../../components";
 
 import DropdownChevronUp from "../../assets/icons/dropdown-chevron-up.svg";
+import { useGetClassesTeacherId } from '../../hooks/api/classes';
+import UserContext from '../../context/UserContext';
 
 interface AssignmentModalProps {
   isOpen: boolean;
@@ -21,10 +23,11 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   onClose,
   assignment,
 }) => {
-  const [selectedClassRoom, setSelectedClassRoom] = useState<{id: string, name: string} | null>(null);
+  const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
   const [isRoomsDropdownOpen, setIsRoomsDropdownOpen] = useState(false);
+  const { user } = useContext(UserContext);
 
-  const { data: classRooms } = useGetAllClassRooms();
+  const { data: classRooms } = useGetClassesTeacherId(user?.id as string);
 
   const { mutate: createAssignmentMutation, isPending: isCreateAssignmentPending } = useMutation({
     mutationFn: (assignment: Assignment) => addAssignment(assignment.classRoomId, assignment.description),
@@ -49,9 +52,9 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
       </p>
 
       <div className="flex flex-col gap-[10px] pt-[20px]">
-        <div>
+        <div className='relative'>
           <label>Class</label>
-          <div 
+          <div
             className="cursor-pointer p-[12px] rounded-[22px] border-[1px] mt-[10px] flex items-center justify-between"
             onClick={() => setIsRoomsDropdownOpen(active => !active)}
           >
@@ -60,16 +63,19 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
               <img src={`${DropdownChevronUp}`} />
             </div>
           </div>
-          
+
           {isRoomsDropdownOpen && (
-            <ul className="rounded-[8px] border-[1px] mt-[10px]">
-              {classRooms?.map(classRoom => (
-                <li 
+            <ul className="absolute top-full left-0 w-full mt-2 bg-white border-[1px] rounded-[8px] shadow-lg z-10">
+              {classRooms?.map((classRoom) => (
+                <li
                   key={classRoom.id}
-                  className="p-[10px] cursor-pointer"
+                  className="p-[10px] cursor-pointer hover:bg-gray-100"
                   onClick={() => {
                     setIsRoomsDropdownOpen(false);
-                    setSelectedClassRoom({ id: classRoom.id ?? "", name: classRoom.name });
+                    setSelectedClassRoom({
+                      id: classRoom.id ?? '',
+                      name: classRoom.name,
+                    });
                   }}
                 >
                   {classRoom.name}
