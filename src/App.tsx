@@ -1,8 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import JoinYourSchoolPage from "./pages/JoinYourSchoolPage";
 import ClassesPage from "./pages/ClassesPage";
-import CongratulationPage from "./pages/CongratulationPage";
 import {
   ConversationPage,
   FollowLinkPage,
@@ -10,6 +8,8 @@ import {
   InitialPage,
   SignUpPage,
   UserTypeSelectionPage,
+  ClassDetailPage,
+  AssignmentDetailPage,
 } from "./pages";
 import { SignInPage } from "./pages/SignInPage/SignInPage";
 
@@ -29,7 +29,12 @@ const App = () => {
         <Route path="/teacher-tasks" element={<LearningPlanPage />} />
         <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
         <Route path="/classes" element={<ClassesPage />} />
-        <Route path="/congratulations" element={<CongratulationPage />} />
+        <Route path="/classes/:id" element={<ClassDetailPage />} />
+        <Route
+          path="/classes/:classId/assignments/:assignmentId"
+          element={<AssignmentDetailPage />}
+        />
+        <Route path="/*" element={<Navigate to="/teacher-tasks" replace />} />
         <Route path="/*" element={<Navigate to="/initial" replace />} />
       </Routes>
     </>

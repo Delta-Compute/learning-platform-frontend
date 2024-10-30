@@ -6,11 +6,13 @@ import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 import { Class } from '../../types/class';
 import { Loader } from '../../components';
+import { useNavigate } from "react-router-dom";
 
 const ClassesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
   const { data, isPending } = useGetClassesTeacherId(user?.id as string);
+  const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -29,13 +31,16 @@ const ClassesPage = () => {
         <div className="space-y-4 pb-[60px]">
           {data?.map((classItem: Class, index) => (
             <div
+              onClick={() => navigate(`/classes/${classItem.name}`)}
               key={index}
               className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data.length - 1 ? 'mb-[60px]' : ''
                 }`}
             >
               <div className="bg-gray-200 h-24 rounded-[8px]"></div>
 
-              <h2 className="text-[24px] text-[#362D2E] font-semibold">{classItem.name}</h2>
+              <h2 className="text-[24px] text-[#362D2E] font-semibold">
+                {classItem.name}
+              </h2>
 
               <div className="flex justify-between">
                 <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
@@ -48,7 +53,6 @@ const ClassesPage = () => {
             </div>
           ))}
         </div>
-
       </div>
       <CreateClassModal isOpen={isModalOpen} onClose={closeModal} />
       <BottomNavigation />
