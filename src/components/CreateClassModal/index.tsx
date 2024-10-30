@@ -1,4 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useState } from 'react';
+import { useCreateClass } from '../../hooks/api/classes';
+import UserContext from '../../context/UserContext';
+import { Loader } from '../ui/loader/Loader';
 
 interface CreateClassModalProps {
   isOpen: boolean;
@@ -6,6 +9,11 @@ interface CreateClassModalProps {
 }
 
 const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose }) => {
+  const [className, setClassName] = useState<string>("");
+  const { user } = useContext(UserContext);
+
+  console.log(user, "user");
+
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -13,20 +21,37 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose }) 
     }
   };
 
+  const { mutate, isPending } = useCreateClass();
+
+
+  const handleCreateClass = () => {
+    if (!className) return;
+    mutate({
+      name: className,
+      teacherId: user?.id as string,
+    });
+    if (!isPending) {
+      onClose();
+    }
+  }
+
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
+      {isPending && <Loader />}
       <div className="bg-white w-[95%] max-w-md p-2 pt-4 rounded-[32px] shadow-lg">
         <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">Create a new class</h2>
 
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">Class name</label>
           <input
+            value={className}
             type="text"
             placeholder="Enter class name"
             className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            onChange={(e) => setClassName(e.target.value)}
           />
         </div>
 
@@ -48,7 +73,7 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose }) 
           </div>
         </div>
         <button
-          onClick={onClose}
+          onClick={() => handleCreateClass()}
           className="w-full bg-red-600 text-white py-3 rounded-full font-semibold hover:bg-red-700"
         >
           Create
