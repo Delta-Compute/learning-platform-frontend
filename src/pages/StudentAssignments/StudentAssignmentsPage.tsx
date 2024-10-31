@@ -24,16 +24,20 @@ export const StudentAssignmentsPage = () => {
         <h2 className="text-center text-[20px]">Student assignments</h2>
       </div>
 
-      <div className="pt-[100px] ">
+      <div className="pt-[100px]">
         <div>
           {!isPending ? (
             <ul className="py-[20px] flex flex-col items-center gap-[8px]">
               {assignments?.map((assignment) => (
-                <Link key={assignment.id} to={`/student-assignments/${assignment.id}`}>
+                <Link 
+                  key={assignment.id} 
+                  to={`/student-assignments/${assignment.id}`}
+                  className="block w-full"
+                >
                   <li
-                    className="w-[400px] py-[8px] rounded-[20px] text-center bg-gray-200"
+                    className="w-[400px] p-[8px] rounded-[20px] text-center bg-gray-200"
                   >
-                    {assignment.description}
+                    <span>{assignment.description}</span>
                   </li>
                 </Link>
               ))}
