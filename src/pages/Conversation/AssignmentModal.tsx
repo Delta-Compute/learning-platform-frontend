@@ -37,8 +37,8 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   });
 
   useEffect(() => {
-    if (classRooms) {
-      setSelectedClassRoom({ id: classRooms[0].id ?? "", name: classRooms[0].name });
+    if (classRooms && classRooms?.length !== 0) {
+      setSelectedClassRoom({ id: classRooms[0].id ?? "", name: classRooms[0].name ?? "" });
     }
   }, [classRooms]);
 

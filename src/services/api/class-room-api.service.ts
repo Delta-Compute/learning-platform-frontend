@@ -35,7 +35,25 @@ export const getAllClassRooms = async (): Promise<ClassRoom[] | null> => {
   return null;
 };
 
+
+export const updateClassRoomProgress = async (classRoomId: string, assignmentId: string, studentEmail: string, feedback: string) => {
+  try {
+    const response = await apiClient.patch<ClassRoom[]>(
+      `/class-room-progress/update-progress/${classRoomId}/${assignmentId}`,
+      {
+        studentEmail,
+        feedback,
+      }
+    );
+
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const ClassRoomApiService = {
   getClassRoom,
   getAllClassRooms,
+  updateClassRoomProgress,
 };

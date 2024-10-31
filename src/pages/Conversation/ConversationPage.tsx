@@ -21,6 +21,8 @@ import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
 import { useGetStudentAssignments } from "../../hooks/index.ts";
+import { useMutation } from "@tanstack/react-query";
+import { ClassRoomApiService } from "../../services/index.ts";
 
 interface RealtimeEvent {
   time: string;
@@ -33,7 +35,7 @@ const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
 export const ConversationPage = () => {
   const { user } = useContext(UserContext);
-  const { assignmentId } = useParams();
+  const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
   );
@@ -50,26 +52,35 @@ export const ConversationPage = () => {
   const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
 
   useEffect(() => {
-    if (user?.email) {
+    if (user?.email && user?.role === "student") {
       refetch();
     }
   }, [user]);
 
   const [studentInstructions, setStudentInstructions] = useState("");
 
+  const [classRoomId, setClassRoomId] = useState("");
+
+  const { mutate: updateStudentStatus } = useMutation({
+    mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {
+      console.log(data)
+      return ClassRoomApiService.updateClassRoomProgress(data.classRoomId, data.assignmentId, data.studentEmail, data.feedback)
+    },
+    onSuccess: (data) => {
+        console.log("added", data);
+    },
+  });
+
   useEffect(() => {
     if (user && user.role === "student" && assignments) {
       for (const item of assignments) {
-        if (item.id === assignmentId) {
+        if (item.id ===  params.assignmentId) {
           setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
+          setClassRoomId(item.classRoomId);
         }
       }
     }
-  }, [user]);
-
-  useEffect(() => {
-    console.log(studentInstructions);
-  }, [studentInstructions]);
+  }, [user, assignments]);
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -340,34 +351,82 @@ export const ConversationPage = () => {
         )}
 
         <div className="absolute top-[0] left-[10px] w-[calc(100%-20px)] z-[1] flex justify-center">
-          <button
-            className={`
-              ${!isConnected && "border-[1px]"} 
-              rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]
-            `}
-            style={{
-              boxShadow: isConnected
-                ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
-                : "",
-              backgroundImage: isConnected
-                ? `url(${PauseIcon})`
-                : `url(${MicrophoneIcon})`,
-              backgroundPositionX: "center",
-              backgroundPositionY: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-            onTouchStart={connectConversation}
-            onTouchEnd={disconnectConversation}
-          />
+          {user?.role === "teacher" && (
+            <button
+              className={`
+                ${!isConnected && "border-[1px]"} 
+                rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]
+              `}
+              style={{
+                boxShadow: isConnected
+                  ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
+                  : "",
+                backgroundImage: isConnected
+                  ? `url(${PauseIcon})`
+                  : `url(${MicrophoneIcon})`,
+                backgroundPositionX: "center",
+                backgroundPositionY: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+              onTouchStart={connectConversation}
+              onTouchEnd={disconnectConversation}
+            />
+          )}
+
+          {user?.role === "student" && (items.length === 0 || isConnected) && (
+            <button
+              className={`
+                ${!isConnected && "border-[1px]"} 
+                rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]
+              `}
+              style={{
+                boxShadow: isConnected
+                  ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
+                  : "",
+                backgroundImage: isConnected
+                  ? `url(${PauseIcon})`
+                  : `url(${MicrophoneIcon})`,
+                backgroundPositionX: "center",
+                backgroundPositionY: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+              onTouchStart={connectConversation}
+              onTouchEnd={disconnectConversation}
+            />
+          )}  
         </div>
 
-        {items.length > 0 && !isConnected && user?.role !== "student" && (
+        {items.length > 0 && !isConnected && user?.role === "teacher" && (
           <div className="self-end relative z-[2]">
             <Button
               className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
               onClick={() => setIsAssignmentModalOpen(true)}
             >
               Assign
+            </Button>
+          </div>
+        )}
+
+        {items.length > 0 && !isConnected && user?.role === "student" && (
+          <div className="self-end w-full relative z-[2] flex flex-col gap-[10px]">
+            <Button
+              className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
+              onClick={() => setItems([])}
+            >
+              Try again
+            </Button>
+            <Button
+              className="border-main-red w-full px-[22px] bg-main-red text-white"
+              onClick={() => {
+                updateStudentStatus({
+                  classRoomId: classRoomId,
+                  assignmentId: params.assignmentId ?? "",
+                  studentEmail: user.email,
+                  feedback: items.at(-1)?.formatted.transcript ?? "",
+                });
+              }}
+            >
+              Save and Send to teacher
             </Button>
           </div>
         )}
