@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { TAssignment } from "../../../utils/mock";
 import menuIcon from "../../../assets/icons/menu-icon.svg";
+import { IAssignment } from '../../../types';
 
 type Props = {
-  assignment: TAssignment;
-  onClick: (assignment: TAssignment) => void;
+  assignment: IAssignment;
+  onClick: (assignment: IAssignment) => void;
 };
 
 const Assignment: FC<Props> = ({ assignment, onClick }) => {

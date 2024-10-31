@@ -1,10 +1,10 @@
-import { Assignment } from "../../types/index.ts";
+import { IAssignment } from "../../types/assignment.ts";
 
 import { apiClient } from "../../vars/axios-var.ts";
 
 export const addAssignment = async (classRoomId: string, description: string) => {
   try {
-    await apiClient.post<Assignment>(
+    await apiClient.post<IAssignment>(
       "/assignments",
       {
         description,
@@ -16,13 +16,13 @@ export const addAssignment = async (classRoomId: string, description: string) =>
   }
 };
 
-export const getAssignmentsForStudent = async (email: string): Promise<Assignment[] | null> => {
+export const getAssignmentsForStudent = async (email: string): Promise<IAssignment[] | null> => {
   try {
-    const response = await apiClient.get<Assignment[] | null>(
+    const response = await apiClient.get<IAssignment[] | null>(
       `/assignments/find-assignments/${email}`,
     );
 
-    const data = response.data as Assignment[];
+    const data = response.data as IAssignment[];
 
     return data;
   } catch (error) {
@@ -32,13 +32,13 @@ export const getAssignmentsForStudent = async (email: string): Promise<Assignmen
   return null;
 };
 
-export const getAssigmentsByClassRoomId = async (classRoomId: string): Promise<Assignment[] | null> => {
+export const getAssigmentsByClassRoomId = async (classRoomId: string): Promise<IAssignment[] | null> => {
   try {
-    const response = await apiClient.get<Assignment[] | null>(
+    const response = await apiClient.get<IAssignment[] | null>(
       `/assignments/${classRoomId}`,
     );
 
-    const data = response.data as Assignment[];
+    const data = response.data as IAssignment[];
 
     return data;
   } catch (error) {
@@ -48,13 +48,13 @@ export const getAssigmentsByClassRoomId = async (classRoomId: string): Promise<A
   return null;
 }
 
-export const getAssignmentById = async (id: string): Promise<Assignment | null> => {
+export const getAssignmentById = async (id: string): Promise<IAssignment | null> => {
   try {
-    const response = await apiClient.get<Assignment | null>(
+    const response = await apiClient.get<IAssignment | null>(
       `/assignments/${id}`,
     );
 
-    const data = response.data as Assignment;
+    const data = response.data as IAssignment;
 
     return data;
   } catch (error) {

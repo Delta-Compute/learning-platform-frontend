@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { assignmentsData, TAssignment } from "../../utils/mock";
 import Header from "../../components/ui/header/Header";
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import copyIcon from "../../assets/icons/copy-icon.svg";
@@ -10,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useClassById } from '../../hooks/api/classes';
 import { Loader } from '../../components';
 import { useGetRoomsAssignments } from '../../hooks';
+import { IAssignment } from '../../types';
 
 export const ClassDetailPage = () => {
   const [classItem, setClassItem] = useState<Class | null>(null);
@@ -20,7 +20,7 @@ export const ClassDetailPage = () => {
 
   
 
-  const onAssignmentClick = (assignment: TAssignment) => {
+  const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/classes/${id}/${assignment.id}`);
     window.scrollTo(0, 0);
   };

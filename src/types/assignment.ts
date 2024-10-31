@@ -1,5 +1,9 @@
-export type Assignment = {
+export interface IAssignment {
   id?: string;
   description: string;
   classRoomId: string;
-};
+  title: string;
+  deadline: string;
+  createdAt?: string;
+  status?: string;
+}
