@@ -32,7 +32,41 @@ export const getAssignmentsForStudent = async (email: string): Promise<Assignmen
   return null;
 };
 
+export const getAssigmentsByClassRoomId = async (classRoomId: string): Promise<Assignment[] | null> => {
+  try {
+    const response = await apiClient.get<Assignment[] | null>(
+      `/assignments/${classRoomId}`,
+    );
+
+    const data = response.data as Assignment[];
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+
+  return null;
+}
+
+export const getAssignmentById = async (id: string): Promise<Assignment | null> => {
+  try {
+    const response = await apiClient.get<Assignment | null>(
+      `/assignments/${id}`,
+    );
+
+    const data = response.data as Assignment;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+
+  return null;
+}
+
 export const AssignmentApiService = {
   addAssignment,
   getAssignmentsForStudent,
+  getAssigmentsByClassRoomId,
+  getAssignmentById,
 };

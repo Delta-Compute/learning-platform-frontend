@@ -9,15 +9,20 @@ import { Class } from '../../types/class';
 import { useEffect, useState } from 'react';
 import { useClassById } from '../../hooks/api/classes';
 import { Loader } from '../../components';
+import { useGetRoomsAssignments } from '../../hooks';
 
 export const ClassDetailPage = () => {
   const [classItem, setClassItem] = useState<Class | null>(null);
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useClassById(id as string);
+  const { data: assignmentsData, isPending: isAssigmentsPending } = useGetRoomsAssignments(id as string);
+
+  
 
   const onAssignmentClick = (assignment: TAssignment) => {
-    navigate(`/assignments/${assignment.id}`);
+    navigate(`/classes/${id}/${assignment.id}`);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -28,7 +33,7 @@ export const ClassDetailPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
-      {isPending && <Loader />}
+      {isPending || isAssigmentsPending && <Loader />}
       <Header title={classItem?.name as string} linkTo="/classes" />
       <div className=" px-4 mt-12">
         <div
@@ -83,7 +88,7 @@ export const ClassDetailPage = () => {
           </div>
         </div>
 
-        {assignmentsData.map((assignment, index) => (
+        {assignmentsData?.map((assignment, index) => (
           <Assignment
             key={index}
             assignment={assignment}

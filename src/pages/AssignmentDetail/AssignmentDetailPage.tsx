@@ -1,35 +1,37 @@
 import { useParams } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
-import { assignmentsData, classesData, TAssignment } from "../../utils/mock";
-import { useState } from 'react';
+import { TAssignment } from "../../utils/mock";
+import { useEffect, useState } from 'react';
+import { useGetRoomsAssignments } from '../../hooks';
+import { Loader } from '../../components';
 
 export const AssignmentDetailPage = () => {
-  const { classId, id } = useParams();
-  const classItem = classesData.find((item) => item.name === classId);
-  const assignment = assignmentsData.find(
-    (item) => item.id === id
-  ) as TAssignment;
-
   const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [isProgressOpen, setIsProgressOpen] = useState(true);
+  const [assignmentData, setAssignmentData] = useState<TAssignment | null>(null);
+  const { classId, assignmentId } = useParams();
+  const { data, isPending } = useGetRoomsAssignments(classId as string);
+  
+  useEffect(() => {
+    const assignment = data?.find((item) => item.id === assignmentId);
+    if (assignment) {
+      setAssignmentData(assignment);
+    }
+  }, [data, isPending, assignmentId]);
+
 
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
       <Header
-        title={assignment?.title ?? ""}
-        linkTo={`/classes/${classItem?.id}`}
+        title={assignmentData?.title ?? "Assignment"}
+        linkTo={`/classes/${classId}`}
       />
-      <div className="min-h-screen bg-[#FBF9F9] p-4">
-        <div className="flex items-center mb-4">
-          <button className="text-gray-500 mr-2">{'<'}</button>
-          <h1 className="text-lg font-bold flex-1 text-center">HM Assignment</h1>
-          <button className="text-gray-500">{'⋮'}</button>
-        </div>
-
+      {isPending && <Loader />}
+      <div className="min-h-screen bg-[#FBF9F9] p-4 mt-20">
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <h2 className="text-lg font-semibold">English Speaking Practice</h2>
           <p className="text-sm text-gray-500">Topic: "My Daily Routine"</p>
-          <p className="text-sm text-gray-500 mt-2">Deadline: 15/08/2024</p>
+          <p className="text-sm text-gray-500 mt-2">{assignmentData?.deadline ? assignmentData?.deadline : "No deadline"}</p>
 
           <div className="flex items-center justify-between mt-4">
             <div className="text-sm font-medium">15/24 ready</div>
@@ -51,15 +53,7 @@ export const AssignmentDetailPage = () => {
           </div>
           {isSummaryOpen && (
             <p className="text-sm text-gray-700">
-              Out of 24 students, 15 completed the task. Overall, students are
-              making progress with spoken English, but performance varied. A few
-              students displayed strong fluency and well-organized responses,
-              while many need to work on pronunciation and consistent grammar,
-              especially with the present simple tense. Common issues included
-              using incorrect verb forms (e.g., "I go" vs. "I goes"), sentence
-              structure, and hesitation while speaking. Practicing full sentences
-              and reviewing present simple rules would be beneficial for the
-              group.
+              {assignmentData?.description}
             </p>
           )}
         </div>

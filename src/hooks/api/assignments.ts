@@ -13,3 +13,27 @@ export const useGetStudentAssignments = (studentEmail: string) => {
     ...rest,
   };
 };
+
+export const useGetRoomsAssignments = (classRoomId: string) => {
+  const { ...rest } = useQuery({
+    queryFn: () => AssignmentApiService.getAssigmentsByClassRoomId(classRoomId),
+    queryKey: ["assignments"],
+    staleTime: 5_000_000,
+  });
+
+  return {
+    ...rest,
+  };
+}
+
+export const useGetAssigmentById = (id: string) => {
+  const { ...rest } = useQuery({
+    queryFn: () => AssignmentApiService.getAssignmentById(id),
+    queryKey: ["assignments"],
+    staleTime: 5_000_000,
+  });
+
+  return {
+    ...rest,
+  };
+}
