@@ -6,13 +6,12 @@ import { Loader } from '../ui/loader/Loader';
 interface CreateClassModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onRefreshClasses: () => void;
 }
 
-const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose }) => {
+const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, onRefreshClasses }) => {
   const [className, setClassName] = useState<string>("");
   const { user } = useContext(UserContext);
-
-  console.log(user, "user");
 
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -26,14 +25,20 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose }) 
 
   const handleCreateClass = () => {
     if (!className) return;
-    mutate({
-      name: className,
-      teacherId: user?.id as string,
-    });
-    if (!isPending) {
-      onClose();
-    }
-  }
+  
+    mutate(
+      {
+        name: className,
+        teacherId: user?.id as string,
+      },
+      {
+        onSuccess: () => {
+          onRefreshClasses();
+          onClose();
+        },
+      }
+    );
+  };
 
 
   if (!isOpen) return null;

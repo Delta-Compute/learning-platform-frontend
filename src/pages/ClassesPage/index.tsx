@@ -11,11 +11,16 @@ import { useNavigate } from "react-router-dom";
 const ClassesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
-  const { data, isPending } = useGetClassesTeacherId(user?.id as string);  
+  const { data, isPending, refetch } = useGetClassesTeacherId(user?.id as string);  
   const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const onRefreshClasses = () => {
+    refetch();
+  }
+
 
   return (
     <>
@@ -54,7 +59,7 @@ const ClassesPage = () => {
           ))}
         </div>
       </div>
-      <CreateClassModal isOpen={isModalOpen} onClose={closeModal} />
+      <CreateClassModal isOpen={isModalOpen} onClose={closeModal} onRefreshClasses={onRefreshClasses} />
       <BottomNavigation />
     </>
   );

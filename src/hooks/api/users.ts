@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { User } from "../../types";
 
 export const useUpdateUser = () => {
-  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
   return useMutation({
     mutationFn: (data: {
       id: string;
@@ -21,13 +21,10 @@ export const useUpdateUser = () => {
         data.lastName,
         data.role
       ),
-    onSuccess: (data: User) => {
-      if (data.role) {
-      navigate("/join-your-school");
-      }
-
-      if (data.firstName && data.lastName) {
-        navigate("/classes");
+    onSuccess: async (data) => {
+      const user: User | null = await UsersApiService.getUser(data.id as string);
+      if (user) {
+        setUser(user);
       }
     },
     onError: (error) => {
@@ -58,8 +55,8 @@ export const useLogin = () => {
       const user: User | null = await UsersApiService.getUser(data.id);
       if (user) {
         await setUser(user);
-        if (!user.role) {
-          navigate("/user-type-selection");
+        if (user.role === "student") {
+          navigate("/student-assignments");
         } else {
           navigate("/classes");
         }

@@ -26,8 +26,18 @@ const JoinYourSchoolPage = () => {
       id: user?.id as string,
       firstName: firstName,
       lastName: lastName,
-    });
-    navigate("/classes")
+    }, 
+  {
+    onSuccess: () => {
+      if (user?.role === "teacher") {
+        navigate('/classes');
+      }
+
+      if (user?.role === "student") {
+        navigate('/student-assignments');
+      }
+    }
+  });
   };
 
   const options = ["School 1", "School 2", "School 3"];
@@ -41,7 +51,7 @@ const JoinYourSchoolPage = () => {
           </Link>
         </div>
         <h2 className="text-center text-[24px] font-semibold text-[#524344]">
-          Join your school
+          Join your { user?.role === "teacher" ? "school" : "class" }
         </h2>
       </div>
 
@@ -54,8 +64,8 @@ const JoinYourSchoolPage = () => {
             <div className="relative" ref={dropdownRef}>
               <div
                 className={`w-full border-[0.5px] rounded-[40px] p-[16px] bg-white cursor-pointer flex justify-between items-center ${selected === "School: choose"
-                    ? "text-gray-400"
-                    : "text-gray-700"
+                  ? "text-gray-400"
+                  : "text-gray-700"
                   }`}
                 tabIndex={0}
                 onClick={() => setIsOpen((prev) => !prev)}

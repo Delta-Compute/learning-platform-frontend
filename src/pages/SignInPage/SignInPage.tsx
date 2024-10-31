@@ -2,12 +2,13 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import Input from "../../components/ui/input/Input";
 import { Button, Loader } from "../../components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
 import { AuthProvider } from "../api/types";
 import { useLogin } from "../../hooks/api/users"
+import UserContext from '../../context/UserContext';
 
 
 type UserInfo = {
@@ -20,8 +21,9 @@ export const SignInPage = () => {
     email: "",
     password: "",
   });
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const { isPending, mutate, isSuccess } = useLogin();
+  const { isPending, mutate } = useLogin();
 
   const onSocialAuth = (provider: AuthProvider) => {
     alert(`Sign in with ${provider} is not implemented yet`);
@@ -35,11 +37,11 @@ export const SignInPage = () => {
     await mutate({
       email: userInfo.email,
       password: userInfo.password,
+    }, {
+      onSuccess: () => {
+        navigate(user?.role === "student" ? "/student-assignments" : "/classes");
+      }
     });
-
-    if(isSuccess) {
-      navigate("/user-type-selection");
-    }
   };
 
   return (

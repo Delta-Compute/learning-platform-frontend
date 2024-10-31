@@ -1,20 +1,30 @@
 import UserType from "../../assets/icons/user-type-icon.svg";
-import { Button } from "../../components";
+import { Button, Loader } from "../../components";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 import { useUpdateUser } from "../../hooks/api/users";
+import { useNavigate } from 'react-router-dom';
 
 export const UserTypeSelectionPage = () => {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const { mutate } = useUpdateUser();
+  const { mutate, isPending } = useUpdateUser();
 
   const onUserTypeSelected = async (userType: string) => {
-    await mutate({ id: user?.id as string, role: userType });
+    await mutate(
+      { id: user?.id as string, role: userType },
+      {
+        onSuccess: () => {
+          navigate('/join-your-school');
+        },
+      }
+    );
   };
 
   return (
-    <div className="flex flex-col items-center h-screen justify-center  py-12">
+    <div className="flex flex-col items-center h-screen justify-center py-12">
+      {isPending && <Loader />}
       <img src={`${UserType}`} alt="microphone" className="mt-24" />
       <div className="flex flex-col items-center justify-center mt-auto">
         <Button
