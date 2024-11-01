@@ -7,22 +7,78 @@ import Assignment from "../../components/ui/assignment/Assisgnment";
 import { Class } from '../../types/class';
 import { useEffect, useState } from 'react';
 import { useClassById } from '../../hooks/api/classes';
-import { Loader } from '../../components';
+import { Loader, Modal } from '../../components';
 import { useGetRoomsAssignments } from '../../hooks';
 import { IAssignment } from '../../types';
 
+import { useMutation } from "@tanstack/react-query";
+import { ClassRoomApiService } from "../../services";
+
+import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
+
+import * as pdfjsLib from "pdfjs-dist";
+import mammoth from "mammoth";
+
 export const ClassDetailPage = () => {
   const [classItem, setClassItem] = useState<Class | null>(null);
+  const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useClassById(id as string);
   const { data: assignmentsData, isPending: isAssigmentsPending } = useGetRoomsAssignments(id as string);
 
-  
-
   const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/classes/${id}/${assignment.id}`);
     window.scrollTo(0, 0);
+  };
+
+  const { mutate: updateClassRoomMutation } = useMutation({
+    mutationFn: (data: { classRoomId: string, learningPlan: string }) => {
+      return ClassRoomApiService.updateClassRoom(data.classRoomId, data.learningPlan);
+    },
+    onSuccess: () => {
+      setIsUploadPlanModal(false);
+    }
+  });
+
+  const handlePdfUpload = async (file: File) => {
+    const pdfData = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+  
+    let extractedText = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      extractedText += textContent.items.map((item: any) => item.str).join(' ') + '\n';
+    }
+    return extractedText;
+  };
+  
+  const handleDocxUpload = async (file: File) => {
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer });
+    return result.value;
+  };
+
+  const uploadLearningPlanHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    let learningPlan = "";
+
+    if (file.type === "application/pdf") {
+      learningPlan = await handlePdfUpload(file);
+    } else if (
+      file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      file.type === "application/msword"
+    ) {
+      learningPlan = await handleDocxUpload(file);
+    } else {
+      console.error("Unsupported file type");
+      return;
+    }
+
+    updateClassRoomMutation({ classRoomId: id as string, learningPlan, });
   };
 
   useEffect(() => {
@@ -40,10 +96,17 @@ export const ClassDetailPage = () => {
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2`}
         >
           <div className="bg-gray-200 h-24 rounded-[8px]"></div>
-          <h2 className="text-[14px] text-[#362D2E] font-light">
-            Upload class learning plan to have more suitable task
-            recommendations
-          </h2>
+          <div className="flex items-center gap-[10px] justify-between">
+            <p className="text-[14px] text-gray-500 font-light">
+              Upload class learning plan to have more suitable task
+              recommendations
+            </p>
+
+            <button className="w-[34px]" onClick={() => setIsUploadPlanModal(true)}>
+              <img src={`${UploadPlanIcon}`} />
+            </button>
+          </div>
+
           <div className="flex justify-between">
             <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
               {classItem?.studentEmails?.length} Students
@@ -96,6 +159,32 @@ export const ClassDetailPage = () => {
           />
         ))}
       </div>
+
+      <Modal
+        isOpen={isUploadPlanModalOpen}
+        onClose={() => setIsUploadPlanModal(false)}
+      >
+        <div className="flex flex-col gap-[20px] items-center py-[20px]">
+          <p className="text-center text-[18px]">Upload learning plan</p>
+
+          <div className="relative">
+            <input
+              type="file"
+              className="relative py-[14px] z-[2] opacity-0"
+              accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword"
+              onChange={uploadLearningPlanHandler}
+            />
+            <div 
+              className="
+                flex absolute top-0 left-0 z-[0] items-center w-full justify-center 
+                gap-[10px] bg-gray-300 py-[14px] rounded-[8px]
+              "
+            >
+              Upload <img src={`${UploadPlanIcon}`} />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

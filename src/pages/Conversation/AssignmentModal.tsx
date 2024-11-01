@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { Assignment } from "../../types";
-
 import { addAssignment } from "../../services";
 
 import { useMutation } from "@tanstack/react-query";
@@ -30,7 +28,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   const { data: classRooms } = useGetClassesTeacherId(user?.id as string);
 
   const { mutate: createAssignmentMutation, isPending: isCreateAssignmentPending } = useMutation({
-    mutationFn: (assignment: Assignment) => addAssignment(assignment.classRoomId, assignment.description),
+    mutationFn: (assignment: { classRoomId: string, description: string }) => addAssignment(assignment.classRoomId, assignment.description),
     onSuccess: () => {
       onClose();
     },

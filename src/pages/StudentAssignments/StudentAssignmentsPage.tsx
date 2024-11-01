@@ -20,11 +20,11 @@ export const StudentAssignmentsPage = () => {
 
   return (
     <div>
-      <div className="fixed top-0 w-full py-[20px] border-b-[1px]">
+      <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
         <h2 className="text-center text-[20px]">Student assignments</h2>
       </div>
 
-      <div className="pt-[100px]">
+      <div className="pt-[100px] pb-[150px]">
         <div>
           {!isPending ? (
             <ul className="py-[20px] flex flex-col items-center gap-[8px]">

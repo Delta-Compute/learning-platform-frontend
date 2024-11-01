@@ -63,24 +63,29 @@ export const ConversationPage = () => {
 
   const { mutate: updateStudentStatus } = useMutation({
     mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {
-      console.log(data)
-      return ClassRoomApiService.updateClassRoomProgress(data.classRoomId, data.assignmentId, data.studentEmail, data.feedback)
-    },
-    onSuccess: (data) => {
-        console.log("added", data);
+      return ClassRoomApiService.updateClassRoomProgress(
+        data.classRoomId, 
+        data.assignmentId, 
+        data.studentEmail, 
+        data.feedback
+      )
     },
   });
 
   useEffect(() => {
     if (user && user.role === "student" && assignments) {
-      for (const item of assignments) {
+      assignments.map(item => {
         if (item.id ===  params.assignmentId) {
           setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
           setClassRoomId(item.classRoomId);
         }
-      }
+      });
     }
   }, [user, assignments]);
+
+  useEffect(() => {
+    console.log(classRoomId);
+  }, [classRoomId]);
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
