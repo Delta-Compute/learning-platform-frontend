@@ -7,6 +7,7 @@ export const useGetStudentAssignments = (studentEmail: string) => {
     queryFn: () => AssignmentApiService.getAssignmentsForStudent(studentEmail),
     queryKey: ["assignments"],
     staleTime: 5_000_000,
+    enabled: !!studentEmail,
   });
 
   return {

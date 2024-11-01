@@ -13,6 +13,8 @@ export const teacherInstructions = (teacherName) => {
   - Topic: The topic of the assignment, max count of words is 6
   - Description: The description of the assignment
 
+  When you are creating this fields, you must to mark them with **Title**, **Topic** and **Description** accordingly.
+
   IMPORTANT: Whe you are ready to make an assignment, you must include code-name **CREATING ASSIGNMENT** at the start of text of assignment.
   `
 }

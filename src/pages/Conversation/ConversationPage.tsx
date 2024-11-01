@@ -33,7 +33,11 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const ConversationPage = () => {
+interface ConversationPageProps {
+  role: "teacher" | "student";
+};
+
+export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { user } = useContext(UserContext);
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
@@ -49,24 +53,21 @@ export const ConversationPage = () => {
     })
   );
 
-  const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
-
-  useEffect(() => {
-    if (user?.email && user?.role === "student") {
-      refetch();
-    }
-  }, [user]); 
-
+  const { data: assignments } = useGetStudentAssignments(user?.email ?? "");
   const [studentInstructions, setStudentInstructions] = useState("");
 
   const [classRoomId, setClassRoomId] = useState("");
 
+  const [assignmentTopic, setAssignmentTopic] = useState("");
+  const [assignmentTitle, setAssignmentTitle] = useState("");
+  const [assignmentDescription, setAssignmentDescription] = useState("");
+
   const { mutate: updateStudentStatus } = useMutation({
     mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {
       return ClassRoomApiService.updateClassRoomProgress(
-        data.classRoomId, 
-        data.assignmentId, 
-        data.studentEmail, 
+        data.classRoomId,
+        data.assignmentId,
+        data.studentEmail,
         data.feedback
       )
     },
@@ -75,7 +76,7 @@ export const ConversationPage = () => {
   useEffect(() => {
     if (user && user.role === "student" && assignments) {
       assignments.map(item => {
-        if (item.id ===  params.assignmentId) {
+        if (item.id === params.assignmentId) {
           // setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
           setStudentInstructions(studentInstructionsForAI(user.firstName, item.description));
           setClassRoomId(item.classRoomId);
@@ -84,15 +85,15 @@ export const ConversationPage = () => {
     }
   }, [user, assignments]);
 
-  useEffect(() => {
-    console.log(classRoomId);
-  }, [classRoomId]);
-
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
+
+  console.log(items, 'items');
+
+
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -239,9 +240,30 @@ export const ConversationPage = () => {
       }
 
       setItems(items);
-    });
 
-    setItems(client.conversation.getItems());
+      const transcript = items[items.length - 1]?.formatted?.transcript;
+      const assignmentText = transcript ? transcript.split("**CREATING ASSIGNMENT**")[1] : "";
+      const lines = assignmentText.trim().split("\n");
+
+      const title = lines.find(line => line.startsWith("**Title**"))?.replace("**Title**: ", "").trim();
+      const topic = lines.find(line => line.startsWith("**Topic**"))?.replace("**Topic**: ", "").trim();
+      const description = lines.find(line => line.startsWith("**Description**"))?.replace("**Description**: ", "").trim();
+
+      if (title) {
+        setAssignmentTitle(title);
+      }
+
+      if (topic) {
+        setAssignmentTopic(topic);
+      }
+
+      if (description) {
+        setAssignmentDescription(description);
+      }
+    });
+    const items = client.conversation.getItems();
+    setItems(items);
+
 
     return () => {
       client.reset();
@@ -286,10 +308,9 @@ export const ConversationPage = () => {
                     <div className="max-w-[95%] flex gap-[8px]">
                       <div>
                         <div
-                          className={`${
-                            items.at(-1)?.role === "user" &&
+                          className={`${items.at(-1)?.role === "user" &&
                             "justify-end"
-                          } flex`}
+                            } flex`}
                         >
                           <span className="border-[1px] bg-gray-200 px-[10px] py-[6px] rounded-[8px]">
                             {(items.at(-1)?.role === "assistant" ? "AI" : items.at(-1)?.role) || items.at(-1)?.type}
@@ -299,8 +320,8 @@ export const ConversationPage = () => {
                       <div className="bg-gray-300 rounded-[10px] p-[8px]">
                         {items.at(-1)?.type ===
                           "function_call_output" && (
-                          <div>{items.at(-1)?.formatted.output}</div>
-                        )}
+                            <div>{items.at(-1)?.formatted.output}</div>
+                          )}
                         {!!items.at(-1)?.formatted.tool && (
                           <div>
                             {items.at(-1)?.formatted?.tool?.name}(
@@ -314,7 +335,7 @@ export const ConversationPage = () => {
                                 (items.at(-1)?.formatted.audio?.length
                                   ? "(awaiting transcript)"
                                   : items.at(-1)?.formatted.text ||
-                                    "(item sent)")}
+                                  "(item sent)")}
                             </div>
                           )}
                         {!items.at(-1)?.formatted.tool &&
@@ -334,7 +355,7 @@ export const ConversationPage = () => {
           </div>
         ) : (
           <div className="h-screen flex items-center justify-center">
-            <SpeakingDots isConnected={isConnected}/>
+            <SpeakingDots isConnected={isConnected} />
           </div>
         )}
       </div>
@@ -399,7 +420,7 @@ export const ConversationPage = () => {
               onTouchStart={connectConversation}
               onTouchEnd={disconnectConversation}
             />
-          )}  
+          )}
         </div>
 
         {items.length > 0 && !isConnected && user?.role === "teacher" && (
@@ -438,9 +459,12 @@ export const ConversationPage = () => {
         )}
       </div>
 
-      {user?.role !== "student" && <AssignmentModal 
-        isOpen={isAssignmentModalOpen} 
-        onClose={() => setIsAssignmentModalOpen(false)} 
+      {user?.role !== "student" && <AssignmentModal
+        assignmentTopic={assignmentTopic}
+        assignmentTitle={assignmentTitle}
+        assignmentDescription={assignmentDescription}
+        isOpen={isAssignmentModalOpen}
+        onClose={() => setIsAssignmentModalOpen(false)}
         assignment={items.at(-1)?.formatted.transcript ?? "Not enough information"}
       />}
     </div>

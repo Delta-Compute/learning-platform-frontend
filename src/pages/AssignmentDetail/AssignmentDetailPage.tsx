@@ -12,7 +12,11 @@ export const AssignmentDetailPage = () => {
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
   const { classId, assignmentId } = useParams();
   const { data, isPending } = useGetRoomsAssignments(classId as string);
-  const { data: classRoomProgress, isPending: classRoomProgressPending } = useGetClassRoomProgress(classId as string, assignmentId as string);
+  const { data: classRoomProgress, isPending: classRoomProgressPending, refetch, isRefetching } = useGetClassRoomProgress(classId as string, assignmentId as string);
+
+  useEffect(() => {
+    refetch();
+  }, [assignmentId]);
 
   useEffect(() => {
     const assignment = data?.find((item) => item.id === assignmentId);
@@ -30,7 +34,7 @@ export const AssignmentDetailPage = () => {
         title={assignmentData?.title ?? "Assignment"}
         linkTo={`/classes/${classId}`}
       />
-      {isPending || classRoomProgressPending && <Loader />}
+      {isPending || classRoomProgressPending || isRefetching && <Loader />}
       <div className="min-h-screen bg-[#FBF9F9] p-4 mt-20">
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <h2 className="text-lg font-semibold">English Speaking Practice</h2>

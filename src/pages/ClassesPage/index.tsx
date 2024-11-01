@@ -6,7 +6,7 @@ import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 import { Class } from '../../types/class';
 import { Loader } from '../../components';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const ClassesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,16 +36,20 @@ const ClassesPage = () => {
         <div className="space-y-4 pb-[60px]">
           {data?.map((classItem: Class, index) => (
             <div
-              onClick={() => navigate(`/classes/${classItem.id}`, { state: { classItem } })}
               key={index}
               className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data.length - 1 ? 'mb-[60px]' : ''
                 }`}
             >
               <div className="bg-gray-200 h-24 rounded-[8px]"></div>
 
-              <h2 className="text-[24px] text-[#362D2E] font-semibold">
+              <h2 
+                onClick={() => navigate(`/classes/${classItem.id}`, { state: { classItem } })} 
+                className="text-[24px] text-[#362D2E] font-semibold"
+              >
                 {classItem.name}
               </h2>
+
+              <Link to={`/teacher-tasks/${classItem.id}`}>Speak with ai</Link>
 
               <div className="flex justify-between">
                 <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">

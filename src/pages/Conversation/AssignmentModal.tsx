@@ -14,12 +14,18 @@ interface AssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   assignment: string;
+  assignmentTopic: string;
+  assignmentDescription: string;
+  assignmentTitle: string;
 }
 
 export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   isOpen,
   onClose,
   assignment,
+  assignmentTopic,
+  assignmentDescription,
+  assignmentTitle,
 }) => {
   const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
   const [isRoomsDropdownOpen, setIsRoomsDropdownOpen] = useState(false);
@@ -28,7 +34,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   const { data: classRooms } = useGetClassesTeacherId(user?.id as string);
 
   const { mutate: createAssignmentMutation, isPending: isCreateAssignmentPending } = useMutation({
-    mutationFn: (assignment: { classRoomId: string, description: string }) => addAssignment(assignment.classRoomId, assignment.description),
+    mutationFn: (assignment: { classRoomId: string, description: string, title: string, topic: string }) => addAssignment(assignment.classRoomId, assignment.description),
     onSuccess: () => {
       onClose();
     },
@@ -84,7 +90,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
         </div>
 
         <label className="mt-[10px]">Assignment details</label>
-        <div className="p-[10px] border-[1px] rounded-[8px]">{assignment}</div>
+        <div className="p-[10px] border-[1px] rounded-[8px]">{}</div>
 
         <p className="flex gap-[10px] mt-[10px]">
           <span className="text-gray-500">Deadline:</span>
@@ -97,7 +103,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
             disabled={isCreateAssignmentPending}
             onClick={() => {
               if (selectedClassRoom) {
-                createAssignmentMutation({ classRoomId: selectedClassRoom.id, description: assignment });
+                createAssignmentMutation({ classRoomId: selectedClassRoom.id, description: assignmentDescription, title: assignmentTitle, topic: assignmentTopic });
               }
             }}
           >
