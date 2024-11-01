@@ -33,9 +33,9 @@ const App = () => {
         />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/ai-conversation" element={<ConversationPage />} />
         {<Route path="/student-assignments" element={<StudentAssignmentsPage />} />}
-        {<Route path="/student-assignments/:assignmentId" element={<div><ConversationPage /></div>} />}
+        {<Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />}
+        {<Route path="/teacher-tasks/:classRoomId" element={<ConversationPage role="teacher" />} />}
         {<Route path="/teacher-tasks" element={<LearningPlanPage />} />}
         <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
         {<Route path="/classes" element={<ClassesPage />} />}

@@ -33,7 +33,11 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const ConversationPage = () => {
+interface ConversationPageProps {
+  role: "teacher" | "student";
+};
+
+export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { user } = useContext(UserContext);
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
@@ -49,14 +53,7 @@ export const ConversationPage = () => {
     })
   );
 
-  const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
-
-  useEffect(() => {
-    if (user?.email && user?.role === "student") {
-      refetch();
-    }
-  }, [user]);
-
+  const { data: assignments } = useGetStudentAssignments(user?.email ?? "");
   const [studentInstructions, setStudentInstructions] = useState("");
 
   const [classRoomId, setClassRoomId] = useState("");
@@ -87,10 +84,6 @@ export const ConversationPage = () => {
       });
     }
   }, [user, assignments]);
-
-  // useEffect(() => {
-  //   console.log(classRoomId);
-  // }, [classRoomId]);
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
