@@ -13,7 +13,6 @@ import UserContext from '../../context/UserContext';
 interface AssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  assignment: string;
   assignmentTopic: string;
   assignmentDescription: string;
   assignmentTitle: string;
@@ -22,7 +21,6 @@ interface AssignmentModalProps {
 export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   isOpen,
   onClose,
-  assignment,
   assignmentTopic,
   assignmentDescription,
   assignmentTitle,
@@ -90,10 +88,22 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
         </div>
 
         <label className="mt-[10px]">Assignment details</label>
-        <div className="p-[10px] border-[1px] rounded-[8px]">{}</div>
+        <div className="p-[10px] border-[1px] rounded-[8px]">
+          <div className='font-semibold'>{assignmentTitle}</div>
+          <div>
+            <div>
+              <span className='font-semibold'>Topic: </span>
+              <span>{assignmentTopic}</span>
+            </div>
+          </div>
+          <div>
+            <span className='font-semibold'>Description: </span>
+            <span>{assignmentDescription}</span>
+          </div>
+        </div>
 
         <p className="flex gap-[10px] mt-[10px]">
-          <span className="text-gray-500">Deadline:</span>
+          <span className="text-gray-500">Deadline: </span>
           <span>12/12/1222</span>
         </p>
 

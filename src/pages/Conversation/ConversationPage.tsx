@@ -248,24 +248,26 @@ export const ConversationPage = () => {
 
       setItems(items);
 
-      const transcript = items[items.length - 1]?.formatted?.transcript;
-      const assignmentText = transcript ? transcript.split("**CREATING ASSIGNMENT**")[1] : "";
-      const lines = assignmentText.trim().split("\n");
+      if (items[items.length - 1]?.formatted?.transcript?.includes("**CREATING ASSIGNMENT**")) {
+        const transcript = items[items.length - 1]?.formatted?.transcript;
+        const assignmentText = transcript ? transcript.split("**CREATING ASSIGNMENT**")[1] : "";
+        const lines = assignmentText.trim().split("\n");
 
-      const title = lines.find(line => line.startsWith("**Title**"))?.replace("**Title**: ", "").trim();
-      const topic = lines.find(line => line.startsWith("**Topic**"))?.replace("**Topic**: ", "").trim();
-      const description = lines.find(line => line.startsWith("**Description**"))?.replace("**Description**: ", "").trim();
+        const title = lines.find(line => line.startsWith("**Title**"))?.replace("**Title**: ", "").trim();
+        const topic = lines.find(line => line.startsWith("**Topic**"))?.replace("**Topic**: ", "").trim();
+        const description = lines.find(line => line.startsWith("**Description**"))?.replace("**Description**: ", "").trim();
 
-      if (title) {
-        setAssignmentTitle(title);
-      }
+        if (title) {
+          setAssignmentTitle(title);
+        }
 
-      if (topic) {
-        setAssignmentTopic(topic);
-      }
+        if (topic) {
+          setAssignmentTopic(topic);
+        }
 
-      if (description) {
-        setAssignmentDescription(description);
+        if (description) {
+          setAssignmentDescription(description);
+        }
       }
     });
     const items = client.conversation.getItems();
@@ -472,7 +474,6 @@ export const ConversationPage = () => {
         assignmentDescription={assignmentDescription}
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
-        assignment={items.at(-1)?.formatted.transcript ?? "Not enough information"}
       />}
     </div>
   );

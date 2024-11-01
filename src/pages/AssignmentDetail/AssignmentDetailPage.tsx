@@ -37,8 +37,8 @@ export const AssignmentDetailPage = () => {
       {isPending || classRoomProgressPending || isRefetching && <Loader />}
       <div className="min-h-screen bg-[#FBF9F9] p-4 mt-20">
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
-          <h2 className="text-lg font-semibold">English Speaking Practice</h2>
-          <p className="text-sm text-gray-500">Topic: "My Daily Routine"</p>
+          <h2 className="text-lg font-semibold">{assignmentData?.title}</h2>
+          <p className="text-sm text-gray-500">Topic: {assignmentData?.topic}</p>
           <p className="text-sm text-gray-500 mt-2">{assignmentData?.deadline ? assignmentData?.deadline : "No deadline"}</p>
 
           <div className="flex items-center justify-between mt-4">
