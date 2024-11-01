@@ -1,7 +1,9 @@
 interface IStudentProgress {
-  studentEmail: string;
+  email: string;
   progress: boolean;
   feedback: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface IClassRoomProgress {

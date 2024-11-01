@@ -13,9 +13,6 @@ export const AssignmentDetailPage = () => {
   const { classId, assignmentId } = useParams();
   const { data, isPending } = useGetRoomsAssignments(classId as string);
   const { data: classRoomProgress, isPending: classRoomProgressPending } = useGetClassRoomProgress(classId as string, assignmentId as string);
-  
-  console.log(classRoomProgress, 'classRoomProgress');
-  
 
   useEffect(() => {
     const assignment = data?.find((item) => item.id === assignmentId);
@@ -24,10 +21,8 @@ export const AssignmentDetailPage = () => {
     }
   }, [data, isPending, assignmentId]);
 
-
   const studentsDone = classRoomProgress?.studentsProgress.filter(student => student.progress).length;
   const allStudents = classRoomProgress?.studentsProgress.length;
-
 
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
@@ -64,7 +59,7 @@ export const AssignmentDetailPage = () => {
             className={`transition-all duration-300 ease-in-out overflow-hidden ${isSummaryOpen ? 'max-h-40' : 'max-h-0'
               }`}
           >
-            <p className="text-sm text-gray-700 mt-2">
+            <p className="text-sm text-gray-700">
               {assignmentData?.description}
             </p>
           </div>
@@ -84,23 +79,22 @@ export const AssignmentDetailPage = () => {
             className={`transition-all duration-300 ease-in-out overflow-hidden ${isProgressOpen ? 'max-h-40' : 'max-h-0'
               }`}
           >
-                <ul className="mt-2">
-      {classRoomProgress?.studentsProgress.map((student, index) => (
-        <li key={index} className="flex items-center justify-between mb-2">
-          <div className="flex items-center">
-            <div
-              className={`w-3 h-3 rounded-full mr-2 ${
-                student.progress ? 'bg-green-500' : 'bg-gray-400'
-              }`}
-            ></div>
-            <span className="text-sm">{student.studentEmail}</span>
-          </div>
-          <span className="text-sm text-gray-500">
-            {student.progress ? 'Completed' : 'Not Completed'}
-          </span>
-        </li>
-      ))}
-    </ul>
+            <ul className="mt-2">
+              {classRoomProgress?.studentsProgress.map((student, index) => (
+                <li key={index} className="flex items-center justify-between mb-2">
+                  <div className="flex items-center">
+                    <div
+                      className={`w-3 h-3 rounded-full mr-2 ${student.progress ? 'bg-green-500' : 'bg-gray-400'
+                        }`}
+                    ></div>
+                    <span className="text-sm">{student.firstName}</span>
+                  </div>
+                  <span className="text-sm text-gray-500">
+                    {student.progress ? 'Completed' : 'Not Completed'}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

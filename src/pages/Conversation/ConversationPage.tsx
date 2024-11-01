@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { teacherInstructions } from "../../utils/conversation_config.js";
+import { teacherInstructions, studentInstructionsForAI } from "../../utils/conversation_config.js";
 
 import UserContext from "../../context/UserContext";
 
@@ -55,7 +55,7 @@ export const ConversationPage = () => {
     if (user?.email && user?.role === "student") {
       refetch();
     }
-  }, [user]);
+  }, [user]); 
 
   const [studentInstructions, setStudentInstructions] = useState("");
 
@@ -75,7 +75,8 @@ export const ConversationPage = () => {
     if (user && user.role === "student" && assignments) {
       for (const item of assignments) {
         if (item.id ===  params.assignmentId) {
-          setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
+          // setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
+          setStudentInstructions(studentInstructionsForAI(user.firstName, item.description));
           setClassRoomId(item.classRoomId);
         }
       }
@@ -183,7 +184,7 @@ export const ConversationPage = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: user?.role === "teacher" ? teacherInstructions : studentInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" ? teacherInstructions(user.firstName) : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
