@@ -48,7 +48,7 @@ const ClassesPage = () => {
                 {classItem.name}
               </h2>
 
-              <Link to={`/teacher-tasks/${classItem.id}`}>Speak with ai</Link>
+              <Link to={`/teacher-tasks/${classItem.id}`} className="text-blue-400">Speak with ai</Link>
 
               <div className="flex justify-between">
                 <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">

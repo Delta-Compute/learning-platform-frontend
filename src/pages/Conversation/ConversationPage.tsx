@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState, useContext } from "react";
+import React, { useEffect, useRef, useCallback, useState, useContext } from "react";
 
 import { RealtimeClient } from "@openai/realtime-api-beta";
 // @ts-ignore
@@ -292,7 +292,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       <div className="pt-[100px]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
-            <Link to={user?.role === "teacher" ? "/teacher-tasks" : "/student-assignments"}>
+            <Link to={role === "teacher" ? "/classes" : "/student-assignments"}>
               <img src={`${LeftArrowIcon}`} />
             </Link>
           </div>
