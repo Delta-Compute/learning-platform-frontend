@@ -44,6 +44,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
     }
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -112,7 +113,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
                   onClick={() => {
                     setIsRoomsDropdownOpen(false);
                     setSelectedClassRoom({
-                      id: classRoom.id ?? '',
+                      id: classRoom.id ?? "",
                       name: classRoom.name,
                     });
                   }}

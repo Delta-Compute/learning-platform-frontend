@@ -73,7 +73,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         data.classRoomId,
         data.assignmentId,
         data.studentEmail,
-        data.feedback
+        data.feedback,
       )
     },
     onSuccess: () => {
@@ -101,9 +101,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
-
-  console.log(items, 'items');
-
 
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);

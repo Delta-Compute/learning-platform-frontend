@@ -53,19 +53,20 @@ export const updateClassRoom = async (classRoomId: string, learningPlan: string)
 };
 
 export const updateClassRoomProgress = async (classRoomId: string, assignmentId: string, studentEmail: string, feedback: string) => {
-  try {
-    const response = await apiClient.patch<IClassRoomProgress[]>(
-      `/class-room-progress/update-progress/${classRoomId}/${assignmentId}`,
-      {
-        studentEmail,
-        feedback,
-      }
-    );
+  // try {
+  //   const response = await apiClient.patch<IClassRoomProgress[]>(
+  //     `/class-room-progress/update-progress/${classRoomId}/${assignmentId}`,
+  //     {
+  //       studentEmail,
+  //       feedback,
+  //     }
+  //   );
 
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
+  //   console.log(response);
+  // } catch (error) {
+  //   console.log(error);
+  // }
+  console.log(classRoomId);
 };
 
 export const getClassRoomProgress = async (classRoomId: string, assignmentId: string): Promise<IClassRoomProgress | null> => {

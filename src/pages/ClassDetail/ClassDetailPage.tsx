@@ -28,7 +28,7 @@ export const ClassDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useClassById(id as string);
-  const { data: assignmentsData, isPending: isAssigmentsPending } = useGetRoomsAssignments(id as string);
+  const { data: assignmentsData, isPending: isAssigmentsPending, refetch: assignmentsRefetch, isRefetching: isAssignmentsRefetching } = useGetRoomsAssignments(id as string);
 
   const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/classes/${id}/${assignment.id}`);
@@ -101,9 +101,15 @@ export const ClassDetailPage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (id) {
+      assignmentsRefetch();
+    }
+  }, [id]);
+
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
-      {isPending || isAssigmentsPending && <Loader />}
+      {isPending || isAssigmentsPending || isAssignmentsRefetching && <Loader />}
       <Header title={classItem?.name as string} linkTo="/classes" />
       <div className=" px-4 mt-12">
         <div
@@ -165,7 +171,7 @@ export const ClassDetailPage = () => {
           </div>
         </div>
 
-        {assignmentsData?.map((assignment, index) => (
+        {!isAssignmentsRefetching && assignmentsData?.map((assignment, index) => (
           <Assignment
             key={index}
             assignment={assignment}

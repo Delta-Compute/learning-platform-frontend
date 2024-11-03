@@ -2,6 +2,8 @@ import { FC } from "react";
 import menuIcon from "../../../assets/icons/menu-icon.svg";
 import { IAssignment } from '../../../types';
 
+import { format } from "date-fns";
+
 type Props = {
   assignment: IAssignment;
   onClick: (assignment: IAssignment) => void;
@@ -21,10 +23,7 @@ const Assignment: FC<Props> = ({ assignment, onClick }) => {
       </div>
       <div className="flex items-center mt-2">
         <h3 className="text-[14px] text-placholderText font-light">
-          Deadline: {assignment.deadline ? `${assignment.deadline}`: "No deadline"}
-        </h3>
-        <h3 className="text-[14px] text-[rgba(25, 28, 30, 1)] font-light ml-2">
-          {assignment.deadline}
+          Deadline: {format(new Date(assignment.deadline), "dd/MM/yyyy HH:mm")}
         </h3>
       </div>
       <div className="flex items-center justify-between">
@@ -32,8 +31,7 @@ const Assignment: FC<Props> = ({ assignment, onClick }) => {
           15/24 ready
         </div> */}
         <div className="border-[0.5px] border-[#E9ECEF] text-gray-700 rounded-full text-[16px] px-4  py-2 mt-4">
-          {assignment.status ? `${assignment.status}` : "No status"}
-          {/* {assignment.deadline < new Date().getTime() || assignment.students is all completed ? "In progress" : "Completed"} */}
+          {assignment.deadline >= new Date().getTime() ? "In progress" : "Completed"}
         </div>
       </div>
     </div>

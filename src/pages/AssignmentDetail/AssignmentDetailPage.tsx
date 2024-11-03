@@ -6,6 +6,8 @@ import { Loader } from '../../components';
 import { IAssignment } from '../../types';
 import { useGetClassRoomProgress } from '../../hooks/api/class-room-progres';
 
+import { format } from "date-fns";
+
 export const AssignmentDetailPage = () => {
   // const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [isProgressOpen, setIsProgressOpen] = useState(true);
@@ -42,13 +44,21 @@ export const AssignmentDetailPage = () => {
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <h2 className="text-lg font-semibold">{assignmentData?.title}</h2>
           <p className="text-sm text-gray-500">Topic: {assignmentData?.topic}</p>
-          <p className="text-sm text-gray-500 mt-2">{assignmentData?.deadline ? assignmentData?.deadline : "No deadline"}</p>
+          <p className="text-sm text-gray-500 mt-2">{assignmentData && format(new Date(assignmentData.deadline), "dd/MM/yyyy HH:mm")}</p>
 
           <div className="flex items-center justify-between mt-4">
             <div className="text-sm font-medium">{studentsDone}/{allStudents} ready</div>
-            <div className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
-              In Progress
-            </div>
+            {assignmentData && (
+              <div 
+                className={`
+                  px-3 py-1 
+                  ${assignmentData.deadline >= new Date().getTime() ? "bg-blue-100 text-blue-700" : "bg-green-200 text-green-800"} 
+                  text-sm rounded-full
+                `}
+              >
+                {assignmentData.deadline >= new Date().getTime() ? "In Progress" : "Completed"}
+              </div>
+            )}
           </div>
         </div>
 
