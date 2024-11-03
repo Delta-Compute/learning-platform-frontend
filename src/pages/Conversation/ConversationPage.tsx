@@ -39,6 +39,9 @@ interface ConversationPageProps {
 
 export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { user } = useContext(UserContext);
+
+  console.log(user, 'user');
+  
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
@@ -190,6 +193,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const client = clientRef.current;
 
     // Set instructions
+    console.log(user?.firstName, 'user?.firstName');
+    console.log(teacherInstructions(user?.firstName), 'teacherInstructions(user?.firstName)');
+    
+    
     client.updateSession({ instructions: user?.role === "teacher" ? teacherInstructions(user.firstName) : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
@@ -270,7 +277,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     return () => {
       client.reset();
     };
-  }, []);
+  }, [user?.id]);
 
   return (
     <div

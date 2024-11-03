@@ -28,6 +28,9 @@ export const AssignmentDetailPage = () => {
   const studentsDone = classRoomProgress?.studentsProgress.filter(student => student.progress).length;
   const allStudents = classRoomProgress?.studentsProgress.length;
 
+  console.log(assignmentData, 'assignmentData');
+  
+
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
       <Header

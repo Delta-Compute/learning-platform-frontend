@@ -52,7 +52,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
             className="
               relative bg-[#FFF] w-[94%] sm:min-w-[500px]
               rounded-[20px] sm:max-w-[70%] md:max-w-[60%]
-              overflow-y-auto no-scrollbar p-[12px] sm:p-[20px]
+              no-scrollbar p-[12px] sm:p-[20px]
             "
           >
             {children}

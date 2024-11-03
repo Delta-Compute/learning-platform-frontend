@@ -5,6 +5,6 @@ export interface IAssignment {
   title: string;
   topic: string;
   deadline: string;
-  createdAt?: string;
+  createdAt?: number;
   status?: string;
 }
