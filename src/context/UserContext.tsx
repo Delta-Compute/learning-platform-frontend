@@ -6,6 +6,9 @@ import { useGetUser } from '../hooks';
 interface UserContext {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  userId: string | null;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  accessToken: string;
 }
 
 const UserContext = React.createContext({} as UserContext);
@@ -16,20 +19,17 @@ export const UserContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string>('');
+  const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || '');
 
-  const { data } = useGetUser(userId || '');
+  const { data } = useGetUser(userId);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
+    if (accessToken) {
       try {
-        const decoded = jwtDecode(token);
+        const decoded = jwtDecode(accessToken);
         if (decoded?.sub) {
           setUserId(decoded.sub);
-          console.log("Decoded token:", decoded);
-          
         } else {
           console.error("Token does not contain 'sub'");
         }
@@ -37,7 +37,7 @@ export const UserContextProvider = ({
         console.error("Failed to decode JWT token:", error);
       }
     }
-  }, []);
+  }, [accessToken, userId]);
 
   useEffect(() => {
     if (data) {
@@ -50,6 +50,9 @@ export const UserContextProvider = ({
       value={{
         user,
         setUser,
+        userId,
+        setAccessToken,
+        accessToken,
       }}
     >
       {children}
