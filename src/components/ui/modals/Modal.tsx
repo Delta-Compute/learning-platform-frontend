@@ -46,7 +46,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     <>
       {isOpen && (
         <div
-          className="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-[rgba(0,0,0,0.7)] z-[1000]">
+          className="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-[#00143480] z-[1000]">
           <div
             ref={modalRef}
             className="

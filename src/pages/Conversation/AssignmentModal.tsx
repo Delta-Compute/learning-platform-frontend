@@ -12,6 +12,8 @@ import DropdownChevronUp from "../../assets/icons/dropdown-chevron-up.svg";
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 
+import { toast } from "react-hot-toast";
+
 interface AssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -66,7 +68,11 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
     mutationFn: (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number }) => addAssignment(assignment.classRoomId, assignment.description, assignment.topic, assignment.title, assignment.deadline),
     onSuccess: () => {
       onClose();
+      toast.success("Assignment successfully created");
     },
+    onError: () => {
+      toast.error("Something went wrong");
+    }
   });
 
   useEffect(() => {

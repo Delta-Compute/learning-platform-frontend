@@ -15,9 +15,9 @@ export const LearningPlanPage = () => {
             Task based on learning plan
           </p>
 
-          {/* {teacherConversations.length > 0 ? (
+          {/* 
             <ul className="py-[20px] flex flex-col items-center gap-[8px]">
-              {teacherConversations.map((task) => (
+              {generatedAssignments.map((task) => (
                 <li
                   key={task.id}
                   className="w-[400px] py-[8px] rounded-[20px] text-center bg-gray-200"
@@ -26,11 +26,7 @@ export const LearningPlanPage = () => {
                 </li>
               ))}
             </ul>
-          ) : (
-            <div className="py-[30px]">
-              <p className="text-center text-gray-500">No tasks yet</p>
-            </div>
-          )} */}
+           */}
         </div>
         <div
           className="

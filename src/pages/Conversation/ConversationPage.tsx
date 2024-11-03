@@ -24,6 +24,8 @@ import { useGetStudentAssignments } from "../../hooks/index.ts";
 import { useMutation } from "@tanstack/react-query";
 import { ClassRoomApiService } from "../../services/index.ts";
 
+import { toast } from "react-hot-toast";
+
 interface RealtimeEvent {
   time: string;
   source: "client" | "server";
@@ -74,6 +76,12 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         data.feedback
       )
     },
+    onSuccess: () => {
+      toast.success("Successfully updated");
+    },
+    onError: () => {
+      toast.success("Something went wrong");
+    }
   });
 
   useEffect(() => {

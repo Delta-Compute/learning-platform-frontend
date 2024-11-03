@@ -21,7 +21,6 @@ const ClassesPage = () => {
     refetch();
   }
 
-
   return (
     <>
       <div className="p-4">

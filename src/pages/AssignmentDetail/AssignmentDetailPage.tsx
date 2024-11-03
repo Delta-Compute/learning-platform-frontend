@@ -7,7 +7,7 @@ import { IAssignment } from '../../types';
 import { useGetClassRoomProgress } from '../../hooks/api/class-room-progres';
 
 export const AssignmentDetailPage = () => {
-  const [isSummaryOpen, setIsSummaryOpen] = useState(true);
+  // const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [isProgressOpen, setIsProgressOpen] = useState(true);
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
   const { classId, assignmentId } = useParams();
@@ -52,7 +52,7 @@ export const AssignmentDetailPage = () => {
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-md mb-4">
+        {/* <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <div
             className="flex items-center justify-between cursor-pointer"
             onClick={() => setIsSummaryOpen(!isSummaryOpen)}
@@ -70,7 +70,7 @@ export const AssignmentDetailPage = () => {
               {assignmentData?.description}
             </p>
           </div>
-        </div>
+        </div> */}
 
         <div className="bg-white p-4 rounded-lg shadow-md">
           <div
@@ -91,8 +91,9 @@ export const AssignmentDetailPage = () => {
                 <li key={index} className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
                     <div
-                      className={`w-3 h-3 rounded-full mr-2 ${student.progress ? 'bg-green-500' : 'bg-gray-400'
-                        }`}
+                      className={
+                        `w-3 h-3 rounded-full mr-2 ${student.progress ? 'bg-green-500' : 'bg-gray-400'}`
+                      }
                     ></div>
                     <span className="text-sm">{student.firstName}</span>
                   </div>

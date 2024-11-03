@@ -23,6 +23,7 @@ export const useUpdateUser = () => {
       ),
     onSuccess: async (data) => {
       const user: User | null = await UsersApiService.getUser(data.id as string);
+      
       if (user) {
         setUser(user);
       }

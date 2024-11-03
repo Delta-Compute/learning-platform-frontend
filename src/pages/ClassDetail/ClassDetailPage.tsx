@@ -17,7 +17,10 @@ import { ClassRoomApiService } from "../../services";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 
 import * as pdfjsLib from "pdfjs-dist";
+
 import mammoth from "mammoth";
+
+import { toast } from "react-hot-toast";
 
 export const ClassDetailPage = () => {
   const [classItem, setClassItem] = useState<Class | null>(null);
@@ -38,45 +41,56 @@ export const ClassDetailPage = () => {
     },
     onSuccess: () => {
       setIsUploadPlanModal(false);
-    }
+      toast.success("Successfully upload");
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
   });
 
-  const handlePdfUpload = async (file: File) => {
+  const pdfUploadHandler = async (file: File) => {
     const pdfData = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
   
-    let extractedText = '';
+    let extractedText = "";
+
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
       const textContent = await page.getTextContent();
-      extractedText += textContent.items.map((item: any) => item.str).join(' ') + '\n';
+
+      extractedText += textContent.items.map((item: any) => item.str).join(" ") + "\n";
     }
+
     return extractedText;
   };
   
-  const handleDocxUpload = async (file: File) => {
+  const docxUploadHandler = async (file: File) => {
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
+
     return result.value;
   };
 
   const uploadLearningPlanHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    
     if (!file) return;
 
     let learningPlan = "";
 
     if (file.type === "application/pdf") {
-      learningPlan = await handlePdfUpload(file);
+      learningPlan = await pdfUploadHandler(file);
     } else if (
       file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       file.type === "application/msword"
     ) {
-      learningPlan = await handleDocxUpload(file);
+      learningPlan = await docxUploadHandler(file);
     } else {
       console.error("Unsupported file type");
       return;
     }
+
+    // console.log(learningPlan);
 
     updateClassRoomMutation({ classRoomId: id as string, learningPlan, });
   };
@@ -164,10 +178,10 @@ export const ClassDetailPage = () => {
         isOpen={isUploadPlanModalOpen}
         onClose={() => setIsUploadPlanModal(false)}
       >
-        <div className="flex flex-col gap-[20px] items-center py-[20px]">
-          <p className="text-center text-[18px]">Upload learning plan</p>
+        <div className="flex flex-col gap-[20px] items-center">
+          <p className="text-center text-[18px] font-semibold">Upload learning plan</p>
 
-          <div className="relative">
+          <div className="relative mt-[20px]">
             <input
               type="file"
               className="relative py-[14px] z-[2] opacity-0"
