@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { teacherInstructions, studentInstructionsForAI } from "../../utils/conversation_config.js";
+import { teacherInstructions, studentInstructionsForAI } from "../../utils/conversation_config.ts";
 
 import UserContext from "../../context/UserContext";
 
