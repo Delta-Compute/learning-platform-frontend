@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 
 export const LearningPlanPage = () => {
+  const params = useParams();
+
   return (
     <div>
       <div className="fixed top-0 w-full py-[20px] border-b-[1px]">
@@ -36,7 +38,7 @@ export const LearningPlanPage = () => {
         >
           <p className="text-[15px] font-semibold">Let's create a new task</p>
           <Link
-            to="/ai-conversation"
+            to={`/teacher-tasks/${params.classRoomId}`}
             className="border-[1px] p-[10px] rounded-[50%] mt-[20px]"
           >
             <img src={`${MicrophoneIcon}`} alt="microphone" />
