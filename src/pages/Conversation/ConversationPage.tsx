@@ -23,6 +23,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ClassRoomApiService } from "../../services/index.ts";
 
 import { toast } from "react-hot-toast";
+import { longFormatters } from 'date-fns';
 
 interface RealtimeEvent {
   time: string;
@@ -42,6 +43,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   console.log(user, 'user');
   
+  
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
@@ -56,7 +58,12 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     })
   );
 
-  const { data: assignments } = useGetStudentAssignments(user?.email ?? "");
+  const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
+
+  useEffect(() => {
+    refetch();
+  }, [user?.email, refetch]);
+  
   const [studentInstructions, setStudentInstructions] = useState("");
 
   const [classRoomId, setClassRoomId] = useState("");
@@ -64,6 +71,11 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [assignmentTopic, setAssignmentTopic] = useState("");
   const [assignmentTitle, setAssignmentTitle] = useState("");
   const [assignmentDescription, setAssignmentDescription] = useState("");
+
+  const [studentsFeedback, setStudentsFeedback] = useState("");
+
+  console.log(studentsFeedback, 'studentsFeedback');
+  
 
   const { mutate: updateStudentStatus } = useMutation({
     mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {
@@ -85,14 +97,14 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   useEffect(() => {
     if (user && user.role === "student" && assignments) {
       assignments.map(item => {
-        if (item.id === params.assignmentId) {
+        if (item.id === params.assignmentId && user.firstName) {
           // setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
           setStudentInstructions(studentInstructionsForAI(user.firstName, item.description));
           setClassRoomId(item.classRoomId);
         }
       });
     }
-  }, [user, assignments]);
+  }, [user?.role, user?.id, assignments, user, params.assignmentId]);
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -195,12 +207,9 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
-    // Set instructions
-    console.log(user?.firstName, 'user?.firstName');
-    console.log(teacherInstructions(user?.firstName), 'teacherInstructions(user?.firstName)');
+    // Set instructions    
     
-    
-    client.updateSession({ instructions: user?.role === "teacher" ? teacherInstructions(user.firstName) : studentInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName) : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -251,7 +260,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
       setItems(items);
 
-      if (items[items.length - 1]?.formatted?.transcript?.includes("**CREATING ASSIGNMENT**")) {
+      if (items[items.length - 1]?.formatted?.transcript?.includes("**CREATING ASSIGNMENT**") && user?.role === "teacher") {
         const transcript = items[items.length - 1]?.formatted?.transcript;
         const assignmentText = transcript ? transcript.split("**CREATING ASSIGNMENT**")[1] : "";
         const lines = assignmentText.trim().split("\n");
@@ -272,6 +281,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           setAssignmentDescription(description);
         }
       }
+
+      if (items[items.length - 1]?.formatted?.transcript?.includes("**Feedback**") && user?.role === "student") {
+        const transcript = items[items.length - 1]?.formatted?.transcript;
+        const feedbackText = transcript ? transcript.split("**Feedback**: ")[1] : "";
+
+        if (feedbackText) {
+          setStudentsFeedback(feedbackText);
+        }
+      }
     });
     const items = client.conversation.getItems();
     setItems(items);
@@ -280,7 +298,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     return () => {
       client.reset();
     };
-  }, [user?.id]);
+  }, [user?.id, params.assignmentId, user?.role, user?.firstName, studentInstructions]);
 
   return (
     <div
@@ -461,7 +479,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   classRoomId: classRoomId,
                   assignmentId: params.assignmentId ?? "",
                   studentEmail: user.email,
-                  feedback: items.at(-1)?.formatted.transcript ?? "",
+                  feedback: studentsFeedback ?? "",
                 });
               }}
             >

@@ -55,7 +55,6 @@ export const useLogin = () => {
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
       const user: User | null = await UsersApiService.getUser(data.id);
-      console.log("userData", user);
       
       setUser(user);
       

@@ -29,7 +29,6 @@ export const ClassDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useClassById(id as string);
-  console.log(data, 'classRoomData');
   
   const { data: assignmentsData, isPending: isAssigmentsPending, refetch: assignmentsRefetch, isRefetching: isAssignmentsRefetching } = useGetRoomsAssignments(id as string);
 
@@ -40,7 +39,7 @@ export const ClassDetailPage = () => {
 
   useEffect(() => {
     assignmentsRefetch();
-  }, [id]);
+  }, [id, assignmentsRefetch]);
 
   const { mutate: updateClassRoomMutation } = useMutation({
     mutationFn: (data: { classRoomId: string, learningPlan: string }) => {

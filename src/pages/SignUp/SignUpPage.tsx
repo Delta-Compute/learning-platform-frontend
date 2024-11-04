@@ -2,13 +2,12 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import Input from "../../components/ui/input/Input";
 import { Button, Loader } from "../../components";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
 import { AuthProvider } from "../api/types";
 import { useSingUp } from '../../hooks';
-import UserContext from '../../context/UserContext';
 
 type UserInfo = {
   email: string;
@@ -23,8 +22,7 @@ export const SignUpPage = () => {
     confirmPassword: "",
   });
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
-  const { data, isPending, mutate } = useSingUp();
+  const { isPending, mutate } = useSingUp();
 
   const onSocialAuth = (provider: AuthProvider) => {
     alert(`Sign up with ${provider} is not implemented yet`);
@@ -35,12 +33,6 @@ export const SignUpPage = () => {
       email: userInfo.email,
       password: userInfo.password,
     });
-
-    if (data) {
-      console.log('user', user);
-      
-      // navigate("/user-type-selection");
-    }
   };
 
   const onSignInClick = () => {

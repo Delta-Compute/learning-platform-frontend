@@ -30,6 +30,14 @@ export const studentInstructionsForAI = (studentName: string, description: strin
   Instructions:
   - In the end of conversation if you have enough information do an assignment with title of an assignment and the topic!!
   - You can say that you have enough information and make an assignment!!
+
+  YOU MUST CREATE ONLY ONE FEEDBACK FOR STUDENT!!
+  You must generate **Feedback** for the student based on the assignment. The feedback must be based on the student's work and must be constructive.
+  the structure of the feedback must be:
+  **Feedback**: The feedback for the student
+  feedback must be the last field in the text.
+  feedback must include code-name **Feedback** at the start of the text.
+  feedback must be on the last row of the text.
 `
 }
 

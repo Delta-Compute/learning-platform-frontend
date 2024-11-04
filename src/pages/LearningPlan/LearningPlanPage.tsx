@@ -37,8 +37,6 @@ export const LearningPlanPage = () => {
     }
   }, [data, classRoomId]);
 
-  console.log(generatedAssignments, 'generatedAssignments');
-
   useEffect(() => {
     const fetchTopics = async () => {
       if (classRoomItem && classRoomItem.learningPlan) {
@@ -71,10 +69,11 @@ export const LearningPlanPage = () => {
         max_tokens: 150,
       });
 
-      const topics = response.choices[0].message.content.trim();
-
-      console.log(topics, 'topics');
-
+      let topics = '';
+      
+      if (response.choices[0].message.content) {
+        topics = response.choices[0].message.content.trim();
+      }
 
       const topicArray = topics.trim().split("===");
 
@@ -87,9 +86,6 @@ export const LearningPlanPage = () => {
       });
       return topicsArrayChecked.map((topic: string) => {
         const lines = topic.trim().split("\n");
-
-        console.log(lines, 'lines');
-
 
         const title = lines.find(line => line.startsWith("**Title**"))?.replace("**Title**: ", "").trim();
         const topicL = lines.find(line => line.startsWith("**Topic**"))?.replace("**Topic**: ", "").trim();
@@ -145,7 +141,7 @@ export const LearningPlanPage = () => {
         >
           <p className="text-[15px] font-semibold">Let's create a new task</p>
           <Link
-            to={`/teacher-tasks/${params.classRoomId}`}
+            to={`/teacher-tasks/${classRoomId}`}
             className="border-[1px] p-[10px] rounded-[50%] mt-[20px]"
           >
             <img src={`${MicrophoneIcon}`} alt="microphone" />
