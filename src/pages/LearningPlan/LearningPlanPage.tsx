@@ -145,7 +145,7 @@ export const LearningPlanPage = () => {
         >
           <p className="text-[15px] font-semibold">Let's create a new task</p>
           <Link
-            to="/ai-conversation"
+            to={`/teacher-tasks/${params.classRoomId}`}
             className="border-[1px] p-[10px] rounded-[50%] mt-[20px]"
           >
             <img src={`${MicrophoneIcon}`} alt="microphone" />

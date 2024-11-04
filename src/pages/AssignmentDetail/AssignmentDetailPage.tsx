@@ -31,7 +31,6 @@ export const AssignmentDetailPage = () => {
   const allStudents = classRoomProgress?.studentsProgress.length;
 
   console.log(assignmentData, 'assignmentData');
-  
 
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
@@ -93,23 +92,28 @@ export const AssignmentDetailPage = () => {
             </button>
           </div>
           <div
-            className={`transition-all duration-300 ease-in-out overflow-hidden ${isProgressOpen ? 'max-h-40' : 'max-h-0'
+            className={`transition-all duration-300 ease-in-out overflow-hidden ${isProgressOpen ? "" : "max-h-0"
               }`}
           >
             <ul className="mt-2">
               {classRoomProgress?.studentsProgress.map((student, index) => (
-                <li key={index} className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <div
-                      className={
-                        `w-3 h-3 rounded-full mr-2 ${student.progress ? 'bg-green-500' : 'bg-gray-400'}`
-                      }
-                    ></div>
-                    <span className="text-sm">{student.firstName}</span>
+                <li key={index} className="flex flex-col mb-2">
+                  <div className="flex justify-between">
+                    <div className="flex items-center">
+                      <div
+                        className={
+                          `w-3 h-3 rounded-full mr-2 ${student.progress ? 'bg-green-500' : 'bg-gray-400'}`
+                        }
+                      ></div>
+                      <span className="text-sm capitalize">{student.firstName} {student.lastName[0]}.</span>
+                    </div>
+                    <span className="text-sm text-gray-500">
+                      {student.progress ? <span className="text-green-500">Completed</span> : <span className="text-blue-400">In progress</span>}
+                    </span>
                   </div>
-                  <span className="text-sm text-gray-500">
-                    {student.progress ? 'Completed' : 'Not Completed'}
-                  </span>
+                  <div className="px-[10px] pt-[10px] text-[14px]">
+                    Feedback: <span className="text-gray-500">{student.feedback}</span>
+                  </div>
                 </li>
               ))}
             </ul>
