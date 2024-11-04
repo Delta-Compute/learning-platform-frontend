@@ -21,6 +21,7 @@ export const UserContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState<string>('');
   const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || '');
+  console.log("userState", user);
 
   const { data } = useGetUser(userId);
 

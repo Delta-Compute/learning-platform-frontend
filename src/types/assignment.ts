@@ -4,7 +4,7 @@ export interface IAssignment {
   classRoomId: string;
   topic: string;
   title: string;
-  deadline: string;
+  deadline: number;
   createdAt?: number;
   status?: string;
 }

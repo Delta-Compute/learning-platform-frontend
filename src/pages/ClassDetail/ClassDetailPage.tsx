@@ -35,6 +35,10 @@ export const ClassDetailPage = () => {
     window.scrollTo(0, 0);
   };
 
+  useEffect(() => {
+    assignmentsRefetch();
+  }, [id]);
+
   const { mutate: updateClassRoomMutation } = useMutation({
     mutationFn: (data: { classRoomId: string, learningPlan: string }) => {
       return ClassRoomApiService.updateClassRoom(data.classRoomId, data.learningPlan);
@@ -51,7 +55,7 @@ export const ClassDetailPage = () => {
   const pdfUploadHandler = async (file: File) => {
     const pdfData = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-  
+
     let extractedText = "";
 
     for (let i = 1; i <= pdf.numPages; i++) {
@@ -63,7 +67,7 @@ export const ClassDetailPage = () => {
 
     return extractedText;
   };
-  
+
   const docxUploadHandler = async (file: File) => {
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
@@ -73,7 +77,7 @@ export const ClassDetailPage = () => {
 
   const uploadLearningPlanHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    
+
     if (!file) return;
 
     let learningPlan = "";
@@ -194,7 +198,7 @@ export const ClassDetailPage = () => {
               accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword"
               onChange={uploadLearningPlanHandler}
             />
-            <div 
+            <div
               className="
                 flex absolute top-0 left-0 z-[0] items-center w-full justify-center 
                 gap-[10px] bg-gray-300 py-[14px] rounded-[8px]

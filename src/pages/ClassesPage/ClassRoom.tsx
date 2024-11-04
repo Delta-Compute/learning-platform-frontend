@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import plus from '../../assets/icons/plus-icon.svg';
 import BottomNavigation from '../../components/Navigation';
 import CreateClassModal from '../../components/CreateClassModal';
@@ -11,7 +11,7 @@ import { useNavigate, Link } from "react-router-dom";
 const ClassesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
-  const { data, isPending, refetch } = useGetClassesTeacherId(user?.id as string);  
+  const { data, isPending, refetch, isRefetching } = useGetClassesTeacherId(user?.id as string);  
   const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
@@ -21,10 +21,14 @@ const ClassesPage = () => {
     refetch();
   }
 
+  useEffect(() => {
+    refetch();
+  }, [user?.id])
+
   return (
     <>
       <div className="p-4">
-        {isPending && <Loader />}
+        {isPending || isRefetching && <Loader />}
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-semibold text-[#524344]">Classes</h1>
           <button className="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center">
