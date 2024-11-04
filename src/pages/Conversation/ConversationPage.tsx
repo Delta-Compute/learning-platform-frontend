@@ -459,12 +459,13 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             <Button
               className="border-main-red w-full px-[22px] bg-main-red text-white"
               onClick={() => {
-                updateStudentStatus({
-                  classRoomId: classRoomId,
-                  assignmentId: params.assignmentId ?? "",
-                  studentEmail: user.email,
-                  feedback: items.at(-1)?.formatted.transcript ?? "",
-                });
+                // updateStudentStatus({
+                //   classRoomId: classRoomId,
+                //   assignmentId: params.assignmentId ?? "",
+                //   studentEmail: user.email,
+                //   feedback: items.at(-1)?.formatted.transcript ?? "",
+                // });
+                console.log(items.at(-1)?.formatted.transcript);
               }}
             >
               Save and Send to teacher

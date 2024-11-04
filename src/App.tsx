@@ -39,6 +39,7 @@ const App = () => {
         {<Route path="/student-assignments" element={<StudentAssignmentsPage />} />}
         {<Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />}
         {<Route path="/teacher-tasks/:classRoomId" element={<ConversationPage role="teacher" />} />}
+        {<Route path="/teacher-tasks" element={<ConversationPage role="teacher" />} />}
         {<Route path="/class-room-assignments/:classRoomId" element={<LearningPlanPage />} />}
         <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
         {<Route path="/classes" element={<ClassesPage />} />}
