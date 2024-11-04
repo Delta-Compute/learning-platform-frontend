@@ -16,7 +16,8 @@ import { ClassRoomApiService } from "../../services";
 
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 
-import * as pdfjsLib from "pdfjs-dist";
+// import * as pdfjsLib from "pdfjs-dist";
+import pdfToText from "react-pdftotext";
 
 import mammoth from "mammoth";
 
@@ -48,20 +49,18 @@ export const ClassDetailPage = () => {
     },
   });
 
-  const pdfUploadHandler = async (file: File) => {
-    const pdfData = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-  
-    let extractedText = "";
+  const pdfUploadHandler = async (event) => {
+    const file = event.target.files[0];
 
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const textContent = await page.getTextContent();
+    try {
+      const data = await pdfToText(file);
 
-      extractedText += textContent.items.map((item: any) => item.str).join(" ") + "\n";
+      return data;
+    } catch(error) {
+      console.log(error);
     }
 
-    return extractedText;
+    return "";
   };
   
   const docxUploadHandler = async (file: File) => {
@@ -79,7 +78,7 @@ export const ClassDetailPage = () => {
     let learningPlan = "";
 
     if (file.type === "application/pdf") {
-      learningPlan = await pdfUploadHandler(file);
+      learningPlan = await pdfUploadHandler(event);
     } else if (
       file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       file.type === "application/msword"

@@ -7,7 +7,7 @@ export default {
         // components
         "main-red": "#CC1316",
         "light-gray": "#E9ECEF",
-        "bg-color": "rgba(251, 249, 249, 1)",        "bg-color": "rgba(251, 249, 249, 1)",
+        "bg-color": "rgba(251, 249, 249, 1)",
         // text
         "dark-blue": "#001434",
 

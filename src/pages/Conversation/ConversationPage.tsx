@@ -15,12 +15,10 @@ import { Link, useParams } from "react-router-dom";
 import { Button } from "../../components";
 import { AssignmentModal } from "./AssignmentModal";
 
-import PauseIcon from "../../assets/icons/pause-icon.svg";
-import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
-import { useGetStudentAssignments } from "../../hooks/index.ts";
+import { useGetStudentAssignments } from "../../hooks";
 import { useMutation } from "@tanstack/react-query";
 import { ClassRoomApiService } from "../../services/index.ts";
 
@@ -403,8 +401,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
                   : "",
                 backgroundImage: isConnected
-                  ? `url(${PauseIcon})`
-                  : `url(${MicrophoneIcon})`,
+                  ? `url(/pause-icon.svg)`
+                  : `url(/microphone-light.svg)`,
                 backgroundPositionX: "center",
                 backgroundPositionY: "center",
                 backgroundRepeat: "no-repeat",
@@ -425,8 +423,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   ? "5px 4px 20px 0px rgba(0, 0, 0, 0.13)"
                   : "",
                 backgroundImage: isConnected
-                  ? `url(${PauseIcon})`
-                  : `url(${MicrophoneIcon})`,
+                  ? `url(/pause-icon.svg)`
+                  : `url(/microphone-light.svg)`,
                 backgroundPositionX: "center",
                 backgroundPositionY: "center",
                 backgroundRepeat: "no-repeat",
@@ -459,13 +457,12 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             <Button
               className="border-main-red w-full px-[22px] bg-main-red text-white"
               onClick={() => {
-                // updateStudentStatus({
-                //   classRoomId: classRoomId,
-                //   assignmentId: params.assignmentId ?? "",
-                //   studentEmail: user.email,
-                //   feedback: items.at(-1)?.formatted.transcript ?? "",
-                // });
-                console.log(items.at(-1)?.formatted.transcript);
+                updateStudentStatus({
+                  classRoomId: classRoomId,
+                  assignmentId: params.assignmentId ?? "",
+                  studentEmail: user.email,
+                  feedback: items.at(-1)?.formatted.transcript ?? "",
+                });
               }}
             >
               Save and Send to teacher
