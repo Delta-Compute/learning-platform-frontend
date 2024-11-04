@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -10,8 +10,12 @@ import { Loader } from "../../components";
 
 export const StudentAssignmentsPage = () => {
   const { user } = useContext(UserContext);
-  const { data: assignments, isPending: isAssignmentsPending } = useGetStudentAssignments(user?.email ?? "");
+  const { data: assignments, isPending: isAssignmentsPending, refetch, isRefetching } = useGetStudentAssignments(user?.email ?? "");
 
+  useEffect(() => {
+    refetch();
+  }, [refetch, user?.id, user]);
+  
   return (
     <div>
       {isAssignmentsPending && <Loader />}
