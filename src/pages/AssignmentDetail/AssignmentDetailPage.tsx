@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { useEffect, useState } from 'react';
-import { useGetRoomsAssignments, use, useUpdateAssignment } from '../../hooks';
+import { useGetRoomsAssignments, useUpdateAssignment } from '../../hooks';
 import { Loader } from '../../components';
 import { IAssignment } from '../../types';
 import { useGetClassRoomProgress } from '../../hooks/api/class-room-progres';
@@ -17,7 +17,7 @@ export const AssignmentDetailPage = () => {
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const { classRoomId, assignmentId } = useParams();
-  const { mutate, isPending: isUpdateAssignmentPending } = useUpdateAssignment(assignmentId as string, summary as string);
+  const { mutate, isPending: isUpdateAssignmentPending } = useUpdateAssignment();
   const { data, isPending, isRefetching: isAssignmentRefetching, refetch: refetchAssignment } = useGetRoomsAssignments(classRoomId as string);
   const { data: classRoomProgress, isPending: classRoomProgressPending, refetch, isRefetching } = useGetClassRoomProgress(classRoomId as string, assignmentId as string);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
