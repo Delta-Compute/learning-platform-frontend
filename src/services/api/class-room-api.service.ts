@@ -36,13 +36,17 @@ export const getAllClassRooms = async (): Promise<ClassRoom[] | null> => {
 };
 
 // update class room fields 
-export const updateClassRoom = async (classRoomId: string, learningPlan: string, studentEmails?: string) => {
+export const updateClassRoom = async (
+  classRoomId: string, 
+  classRoom : { learningPlan?: string, studentEmails?: string, summary?: string }
+) => {
   try {
     const response = await apiClient.patch<ClassRoom[]>(
       `/class-room/${classRoomId}`,
       {
-        learningPlan,
-        studentEmails,
+        learningPlan: classRoom.learningPlan,
+        studentEmails: classRoom.studentEmails,
+        summary: classRoom.summary,
       }
     );
 

@@ -122,7 +122,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     //   instructions: "Please communicate in English only.",
     //   voice: "en-US",
     // };
-    client.updateSession({ turn_detection: { type: "server_vad" } });
+    client.updateSession({ turn_detection: { type: "server_vad" }, voice: "echo" });
 
     // Set state variables
     startTimeRef.current = new Date().toISOString();
@@ -136,13 +136,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
     // Connect to realtime API
     await client.connect();
-
-    // client.sendUserMessageContent([
-    //   {
-    //     type: `input_text`,
-    //     text: `create an assignment for learning basics of react js`,
-    //   },
-    // ]);
 
     if (client.getTurnDetectionType() === "server_vad") {
       await wavRecorder.record((data: any) =>
@@ -200,8 +193,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
-    // Set instructions    
-    
+    // Set instructions
     client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName) : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });

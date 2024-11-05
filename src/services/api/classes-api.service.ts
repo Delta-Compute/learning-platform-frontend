@@ -1,4 +1,5 @@
 import { Class } from "../../types/class.ts";
+
 import { apiClient } from "../../vars/axios-var.ts";
 
 export const getClassesTeacherId = async (teacherId: string): Promise<Class[]> => {

@@ -35,7 +35,7 @@ export const getAssignmentsForStudent = async (email: string): Promise<IAssignme
   return null;
 };
 
-export const getAssigmentsByClassRoomId = async (classRoomId: string): Promise<IAssignment[] | null> => {
+export const getAssignmentsByClassRoomId = async (classRoomId: string): Promise<IAssignment[] | null> => {
   try {
     const response = await apiClient.get<IAssignment[] | null>(
       `/assignments/${classRoomId}`,
@@ -49,7 +49,7 @@ export const getAssigmentsByClassRoomId = async (classRoomId: string): Promise<I
   }
 
   return null;
-}
+};
 
 export const getAssignmentById = async (id: string): Promise<IAssignment | null> => {
   try {
@@ -65,28 +65,25 @@ export const getAssignmentById = async (id: string): Promise<IAssignment | null>
   }
 
   return null;
-}
+};
 
-export const updateAssignment = async (assignmentId: string, summary: string) => {
+export const updateAssignment = async (id: string, assignment: { summary?: string }) => {
   try {
-    const response = await apiClient.patch(
-      `/assignments/${assignmentId}`,
+    await apiClient.patch(
+      `/assignments/${id}`,
       {
-        summary,
+        summary: assignment.summary,
       }
     );
-    console.log(response, 'summary updated successfully');
-    
-    return response.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const AssignmentApiService = {
   addAssignment,
   getAssignmentsForStudent,
-  getAssigmentsByClassRoomId,
+  getAssignmentsByClassRoomId,
   getAssignmentById,
   updateAssignment,
 };

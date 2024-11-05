@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useGetRoomsAssignments, useUpdateAssignment } from '../../hooks';
 import { Loader } from '../../components';
 import { IAssignment } from '../../types';
-import { useGetClassRoomProgress } from '../../hooks/api/class-room-progres';
+import { useGetClassRoomProgress } from '../../hooks/api/class-room-progress.ts';
 
 import { format } from "date-fns";
 import { instructionsForSummary } from '../../utils';
@@ -17,7 +17,7 @@ export const AssignmentDetailPage = () => {
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const { classRoomId, assignmentId } = useParams();
-  const { mutate, isPending: isUpdateAssignmentPending } = useUpdateAssignment();
+  const { mutate: updateAssignmentMutation, isPending: isUpdateAssignmentPending } = useUpdateAssignment();
   const { data, isPending, isRefetching: isAssignmentRefetching, refetch: refetchAssignment } = useGetRoomsAssignments(classRoomId as string);
   const { data: classRoomProgress, isPending: classRoomProgressPending, refetch, isRefetching } = useGetClassRoomProgress(classRoomId as string, assignmentId as string);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
@@ -47,6 +47,7 @@ export const AssignmentDetailPage = () => {
 
   const getSummaryFromAI = async () => {
     setIsLoadingSummary(true);
+
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -64,8 +65,9 @@ export const AssignmentDetailPage = () => {
       });
 
       setSummary(response.choices[0].message.content);
+
       if (summary !== assignmentData?.summary) {
-        mutate({
+        updateAssignmentMutation({
           assignmentId: assignmentId as string,
           summary: response.choices[0].message.content as string,
         }, {
@@ -78,9 +80,7 @@ export const AssignmentDetailPage = () => {
 
     catch (error) {
       console.log(error);
-    }
-
-    finally {
+    } finally {
       setIsLoadingSummary(false);
     }
   }
@@ -91,7 +91,9 @@ export const AssignmentDetailPage = () => {
         title={assignmentData?.title ?? "Assignment"}
         linkTo={`/classes/${classRoomId}`}
       />
+
       {(isPending || classRoomProgressPending || isRefetching || summaryPending || isLoadingSummary || isAssignmentRefetching || isUpdateAssignmentPending) && <Loader />}
+
       <div className="min-h-screen bg-[#FBF9F9] p-4 mt-20">
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <h2 className="text-lg font-semibold">{assignmentData?.title}</h2>

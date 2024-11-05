@@ -32,8 +32,13 @@ export const ClassDetailPage = () => {
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
 
   const { data, isPending } = useClassById(id as string);
-
-  const { data: assignmentsData, isPending: isAssigmentsPending, refetch: assignmentsRefetch, isRefetching: isAssignmentsRefetching } = useGetRoomsAssignments(id as string);
+  
+  const { 
+    data: assignmentsData, 
+    isPending: isAssigmentsPending, 
+    refetch: assignmentsRefetch, 
+    isRefetching: isAssignmentsRefetching,
+  } = useGetRoomsAssignments(id as string);
 
   const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/classes/${id}/${assignment.id}`);
@@ -41,24 +46,12 @@ export const ClassDetailPage = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      setClassItem(data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (id) {
-      assignmentsRefetch();
-    }
-  }, [id]);
-
-  useEffect(() => {
     assignmentsRefetch();
   }, [id, assignmentsRefetch]);
 
   const { mutate: updateClassRoomMutation } = useMutation({
     mutationFn: (data: { classRoomId: string, learningPlan: string }) => {
-      return ClassRoomApiService.updateClassRoom(data.classRoomId, data.learningPlan);
+      return ClassRoomApiService.updateClassRoom(data.classRoomId, { learningPlan: data.learningPlan });
     },
     onSuccess: () => {
       setIsUploadPlanModal(false);
@@ -114,6 +107,18 @@ export const ClassDetailPage = () => {
 
     updateClassRoomMutation({ classRoomId: id as string, learningPlan, });
   };
+
+  useEffect(() => {
+    if (data) {
+      setClassItem(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (id) {
+      assignmentsRefetch();
+    }
+  }, [id]);
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">

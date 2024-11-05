@@ -17,7 +17,7 @@ export const useGetStudentAssignments = (studentEmail: string) => {
 
 export const useGetRoomsAssignments = (classRoomId: string) => {
   const { ...rest } = useQuery({
-    queryFn: () => AssignmentApiService.getAssigmentsByClassRoomId(classRoomId),
+    queryFn: () => AssignmentApiService.getAssignmentsByClassRoomId(classRoomId),
     queryKey: ["assignments"],
     staleTime: 5_000_000,
   });
@@ -41,7 +41,7 @@ export const useGetAssigmentById = (id: string) => {
 
 export const useUpdateAssignment = () => {
   return useMutation({
-    mutationFn: ({ assignmentId, summary }: { assignmentId: string, summary: string }) => AssignmentApiService.updateAssignment(assignmentId, summary),
+    mutationFn: ({ assignmentId, summary }: { assignmentId: string, summary: string }) => AssignmentApiService.updateAssignment(assignmentId, { summary: summary }),
     onSuccess: (data) => {
       console.log("Assignment updated:", data);
     },
