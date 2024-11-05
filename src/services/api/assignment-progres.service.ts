@@ -1,6 +1,6 @@
 import { apiClient } from "../../vars/axios-var.ts";
 
-export const getClassRoomProgressForSummary = async (classRoomId: string, assignmentId: string): Promise<string | null> => {
+export const getAssignmentSummary = async (classRoomId: string, assignmentId: string): Promise<string | null> => {
   try {
     const response = await apiClient.get<string | null>(
       `/class-room-progress/students-progress/find-progress/${classRoomId}/${assignmentId}`,
@@ -16,6 +16,6 @@ export const getClassRoomProgressForSummary = async (classRoomId: string, assign
   return null;
 }
 
-export const ClassRoomProgressSummaryService = {
-  getClassRoomProgressForSummary,
+export const AssignmentProgressSummaryService = {
+  getAssignmentSummary,
 };

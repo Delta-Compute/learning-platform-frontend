@@ -7,9 +7,9 @@ import { IAssignment } from '../../types';
 import { useGetClassRoomProgress } from '../../hooks/api/class-room-progres';
 
 import { format } from "date-fns";
-import { useGetClassRoomProgressSummary } from '../../hooks/api/class-room-progress.summary';
 import { instructionsForSummary } from '../../utils';
 import { openai } from '../../vars/open-ai';
+import { useGetAssigmentSummary } from '../../hooks/api/asignment-summary';
 
 export const AssignmentDetailPage = () => {
   const [isSummaryOpen, setIsSummaryOpen] = useState(true);
@@ -21,7 +21,7 @@ export const AssignmentDetailPage = () => {
   const { data, isPending, isRefetching: isAssignmentRefetching, refetch: refetchAssignment } = useGetRoomsAssignments(classRoomId as string);
   const { data: classRoomProgress, isPending: classRoomProgressPending, refetch, isRefetching } = useGetClassRoomProgress(classRoomId as string, assignmentId as string);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
-  const { data: summaryData, isPending: summaryPending } = useGetClassRoomProgressSummary(classRoomId as string, assignmentId as string);
+  const { data: summaryData, isPending: summaryPending } = useGetAssigmentSummary(classRoomId as string, assignmentId as string);
 
   useEffect(() => {
     refetch();
