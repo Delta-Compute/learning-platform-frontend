@@ -10,7 +10,7 @@ import { Loader } from "../../components";
 
 export const StudentAssignmentsPage = () => {
   const { user } = useContext(UserContext);
-  const { data: assignments, isPending: isAssignmentsPending, refetch, isRefetching } = useGetStudentAssignments(user?.email ?? "");
+  const { data: assignments, isPending: isAssignmentsPending, refetch } = useGetStudentAssignments(user?.email ?? "");
 
   useEffect(() => {
     refetch();

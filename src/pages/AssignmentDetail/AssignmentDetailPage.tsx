@@ -28,7 +28,8 @@ export const AssignmentDetailPage = () => {
   }, [assignmentId, refetch]);
 
   useEffect(() => {
-    const assignment = data?.find((item) => item.id === assignmentId);
+    const assignment = data?.find((item: any) => item.id === assignmentId);
+
     if (assignment) {
       setAssignmentData(assignment);
     }
@@ -160,7 +161,7 @@ export const AssignmentDetailPage = () => {
                     </span>
                   </div>
                   <div className="px-[10px] pt-[10px] text-[14px]">
-                    Feedback: <span className="text-gray-500">{student.feedback}</span>
+                    Feedback: <span className="text-gray-500">{student.feedback.length > 0 ? student.feedback : "No feedback"}</span>
                   </div>
                 </li>
               ))}

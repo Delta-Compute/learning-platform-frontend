@@ -5,7 +5,7 @@ import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import Assignment from "../../components/ui/assignment/Assisgnment";
 import { Class } from '../../types/class';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useClassById } from '../../hooks/api/classes';
 import { Loader, Modal } from '../../components';
 import { useGetRoomsAssignments } from '../../hooks';
@@ -24,10 +24,13 @@ import mammoth from "mammoth";
 import { toast } from "react-hot-toast";
 
 export const ClassDetailPage = () => {
-  const [classItem, setClassItem] = useState<Class | null>(null);
-  const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const [classItem, setClassItem] = useState<Class | null>(null);
+  const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
+  const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
+
   const { data, isPending } = useClassById(id as string);
 
   const { data: assignmentsData, isPending: isAssigmentsPending, refetch: assignmentsRefetch, isRefetching: isAssignmentsRefetching } = useGetRoomsAssignments(id as string);
@@ -59,15 +62,18 @@ export const ClassDetailPage = () => {
     },
     onSuccess: () => {
       setIsUploadPlanModal(false);
-      toast.success("Successfully upload");
+      toast.success("Successfully uploaded");
     },
     onError: () => {
       toast.error("Something went wrong");
     },
   });
 
-  const pdfUploadHandler = async (event) => {
-    const file = event.target.files[0];
+  const pdfUploadHandler = async (file: File) => {
+    if (!file) {
+      console.error("No file selected");
+      return "";
+    }
 
     try {
       const data = await pdfToText(file);
@@ -95,7 +101,7 @@ export const ClassDetailPage = () => {
     let learningPlan = "";
 
     if (file.type === "application/pdf") {
-      learningPlan = await pdfUploadHandler(event);
+      learningPlan = await pdfUploadHandler(file);
     } else if (
       file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       file.type === "application/msword"
@@ -147,16 +153,25 @@ export const ClassDetailPage = () => {
           <h2 className="text-[16px] text-placholderText font-light">
             Class Code
           </h2>
-          <div className="flex flex-row flex-1">
-            <img src={copyIcon} alt="copy" />
-            <span className="text-[24px] text-[#362D2E] font-light ml-1">
-              {`vgu6g25`}
-            </span>
-            <div className="ml-auto items-center border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full">
-              <span className="text-[16px] text-blueText font-light">
-                Invite Student(s)
+          <div className="flex flex-col gap-[15px]">
+            <div className="flex justify-between">
+              <img src={copyIcon} alt="copy"/>
+              <span className="text-[24px] text-[#362D2E] font-light ml-1">
+                {`vgu6g25`}
               </span>
+              <div className="ml-auto items-center border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full">
+                <span className="text-[16px] text-blueText font-light">
+                  Invite Student(s)
+                </span>
+              </div>
             </div>
+
+            {/*<button*/}
+            {/*  className="py-[10px]  border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full"*/}
+            {/*  onClick={() => setIsAddStudentModalOpen(true)}*/}
+            {/*>*/}
+            {/*  Add student*/}
+            {/*</button>*/}
           </div>
         </div>
 
@@ -180,6 +195,8 @@ export const ClassDetailPage = () => {
             onClick={onAssignmentClick}
           />
         ))}
+
+        {!isAssignmentsRefetching && !isAssigmentsPending && assignmentsData?.length === 0 && <p className="text-gray-500 text-center mt-[60px]">No assignments yet</p>}
       </div>
 
       <Modal
@@ -205,6 +222,23 @@ export const ClassDetailPage = () => {
               Upload <img src={`${UploadPlanIcon}`} />
             </div>
           </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isAddStudentModalOpen}
+        onClose={() => setIsAddStudentModalOpen(false)}
+      >
+        <div>
+          <p className="font-semibold text-[18px] text-center">Add student email</p>
+
+          <form className="flex">
+            <input
+              className=""
+              placeholder="Enter student email"
+            />
+            <button>Add student</button>
+          </form>
         </div>
       </Modal>
     </div>
