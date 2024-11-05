@@ -67,9 +67,26 @@ export const getAssignmentById = async (id: string): Promise<IAssignment | null>
   return null;
 }
 
+export const updateAssignment = async (assignmentId: string, summary: string) => {
+  try {
+    const response = await apiClient.patch(
+      `/assignments/${assignmentId}`,
+      {
+        summary,
+      }
+    );
+    console.log(response, 'summary updated successfully');
+    
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const AssignmentApiService = {
   addAssignment,
   getAssignmentsForStudent,
   getAssigmentsByClassRoomId,
   getAssignmentById,
+  updateAssignment,
 };

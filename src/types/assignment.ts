@@ -7,4 +7,5 @@ export interface IAssignment {
   deadline: number;
   createdAt?: number;
   status?: string;
+  summary?: string;
 }

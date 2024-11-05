@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { AssignmentApiService } from "../../services";
 
@@ -38,3 +38,16 @@ export const useGetAssigmentById = (id: string) => {
     ...rest,
   };
 }
+
+export const useUpdateAssignment = () => {
+  return useMutation({
+    mutationFn: ({ assignmentId, summary }: { assignmentId: string, summary: string }) => AssignmentApiService.updateAssignment(assignmentId, summary),
+    onSuccess: (data) => {
+      console.log("Assignment updated:", data);
+    },
+    onError: (error) => {
+      console.error("Update assignment failed:", error);
+    },
+  });
+}
+

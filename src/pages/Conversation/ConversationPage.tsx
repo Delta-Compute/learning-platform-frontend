@@ -40,9 +40,6 @@ interface ConversationPageProps {
 
 export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { user } = useContext(UserContext);
-
-  console.log(user, 'user');
-  
   
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
@@ -73,9 +70,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [assignmentDescription, setAssignmentDescription] = useState("");
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
-
-  console.log(studentsFeedback, 'studentsFeedback');
-  
 
   const { mutate: updateStudentStatus } = useMutation({
     mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {

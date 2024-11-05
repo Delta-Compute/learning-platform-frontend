@@ -77,3 +77,16 @@ export const teacherInstuctionsWithLearningPlan = (learningPlan: string) => {
 `
   ;
 };
+
+export const instructionsForSummary = (classRoomProgress: string) => {
+  return `
+    You must generate a summary of the class progress.
+    The summary must be based on the class progress and must be constructive.
+    Choose the best student, mention their name and praise them
+    If there is a bad student, mention their name and give them constructive feedback
+
+    here is class progress for this assignment: ${classRoomProgress}
+
+    IMPORTANT: you must generate summary based on the whole class progress. Don't write any unnecessary information. Don't ask any questions.
+  `;
+}

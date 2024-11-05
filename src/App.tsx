@@ -44,7 +44,7 @@ const App = () => {
         <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
         {<Route path="/classes" element={<ClassesPage />} />}
         <Route path="/classes/:id" element={<ClassDetailPage />} />
-        <Route path="/classes/:classId/:assignmentId" element={<AssignmentDetailPage />} />
+        <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
         <Route path="/*" element={<Navigate to="/initial" replace />} />
       </Routes>
     </>

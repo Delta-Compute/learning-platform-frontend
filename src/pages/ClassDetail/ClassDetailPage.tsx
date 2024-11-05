@@ -29,13 +29,25 @@ export const ClassDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useClassById(id as string);
-  
+
   const { data: assignmentsData, isPending: isAssigmentsPending, refetch: assignmentsRefetch, isRefetching: isAssignmentsRefetching } = useGetRoomsAssignments(id as string);
 
   const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/classes/${id}/${assignment.id}`);
     window.scrollTo(0, 0);
   };
+
+  useEffect(() => {
+    if (data) {
+      setClassItem(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (id) {
+      assignmentsRefetch();
+    }
+  }, [id]);
 
   useEffect(() => {
     assignmentsRefetch();
@@ -94,22 +106,8 @@ export const ClassDetailPage = () => {
       return;
     }
 
-    // console.log(learningPlan);
-
     updateClassRoomMutation({ classRoomId: id as string, learningPlan, });
   };
-
-  useEffect(() => {
-    if (data) {
-      setClassItem(data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (id) {
-      assignmentsRefetch();
-    }
-  }, [id]);
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
