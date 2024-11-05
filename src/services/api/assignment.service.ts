@@ -2,9 +2,9 @@ import { IAssignment } from "../../types/assignment.ts";
 
 import { apiClient } from "../../vars/axios-var.ts";
 
-export const addAssignment = async (classRoomId: string, description: string, topic: string, title: string, deadline: number) => {
+export const addAssignment = async (classRoomId: string, description: string, topic: string, title: string, deadline: number): Promise<IAssignment | null> => {
   try {
-    await apiClient.post<IAssignment>(
+    const response = await apiClient.post<IAssignment>(
       "/assignments",
       {
         description,
@@ -12,11 +12,16 @@ export const addAssignment = async (classRoomId: string, description: string, to
         topic,
         title,
         deadline,
+        timeToDiscuss: 60,
       }
     );
+
+    return response.data as IAssignment;
   } catch (error) {
     console.log(error);
   }
+
+  return null;
 };
 
 export const getAssignmentsForStudent = async (email: string): Promise<IAssignment[] | null> => {
@@ -68,6 +73,8 @@ export const getAssignmentById = async (id: string): Promise<IAssignment | null>
 };
 
 export const updateAssignment = async (id: string, assignment: { summary?: string }) => {
+  console.log('up summary', assignment.summary);
+
   try {
     await apiClient.patch(
       `/assignments/${id}`,

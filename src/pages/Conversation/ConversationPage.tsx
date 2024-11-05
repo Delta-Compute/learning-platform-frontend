@@ -18,8 +18,8 @@ import { AssignmentModal } from "./AssignmentModal";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
-import { useGetStudentAssignments } from "../../hooks";
-import { useMutation } from "@tanstack/react-query";
+import { useGenerateAssignmentSummary, useGetStudentAssignments } from "../../hooks";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import { ClassRoomProgressApiService } from "../../services/index.ts";
 
 import { toast } from "react-hot-toast";
@@ -56,6 +56,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
 
+  const { generateAssignmentSummary } = useGenerateAssignmentSummary();
+
   useEffect(() => {
     refetch();
   }, [user?.email, refetch]);
@@ -70,6 +72,16 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
 
+  const {
+    data: studentsProgress,
+    refetch: studentsProgressRefetch,
+    isRefetching: isStudentsProgressRefetching,
+  } = useQuery({
+    queryFn: () => ClassRoomProgressApiService.getStudentsProgress(classRoomId as string, params.assignmentId as string),
+    queryKey: ["students-progress"],
+    staleTime: 5_000_000,
+  });
+
   const { mutate: updateStudentStatus } = useMutation({
     mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {
       return ClassRoomProgressApiService.updateClassRoomProgress(
@@ -81,6 +93,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     },
     onSuccess: () => {
       toast.success("Successfully updated");
+
+      studentsProgressRefetch();
     },
     onError: () => {
       toast.success("Something went wrong");
@@ -285,6 +299,18 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     };
   }, [user?.id, params.assignmentId, user?.role, user?.firstName, studentInstructions]);
 
+  // update assignment summary
+  const updateStudentStatusHandler = async () => {
+    updateStudentStatus({
+      classRoomId: classRoomId,
+      assignmentId: params.assignmentId ?? "",
+      studentEmail: user.email,
+      feedback: studentsFeedback ?? "",
+    });
+
+    await generateAssignmentSummary(params.assignmentId as string, studentsProgress as string);
+  };
+
   return (
     <div
       data-component="ConsolePage"
@@ -460,12 +486,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             <Button
               className="border-main-red w-full px-[22px] bg-main-red text-white"
               onClick={() => {
-                updateStudentStatus({
-                  classRoomId: classRoomId,
-                  assignmentId: params.assignmentId ?? "",
-                  studentEmail: user.email,
-                  feedback: studentsFeedback ?? "",
-                });
+                updateStudentStatusHandler();
               }}
             >
               Save and Send to teacher

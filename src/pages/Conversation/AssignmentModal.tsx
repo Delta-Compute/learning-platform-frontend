@@ -1,18 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/style.css";
 
-import { addAssignment } from "../../services";
+import { addAssignment, ClassRoomProgressApiService } from "../../services";
 
-import { useMutation } from "@tanstack/react-query";
+import { useGenerateAssignmentSummary } from "../../hooks";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Modal, Button } from "../../components";
 
-import DropdownChevronUp from "../../assets/icons/dropdown-chevron-up.svg";
+import { IAssignment } from "../../types";
+
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
+
 import UserContext from '../../context/UserContext';
 
 import { toast } from "react-hot-toast";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+
+import DropdownChevronUp from "../../assets/icons/dropdown-chevron-up.svg";
 
 interface AssignmentModalProps {
   isOpen: boolean;
@@ -33,6 +39,26 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
   const [isRoomsDropdownOpen, setIsRoomsDropdownOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<number>(new Date().getTime());
+
+  const [newAssignment, setNewAssignment] = useState<IAssignment | null>(null);
+
+  const {
+    data: studentsProgress,
+    refetch: studentsProgressRefetch,
+  } = useQuery({
+    queryFn: () => ClassRoomProgressApiService.getStudentsProgress(selectedClassRoom?.id as string, newAssignment?.id as string),
+    queryKey: ["students-progress", selectedClassRoom?.id as string, newAssignment?.id],
+    staleTime: 5_000_000,
+    enabled: false,
+  });
+
+  const { generateAssignmentSummary } = useGenerateAssignmentSummary();
+
+  useEffect(() => {
+    if (newAssignment) {
+      studentsProgressRefetch();
+    }
+  }, [newAssignment, studentsProgressRefetch]);
 
   const [isOpenDate, setIsOpenDate] = useState(false);
   const { user } = useContext(UserContext);
@@ -80,9 +106,21 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
 
   const { data: classRooms } = useGetClassesTeacherId(user?.id as string);
 
+  const addNewAssignment = async (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number }) => {
+    try {
+      const data = await addAssignment(assignment.classRoomId, assignment.description, assignment.topic, assignment.title, assignment.deadline);
+
+      setNewAssignment(data);
+    } catch(error) {
+      console.log(error);
+    }
+  };
+
   const { mutate: createAssignmentMutation, isPending: isCreateAssignmentPending } = useMutation({
-    mutationFn: (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number }) => addAssignment(assignment.classRoomId, assignment.description, assignment.topic, assignment.title, assignment.deadline),
-    onSuccess: () => {
+    mutationFn: (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number }) => {
+      return addNewAssignment(assignment);
+    },
+    onSuccess: async () => {
       onClose();
       toast.success("Assignment successfully created");
     },
@@ -100,6 +138,14 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   const handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime(event.target.value);
   };
+
+  useEffect(() => {
+    if (newAssignment && studentsProgress) {
+      (async () => {
+        await generateAssignmentSummary(newAssignment.id as string, studentsProgress);
+      })();
+    }
+  }, [newAssignment, studentsProgress]);
 
   return (
     <Modal

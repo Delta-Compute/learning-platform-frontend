@@ -1,31 +1,34 @@
+import { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
+
+import { Loader } from "../../components";
 import Header from "../../components/ui/header/Header";
-import { useEffect, useState } from 'react';
-import { useGetRoomsAssignments, useUpdateAssignment } from '../../hooks';
-import { Loader } from '../../components';
-import { IAssignment } from '../../types';
+
+import { useGetRoomsAssignments } from '../../hooks';
+
 import { useGetClassRoomProgress } from '../../hooks/api/class-room-progress.ts';
 
+import { IAssignment } from "../../types";
+
 import { format } from "date-fns";
-import { instructionsForSummary } from '../../utils';
-import { openai } from '../../vars/open-ai';
-import { useGetAssigmentSummary } from '../../hooks/api/asignment-summary';
 
 export const AssignmentDetailPage = () => {
   const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [isProgressOpen, setIsProgressOpen] = useState(true);
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
-  const [summary, setSummary] = useState<string | null>(null);
+
   const { classRoomId, assignmentId } = useParams();
-  const { mutate: updateAssignmentMutation, isPending: isUpdateAssignmentPending } = useUpdateAssignment();
-  const { data, isPending, isRefetching: isAssignmentRefetching, refetch: refetchAssignment } = useGetRoomsAssignments(classRoomId as string);
+  const { data, isPending, isRefetching: isAssignmentRefetching } = useGetRoomsAssignments(classRoomId as string);
   const { data: classRoomProgress, isPending: classRoomProgressPending, refetch, isRefetching } = useGetClassRoomProgress(classRoomId as string, assignmentId as string);
-  const [isLoadingSummary, setIsLoadingSummary] = useState(false);
-  const { data: summaryData, isPending: summaryPending } = useGetAssigmentSummary(classRoomId as string, assignmentId as string);
 
   useEffect(() => {
     refetch();
   }, [assignmentId, refetch]);
+
+  useEffect(() => {
+    console.log();
+  }, []);
 
   useEffect(() => {
     const assignment = data?.find((item: any) => item.id === assignmentId);
@@ -35,55 +38,8 @@ export const AssignmentDetailPage = () => {
     }
   }, [data, isPending, assignmentId]);
 
-  useEffect(() => {
-    if (summaryData && !summaryPending) {
-      getSummaryFromAI();
-    }
-  }, [summaryData, summaryPending]);
-
-
   const studentsDone = classRoomProgress?.studentsProgress.filter(student => student.progress).length;
   const allStudents = classRoomProgress?.studentsProgress.length;
-
-  const getSummaryFromAI = async () => {
-    setIsLoadingSummary(true);
-
-    try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful assistant that selects key topics for students.",
-          },
-          {
-            role: "user",
-            content: `${instructionsForSummary(summaryData || '')}`,
-          },
-        ],
-        max_tokens: 150,
-      });
-
-      setSummary(response.choices[0].message.content);
-
-      if (summary !== assignmentData?.summary) {
-        updateAssignmentMutation({
-          assignmentId: assignmentId as string,
-          summary: response.choices[0].message.content as string,
-        }, {
-          onSuccess: () => {
-            refetchAssignment();
-          },
-        });
-      }
-    }
-
-    catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoadingSummary(false);
-    }
-  }
 
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
@@ -92,7 +48,7 @@ export const AssignmentDetailPage = () => {
         linkTo={`/classes/${classRoomId}`}
       />
 
-      {(isPending || classRoomProgressPending || isRefetching || summaryPending || isLoadingSummary || isAssignmentRefetching || isUpdateAssignmentPending) && <Loader />}
+      {(isPending || classRoomProgressPending || isRefetching || isAssignmentRefetching) && <Loader />}
 
       <div className="min-h-screen bg-[#FBF9F9] p-4 mt-20">
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">

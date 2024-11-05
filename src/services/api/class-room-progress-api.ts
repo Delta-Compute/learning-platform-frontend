@@ -34,9 +34,9 @@ export const updateClassRoomProgress = async (classRoomId: string, assignmentId:
   }
 };
 
-export const getStudentsProgress = async (classRoomId: string): Promise<string> => {
+export const getStudentsProgress = async (classRoomId: string, assignmentId: string): Promise<string> => {
   try {
-    const response = await apiClient.get(`/class-room-progress/students-progress/find-progress/${classRoomId}`);
+    const response = await apiClient.get(`/class-room-progress/students-progress/find-progress/${classRoomId}/${assignmentId}`);
 
     return response.data as string;
   } catch(error) {
