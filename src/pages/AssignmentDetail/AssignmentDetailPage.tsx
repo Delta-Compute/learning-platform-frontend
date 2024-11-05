@@ -21,7 +21,8 @@ export const AssignmentDetailPage = () => {
   }, [assignmentId]);
 
   useEffect(() => {
-    const assignment = data?.find((item) => item.id === assignmentId);
+    const assignment = data?.find((item: any) => item.id === assignmentId);
+
     if (assignment) {
       setAssignmentData(assignment);
     }
@@ -29,8 +30,6 @@ export const AssignmentDetailPage = () => {
 
   const studentsDone = classRoomProgress?.studentsProgress.filter(student => student.progress).length;
   const allStudents = classRoomProgress?.studentsProgress.length;
-
-  console.log(assignmentData, 'assignmentData');
 
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
@@ -112,7 +111,7 @@ export const AssignmentDetailPage = () => {
                     </span>
                   </div>
                   <div className="px-[10px] pt-[10px] text-[14px]">
-                    Feedback: <span className="text-gray-500">{student.feedback}</span>
+                    Feedback: <span className="text-gray-500">{student.feedback.length > 0 ? student.feedback : "No feedback"}</span>
                   </div>
                 </li>
               ))}

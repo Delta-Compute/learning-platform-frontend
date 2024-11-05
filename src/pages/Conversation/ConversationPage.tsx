@@ -20,10 +20,9 @@ import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
 import { useGetStudentAssignments } from "../../hooks";
 import { useMutation } from "@tanstack/react-query";
-import { ClassRoomApiService } from "../../services/index.ts";
+import { ClassRoomProgressApiService } from "../../services/index.ts";
 
 import { toast } from "react-hot-toast";
-import { longFormatters } from 'date-fns';
 
 interface RealtimeEvent {
   time: string;
@@ -76,10 +75,9 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   console.log(studentsFeedback, 'studentsFeedback');
   
-
   const { mutate: updateStudentStatus } = useMutation({
     mutationFn: (data: { classRoomId: string, assignmentId: string, studentEmail: string, feedback: string }) => {
-      return ClassRoomApiService.updateClassRoomProgress(
+      return ClassRoomProgressApiService.updateClassRoomProgress(
         data.classRoomId,
         data.assignmentId,
         data.studentEmail,

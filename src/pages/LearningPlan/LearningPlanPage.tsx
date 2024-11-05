@@ -41,7 +41,8 @@ export const LearningPlanPage = () => {
     const fetchTopics = async () => {
       if (classRoomItem && classRoomItem.learningPlan) {
         setLoader(true);
-        const topics = await getThreeTopics(classRoomItem.learningPlan);
+        const topics: Topic[] = await getThreeTopics(classRoomItem.learningPlan) as Topic[];
+
         if(topics) {
           setGeneratedAssignments(topics);
         }
