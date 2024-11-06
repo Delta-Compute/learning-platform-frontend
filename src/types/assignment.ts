@@ -8,4 +8,5 @@ export interface IAssignment {
   createdAt?: number;
   status?: string;
   summary?: string;
+  timeToDiscuss: number;
 }

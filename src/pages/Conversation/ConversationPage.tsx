@@ -8,6 +8,8 @@ import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
 import { teacherInstructions, studentInstructionsForAI } from "../../utils/conversation_config.ts";
 
+import { IAssignment } from "../../types";
+
 import UserContext from "../../context/UserContext";
 
 import { Link, useParams } from "react-router-dom";
@@ -64,6 +66,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   
   const [studentInstructions, setStudentInstructions] = useState("");
 
+  const [currentAssignment, setCurrentAssignment] = useState<IAssignment | null>(null);
   const [classRoomId, setClassRoomId] = useState("");
 
   const [assignmentTopic, setAssignmentTopic] = useState("");
@@ -72,10 +75,13 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
 
+  const [timeCounter, setTimeCounter] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null); 
+
   const {
     data: studentsProgress,
     refetch: studentsProgressRefetch,
-    isRefetching: isStudentsProgressRefetching,
   } = useQuery({
     queryFn: () => ClassRoomProgressApiService.getStudentsProgress(classRoomId as string, params.assignmentId as string),
     queryKey: ["students-progress"],
@@ -105,9 +111,9 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     if (user && user.role === "student" && assignments) {
       assignments.map(item => {
         if (item.id === params.assignmentId && user.firstName) {
-          // setStudentInstructions(`Talk about this text only for student and his assignment ${item.description}`);
           setStudentInstructions(studentInstructionsForAI(user.firstName, item.description));
           setClassRoomId(item.classRoomId);
+          setCurrentAssignment(item);
         }
       });
     }
@@ -304,12 +310,27 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     updateStudentStatus({
       classRoomId: classRoomId,
       assignmentId: params.assignmentId ?? "",
-      studentEmail: user.email,
+      studentEmail: user?.email as string,
       feedback: studentsFeedback ?? "",
     });
 
     await generateAssignmentSummary(params.assignmentId as string, studentsProgress as string);
   };
+
+  // handle student time 
+  useEffect(() => {
+    if (isTimerRunning) {
+      intervalRef.current = setInterval(() => {
+        setTimeCounter((prevCounter) => prevCounter + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isTimerRunning]);
 
   return (
     <div
@@ -323,7 +344,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
               <img src={`${LeftArrowIcon}`} />
             </Link>
           </div>
-          <h2 className="text-center text-[20px]">AI Assistant</h2>
+          <div className="flex flex-col gap-[6px]">
+            <h2 className="text-center text-[20px]">AI Assistant</h2>
+            {role === "student" && <span className="text-center text-[14px]">Time to discuss: {currentAssignment?.timeToDiscuss}s/{timeCounter}s</span>}
+          </div>
         </div>
 
         {!isConnected ? (
@@ -395,7 +419,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             )}
           </div>
         ) : (
-          <div className="h-screen flex items-center justify-center">
+          <div className="h-[100dvh] mt-[-120px] flex items-center justify-center">
             <SpeakingDots isConnected={isConnected} />
           </div>
         )}
@@ -458,8 +482,20 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                 backgroundPositionY: "center",
                 backgroundRepeat: "no-repeat",
               }}
-              onTouchStart={connectConversation}
-              onTouchEnd={disconnectConversation}
+              onClick={() => {
+                if (!isConnected) {
+                  connectConversation();
+                  setIsTimerRunning(true);
+                } else {
+                  disconnectConversation();
+                  setIsTimerRunning(false);
+
+                  if (intervalRef.current) {
+                    clearInterval(intervalRef.current); 
+                    intervalRef.current = null;
+                  }
+                } 
+              }}
             />
           )}
         </div>
@@ -475,7 +511,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           </div>
         )}
 
-        {items.length > 0 && !isConnected && user?.role === "student" && (
+        {items.length > 0 && !isConnected && user?.role === "student" && currentAssignment && (
           <div className="self-end w-full relative z-[2] flex flex-col gap-[10px]">
             <Button
               className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
@@ -483,14 +519,18 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             >
               Try again
             </Button>
-            <Button
-              className="border-main-red w-full px-[22px] bg-main-red text-white"
-              onClick={() => {
-                updateStudentStatusHandler();
-              }}
-            >
-              Save and Send to teacher
-            </Button>
+            {timeCounter >= currentAssignment.timeToDiscuss ? (
+              <Button
+                className="border-main-red w-full px-[22px] bg-main-red text-white"
+                onClick={() => {
+                  updateStudentStatusHandler();
+                }}
+              >
+                Save and Send to teacher
+              </Button>
+            ) : (
+              <div></div>
+            )}
           </div>
         )}
       </div>
