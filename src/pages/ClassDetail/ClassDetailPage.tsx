@@ -1,20 +1,20 @@
+import React, { useEffect, useState } from "react";
+
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../../components/ui/header/Header";
-import settingsIcon from "../../assets/icons/settings-icon.svg";
-import copyIcon from "../../assets/icons/copy-icon.svg";
-import filterIcon from "../../assets/icons/filter-icon.svg";
-import Assignment from "../../components/ui/assignment/Assisgnment";
+
 import { Class } from '../../types/class';
-import React, { useEffect, useState } from 'react';
+
 import { useClassById } from '../../hooks/api/classes';
-import { Loader, Modal } from '../../components';
-import { useGetRoomsAssignments } from '../../hooks';
-import { IAssignment } from '../../types';
+
+import { Loader, Modal, Input, Button } from "../../components";
+import { useGetRoomsAssignments } from "../../hooks";
+import { IAssignment } from "../../types";
+
+import Header from "../../components/ui/header/Header";
+import Assignment from "../../components/ui/assignment/Assisgnment";
 
 import { useMutation } from "@tanstack/react-query";
 import { ClassRoomApiService } from "../../services";
-
-import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 
 // import * as pdfjsLib from "pdfjs-dist";
 import pdfToText from "react-pdftotext";
@@ -23,6 +23,11 @@ import mammoth from "mammoth";
 
 import { toast } from "react-hot-toast";
 
+import settingsIcon from "../../assets/icons/settings-icon.svg";
+import copyIcon from "../../assets/icons/copy-icon.svg";
+import filterIcon from "../../assets/icons/filter-icon.svg";
+import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
+
 export const ClassDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -30,6 +35,7 @@ export const ClassDetailPage = () => {
   const [classItem, setClassItem] = useState<Class | null>(null);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
+  const [studentEmail, setStudentEmail] = useState("");
 
   const { data, isPending } = useClassById(id as string);
   
@@ -39,6 +45,19 @@ export const ClassDetailPage = () => {
     refetch: assignmentsRefetch, 
     isRefetching: isAssignmentsRefetching,
   } = useGetRoomsAssignments(id as string);
+
+  const { mutate: addNewStudentMutation, isPending: isAddingStudentPending } = useMutation({
+    mutationFn: (data: { classRoomId: string, studentEmails: string[] }) => {
+      return ClassRoomApiService.updateClassRoom(data.classRoomId, { studentEmails: data.studentEmails });
+    },
+    onSuccess: () => {
+      toast.success("Successfully added");
+      setIsAddStudentModalOpen(false);
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
 
   const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/classes/${id}/${assignment.id}`);
@@ -108,6 +127,25 @@ export const ClassDetailPage = () => {
     updateClassRoomMutation({ classRoomId: id as string, learningPlan, });
   };
 
+  const submitStudentEmail = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (studentEmail === "") {
+      toast.error("Email should not be empty");
+      return;
+    }
+
+    let studentEmails: string[] = [];
+
+    if (classItem?.studentEmails) {
+      studentEmails = [...classItem.studentEmails];
+    }
+
+    studentEmails.push(studentEmail);
+
+    addNewStudentMutation({ classRoomId: id as string, studentEmails });
+  };
+
   useEffect(() => {
     if (data) {
       setClassItem(data);
@@ -171,12 +209,12 @@ export const ClassDetailPage = () => {
               </div>
             </div>
 
-            {/*<button*/}
-            {/*  className="py-[10px]  border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full"*/}
-            {/*  onClick={() => setIsAddStudentModalOpen(true)}*/}
-            {/*>*/}
-            {/*  Add student*/}
-            {/*</button>*/}
+            <button
+              className="py-[10px] border-[0.5px] border-[#E9ECEF] px-3 rounded-full"
+              onClick={() => setIsAddStudentModalOpen(true)}
+            >
+              Add student
+            </button>
           </div>
         </div>
 
@@ -235,14 +273,22 @@ export const ClassDetailPage = () => {
         onClose={() => setIsAddStudentModalOpen(false)}
       >
         <div>
-          <p className="font-semibold text-[18px] text-center">Add student email</p>
+          <p className="font-semibold text-[20px] text-center">Add student email</p>
 
-          <form className="flex">
-            <input
+          <form onSubmit={submitStudentEmail} className="flex flex-col mt-[10px]">
+            <Input
+              type="email"
+              value={studentEmail}
+              onChange={(event) => setStudentEmail(event.target.value)}
               className=""
               placeholder="Enter student email"
             />
-            <button>Add student</button>
+            <Button
+              className="bg-main-red text-white w-full border-main-red mt-[10px] disabled:bg-red-300 disabled:border-red-300 sm:w-[120px]"
+              disabled={isAddingStudentPending}
+            >
+              {!isAddingStudentPending ? "Add new student" : "Loading..."}
+            </Button>
           </form>
         </div>
       </Modal>

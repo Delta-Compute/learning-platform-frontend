@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
-import Input from "../../components/ui/input/Input";
 import { Button, Loader } from "../../components";
 import { useState } from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
@@ -42,24 +41,23 @@ export const SignInPage = () => {
       <Header linkTo="/" title="Sign In" />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">E-mail</h3>
-        <Input
+        <input
+          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
           placeholder="Email"
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, email: e.target.value }))
           }
           type="email"
           value={userInfo.email}
-          additionalClasses="mt-1 text-text-color"
         />
         <h3 className="text-[16px] text-text-color mt-2">Password</h3>
-        <Input
-          placeholder="Create a password"
+        <input
+          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, password: e.target.value }))
           }
           type="password"
           value={userInfo.password}
-          additionalClasses="mt-1 text-text-color"
         />
         <Button
           className={`mt-10 bg-primary bg-main-red text-white`}
