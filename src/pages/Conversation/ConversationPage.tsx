@@ -466,8 +466,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                 backgroundPositionY: "center",
                 backgroundRepeat: "no-repeat",
               }}
-              onTouchStart={connectConversation}
-              onTouchEnd={disconnectConversation}
+              // onTouchStart={connectConversation}
+              // onTouchEnd={disconnectConversation}
+              onClick={() => {
+                if (!isConnected) {
+                  connectConversation();
+                } else {
+                  disconnectConversation();
+                }
+              }}
             />
           )}
 
