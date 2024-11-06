@@ -26,6 +26,7 @@ interface AssignmentModalProps {
   assignmentTopic: string;
   assignmentDescription: string;
   assignmentTitle: string;
+  assignmentTime: number;
 }
 
 export const AssignmentModal: React.FC<AssignmentModalProps> = ({
@@ -34,6 +35,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   assignmentTopic,
   assignmentDescription,
   assignmentTitle,
+  assignmentTime,
 }) => {
   const [time, setTime] = useState("00:00");
   const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
@@ -106,9 +108,9 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
 
   const { data: classRooms } = useGetClassesTeacherId(user?.id as string);
 
-  const addNewAssignment = async (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number }) => {
+  const addNewAssignment = async (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number, timeToDiscuss: number }) => {
     try {
-      const data = await addAssignment(assignment.classRoomId, assignment.description, assignment.topic, assignment.title, assignment.deadline);
+      const data = await addAssignment(assignment.classRoomId, assignment.description, assignment.topic, assignment.title, assignment.deadline, assignment.timeToDiscuss);
 
       setNewAssignment(data);
     } catch(error) {
@@ -117,7 +119,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   };
 
   const { mutate: createAssignmentMutation, isPending: isCreateAssignmentPending } = useMutation({
-    mutationFn: (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number }) => {
+    mutationFn: (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number, timeToDiscuss: number }) => {
       return addNewAssignment(assignment);
     },
     onSuccess: async () => {
@@ -274,7 +276,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
             disabled={isCreateAssignmentPending}
             onClick={() => {
               if (selectedClassRoom) {
-                createAssignmentMutation({ classRoomId: selectedClassRoom.id, description: assignmentDescription, title: assignmentTitle, topic: assignmentTopic, deadline: getDateTimeTimestamp() || 0 });
+                createAssignmentMutation({ classRoomId: selectedClassRoom.id, description: assignmentDescription, title: assignmentTitle, topic: assignmentTopic, deadline: getDateTimeTimestamp() || 0, timeToDiscuss: assignmentTime });
               }
             }}
           >

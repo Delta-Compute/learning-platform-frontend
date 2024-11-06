@@ -72,6 +72,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [assignmentTopic, setAssignmentTopic] = useState("");
   const [assignmentTitle, setAssignmentTitle] = useState("");
   const [assignmentDescription, setAssignmentDescription] = useState("");
+  const [assignmentTime, setAssignmentTime] = useState(0);
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
 
@@ -273,6 +274,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         const title = lines.find(line => line.startsWith("**Title**"))?.replace("**Title**: ", "").trim();
         const topic = lines.find(line => line.startsWith("**Topic**"))?.replace("**Topic**: ", "").trim();
         const description = lines.find(line => line.startsWith("**Description**"))?.replace("**Description**: ", "").trim();
+        const time = parseInt(lines.find(line => line.startsWith("**Time**"))?.replace("**Time**: ", "") || "0");
 
         if (title) {
           setAssignmentTitle(title);
@@ -284,6 +286,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
         if (description) {
           setAssignmentDescription(description);
+        }
+
+        if (time) {
+          setAssignmentTime(+time * 60);
         }
       }
 
@@ -539,6 +545,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         assignmentTopic={assignmentTopic}
         assignmentTitle={assignmentTitle}
         assignmentDescription={assignmentDescription}
+        assignmentTime={assignmentTime}
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
       />}

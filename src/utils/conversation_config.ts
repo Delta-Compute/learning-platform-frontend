@@ -11,10 +11,11 @@ export const teacherInstructions = (teacherName: string) => {
   Instructions:
   - In the end of conversation if you have enough information do an assignment with title of an assignment and the topic!!
   - You can say that you have enough information and make an assignment!!
-  The stucture of the assignment must be (important to mark them with **Title**, **Topic** and **Description** accordingly):
+  The stucture of the assignment must be (important to mark them with **Title**, **Topic**, **Description** and **Time** accordingly):
   - Title: The title of the assignment, max count of words is 3
   - Topic: The topic of the assignment, max count of words is 6
-  - Description: The description of the assignment
+  - Description: Description of the task, the task must be a some conversation with AI
+  - Time: The time to complete the task
 
   When you are creating this fields, you must to mark them with **Title**, **Topic** and **Description** accordingly.
 
@@ -54,27 +55,33 @@ export const teacherInstuctionsWithLearningPlan = (learningPlan: string) => {
   You must choose only 3 topics and write them one by one.
   separate them with code symbols ===
 
-  The stucture of each topic must be (important to mark them with **Title**, **Topic** and **Description** accordingly):
+  The stucture of each topic must be (important to mark them with **Title**, **Topic**, **Description** and **Time** accordingly):
   - Title: The title of the assignment, max count of words is 3
   - Topic: The topic of the assignment, max count of words is 6
-  - Description: The description of the assignment
+  - Description: Description of the task, the task must be a some conversation with AI
+  - Time: The time to complete the task
 
-  When you are creating this fields, you must to mark them with **Title**, **Topic** and **Description** accordingly.
+
+  When you are creating this fields, you must to mark them with **Title**, **Topic**, **Description**, and **Time** accordingly.
+  Time means time to complete the task
   for example:
   Topic 1: 
   **Title**: Title of the topic
   **Topic**: Title of the topic
-  **Description**: Description of the topic
+  **Description**: Description of the task, the task must be a some conversation with AI
+  **Time**: 15 minutes
   ===
   Topic 2:
   **Title**: Title of the topic
   **Topic**: Title of the topic
-  **Description**: Description of the topic
+  **Description**: Description of the task, the task must be a some conversation with AI
+  **Time**: 20 minutes
   ===
   Topic 3:
   **Title**: Title of the topic
   **Topic**: Title of the topic
-  **Description**: Description of the topic
+  **Description**: Description of the task, the task must be a some conversation with AI
+  **Time**: 10 minutes
 
   IMPORTANT: you must generate 3 topics and write them one by one. Before first topic don't put === and after last topic dont put ===
   you must give respons like example above.
