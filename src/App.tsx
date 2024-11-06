@@ -45,7 +45,7 @@ const App = () => {
         {<Route path="/classes" element={<ClassesPage />} />}
         <Route path="/classes/:id" element={<ClassDetailPage />} />
         <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
-        <Route path="/*" element={<Navigate to="/initial" replace />} />
+        {<Route path="/*" element={<Navigate to="/initial" replace />} />}
       </Routes>
     </>
   );

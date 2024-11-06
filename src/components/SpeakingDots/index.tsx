@@ -1,5 +1,3 @@
-
-
 interface SpeakingDotsProps {
   isConnected: boolean;
 }
@@ -16,7 +14,7 @@ export const SpeakingDots = ({ isConnected }: SpeakingDotsProps) => {
             animationDelay: `${index * 0.2}s`,
             animationDuration: '0.8s',
           }}
-        ></div>
+        />
       ))}
     </div>
   );

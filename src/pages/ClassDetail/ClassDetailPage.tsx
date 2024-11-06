@@ -37,7 +37,7 @@ export const ClassDetailPage = () => {
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
   const [studentEmail, setStudentEmail] = useState("");
 
-  const { data, isPending } = useClassById(id as string);
+  const { data: classRoom, isPending, refetch: refetchClassRoom } = useClassById(id as string);
   
   const { 
     data: assignmentsData, 
@@ -53,6 +53,7 @@ export const ClassDetailPage = () => {
     onSuccess: () => {
       toast.success("Successfully added");
       setIsAddStudentModalOpen(false);
+      refetchClassRoom();
     },
     onError: () => {
       toast.error("Something went wrong");
@@ -147,10 +148,10 @@ export const ClassDetailPage = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      setClassItem(data);
+    if (classRoom) {
+      setClassItem(classRoom);
     }
-  }, [data]);
+  }, [classRoom]);
 
   useEffect(() => {
     if (id) {
