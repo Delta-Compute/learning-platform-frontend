@@ -14,15 +14,19 @@ interface Topic {
   title: string;
   topic: string;
   description: string;
+  time: string;
 }
 
 export const LearningPlanPage = () => {
   const [classRoomItem, setClassRoomItem] = useState<Class | null>(null);
   const [generatedAssignments, setGeneratedAssignments] = useState<Topic[] | null>(null);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
-  const [chosenTopic, setChosenTopic] = useState<Topic>({ title: "", topic: "", description: "" });
+  const [chosenTopic, setChosenTopic] = useState<Topic>({ title: "", topic: "", description: "", time: "" });
   const { user } = useContext(UserContext);
   const [loader, setLoader] = useState(false);
+
+  console.log(generatedAssignments, 'generatedAssignments');
+  
 
   const { classRoomId } = useParams();
   const { data, isPending, refetch } = useClassById(classRoomId as string);
@@ -91,8 +95,10 @@ export const LearningPlanPage = () => {
         const title = lines.find(line => line.startsWith("**Title**"))?.replace("**Title**: ", "").trim();
         const topicL = lines.find(line => line.startsWith("**Topic**"))?.replace("**Topic**: ", "").trim();
         const description = lines.find(line => line.startsWith("**Description**"))?.replace("**Description**: ", "").trim();
+        const time = parseInt(lines.find(line => line.startsWith("**Time**"))?.replace("**Time**: ", "").trim()  || "15");
+        
 
-        return { title, topic: topicL, description };
+        return { title, topic: topicL, description, time };
       });
 
     } catch (error) {
@@ -152,6 +158,7 @@ export const LearningPlanPage = () => {
       {user?.role !== "student" && chosenTopic && <AssignmentModal
         assignmentTopic={chosenTopic.topic}
         assignmentTitle={chosenTopic.title}
+        assignmentTime={+chosenTopic.time * 60}
         assignmentDescription={chosenTopic.description}
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}

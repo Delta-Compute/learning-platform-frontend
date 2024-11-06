@@ -193,7 +193,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
         </div>
 
         <label className="mt-[10px]">Assignment details</label>
-        <div className="p-[10px] border-[1px] rounded-[22px]">
+        <div className="p-[10px] border-[1px] rounded-[22px] overflow-y-scroll max-h-[160px]">
           <div className='font-semibold'>{assignmentTitle}</div>
           <div>
             <div>
@@ -268,7 +268,9 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
               </div>
             </form>
           </p>
-
+              <div className='mt-[10px]'>
+                Time for task: {assignmentTime / 60} minutes
+              </div>
         </div>
         <div className="flex justify-center">
           <Button
