@@ -53,7 +53,6 @@ export const SignInPage = () => {
         <h3 className="text-[16px] text-text-color mt-2">Password</h3>
         <input
           className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
-          placeholder="Password"
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, password: e.target.value }))
           }

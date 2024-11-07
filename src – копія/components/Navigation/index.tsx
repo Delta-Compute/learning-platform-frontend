@@ -38,7 +38,7 @@ const BottomNavigation = () => {
           <span className={`text-xs ${isActive('/classes') ? 'text-black' : 'text-gray-400'}`}>Classes</span>
         </Link>
 
-        <Link to="/" className="flex flex-col items-center">
+        <Link to="/teacher-tasks" className="flex flex-col items-center">
           <svg
             width="24"
             height="24"
