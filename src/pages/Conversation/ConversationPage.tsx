@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { teacherInstructions, studentInstructionsForAI } from "../../utils/conversation_config.ts";
+import { teacherInstructions, studentInstructionsForAI, studentFeedbackInstructions } from "../../utils/conversation_config.ts";
 
 import { IAssignment } from "../../types";
 
@@ -21,13 +21,14 @@ import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
 import { useGenerateAssignmentSummary, useGetStudentAssignments } from "../../hooks";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ClassRoomProgressApiService } from "../../services/index.ts";
 
 import { toast } from "react-hot-toast";
 import { useClassById } from '../../hooks/api/classes.ts';
 import { Class } from '../../types/class.ts';
 import { AssignmentsBasedOnLearningPlan } from "./AssignmentsBasedOnLearningPlan.tsx";
+import { openai } from '../../vars/open-ai.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -44,7 +45,7 @@ interface ConversationPageProps {
 
 export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { user } = useContext(UserContext);
-  
+
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
@@ -66,7 +67,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   useEffect(() => {
     refetch();
   }, [user?.email, refetch]);
-  
+
   const [studentInstructions, setStudentInstructions] = useState("");
   const [classRoom, setClassRoom] = useState<Class | null>(null);
 
@@ -79,6 +80,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [assignmentTime, setAssignmentTime] = useState(0);
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
+  console.log(studentsFeedback);
+  
 
   const [timeCounter, setTimeCounter] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -200,6 +203,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const wavStreamPlayer = wavStreamPlayerRef.current;
 
     await wavStreamPlayer.interrupt();
+    getFeedbackToStudent();
   }, []);
 
   // const deleteConversationItem = useCallback(async (id: string) => {
@@ -293,17 +297,17 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         const assignmentText = transcript ? transcript.split("**CREATING ASSIGNMENT**")[1] : "";
         const lines = assignmentText.trim().split("\n");
 
-        const title = lines.find(line => 
+        const title = lines.find(line =>
           line.startsWith("**Title**") || line.startsWith("**Title:**")
         )?.replace(/^\*\*Title\**:\s*/, "").trim();
-        const topic = lines.find(line => 
+        const topic = lines.find(line =>
           line.startsWith("**Topic**") || line.startsWith("**Topic:**")
         )?.replace(/^\*\*Title\**:\s*/, "").trim();
-        const description = lines.find(line => 
+        const description = lines.find(line =>
           line.startsWith("**Description**") || line.startsWith("**Description:**")
         )?.replace(/^\*\*Title\**:\s*/, "").trim();
         const time = parseInt(
-          lines.find(line => 
+          lines.find(line =>
             line.startsWith("**Time**") || line.startsWith("**Time:**")
           )?.replace("**Time**: ", "").replace("**Time**", "") || "0"
         );
@@ -369,6 +373,36 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       }
     };
   }, [isTimerRunning]);
+
+  const getFeedbackToStudent = async (): Promise<any> => {
+
+    const studentsConversation = items.map(item => item.formatted.transcript).join(" ");
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant that selects key topics for students.",
+          },
+          {
+            role: "user",
+            content: `${studentFeedbackInstructions(user?.firstName || '', studentsConversation)}`,
+          },
+        ],
+        max_tokens: 150,
+      });
+
+      if (response.choices[0].message.content) {
+        setStudentsFeedback(response.choices[0].message.content.trim().replace("**Feedback**: ", ""));
+      }
+
+    } catch (error) {
+      console.error("Error fetching topics from OpenAI:", error);
+      return null;
+    }
+  };
 
   return (
     <div
@@ -496,7 +530,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             <p className="text-[15px] font-semibold">Let's create a new task</p>
           </div>
           )} */}
-          
+
           {user?.role === "teacher" && (
             <button
               className={`
@@ -546,10 +580,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   setIsTimerRunning(false);
 
                   if (intervalRef.current) {
-                    clearInterval(intervalRef.current); 
+                    clearInterval(intervalRef.current);
                     intervalRef.current = null;
                   }
-                } 
+                }
               }}
             />
           )}
