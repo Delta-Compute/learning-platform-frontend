@@ -206,7 +206,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
     await wavStreamPlayer.interrupt();
     getFeedbackToStudent();
-  }, []);
+  }, [items]);
 
   // const deleteConversationItem = useCallback(async (id: string) => {
   //   const client = clientRef.current;
@@ -377,7 +377,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   }, [isTimerRunning]);
 
   const getFeedbackToStudent = async (): Promise<any> => {
-
     const studentsConversation = items.map(item => item.formatted.transcript).join(" ");
 
     try {
@@ -421,6 +420,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         return "0s";
     }
   };
+
+  const [showStudentButtons, setShowStudentButtons] = useState(false);
 
   return (
     <div
@@ -577,7 +578,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             />
           )}
 
-          {user?.role === "student" && (items.length === 0 || isConnected) && (
+          {user?.role === "student" && (
             <button
               className={`
                 ${!isConnected && "border-[1px]"} 
@@ -625,12 +626,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
         {items.length > 0 && !isConnected && user?.role === "student" && currentAssignment && (
           <div className="self-end w-full relative z-[2] flex flex-col gap-[10px]">
-            <Button
-              className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
-              onClick={() => setItems([])}
-            >
-              Try again
-            </Button>
             {timeCounter >= currentAssignment.timeToDiscuss ? (
               <Button
                 className="border-main-red w-full px-[22px] bg-main-red text-white"
@@ -638,10 +633,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   updateStudentStatusHandler();
                 }}
               >
-                Save and Send to teacher
+                Save
               </Button>
             ) : (
-              <div></div>
+              <div className="text-[14px] w-[100px] self-end">Need to reach the time limit</div>
             )}
           </div>
         )}
