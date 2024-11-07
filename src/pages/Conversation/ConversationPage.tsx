@@ -60,7 +60,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     })
   );
 
-  const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
+  const { data: assignments, isPending: isAssignmentsPending, refetch } = useGetStudentAssignments(user?.email ?? "");
 
   const { generateAssignmentSummary } = useGenerateAssignmentSummary();
 
@@ -84,6 +84,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   
 
   const [timeCounter, setTimeCounter] = useState(0);
+  const minutes = Math.floor(timeCounter / 60);
+  const remainingSeconds = timeCounter % 60;
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -404,6 +406,22 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     }
   };
 
+  const formatAssignmentTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    switch (true) {
+      case minutes !== 0 && remainingSeconds !== 0:
+        return `${minutes}min ${remainingSeconds}s`;
+      case minutes !== 0 && remainingSeconds === 0:
+        return `${minutes}min`;
+      case minutes === 0:
+        return `${remainingSeconds}s`;
+      default:
+        return "0s";
+    }
+  };
+
   return (
     <div
       data-component="ConsolePage"
@@ -418,7 +436,12 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           </div>
           <div className="flex flex-col gap-[6px]">
             <h2 className="text-center text-[20px]">AI Assistant</h2>
-            {role === "student" && <span className="text-center text-[14px]">Time to discuss: {currentAssignment?.timeToDiscuss}s/{timeCounter}s</span>}
+            {role === "student" && !isAssignmentsPending && currentAssignment && (
+              <span className="text-center text-[14px]">
+                Time to discuss: {currentAssignment?.timeToDiscuss ? formatAssignmentTime(currentAssignment.timeToDiscuss) : ""} /
+                <span> {minutes}min</span> : <span>{remainingSeconds < 10 && "0"}{remainingSeconds}s</span>
+              </span>
+            )}
           </div>
         </div>
 
