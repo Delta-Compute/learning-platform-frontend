@@ -25,6 +25,8 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import { ClassRoomProgressApiService } from "../../services/index.ts";
 
 import { toast } from "react-hot-toast";
+import { useClassById } from '../../hooks/api/classes.ts';
+import { Class } from '../../types/class.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -65,6 +67,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   }, [user?.email, refetch]);
   
   const [studentInstructions, setStudentInstructions] = useState("");
+  const [classRoom, setClassRoom] = useState<Class | null>(null);
 
   const [currentAssignment, setCurrentAssignment] = useState<IAssignment | null>(null);
   const [classRoomId, setClassRoomId] = useState("");
@@ -78,7 +81,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [timeCounter, setTimeCounter] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const intervalRef = React.useRef<NodeJS.Timeout | null>(null); 
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const { data } = useClassById(params.classId as string);
+
+  useEffect(() => {
+    if (data) {
+      setClassRoom(data);
+    }
+  }, [params.classId, data]);
 
   const {
     data: studentsProgress,
@@ -215,7 +226,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName) : studentInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || '') : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -309,7 +320,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     return () => {
       client.reset();
     };
-  }, [user?.id, params.assignmentId, user?.role, user?.firstName, studentInstructions]);
+  }, [user?.id, params.assignmentId, user?.role, user?.firstName, studentInstructions, classRoom]);
 
   // update assignment summary
   const updateStudentStatusHandler = async () => {
