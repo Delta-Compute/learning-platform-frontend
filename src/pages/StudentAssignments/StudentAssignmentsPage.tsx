@@ -10,15 +10,15 @@ import { Loader } from "../../components";
 
 export const StudentAssignmentsPage = () => {
   const { user } = useContext(UserContext);
-  const { data: assignments, isPending: isAssignmentsPending, refetch } = useGetStudentAssignments(user?.email ?? "");
+  const { data: assignments, refetch, isRefetching } = useGetStudentAssignments(user?.email ?? "");
 
   useEffect(() => {
     refetch();
-  }, [refetch, user?.id, user]);
+  }, [refetch, user]);
   
   return (
     <div>
-      {isAssignmentsPending && <Loader />}
+      {isRefetching && <Loader />}
       
       <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
         <h2 className="text-center text-[20px]">Student assignments</h2>

@@ -23,10 +23,7 @@ export const LearningPlanPage = () => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [chosenTopic, setChosenTopic] = useState<Topic>({ title: "", topic: "", description: "", time: "" });
   const { user } = useContext(UserContext);
-  const [loader, setLoader] = useState(false);
-
-  console.log(generatedAssignments, 'generatedAssignments');
-  
+  const [loader, setLoader] = useState(false);  
 
   const { classRoomId } = useParams();
   const { data, isPending, refetch } = useClassById(classRoomId as string);
@@ -45,11 +42,12 @@ export const LearningPlanPage = () => {
     const fetchTopics = async () => {
       if (classRoomItem && classRoomItem.learningPlan) {
         setLoader(true);
-        const topics: Topic[] = await getThreeTopics(classRoomItem.learningPlan) as Topic[];
+        const topics: Topic[] = (await getThreeTopics(classRoomItem.learningPlan) ) || [];
 
-        if(topics) {
+        if (topics) {
           setGeneratedAssignments(topics);
         }
+
         setLoader(false);
       }
     }
@@ -57,7 +55,7 @@ export const LearningPlanPage = () => {
   }, [classRoomItem]);
 
 
-  const getThreeTopics = async (learningPlan: string) => {
+  const getThreeTopics = async (learningPlan: string): Promise<any> => {
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -111,7 +109,6 @@ export const LearningPlanPage = () => {
     setChosenTopic(topic);
     setIsAssignmentModalOpen(true);
   }
-
 
   return (
     <div>
@@ -167,7 +164,7 @@ export const LearningPlanPage = () => {
             <p className="text-[15px] font-semibold">Let's create a new task</p>
           </div>
           <Link
-            to={`/teacher-tasks/${classRoomId}`}
+            to={`/teacher-assignments/${classRoomId}`}
             className="border-[1px] p-[10px] rounded-[50%] mt-[20px]"
           >
             <img src={`${MicrophoneIcon}`} alt="microphone" />

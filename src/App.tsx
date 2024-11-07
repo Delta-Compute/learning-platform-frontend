@@ -6,7 +6,6 @@ import ClassesPage from "./pages/ClassesPage/ClassRoom";
 import {
   ConversationPage,
   FollowLinkPage,
-  LearningPlanPage,
   InitialPage,
   SignUpPage,
   UserTypeSelectionPage,
@@ -38,14 +37,12 @@ const App = () => {
         <Route path="/sign-in" element={<SignInPage />} />
         {<Route path="/student-assignments" element={<StudentAssignmentsPage />} />}
         {<Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />}
-        {<Route path="/teacher-tasks/:classRoomId" element={<ConversationPage role="teacher" />} />}
-        {<Route path="/teacher-tasks" element={<ConversationPage role="teacher" />} />}
-        {<Route path="/class-room-assignments/:classRoomId" element={<LearningPlanPage />} />}
+        {<Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />}
         <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
         {<Route path="/classes" element={<ClassesPage />} />}
         <Route path="/classes/:id" element={<ClassDetailPage />} />
         <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
-        <Route path="/*" element={<Navigate to="/initial" replace />} />
+        {<Route path="/*" element={<Navigate to="/initial" replace />} />}
       </Routes>
     </>
   );
