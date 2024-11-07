@@ -170,6 +170,16 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     // Connect to realtime API
     await client.connect();
 
+    // ai say hello to the user
+    if (role === "teacher") {
+      client.sendUserMessageContent([
+        {
+          type: `input_text`,
+          text: `Say hello to the teacher ${user?.firstName} ${user?.lastName}`,
+        },
+      ]);
+    }
+
     if (client.getTurnDetectionType() === "server_vad") {
       await wavRecorder.record((data: any) =>
         client.appendInputAudio(data.mono)
@@ -227,7 +237,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || '') : studentInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || "") : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
