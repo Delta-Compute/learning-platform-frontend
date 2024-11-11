@@ -84,19 +84,22 @@ export const AssignmentsBasedOnLearningPlan = () => {
       return topicsArrayChecked.map((topic: string) => {
         const lines = topic.trim().split("\n");
 
-        const title = lines.find(line => 
+        const title = lines.find(line =>
           line.startsWith("**Title**") || line.startsWith("**Title:**")
-        )?.replace(/^\*\*Title\**:\s*/, "").trim();
-        const topicL = lines.find(line => 
+        )?.replace(/^\*\*Title\**:?\s*/, "").trim();
+        
+        const topicL = lines.find(line =>
           line.startsWith("**Topic**") || line.startsWith("**Topic:**")
-        )?.replace(/^\*\*Title\**:\s*/, "").trim();
-        const description = lines.find(line => 
+        )?.replace(/^\*\*Topic\**:?\s*/, "").trim();
+        
+        const description = lines.find(line =>
           line.startsWith("**Description**") || line.startsWith("**Description:**")
-        )?.replace(/^\*\*Title\**:\s*/, "").trim();
+        )?.replace(/^\*\*Description\**:?\s*/, "").trim();
+        
         const time = parseInt(
-          lines.find(line => 
+          lines.find(line =>
             line.startsWith("**Time**") || line.startsWith("**Time:**")
-          )?.replace("**Time**: ", "").replace("**Time**", "") || "0"
+          )?.replace(/^\*\*Time\**:?\s*/, "") || "0"
         );
         
 

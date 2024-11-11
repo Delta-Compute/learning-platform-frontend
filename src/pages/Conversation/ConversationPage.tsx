@@ -298,17 +298,20 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
         const title = lines.find(line =>
           line.startsWith("**Title**") || line.startsWith("**Title:**")
-        )?.replace(/^\*\*Title\**:\s*/, "").trim();
+        )?.replace(/^\*\*Title\**:?\s*/, "").trim();
+        
         const topic = lines.find(line =>
           line.startsWith("**Topic**") || line.startsWith("**Topic:**")
-        )?.replace(/^\*\*Title\**:\s*/, "").trim();
+        )?.replace(/^\*\*Topic\**:?\s*/, "").trim();
+        
         const description = lines.find(line =>
           line.startsWith("**Description**") || line.startsWith("**Description:**")
-        )?.replace(/^\*\*Title\**:\s*/, "").trim();
+        )?.replace(/^\*\*Description\**:?\s*/, "").trim();
+        
         const time = parseInt(
           lines.find(line =>
             line.startsWith("**Time**") || line.startsWith("**Time:**")
-          )?.replace("**Time**: ", "").replace("**Time**", "") || "0"
+          )?.replace(/^\*\*Time\**:?\s*/, "") || "0"
         );
 
         if (title) {
