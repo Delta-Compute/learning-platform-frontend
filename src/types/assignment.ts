@@ -1,5 +1,5 @@
 export interface IAssignment {
-  id?: string;
+  id: string;
   description: string;
   classRoomId: string;
   topic: string;

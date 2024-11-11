@@ -13,6 +13,7 @@ export const StudentAssignmentsPage = () => {
   const { user } = useContext(UserContext);
   const [openAssignment, setOpenAssignment] = useState<IAssignment[]>([]);
   const [closedAssignment, setClosedAssignment] = useState<IAssignment[]>([]);
+  const [openedAssignmentId, setOpenedAssignmentId] = useState('');
 
   const [selectedTab, setSelectedTab] = useState("open");
   const { data: assignments, refetch, isRefetching } = useGetStudentAssignments(user?.email ?? "");
@@ -30,6 +31,16 @@ export const StudentAssignmentsPage = () => {
   useEffect(() => {
     refetch();
   }, [refetch, user]);
+
+  const handleAsignmentClick = (id: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (openedAssignmentId === id) {
+      setOpenedAssignmentId('');
+    } else {
+      setOpenedAssignmentId(id);
+    }
+  };
 
   return (
     <div>
@@ -61,11 +72,30 @@ export const StudentAssignmentsPage = () => {
                   to={`/student-assignments/${assignment.id}`}
                   className="block"
                 >
-                  <li
-                    className="w-full block p-[10px] rounded-[14px] bg-gray-200"
-                  >
-                    <p className="font-semibold">Title: <span className="font-light">{assignment.title}</span></p>
-                    <p className="font-semibold">Topic: <span className="font-light">{assignment.topic}</span></p>
+                  <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
+                    <button
+                      className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "rotate-180" : ""
+                        }`}
+                      onClick={(e) => {
+                        handleAsignmentClick(assignment.id, e);
+                      }}
+                    >
+                      {"▲"}
+                    </button>
+                    <p className="font-semibold">
+                      Title: <span className="font-light">{assignment.title}</span>
+                    </p>
+                    <p className="font-semibold">
+                      Topic: <span className="font-light">{assignment.topic}</span>
+                    </p>
+                    <div
+                      className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[500px]" : "max-h-0"
+                        }`}
+                    >
+                      <p className="font-semibold">
+                        Description: <span className="font-light">{assignment.description}</span>
+                      </p>
+                    </div>
                   </li>
                 </Link>
               )) :
@@ -77,17 +107,36 @@ export const StudentAssignmentsPage = () => {
             <ul className="py-[20px] flex flex-col gap-[8px]">
               {closedAssignment.length ? closedAssignment?.map((assignment) => (
                 <Link
-                  key={assignment.id}
-                  to={`/student-assignments/${assignment.id}`}
-                  className="block"
-                >
-                  <li
-                    className="w-full block p-[10px] rounded-[14px] bg-gray-200"
+                key={assignment.id}
+                to={`/student-assignments/${assignment.id}`}
+                className="block"
+              >
+                <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
+                  <button
+                    className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "rotate-180" : ""
+                      }`}
+                    onClick={(e) => {
+                      handleAsignmentClick(assignment.id, e);
+                    }}
                   >
-                    <p className="font-semibold">Title: <span className="font-light">{assignment.title}</span></p>
-                    <p className="font-semibold">Topic: <span className="font-light">{assignment.topic}</span></p>
-                  </li>
-                </Link>
+                    {"▲"}
+                  </button>
+                  <p className="font-semibold">
+                    Title: <span className="font-light">{assignment.title}</span>
+                  </p>
+                  <p className="font-semibold">
+                    Topic: <span className="font-light">{assignment.topic}</span>
+                  </p>
+                  <div
+                    className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[500px]" : "max-h-0"
+                      }`}
+                  >
+                    <p className="font-semibold">
+                      Description: <span className="font-light">{assignment.description}</span>
+                    </p>
+                  </div>
+                </li>
+              </Link>
               )) :
                 <div className='self-center flex-1 flex justify-center mt-5'>No closed assignments</div>
               }
