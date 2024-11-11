@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { User } from '../types';
-import { jwtDecode } from 'jwt-decode';
-import { useGetUser } from '../hooks';
+
+import { useNavigate } from "react-router-dom";
+
+import { User } from "../types";
+import { jwtDecode } from "jwt-decode";
+import { useGetUser } from "../hooks";
 
 interface UserContext {
   user: User | null;
@@ -9,6 +12,9 @@ interface UserContext {
   userId: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string>>;
   accessToken: string;
+  isUserRefetching: boolean;
+  userPending: boolean;
+  logout: () => void;
 }
 
 const UserContext = React.createContext({} as UserContext);
@@ -18,16 +24,29 @@ export const UserContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [userId, setUserId] = useState<string>('');
+  const [userId, setUserId] = useState<string>("");
   const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || '');
 
-  const { data } = useGetUser(userId);
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/initial");
+  };
+
+  const { 
+    data: userData, 
+    refetch: refetchUser, 
+    isRefetching: isUserRefetching, 
+    isPending: userPending,
+  } = useGetUser(userId);
 
   useEffect(() => {
     if (accessToken) {
       try {
         const decoded = jwtDecode(accessToken);
+
         if (decoded?.sub) {
           setUserId(decoded.sub);
         } else {
@@ -40,10 +59,16 @@ export const UserContextProvider = ({
   }, [accessToken, userId]);
 
   useEffect(() => {
-    if (data) {
-      setUser(data);
+    if (userId !== "") {
+      refetchUser();
     }
-  }, [data]);
+  }, [userId]);
+
+  useEffect(() => {
+    if (userData && !isUserRefetching) {
+      setUser(userData);
+    }
+  }, [userData, isUserRefetching]);
 
   return (
     <UserContext.Provider
@@ -53,6 +78,9 @@ export const UserContextProvider = ({
         userId,
         setAccessToken,
         accessToken,
+        isUserRefetching,
+        userPending,
+        logout,
       }}
     >
       {children}

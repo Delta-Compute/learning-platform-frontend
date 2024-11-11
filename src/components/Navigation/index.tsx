@@ -1,9 +1,13 @@
+import { useContext } from "react";
 
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
+
+import UserContext from "../../context/UserContext";
 
 const BottomNavigation = () => {
   const location = useLocation();
-
+  const { logout } = useContext(UserContext);
+ 
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -38,7 +42,27 @@ const BottomNavigation = () => {
           <span className={`text-xs ${isActive('/classes') ? 'text-black' : 'text-gray-400'}`}>Classes</span>
         </Link>
 
-        <Link to="/" className="flex flex-col items-center">
+        <button onClick={logout} className="flex flex-col gap-[3px] items-center">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="w-5 h-5"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" x2="9" y1="12" y2="12" />
+          </svg>
+          <span className="text-xs">Logout</span>
+        </button>
+
+        {/* <Link to="/" className="flex flex-col items-center">
           <svg
             width="24"
             height="24"
@@ -63,9 +87,9 @@ const BottomNavigation = () => {
             />
           </svg>
           <span className={`text-xs ${isActive('/ai-conversation') ? 'text-black' : 'text-gray-400'}`}>AI</span>
-        </Link>
+        </Link> */}
 
-        <Link to="/profile" className="flex flex-col items-center">
+        {/* <Link to="/profile" className="flex flex-col items-center">
           <svg
             width="24"
             height="24"
@@ -83,7 +107,7 @@ const BottomNavigation = () => {
             />
           </svg>
           <span className={`text-xs ${isActive('/profile') ? 'text-black' : 'text-gray-400'}`}>Profile</span>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
