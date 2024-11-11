@@ -48,10 +48,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
-    new WavRecorder({ sampleRate: 24000 })
+    new WavRecorder({ sampleRate: 24000, bufferLength: 4096 })
   );
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(
-    new WavStreamPlayer({ sampleRate: 24000 })
+    new WavStreamPlayer({ sampleRate: 24000, bufferLength: 4096 })
   );
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
@@ -140,9 +140,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [items, setItems] = useState<ItemType[]>([]);
 
-  console.log(items, '  items');
-  
-
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -151,16 +148,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   // const [isAssignmentCreated, setIsAssignmentCreated] = useState(false);
   // const [summary, setSummary] = useState("");
 
+  const [connectionLoading, setConnectionLoading] = useState(false);
+
   const connectConversation = useCallback(async () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
     const wavStreamPlayer = wavStreamPlayerRef.current;
-    // client.defaultSessionConfig = {
-    //   modalities: ["text", "audio"],
-    //   instructions: "Please communicate in English only.",
-    //   voice: "en-US",
-    // };
     client.updateSession({ turn_detection: { type: "server_vad" }, voice: "echo" });
+
+    setConnectionLoading(true);
 
     // Set state variables
     startTimeRef.current = new Date().toISOString();
@@ -168,27 +164,28 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     setRealtimeEvents([]);
     setItems(client.conversation.getItems());
 
-    await wavRecorder.begin();
-
-    await wavStreamPlayer.connect();
-
-    // Connect to realtime API
-    await client.connect();
-
-    // ai say hello to the user
-    if (role === "teacher") {
-      client.sendUserMessageContent([
-        {
-          type: `input_text`,
-          text: `Say hello to the teacher ${user?.firstName} ${user?.lastName}`,
-        },
+    try {
+      await Promise.all([
+        client.connect(),
+        wavRecorder.begin(),
+        wavStreamPlayer.connect()
       ]);
-    }
-
-    if (client.getTurnDetectionType() === "server_vad") {
-      await wavRecorder.record((data: any) =>
-        client.appendInputAudio(data.mono)
-      );
+  
+      console.log("connected");
+  
+      if (client.getTurnDetectionType() === "server_vad") {
+        console.log("server vad");
+        
+        await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
+        
+        setConnectionLoading(false);
+      } else {
+        toast.error("Something went wrong, please try again");
+      }
+    } catch (error) {
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setConnectionLoading(false);
     }
   }, []);
 
@@ -421,8 +418,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     }
   };
 
-  const [showStudentButtons, setShowStudentButtons] = useState(false);
-
   return (
     <div
       data-component="ConsolePage"
@@ -522,7 +517,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           </div>
         ) : (
           <div className="h-[100dvh] mt-[-120px] flex items-center justify-center">
-            <SpeakingDots isConnected={isConnected} />
+            {connectionLoading ? <p className="text-center">Connection loading...</p> : <SpeakingDots isConnected={isConnected} />}
           </div>
         )}
       </div>
@@ -572,8 +567,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                 backgroundPositionY: "center",
                 backgroundRepeat: "no-repeat",
               }}
-              // onTouchStart={connectConversation}
-              // onTouchEnd={disconnectConversation}
               onClick={!isConnected ? connectConversation : disconnectConversation}
             />
           )}
@@ -583,6 +576,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
               className={`
                 ${!isConnected && "border-[1px]"} 
                 rounded-[50%] bg-white p-[10px] w-[77.6px] h-[77.6px]
+                disabled:opacity-[0.4] relative z-[3]
               `}
               style={{
                 boxShadow: isConnected
@@ -595,6 +589,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                 backgroundPositionY: "center",
                 backgroundRepeat: "no-repeat",
               }}
+              disabled={(!isAssignmentsPending && currentAssignment === null)}
               onClick={() => {
                 if (!isConnected) {
                   connectConversation();
@@ -625,7 +620,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         )}
 
         {items.length > 0 && !isConnected && user?.role === "student" && currentAssignment && (
-          <div className="self-end w-full relative z-[2] flex flex-col gap-[10px]">
+          <div className="absolute right-[20px] bottom-[20px]">
             {timeCounter >= currentAssignment.timeToDiscuss ? (
               <Button
                 className="border-main-red w-full px-[22px] bg-main-red text-white"

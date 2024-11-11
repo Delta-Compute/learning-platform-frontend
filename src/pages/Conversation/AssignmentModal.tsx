@@ -207,20 +207,20 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
           </div>
         </div>
 
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <p>Deadline:</p>
-          <p className="flex gap-[10px] mt-[10px]">
-            <div className="inline-block" >
+          <div className="flex justify-between mt-[10px]">
+            <div className="inline-block relative">
               <input
                 type="text"
                 readOnly
                 value={new Date(selectedDate).toLocaleDateString('en-US').split('/').join('-')}
                 onClick={handleInputClick}
                 placeholder="Choose a deadline"
-                className="border p-2 rounded-[22px] cursor-pointer"
+                className="border p-2 rounded-[22px] cursor-pointer w-[160px]"
               />
               {isOpenDate && (
-                <div className="absolute top-[-100px] mt-2 z-10 bg-white shadow-lg rounded-[22px] p-2 calendar-dropdown">
+                <div className="absolute bottom-[50px] mt-2 z-10 bg-white shadow-lg rounded-[22px] p-2 calendar-dropdown">
                   <DayPicker
                     mode="single"
                     onSelect={(date) => {
@@ -264,7 +264,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
                 />
               </div>
             </form>
-          </p>
+          </div>
           <div className="mt-[10px]">
             Time for task: {assignmentTime / 60} minutes
           </div>
