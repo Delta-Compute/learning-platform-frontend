@@ -60,7 +60,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     })
   );
 
-  const { data: assignments, refetch } = useGetStudentAssignments(user?.email ?? "");
+  const { data: assignments, isPending: isAssignmentsPending, refetch } = useGetStudentAssignments(user?.email ?? "");
 
   const { generateAssignmentSummary } = useGenerateAssignmentSummary();
 
@@ -81,6 +81,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
   const [timeCounter, setTimeCounter] = useState(0);
+  const minutes = Math.floor(timeCounter / 60);
+  const remainingSeconds = timeCounter % 60;
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -204,7 +206,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
     await wavStreamPlayer.interrupt();
     getFeedbackToStudent();
-  }, []);
+  }, [items]);
 
   // const deleteConversationItem = useCallback(async (id: string) => {
   //   const client = clientRef.current;
@@ -375,7 +377,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   }, [isTimerRunning]);
 
   const getFeedbackToStudent = async (): Promise<any> => {
-
     const studentsConversation = items.map(item => item.formatted.transcript).join(" ");
 
     try {
@@ -404,6 +405,24 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     }
   };
 
+  const formatAssignmentTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    switch (true) {
+      case minutes !== 0 && remainingSeconds !== 0:
+        return `${minutes}min ${remainingSeconds}s`;
+      case minutes !== 0 && remainingSeconds === 0:
+        return `${minutes}min`;
+      case minutes === 0:
+        return `${remainingSeconds}s`;
+      default:
+        return "0s";
+    }
+  };
+
+  const [showStudentButtons, setShowStudentButtons] = useState(false);
+
   return (
     <div
       data-component="ConsolePage"
@@ -418,7 +437,12 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           </div>
           <div className="flex flex-col gap-[6px]">
             <h2 className="text-center text-[20px]">AI Assistant</h2>
-            {role === "student" && <span className="text-center text-[14px]">Time to discuss: {currentAssignment?.timeToDiscuss}s/{timeCounter}s</span>}
+            {role === "student" && !isAssignmentsPending && currentAssignment && (
+              <span className="text-center text-[14px]">
+                Time to discuss: {currentAssignment?.timeToDiscuss ? formatAssignmentTime(currentAssignment.timeToDiscuss) : ""} /
+                <span> {minutes}min</span> : <span>{remainingSeconds < 10 && "0"}{remainingSeconds}s</span>
+              </span>
+            )}
           </div>
         </div>
 
@@ -554,7 +578,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             />
           )}
 
-          {user?.role === "student" && (items.length === 0 || isConnected) && (
+          {user?.role === "student" && (
             <button
               className={`
                 ${!isConnected && "border-[1px]"} 
@@ -602,12 +626,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
         {items.length > 0 && !isConnected && user?.role === "student" && currentAssignment && (
           <div className="self-end w-full relative z-[2] flex flex-col gap-[10px]">
-            <Button
-              className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
-              onClick={() => setItems([])}
-            >
-              Try again
-            </Button>
             {timeCounter >= currentAssignment.timeToDiscuss ? (
               <Button
                 className="border-main-red w-full px-[22px] bg-main-red text-white"
@@ -615,10 +633,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   updateStudentStatusHandler();
                 }}
               >
-                Save and Send to teacher
+                Save
               </Button>
             ) : (
-              <div></div>
+              <div className="text-[14px] w-[100px] self-end">Need to reach the time limit</div>
             )}
           </div>
         )}
