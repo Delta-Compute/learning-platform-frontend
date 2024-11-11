@@ -517,7 +517,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           </div>
         ) : (
           <div className="h-[100dvh] mt-[-120px] flex items-center justify-center">
-            {connectionLoading ? <p className="text-center">Connection loading...</p> : <SpeakingDots isConnected={isConnected} />}
+            {connectionLoading ? <p className="text-center">Connecting... Please wait</p> : <SpeakingDots isConnected={isConnected} />}
           </div>
         )}
       </div>
