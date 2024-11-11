@@ -80,9 +80,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [assignmentTime, setAssignmentTime] = useState(0);
 
   const [studentsFeedback, setStudentsFeedback] = useState("");
-  console.log(studentsFeedback);
-  
-
   const [timeCounter, setTimeCounter] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -140,6 +137,9 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
+
+  console.log(items, '  items');
+  
 
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);

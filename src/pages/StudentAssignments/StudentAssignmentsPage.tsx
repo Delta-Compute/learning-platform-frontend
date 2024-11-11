@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -7,41 +7,57 @@ import UserContext from "../../context/UserContext";
 import { useGetStudentAssignments } from "../../hooks";
 
 import { Loader } from "../../components";
+import { IAssignment } from '../../types';
 
 export const StudentAssignmentsPage = () => {
   const { user } = useContext(UserContext);
+  const [openAssignment, setOpenAssignment] = useState<IAssignment[]>([]);
+  const [closedAssignment, setClosedAssignment] = useState<IAssignment[]>([]);
+  
+  const [selectedTab, setSelectedTab] = useState("open");
   const { data: assignments, refetch, isRefetching } = useGetStudentAssignments(user?.email ?? "");
+
+  useEffect(() => {
+    if (assignments) {
+      const open = assignments.filter((assignment) => assignment.deadline > new Date().getTime());
+      const closed = assignments.filter((assignment) => assignment.deadline <= new Date().getTime());
+
+      setOpenAssignment(open);
+      setClosedAssignment(closed);
+    }
+  }, [assignments]);
 
   useEffect(() => {
     refetch();
   }, [refetch, user]);
-  
+
   return (
     <div>
       {isRefetching && <Loader />}
-      
+
       <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
         <h2 className="text-center text-[20px]">Student assignments</h2>
       </div>
 
       <div className="pt-[100px] pb-[150px] px-[20px]">
         <div className="w-full">
-          <div className="flex justify-center">
-            <svg width="29" height="28" viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path 
-                d="M2.555 15.12C2.275 15.12 2.06 15.04 1.91 14.88C1.76 14.72 1.685 14.5 1.685 14.22V5.205C1.685 4.915 1.765 4.695 1.925 4.545C2.085 4.385 2.305 4.305 2.585 4.305C2.835 4.305 3.03 4.355 3.17 4.455C3.32 4.545 3.455 4.705 3.575 4.935L7.28 11.79H6.8L10.505 4.935C10.625 4.705 10.755 4.545 10.895 4.455C11.035 4.355 11.23 4.305 11.48 4.305C11.76 4.305 11.975 4.385 12.125 4.545C12.275 4.695 12.35 4.915 12.35 5.205V14.22C12.35 14.5 12.275 14.72 12.125 14.88C11.985 15.04 11.77 15.12 11.48 15.12C11.2 15.12 10.985 15.04 10.835 14.88C10.685 14.72 10.61 14.5 10.61 14.22V7.275H10.94L7.79 13.02C7.69 13.19 7.585 13.315 7.475 13.395C7.365 13.475 7.215 13.515 7.025 13.515C6.835 13.515 6.68 13.475 6.56 13.395C6.44 13.305 6.335 13.18 6.245 13.02L3.065 7.26H3.425V14.22C3.425 14.5 3.35 14.72 3.2 14.88C3.06 15.04 2.845 15.12 2.555 15.12Z" 
-                fill="#292D32"
-              />
-              <path d="M16.5 8.5H25.5" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M16.5 13.5H25.5" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M7.5 18.5H25.5" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M7.5 23.5H25.5" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <div className='flex gap-2'>
+            <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "open" ? 'font-semibold border-[#CC1316] border-b' : 'border-transparent'}`}
+            onClick={() => setSelectedTab('open')}
+            >
+              Open
+            </div>
+            <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "closed" ? 'font-semibold border-[#CC1316] border-b' : 'border-transparent'}`}
+            onClick={() => setSelectedTab('closed')}
+            >
+              Closed
+            </div>
           </div>
-          <ul className="py-[20px] flex flex-col gap-[8px]">
-            {assignments?.map((assignment) => (
-              <Link 
-                key={assignment.id} 
+          {selectedTab === 'open' && (
+            <ul className="py-[20px] flex flex-col gap-[8px]">
+            {openAssignment?.map((assignment) => (
+              <Link
+                key={assignment.id}
                 to={`/student-assignments/${assignment.id}`}
                 className="block"
               >
@@ -54,6 +70,25 @@ export const StudentAssignmentsPage = () => {
               </Link>
             ))}
           </ul>
+          )}
+          {selectedTab === 'closed' && (
+            <ul className="py-[20px] flex flex-col gap-[8px]">
+            {closedAssignment?.map((assignment) => (
+              <Link
+                key={assignment.id}
+                to={`/student-assignments/${assignment.id}`}
+                className="block"
+              >
+                <li
+                  className="w-full block p-[10px] rounded-[14px] bg-gray-200"
+                >
+                  <p className="font-semibold">Title: <span className="font-light">{assignment.title}</span></p>
+                  <p className="font-semibold">Topic: <span className="font-light">{assignment.topic}</span></p>
+                </li>
+              </Link>
+            ))}
+          </ul>
+          )}
         </div>
       </div>
     </div>
