@@ -19,8 +19,8 @@ export const StudentAssignmentsPage = () => {
 
   useEffect(() => {
     if (assignments) {
-      const open = assignments.filter((assignment) => assignment.deadline > new Date().getTime());
-      const closed = assignments.filter((assignment) => assignment.deadline <= new Date().getTime());
+      const open = assignments.filter((assignment) => assignment.deadline > new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
+      const closed = assignments.filter((assignment) => assignment.deadline <= new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
 
       setOpenAssignment(open);
       setClosedAssignment(closed);
