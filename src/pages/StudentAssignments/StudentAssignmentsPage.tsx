@@ -74,7 +74,7 @@ export const StudentAssignmentsPage = () => {
                 >
                   <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
                     <button
-                      className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "rotate-180" : ""
+                      className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "" : "rotate-180"
                         }`}
                       onClick={(e) => {
                         handleAsignmentClick(assignment.id, e);
@@ -113,7 +113,7 @@ export const StudentAssignmentsPage = () => {
               >
                 <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
                   <button
-                    className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "rotate-180" : ""
+                    className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "" : "rotate-180"
                       }`}
                     onClick={(e) => {
                       handleAsignmentClick(assignment.id, e);
@@ -128,7 +128,7 @@ export const StudentAssignmentsPage = () => {
                     Topic: <span className="font-light">{assignment.topic}</span>
                   </p>
                   <div
-                    className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[500px]" : "max-h-0"
+                    className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[2000px]" : "max-h-0"
                       }`}
                   >
                     <p className="font-semibold">
