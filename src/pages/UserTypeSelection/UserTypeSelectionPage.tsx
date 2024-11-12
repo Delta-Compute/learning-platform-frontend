@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import UserType from "../../assets/icons/user-type-icon.svg";
 import { Button, Loader } from "../../components";
 import { useContext } from "react";
@@ -6,6 +8,7 @@ import { useUpdateUser } from "../../hooks/api/users";
 import { useNavigate } from 'react-router-dom';
 
 export const UserTypeSelectionPage = () => {
+  const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -31,13 +34,13 @@ export const UserTypeSelectionPage = () => {
           className={`w-[360px] bg-main-red text-white`}
           onClick={() => onUserTypeSelected("student")}
         >
-          I am a student
+          {t("authPages.userTypeSelection.iAmStudentButton")}
         </Button>
         <Button
           className={`w-[360px] mt-2 bg-primary text-main-red border-[1px] border-main-red`}
           onClick={() => onUserTypeSelected("teacher")}
         >
-          I am a teacher
+          {t("authPages.userTypeSelection.iAmTeacherButton")}
         </Button>
       </div>
     </div>

@@ -1,0 +1,49 @@
+{
+  "authPages": {
+    "initial": {
+      "title": "Teachers Ai-d",
+      "signInButton": "Sign in",
+      "signUpButton": "Sign up"
+    },
+    "signIn": {
+      "headerTitle": "Sign In",
+      "emailLabel": "E-mail",
+      "emailInputPlaceholder": "E-mail",
+      "passwordLabel": "Password",
+      "passwordInputPlaceholder": "Password",
+      "submitButton": "Sign in",
+      "orText": "or",
+      "orTitle": "sign in through",
+      "bottomText": "Don't have an account?",
+      "bottomLinkText": "Sign up"
+    },
+    "signUp": {
+      "headerTitle": "Sign up",
+      "emailLabel": "E-mail",
+      "emailInputPlaceholder": "E-mail",
+      "passwordLabel": "Password",
+      "passwordInputPlaceholder": "Create a password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordInputPlaceholder": "Confirm password",
+      "submitButton": "Sign up",
+      "orText": "or",
+      "orTitle": "sign up through",
+      "bottomText": "Already have an account?",
+      "bottomLinkText": "Sign in"
+    },
+    "userTypeSelection": {
+      "iAmStudentButton": "I am a student",
+      "iAmTeacherButton": "I am a teacher"
+    },
+    "joinYourSchool": {
+      "headerTitle": "Join your school",
+      "selectSchoolLabel": "Select school",
+      "selectSchoolInputPlaceholder": "Select your school",
+      "firstNameLabel": "First name",
+      "firstNameInputPlaceholder": "Your first name",
+      "lastNameLabel": "Last name",
+      "lastNameInputPlaceholder": "Your last name",
+      "submitButton": "Submit"
+    }
+  }
+}

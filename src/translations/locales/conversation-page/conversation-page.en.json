@@ -1,0 +1,24 @@
+{
+  "conversationPage": {
+    "headerTitle": "AI Assistant",
+    "studentTimeTitle": "Time to discuss",
+    "startTalkText": "Start talk",
+    "connectingText": "Connecting... Please wait",
+    "reachTimeLimitText": "Need to reach the time limit",
+    "saveStudentFeedbackButton": "Save",
+    "assignmentsBasedOnPlanText": "Assignments based on learning plan",
+    "assignButton": "Assign",
+    "loading": "Loading...",
+    "assignmentModal": {
+      "title": "Assignment",
+      "classLabel": "Class",
+      "assignmentDetailsLabel": "Assignment details",
+      "assignment": {
+        "topic": "Topic",
+        "description": "Description"
+      },
+      "deadlineLabel": "Deadline",
+      "timeForTaskText": "Time for task"
+    }
+  }
+}

@@ -31,7 +31,7 @@ const ClassesPage = () => {
         {isPending || isRefetching && <Loader />}
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-semibold text-[#524344]">Classes</h1>
-          <button className="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center">
+          <button className="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-[70px]">
             <img className="w-[70%] h-[70%]" src={plus} onClick={openModal} />
           </button>
         </div>

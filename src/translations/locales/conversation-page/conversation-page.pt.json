@@ -1,0 +1,24 @@
+{
+  "conversationPage": {
+    "headerTitle": "Assistente de IA",
+    "studentTimeTitle": "Tempo para discutir",
+    "startTalkText": "Iniciar conversa",
+    "connectingText": "Ligar... Por favor, aguarde",
+    "reachTimeLimitText": "Necessidade de atingir o tempo limite",
+    "saveStudentFeedbackButton": "Salvar",
+    "assignmentsBasedOnPlanText": "Tarefas baseadas no plano de aprendizagem",
+    "assignButton": "Atribuir",
+    "loading": "Carregamento...",
+    "assignmentModal": {
+      "title": "Atribuição",
+      "classLabel": "Classe",
+      "assignmentDetailsLabel": "Detalhes da tarefa",
+      "assignment": {
+        "topic": "Tópico",
+        "description": "Descrição"
+      },
+      "deadlineLabel": "Prazo de entrega",
+      "timeForTaskText": "Tempo para a tarefa"
+    }
+  }
+}

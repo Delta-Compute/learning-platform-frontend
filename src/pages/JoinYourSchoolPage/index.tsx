@@ -5,7 +5,10 @@ import { useContext, useRef, useState } from "react";
 import UserContext from '../../context/UserContext';
 import { useUpdateUser } from '../../hooks';
 
+import { useTranslation } from "react-i18next";
+
 const JoinYourSchoolPage = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("School: choose");
   const [firstName, setFirstName] = useState("");
@@ -44,14 +47,15 @@ const JoinYourSchoolPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="fixed z-[1] top-0 w-full bg-white py-4 flex justify-center items-center">
+      <div className="fixed z-[1] top-0 w-full bg-white pt-4 pb-[5px] flex justify-center items-center">
         <div className="absolute left-4 top-[22px]">
           <Link to="/teacher-tasks">
             <img src={LeftArrowIcon} alt="Back" className="w-6 h-6" />
           </Link>
         </div>
-        <h2 className="text-center text-[24px] font-semibold text-[#524344]">
-          Join your { user?.role === "teacher" ? "school" : "class" }
+        <h2 className="text-center text-[24px] font-semibold text-[#524344] max-w-[190px]">
+          {/*Join your { user?.role === "teacher" ? "school" : "class" }*/}
+          {t("authPages.joinYourSchool.headerTitle")}
         </h2>
       </div>
 
@@ -59,7 +63,7 @@ const JoinYourSchoolPage = () => {
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
           <div>
             <label className="block text-sm font-normal mb-2">
-              Select your school
+              {t("authPages.joinYourSchool.selectSchoolLabel")}
             </label>
             <div className="relative" ref={dropdownRef}>
               <div
@@ -102,11 +106,11 @@ const JoinYourSchoolPage = () => {
 
           <div>
             <label className="block text-sm font-normal mb-2">
-              Your first name
+              {t("authPages.joinYourSchool.firstNameLabel")}
             </label>
             <input
               type="text"
-              placeholder="Enter your first name"
+              placeholder={t("authPages.joinYourSchool.firstNameInputPlaceholder")}
               className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value.trim())}
@@ -115,11 +119,11 @@ const JoinYourSchoolPage = () => {
 
           <div>
             <label className="block text-sm font-normal mb-2">
-              Your second name
+              {t("authPages.joinYourSchool.lastNameLabel")}
             </label>
             <input
               type="text"
-              placeholder="Enter your second name"
+              placeholder={t("authPages.joinYourSchool.lastNameInputPlaceholder")}
               className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
               value={lastName}
               onChange={(e) => setLastName(e.target.value.trim())}
@@ -128,7 +132,7 @@ const JoinYourSchoolPage = () => {
         </div>
 
         <button onClick={() => handleOnSubmit()} className="w-full bg-red-600 text-white rounded-[40px] font-medium p-[16px] hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-          Submit
+          {t("authPages.joinYourSchool.submitButton")}
         </button>
       </div>
     </div>

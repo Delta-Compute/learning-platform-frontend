@@ -1,0 +1,18 @@
+{
+  "studentPages": {
+    "studentAssignments": {
+      "headerTitle": "Atribuições dos alunos",
+      "assignment": {
+        "title": "Título",
+        "topic": "Tópico",
+        "description": "Descrição"
+      },
+      "tabs": {
+        "openAssignments": "Aberto",
+        "closedAssignments": "Fechado",
+        "noOpenItemsTitle": "Não há atribuições em aberto",
+        "noClosedItemsTitle": "Não há atribuições fechadas"
+      }
+    }
+  }
+}

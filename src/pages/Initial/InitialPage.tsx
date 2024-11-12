@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 import { useNavigate } from "react-router-dom";
 import Onboarding from "../../assets/icons/onboarding.svg";
 import { Button } from "../../components";
 
 export const InitialPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -16,20 +19,20 @@ export const InitialPage = () => {
           fontFamily: "Edu AU VIC WA NT Guides",
         }}
       >
-        Teachers Ai-d
+        {t("authPages.initial.title")}
       </h1>
       <div className="flex flex-col items-center justify-center mt-auto">
         <Button
           className={`w-[360px] bg-main-red text-white`}
           onClick={() => navigate("/sign-up")}
         >
-          Sign up
+          {t("authPages.initial.signUpButton")}
         </Button>
         <Button
           className={`w-[360px] mt-2 bg-primary text-main-red border-[1px] border-main-red`}
           onClick={() => navigate("/sign-in")}
         >
-          Sign in
+          {t("authPages.initial.signInButton")}
         </Button>
       </div>
       <img

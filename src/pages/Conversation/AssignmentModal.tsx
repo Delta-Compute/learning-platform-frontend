@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { addAssignment, ClassRoomProgressApiService } from "../../services";
 
 import { useGenerateAssignmentSummary } from "../../hooks";
@@ -37,6 +39,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   assignmentTitle,
   assignmentTime,
 }) => {
+  const { t } = useTranslation();
   const [time, setTime] = useState("00:00");
   const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
   const [isRoomsDropdownOpen, setIsRoomsDropdownOpen] = useState(false);
@@ -155,12 +158,12 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
       onClose={onClose}
     >
       <p className="text-center font-semibold text-[18px] text-dark-blue">
-        Assignment
+        {t("conversationPage.assignmentModal.title")}
       </p>
 
       <div className="flex flex-col gap-[10px] pt-[20px] relative">
         <div className='relative'>
-          <label>Class</label>
+          <label>{t("conversationPage.assignmentModal.classLabel")}</label>
           <div
             className="cursor-pointer p-[12px] rounded-[22px] border-[1px] mt-[10px] flex items-center justify-between"
             onClick={() => setIsRoomsDropdownOpen(active => !active)}
@@ -192,23 +195,23 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
           )}
         </div>
 
-        <label className="mt-[10px]">Assignment details</label>
+        <label className="mt-[10px]">{t("conversationPage.assignmentModal.assignmentDetailsLabel")}</label>
         <div className="p-[10px] border-[1px] rounded-[22px] overflow-y-scroll max-h-[160px]">
           <div className='font-semibold'>{assignmentTitle}</div>
           <div>
             <div>
-              <span className='font-semibold'>Topic: </span>
+              <span className='font-semibold'>{t("conversationPage.assignmentModal.assignment.topic")}: </span>
               <span>{assignmentTopic}</span>
             </div>
           </div>
           <div>
-            <span className='font-semibold'>Description: </span>
+            <span className='font-semibold'>{t("conversationPage.assignmentModal.assignment.description")}: </span>
             <span>{assignmentDescription}</span>
           </div>
         </div>
 
         <div className="flex flex-col">
-          <p>Deadline:</p>
+          <p>{t("conversationPage.assignmentModal.deadlineLabel")}:</p>
           <div className="flex justify-between mt-[10px]">
             <div className="inline-block relative">
               <input
@@ -266,7 +269,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
             </form>
           </div>
           <div className="mt-[10px]">
-            Time for task: {assignmentTime / 60} minutes
+            {t("conversationPage.assignmentModal.timeForTaskText")}: {assignmentTime / 60} minutes
           </div>
         </div>
         <div className="flex justify-center">
@@ -279,7 +282,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
               }
             }}
           >
-            {!isCreateAssignmentPending ? "Assign" : "Loading..."}
+            {!isCreateAssignmentPending ? t("conversationPage.assignButton") : t("conversationPage.loading")}
           </Button>
         </div>
       </div>

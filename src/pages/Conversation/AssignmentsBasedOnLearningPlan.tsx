@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 
 import { useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 import UserContext from "../../context/UserContext";
 
 import { useClassById } from "../../hooks/api/classes";
@@ -20,6 +22,7 @@ interface Topic {
 };
 
 export const AssignmentsBasedOnLearningPlan = () => {
+  const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { classRoomId } = useParams();
   const { data: classRoom } = useClassById(classRoomId as string);
@@ -32,7 +35,6 @@ export const AssignmentsBasedOnLearningPlan = () => {
   useEffect(() => {
     const fetchTopics = async () => {
       if (classRoom && classRoom.learningPlan) {
-        console.log(classRoom)
         setLoading(true);
 
         const topics: Topic[] = (await getThreeTopics(classRoom.learningPlan) ) || [];
@@ -134,7 +136,7 @@ export const AssignmentsBasedOnLearningPlan = () => {
             </svg>
 
             <p className="font-semibold text-center">
-              Assignments based on learning plan
+              {t("conversationPage.assignmentsBasedOnPlanText")}
             </p>
           </div>
 

@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 import UserContext from "../../context/UserContext";
 
 import { useGetStudentAssignments } from "../../hooks";
@@ -10,6 +12,7 @@ import { Loader } from "../../components";
 import { IAssignment } from '../../types';
 
 export const StudentAssignmentsPage = () => {
+  const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const [openAssignment, setOpenAssignment] = useState<IAssignment[]>([]);
   const [closedAssignment, setClosedAssignment] = useState<IAssignment[]>([]);
@@ -47,7 +50,7 @@ export const StudentAssignmentsPage = () => {
       {isRefetching && <Loader />}
 
       <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
-        <h2 className="text-center text-[20px]">Student assignments</h2>
+        <h2 className="text-center text-[20px]">{t("studentPages.studentAssignments.headerTitle")}</h2>
       </div>
 
       <div className="pt-[100px] pb-[150px] px-[20px]">
@@ -56,12 +59,12 @@ export const StudentAssignmentsPage = () => {
             <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "open" ? 'font-semibold border-[#CC1316] border-b' : 'border-transparent'}`}
               onClick={() => setSelectedTab('open')}
             >
-              Open
+              {t("studentPages.studentAssignments.tabs.openAssignments")}
             </div>
             <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "closed" ? 'font-semibold border-[#CC1316] border-b' : 'border-transparent'}`}
               onClick={() => setSelectedTab('closed')}
             >
-              Closed
+              {t("studentPages.studentAssignments.tabs.closedAssignments")}
             </div>
           </div>
           {selectedTab === 'open' && !isRefetching &&
@@ -99,7 +102,7 @@ export const StudentAssignmentsPage = () => {
                   </li>
                 </Link>
               )) :
-                <div className='self-center flex-1 flex justify-center mt-5'>No open assignments</div>
+                <div className='self-center flex-1 flex justify-center mt-5'>{t("studentPages.studentAssignments.tabs.noOpenItemsTitle")}</div>
               }
             </ul>
           }
@@ -122,23 +125,23 @@ export const StudentAssignmentsPage = () => {
                     {"▲"}
                   </button>
                   <p className="font-semibold">
-                    Title: <span className="font-light">{assignment.title}</span>
+                    {t("studentPages.studentAssignments.assignment.title")}: <span className="font-light">{assignment.title}</span>
                   </p>
                   <p className="font-semibold">
-                    Topic: <span className="font-light">{assignment.topic}</span>
+                    {t("studentPages.studentAssignments.assignment.topic")}: <span className="font-light">{assignment.topic}</span>
                   </p>
                   <div
                     className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[500px]" : "max-h-0"
                       }`}
                   >
                     <p className="font-semibold">
-                      Description: <span className="font-light">{assignment.description}</span>
+                      {t("studentPages.studentAssignments.assignment.description")}: <span className="font-light">{assignment.description}</span>
                     </p>
                   </div>
                 </li>
               </Link>
               )) :
-                <div className='self-center flex-1 flex justify-center mt-5'>No closed assignments</div>
+                <div className='self-center flex-1 flex justify-center mt-5'>{t("studentPages.studentAssignments.tabs.noClosedItemsTitle")}</div>
               }
             </ul>
           }

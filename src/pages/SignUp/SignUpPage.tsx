@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader } from "../../components";
@@ -15,6 +17,7 @@ type UserInfo = {
 };
 
 export const SignUpPage = () => {
+  const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
     password: "",
@@ -41,32 +44,32 @@ export const SignUpPage = () => {
   return (
     <div className="flex flex-col h-screen py-12 bg-bg-color">
       {isPending && <Loader />}
-      <Header linkTo="/" title="Sign Up" />
+      <Header linkTo="/" title={t("authPages.signUp.headerTitle")} />
       <div className="flex flex-col  mt-12 mx-4">
-        <h3 className="text-[16px] text-text-color mt-2">E-mail</h3>
+        <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.emailLabel")}</h3>
         <input
           className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
-          placeholder="Email"
+          placeholder={t("authPages.signUp.emailInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, email: e.target.value }))
           }
           type="email"
           value={userInfo.email}
         />
-        <h3 className="text-[16px] text-text-color mt-2">Password</h3>
+        <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.passwordLabel")}</h3>
         <input
           className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
-          placeholder="Create a password"
+          placeholder={t("authPages.signUp.passwordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, password: e.target.value }))
           }
           type="password"
           value={userInfo.password}
         />
-        <h3 className="text-[16px] text-text-color mt-2">Confirm Password</h3>
+        <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.confirmPasswordLabel")}</h3>
         <input
           className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
-          placeholder="Confirm Password"
+          placeholder={t("authPages.signUp.confirmPasswordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({
               ...prev,
@@ -80,15 +83,15 @@ export const SignUpPage = () => {
           className={`mt-10 bg-primary bg-main-red text-white`}
           onClick={onSignUp}
         >
-          Sign up
+          {t("authPages.signUp.submitButton")}
         </Button>
         <div className="flex flex-row mt-4 items-center justify-between">
           <div className="h-[1px] w-5/12 bg-border"></div>
-          <p className="text-placholderText text-[14px] font-light">or</p>
+          <p className="text-placholderText text-[14px] font-light">{t("authPages.signUp.orText")}</p>
           <div className="h-[1px] w-5/12 bg-border"></div>
         </div>
         <p className="text-placholderText text-[14px] font-light text-center">
-          sign up through
+          {t("authPages.signUp.orTitle")}
         </p>
 
         <div className="flex flex-row justify-center mt-4">
@@ -114,13 +117,13 @@ export const SignUpPage = () => {
       </div>
       <div className="flex flex-row items-center mt-auto justify-center">
         <p className="text-[14px] text-placholderText font-light mr-1">
-          Already have an account?
+          {t("authPages.signUp.bottomText")}
         </p>
         <p
           className="text-main-red text-[16px] font-light cursor-pointer"
           onClick={onSignInClick}
         >
-          Sign in
+          {t("authPages.signUp.bottomLinkText")}
         </p>
       </div>
     </div>

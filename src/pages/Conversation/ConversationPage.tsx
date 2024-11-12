@@ -25,10 +25,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { ClassRoomProgressApiService } from "../../services/index.ts";
 
 import { toast } from "react-hot-toast";
-import { useClassById } from '../../hooks/api/classes.ts';
-import { Class } from '../../types/class.ts';
+import { useClassById } from "../../hooks/api/classes.ts";
+import { Class } from "../../types/class.ts";
 import { AssignmentsBasedOnLearningPlan } from "./AssignmentsBasedOnLearningPlan.tsx";
-import { openai } from '../../vars/open-ai.ts';
+import { openai } from "../../vars/open-ai.ts";
+
+import {useTranslation} from "react-i18next";
 
 interface RealtimeEvent {
   time: string;
@@ -44,6 +46,7 @@ interface ConversationPageProps {
 };
 
 export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
+  const { t } = useTranslation();
   const { user } = useContext(UserContext);
 
   const params = useParams();
@@ -434,10 +437,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             </Link>
           </div>
           <div className="flex flex-col gap-[6px]">
-            <h2 className="text-center text-[20px]">AI Assistant</h2>
+            <h2 className="text-center text-[20px]">{t("conversationPage.headerTitle")}</h2>
             {role === "student" && !isAssignmentsPending && currentAssignment && (
               <span className="text-center text-[14px]">
-                Time to discuss: {currentAssignment?.timeToDiscuss ? formatAssignmentTime(currentAssignment.timeToDiscuss) : ""} /
+                {t("conversationPage.studentTimeTitle")}: {currentAssignment?.timeToDiscuss ? formatAssignmentTime(currentAssignment.timeToDiscuss) : ""} /
                 <span> {minutes}min</span> : <span>{remainingSeconds < 10 && "0"}{remainingSeconds}s</span>
               </span>
             )}
@@ -452,7 +455,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   <AssignmentsBasedOnLearningPlan />
                 ) : (
                   <div className="flex justify-center items-center h-full">
-                    <p>Start talk</p>
+                    <p>{t("conversationPage.startTalkText")}</p>
                   </div>
                 )}
               </div>
@@ -520,7 +523,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           </div>
         ) : (
           <div className="h-[100dvh] mt-[-120px] flex items-center justify-center">
-            {connectionLoading ? <p className="text-center">Connecting... Please wait</p> : <SpeakingDots isConnected={isConnected} />}
+            {connectionLoading ? <p className="text-center">{t("conversationPage.connectingText")}</p> : <SpeakingDots isConnected={isConnected} />}
           </div>
         )}
       </div>
@@ -617,7 +620,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
               className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
               onClick={() => setIsAssignmentModalOpen(true)}
             >
-              Assign
+              {t("conversationPage.assignButton")}
             </Button>
           </div>
         )}
@@ -631,10 +634,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                   updateStudentStatusHandler();
                 }}
               >
-                Save
+                {t("conversationPage.saveStudentFeedbackButton")}
               </Button>
             ) : (
-              <div className="text-[14px] w-[100px] self-end">Need to reach the time limit</div>
+              <div className="text-[14px] w-[100px] self-end">{t("conversationPage.reachTimeLimitText")}</div>
             )}
           </div>
         )}

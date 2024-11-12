@@ -1,0 +1,49 @@
+{
+  "authPages": {
+    "initial": {
+      "title": "Professores Ai-d",
+      "signInButton": "Iniciar sessão",
+      "signUpButton": "Inscrever-se"
+    },
+    "signIn": {
+      "headerTitle": "Iniciar sessão",
+      "emailLabel": "Correio eletrónico",
+      "emailInputPlaceholder": "Correio eletrónico",
+      "passwordLabel": "Palavra-passe",
+      "passwordInputPlaceholder": "Palavra-passe",
+      "submitButton": "Iniciar sessão",
+      "orText": "ou",
+      "orTitle": "iniciar sessão através de",
+      "bottomText": "Não tem uma conta?",
+      "bottomLinkText": "Registar"
+    },
+    "signUp": {
+      "headerTitle": "Registar",
+      "emailLabel": "Correio eletrónico",
+      "emailInputPlaceholder": "Correio eletrónico",
+      "passwordLabel": "Palavra-passe",
+      "passwordInputPlaceholder": "Criar uma palavra-passe",
+      "confirmPasswordLabel": "Confirmar a Palavra-passe",
+      "confirmPasswordInputPlaceholder": "Confirmar a palavra-passe",
+      "submitButton": "Registar",
+      "orText": "ou",
+      "orTitle": "inscrever-se através de",
+      "bottomText": "Já tem uma conta?",
+      "bottomLinkText": "Iniciar sessão"
+    },
+    "userTypeSelection": {
+      "iAmStudentButton": "Sou estudante",
+      "iAmTeacherButton": "Sou professor"
+    },
+    "joinYourSchool": {
+      "headerTitle": "Junte-se à sua escola",
+      "selectSchoolLabel": "Selecionar escola",
+      "selectSchoolInputPlaceholder": "Selecione a sua escola",
+      "firstNameLabel": "Primeiro nome",
+      "firstNameInputPlaceholder": "O seu primeiro nome",
+      "lastNameLabel": "Sobrenome",
+      "lastNameInputPlaceholder": "O seu último nome",
+      "submitButton": "Submeter"
+    }
+  }
+}
