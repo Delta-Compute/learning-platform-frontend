@@ -148,10 +148,29 @@ export const StudentAssignmentsPage = () => {
         </div>
       </div>
       <button
-        className='fixed bottom-[20px] right-2 bg-[rgba(204,19,22,0.7)] px-2 py-1 rounded-[40px] text-[white]'
+        className="
+          fixed bottom-[20px] right-[10px] rounded-full border-[1px] px-[15px] py-[8px]
+          flex items-center gap-[8px]
+        "
         onClick={logout}
       >
-        {t("studentPages.studentAssignments.logoutButton.text")}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5"
+        >
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" x2="9" y1="12" y2="12"/>
+        </svg>
+        <span>{t("studentPages.studentAssignments.logoutButton.text")}</span>
       </button>
     </div>
   );
