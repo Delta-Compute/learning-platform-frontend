@@ -30,6 +30,11 @@
         "completed": "Concluído",
         "inProgress": "Em curso"
       },
+      "filterOptions": {
+        "freshest": "Mais recentes",
+        "oldest": "Mais antigos",
+        "alphabetically": "Alfabeticamente"
+      },
       "uploadPlanModal": {
         "title": "Carregar plano de aprendizagem",
         "uploadButton": "Carregar",

@@ -272,19 +272,19 @@ export const ClassDetailPage = () => {
                     onClick={() => handleFilter('newest')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
-                    Freshest
+                    {t("teacherPages.class.filterOptions.freshest")}
                   </button>
                   <button
                     onClick={() => handleFilter('oldest')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
-                    Oldest
+                    {t("teacherPages.class.filterOptions.oldest")}
                   </button>
                   <button
                     onClick={() => handleFilter('alphabetical')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
-                    Alphabetical
+                    {t("teacherPages.class.filterOptions.alphabetically")}
                   </button>
                 </div>
               </div>

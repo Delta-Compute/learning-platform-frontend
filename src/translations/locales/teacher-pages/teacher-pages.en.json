@@ -30,6 +30,11 @@
         "completed": "Completed",
         "inProgress": "In progress"
       },
+      "filterOptions": {
+        "freshest": "Freshest",
+        "oldest": "Oldest",
+        "alphabetically": "Alphabetically"
+      },
       "addStudentModal": {
         "title": "Add student email",
         "studentEmailInputPlaceholder": "Enter student email",
