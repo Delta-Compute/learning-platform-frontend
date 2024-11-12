@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Class } from '../../types/class';
@@ -29,6 +31,7 @@ import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 
 export const ClassDetailPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -51,7 +54,7 @@ export const ClassDetailPage = () => {
       return ClassRoomApiService.updateClassRoom(data.classRoomId, { studentEmails: data.studentEmails });
     },
     onSuccess: () => {
-      toast.success("Successfully added");
+      toast.success(t("teacherPages.class.addStudentModal.successfullyAddedText"));
       setIsAddStudentModalOpen(false);
       refetchClassRoom();
     },
@@ -75,7 +78,7 @@ export const ClassDetailPage = () => {
     },
     onSuccess: () => {
       setIsUploadPlanModal(false);
-      toast.success("Successfully uploaded");
+      toast.success(t("teacherPages.class.uploadPlanModal.successfullyUploadedText"));
     },
     onError: () => {
       toast.error("Something went wrong");
@@ -170,8 +173,7 @@ export const ClassDetailPage = () => {
           <div className="bg-gray-200 h-24 rounded-[8px]"></div>
           <div className="flex items-center gap-[10px] justify-between">
             <p className="text-[14px] text-gray-500 font-light">
-              Upload class learning plan to have more suitable task
-              recommendations
+              {t("teacherPages.class.uploadPlanText")}
             </p>
 
             <button className="w-[34px]" onClick={() => setIsUploadPlanModal(true)}>
@@ -181,10 +183,10 @@ export const ClassDetailPage = () => {
 
           <div className="flex justify-between">
             <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
-              {classItem?.studentEmails?.length} Students
+              {classItem?.studentEmails?.length} {t("teacherPages.class.studentsText")}
             </span>
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-3 rounded-full text-sm">
-              {classItem?.assignmentIds?.length} assignments
+              {classItem?.assignmentIds?.length} {t("teacherPages.class.assignmentsText")}
             </span>
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-1 rounded-full text-sm">
               <img src={settingsIcon} alt="settings" />
@@ -195,7 +197,7 @@ export const ClassDetailPage = () => {
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2  mt-2`}
         >
           <h2 className="text-[16px] text-placholderText font-light">
-            Class Code
+            {t("teacherPages.class.classCodeText")}
           </h2>
           <div className="flex flex-col gap-[15px]">
             <div className="flex justify-between">
@@ -204,8 +206,8 @@ export const ClassDetailPage = () => {
                 {`vgu6g25`}
               </span>
               <div className="ml-auto items-center border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full">
-                <span className="text-[16px] text-blueText font-light">
-                  Invite Student(s)
+                <span className="text-[14px] text-blueText font-light">
+                  {t("teacherPages.class.inviteStudentText")}
                 </span>
               </div>
             </div>
@@ -214,19 +216,19 @@ export const ClassDetailPage = () => {
               className="py-[10px] border-[0.5px] border-[#E9ECEF] px-3 rounded-full"
               onClick={() => setIsAddStudentModalOpen(true)}
             >
-              Add student
+              {t("teacherPages.class.addStudentButton")}
             </button>
           </div>
         </div>
 
         <div className="flex flex-row mt-6">
           <h2 className="text-[18px] text-text-color font-normal">
-            Assignments
+            {t("teacherPages.class.assignmentsTitleText")}
           </h2>
 
           <div className="flex flex-row ml-auto items-center">
             <span className="text-[16px] text-brownText font-light">
-              Filter
+              {t("teacherPages.class.filterText")}
             </span>
             <img src={filterIcon} alt="filter" />
           </div>
@@ -240,7 +242,7 @@ export const ClassDetailPage = () => {
           />
         ))}
 
-        {!isAssignmentsRefetching && !isAssigmentsPending && assignmentsData?.length === 0 && <p className="text-gray-500 text-center mt-[60px]">No assignments yet</p>}
+        {!isAssignmentsRefetching && !isAssigmentsPending && assignmentsData?.length === 0 && <p className="text-gray-500 text-center mt-[60px]">{t("teacherPages.class.noAssignmentsText")}</p>}
       </div>
 
       <Modal
@@ -248,7 +250,7 @@ export const ClassDetailPage = () => {
         onClose={() => setIsUploadPlanModal(false)}
       >
         <div className="flex flex-col gap-[20px] items-center">
-          <p className="text-center text-[18px] font-semibold">Upload learning plan</p>
+          <p className="text-center text-[18px] font-semibold">{t("teacherPages.class.uploadPlanModal.title")}</p>
 
           <div className="relative mt-[20px]">
             <input
@@ -263,7 +265,7 @@ export const ClassDetailPage = () => {
                 gap-[10px] bg-gray-300 py-[14px] rounded-[8px]
               "
             >
-              Upload <img src={`${UploadPlanIcon}`} />
+              {t("teacherPages.class.uploadPlanModal.uploadButton")} <img src={`${UploadPlanIcon}`} />
             </div>
           </div>
         </div>
@@ -274,7 +276,7 @@ export const ClassDetailPage = () => {
         onClose={() => setIsAddStudentModalOpen(false)}
       >
         <div>
-          <p className="font-semibold text-[20px] text-center">Add student email</p>
+          <p className="font-semibold text-[20px] text-center">{t("teacherPages.class.addStudentModal.title")}</p>
 
           <form onSubmit={submitStudentEmail} className="flex flex-col mt-[10px]">
             <Input
@@ -282,13 +284,13 @@ export const ClassDetailPage = () => {
               value={studentEmail}
               onChange={(event) => setStudentEmail(event.target.value)}
               className=""
-              placeholder="Enter student email"
+              placeholder={t("teacherPages.class.addStudentModal.studentEmailInputPlaceholder")}
             />
             <Button
               className="bg-main-red text-white w-full border-main-red mt-[10px] disabled:bg-red-300 disabled:border-red-300 sm:w-[120px]"
               disabled={isAddingStudentPending}
             >
-              {!isAddingStudentPending ? "Add new student" : "Loading..."}
+              {!isAddingStudentPending ? t("teacherPages.class.addStudentModal.addStudentButton") : t("teacherPages.class.addStudentModal.loading") }
             </Button>
           </form>
         </div>
