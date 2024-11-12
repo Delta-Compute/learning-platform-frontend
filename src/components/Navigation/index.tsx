@@ -1,10 +1,13 @@
 import { useContext } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { Link, useLocation } from "react-router-dom";
 
 import UserContext from "../../context/UserContext";
 
 const BottomNavigation = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const { logout } = useContext(UserContext);
  
@@ -39,7 +42,7 @@ const BottomNavigation = () => {
               strokeLinecap="round"
             />
           </svg>
-          <span className={`text-xs ${isActive('/classes') ? 'text-black' : 'text-gray-400'}`}>Classes</span>
+          <span className={`text-xs ${isActive('/classes') ? 'text-black' : 'text-gray-400'}`}>{t("teacherPages.navigation.classesText")}</span>
         </Link>
 
         <button onClick={logout} className="flex flex-col gap-[3px] items-center">
@@ -59,7 +62,7 @@ const BottomNavigation = () => {
             <polyline points="16 17 21 12 16 7" />
             <line x1="21" x2="9" y1="12" y2="12" />
           </svg>
-          <span className="text-xs">Logout</span>
+          <span className="text-xs">{t("teacherPages.navigation.logoutText")}</span>
         </button>
 
         {/* <Link to="/" className="flex flex-col items-center">
