@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { useContext, useEffect, useState } from 'react';
 import plus from '../../assets/icons/plus-icon.svg';
 import BottomNavigation from '../../components/Navigation';
@@ -9,6 +11,7 @@ import { Loader } from '../../components';
 import { useNavigate, Link } from "react-router-dom";
 
 const ClassesPage = () => {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
   const { data, isPending, refetch, isRefetching } = useGetClassesTeacherId(user?.id as string);  
@@ -30,7 +33,7 @@ const ClassesPage = () => {
       <div className="p-4">
         {isPending || isRefetching && <Loader />}
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-semibold text-[#524344]">Classes</h1>
+          <h1 className="text-2xl font-semibold text-[#524344]">{t("teacherPages.classes.headerTitle")}</h1>
           <button className="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-[70px]">
             <img className="w-[70%] h-[70%]" src={plus} onClick={openModal} />
           </button>
@@ -52,14 +55,14 @@ const ClassesPage = () => {
                 {classItem.name}
               </h2>
 
-              <Link to={`/teacher-assignments/${classItem.id}`} className="text-blue-400">Add assignment</Link>
+              <Link to={`/teacher-assignments/${classItem.id}`} className="text-blue-400">{t("teacherPages.classes.addAssignmentLinkText")}</Link>
 
               <div className="flex justify-between">
                 <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
-                  {classItem.studentEmails?.length} Students
+                  {classItem.studentEmails?.length} {t("teacherPages.classes.studentsText")}
                 </span>
                 <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-3 rounded-full text-sm">
-                  {classItem.assignmentIds?.length} assignments
+                  {classItem.assignmentIds?.length} {t("teacherPages.classes.assignmentsText")}
                 </span>
               </div>
             </div>

@@ -1,0 +1,61 @@
+{
+  "teacherPages": {
+    "navigation": {
+      "classesText": "Classes",
+      "logoutText": "Terminar sessão"
+    },
+    "classes": {
+      "headerTitle": "Classes",
+      "addAssignmentLinkText": "Adicionar atribuição",
+      "studentsText": "Estudos",
+      "assignmentsText": "Atribuições",
+      "classModal": {
+        "title": "Criar uma nova classe",
+        "classNameLabel": "Nome da classe",
+        "classNameInputPlaceholder": "Introduzir o nome da turma",
+        "submitButton": "Criar"
+      }
+    },
+    "class": {
+      "uploadPlanText": "Carregar o plano de aprendizagem da turma para obter recomendações de tarefas mais adequadas",
+      "studentsText": "Estudantes",
+      "assignmentsText": "Atribuições",
+      "classCodeText": "Código de classe",
+      "inviteStudentText": "Convidar estudante",
+      "addStudentButton": "Adicionar estudante",
+      "assignmentsTitleText": "Atribuições",
+      "filterText": "Filtro",
+      "assignmentDeadlineText": "Prazo",
+      "assignmentStatus": {
+        "completed": "Concluído",
+        "inProgress": "Em curso"
+      },
+      "uploadPlanModal": {
+        "title": "Carregar plano de aprendizagem",
+        "uploadButton": "Carregar",
+        "successfullyUploadedText": "Carregado com sucesso"
+      },
+      "addStudentModal": {
+        "title": "Adicionar o e-mail do aluno",
+        "studentEmailInputPlaceholder": "Introduzir o e-mail do aluno",
+        "loading": "Carregando...",
+        "addStudentButton": "Adicionar novo aluno",
+        "successfullyAddedText": "Carregado com sucesso"
+      },
+      "noAssignmentsText": "Ainda não foram atribuídas tarefas"
+    },
+    "assignment": {
+      "headerTitle": "Atribuição",
+      "readyText": "Pronto",
+      "assignmentStatus": {
+        "completed": "Concluído",
+        "inProgress": "Em curso"
+      },
+      "topicText": "Tema",
+      "classSummaryText": "Resumo das aulas",
+      "classProgressText": "Progresso das aulas",
+      "studentFeedback": "Comentários",
+      "noStudentFeedbackText": "Na resposta"
+    }
+  }
+}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import {useTranslation} from "react-i18next";
+
 import { useParams } from "react-router-dom";
 
 import { Loader } from "../../components";
@@ -14,6 +16,7 @@ import { IAssignment } from "../../types";
 import { format } from "date-fns";
 
 export const AssignmentDetailPage = () => {
+  const { t } = useTranslation();
   const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [isProgressOpen, setIsProgressOpen] = useState(true);
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
@@ -44,7 +47,7 @@ export const AssignmentDetailPage = () => {
   return (
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
       <Header
-        title={assignmentData?.title ?? "Assignment"}
+        title={assignmentData?.title ?? t("teacherPages.assignment.headerTitle")}
         linkTo={`/classes/${classRoomId}`}
       />
 
@@ -53,11 +56,11 @@ export const AssignmentDetailPage = () => {
       <div className="min-h-screen bg-[#FBF9F9] p-4 mt-20">
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
           <h2 className="text-lg font-semibold">{assignmentData?.title}</h2>
-          <p className="text-sm text-gray-500">Topic: {assignmentData?.topic}</p>
+          <p className="text-sm text-gray-500">{t("teacherPages.assignment.topicText")}: {assignmentData?.topic}</p>
           <p className="text-sm text-gray-500 mt-2">{assignmentData && format(new Date(assignmentData.deadline), "dd/MM/yyyy HH:mm")}</p>
 
           <div className="flex items-center justify-between mt-4">
-            <div className="text-sm font-medium">{studentsDone}/{allStudents} ready</div>
+            <div className="text-sm font-medium">{studentsDone}/{allStudents} {t("teacherPages.assignment.readyText")}</div>
             {assignmentData && (
               <div
                 className={`
@@ -66,7 +69,7 @@ export const AssignmentDetailPage = () => {
                   text-sm rounded-full
                 `}
               >
-                {assignmentData.deadline >= new Date().getTime() ? "In Progress" : "Completed"}
+                {assignmentData.deadline >= new Date().getTime() ?  t("teacherPages.assignment.assignmentStatus.inProgress") : t("teacherPages.assignment.assignmentStatus.completed")}
               </div>
             )}
           </div>
@@ -77,7 +80,7 @@ export const AssignmentDetailPage = () => {
             className="flex items-center justify-between cursor-pointer"
             onClick={() => setIsSummaryOpen(!isSummaryOpen)}
           >
-            <h2 className="text-lg font-semibold mb-2">Class Summary</h2>
+            <h2 className="text-lg font-semibold mb-2">{t("teacherPages.assignment.classSummaryText")}</h2>
             <button className={`text-gray-500 transform transition-transform duration-300 ${isSummaryOpen ? 'rotate-180' : ''}`}>
               {"▲"}
             </button>
@@ -96,7 +99,7 @@ export const AssignmentDetailPage = () => {
             className="flex items-center justify-between cursor-pointer"
             onClick={() => setIsProgressOpen(!isProgressOpen)}
           >
-            <h2 className="text-lg font-semibold mb-2">Class Progress</h2>
+            <h2 className="text-lg font-semibold mb-2">{t("teacherPages.assignment.classProgressText")}</h2>
             <button className={`text-gray-500 transform transition-transform duration-300 ${isProgressOpen ? 'rotate-180' : ''}`}>
               {"▲"}
             </button>
@@ -115,11 +118,14 @@ export const AssignmentDetailPage = () => {
                       <span className="text-sm capitalize">{student.firstName} {student.lastName[0]}.</span>
                     </div>
                     <span className="text-sm text-gray-500">
-                      {student.progress ? <span className="text-green-500">Completed</span> : <span className="text-blue-400">In progress</span>}
+                      {student.progress ?
+                        <span className="text-green-500">{t("teacherPages.assignment.assignmentStatus.completed")}</span> :
+                        <span className="text-blue-400">{t("teacherPages.assignment.assignmentStatus.inProgress")}</span>
+                      }
                     </span>
                   </div>
                   <div className="px-[10px] pt-[10px] text-[14px]">
-                    Feedback: <span className="text-gray-500">{student.feedback.length > 0 ? student.feedback : "No feedback"}</span>
+                    {t("teacherPages.assignment.studentFeedback")}: <span className="text-gray-500">{student.feedback.length > 0 ? student.feedback : t("teacherPages.assignment.noStudentFeedbackText")}</span>
                   </div>
                 </li>
               ))}

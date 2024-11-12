@@ -1,0 +1,61 @@
+{
+  "teacherPages": {
+    "navigation": {
+      "classesText": "Classes",
+      "logoutText": "Logout"
+    },
+    "classes": {
+      "headerTitle": "Classes",
+      "addAssignmentLinkText": "Add assignment",
+      "studentsText": "Students",
+      "assignmentsText": "Assignments",
+      "classModal": {
+        "title": "Create a new class",
+        "classNameLabel": "Class name",
+        "classNameInputPlaceholder": "Enter class name",
+        "submitButton": "Create"
+      }
+    },
+    "class": {
+      "uploadPlanText": "Upload class learning plan to have more suitable task recommendations",
+      "studentsText": "Students",
+      "assignmentsText": "Assignments",
+      "classCodeText": "Class code",
+      "inviteStudentText": "Invite student",
+      "addStudentButton": "Add student",
+      "assignmentsTitleText": "Assignments",
+      "filterText": "Filter",
+      "assignmentDeadlineText": "Deadline",
+      "assignmentStatus": {
+        "completed": "Completed",
+        "inProgress": "In progress"
+      },
+      "addStudentModal": {
+        "title": "Add student email",
+        "studentEmailInputPlaceholder": "Enter student email",
+        "loading": "Loading...",
+        "addStudentButton": "Add new student",
+        "successfullyAddedText": "Successfully uploaded"
+      },
+      "uploadPlanModal": {
+        "title": "Upload learning plan",
+        "uploadButton": "Upload",
+        "successfullyUploadedText": "Successfully uploaded"
+      },
+      "noAssignmentsText": "No assignments yet"
+    },
+    "assignment": {
+      "headerTitle": "Assignment",
+      "readyText": "Ready",
+      "assignmentStatus": {
+        "completed": "Completed",
+        "inProgress": "In progress"
+      },
+      "topicText": "Topic",
+      "classSummaryText": "Class summary",
+      "classProgressText": "Class progress",
+      "studentFeedback": "Feedback",
+      "noStudentFeedbackText": "No feedback"
+    }
+  }
+}
