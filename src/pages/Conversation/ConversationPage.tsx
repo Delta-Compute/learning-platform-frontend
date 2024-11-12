@@ -473,7 +473,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                       flex
                     `}
                   >
-                    <div className="max-w-[95%] flex gap-[8px]">
+                    {/* <div className="max-w-[95%] flex gap-[8px]">
                       <div>
                         <div
                           className={`${items.at(-1)?.role === "user" &&
@@ -515,7 +515,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                             </div>
                           )}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
