@@ -18,7 +18,8 @@
         "description": "Description"
       },
       "deadlineLabel": "Deadline",
-      "timeForTaskText": "Time for task"
+      "timeForTaskText": "Time for task",
+      "successfullyCreatedText": "Assignment successfully created"
     }
   }
 }
