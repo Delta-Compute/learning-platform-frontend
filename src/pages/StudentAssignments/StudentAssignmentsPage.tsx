@@ -151,7 +151,7 @@ export const StudentAssignmentsPage = () => {
         className='fixed bottom-[20px] right-2 bg-[rgba(204,19,22,0.7)] px-2 py-1 rounded-[40px] text-[white]'
         onClick={logout}
       >
-        Logout
+        {t("studentPages.studentAssignments.logoutButton.text")}
       </button>
     </div>
   );

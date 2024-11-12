@@ -12,6 +12,9 @@
         "closedAssignments": "Fechado",
         "noOpenItemsTitle": "Não há atribuições em aberto",
         "noClosedItemsTitle": "Não há atribuições fechadas"
+      },
+      "logoutButton": {
+        "text": "Sair"
       }
     }
   }

@@ -12,6 +12,9 @@
         "closedAssignments": "Closed",
         "noOpenItemsTitle": "No open assignments",
         "noClosedItemsTitle": "No closed assignments"
+      },
+      "logoutButton": {
+        "text": "Logout"
       }
     }
   }
