@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -27,24 +27,31 @@ import settingsIcon from "../../assets/icons/settings-icon.svg";
 import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
+import { useClickOutside } from '../../hooks/actions/useClickOutside';
 
 export const ClassDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const [classItem, setClassItem] = useState<Class | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
   const [studentEmail, setStudentEmail] = useState("");
 
   const { data: classRoom, isPending, refetch: refetchClassRoom } = useClassById(id as string);
-  
-  const { 
-    data: assignmentsData, 
-    isPending: isAssigmentsPending, 
-    refetch: assignmentsRefetch, 
+  const dropdownRef = useRef(null);
+
+  useClickOutside(dropdownRef, () => setIsFilterOpen(false));
+
+  const {
+    data: assignmentsData,
+    isPending: isAssigmentsPending,
+    refetch: assignmentsRefetch,
     isRefetching: isAssignmentsRefetching,
   } = useGetRoomsAssignments(id as string);
+
+  const [filteredAssignments, setFilteredAssignments] = useState<IAssignment[]>(assignmentsData ?? []);
 
   const { mutate: addNewStudentMutation, isPending: isAddingStudentPending } = useMutation({
     mutationFn: (data: { classRoomId: string, studentEmails: string[] }) => {
@@ -67,7 +74,8 @@ export const ClassDetailPage = () => {
 
   useEffect(() => {
     assignmentsRefetch();
-  }, [id, assignmentsRefetch]);
+    setFilteredAssignments(assignmentsData ?? []);
+  }, [id, assignmentsRefetch, assignmentsData]);
 
   const { mutate: updateClassRoomMutation } = useMutation({
     mutationFn: (data: { classRoomId: string, learningPlan: string }) => {
@@ -92,7 +100,7 @@ export const ClassDetailPage = () => {
       const data = await pdfToText(file);
 
       return data;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
 
@@ -151,13 +159,39 @@ export const ClassDetailPage = () => {
     if (classRoom) {
       setClassItem(classRoom);
     }
-  }, [classRoom]);
+    if (assignmentsData) {
+      setFilteredAssignments(assignmentsData);
+    }
+  }, [classRoom, assignmentsData, isAssigmentsPending, isAssignmentsRefetching]);
 
   useEffect(() => {
     if (id) {
       assignmentsRefetch();
     }
   }, [id]);
+
+  const toggleDropdown = () => setIsFilterOpen(!isFilterOpen);
+
+  const handleFilter = (type: string) => {
+    console.log(type, 'type');
+    
+    let filteredAssignments = assignmentsData ? [...assignmentsData] : [];
+
+    console.log(filteredAssignments, 'filteredAssignmnetrer');
+
+    if (type === "newest") {
+      filteredAssignments = filteredAssignments.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+    } else if (type === "oldest") {
+      filteredAssignments = filteredAssignments.sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
+    } else if (type === "alphabetical") {
+      filteredAssignments = filteredAssignments.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    setIsFilterOpen(false);
+    setFilteredAssignments(filteredAssignments);
+
+    return filteredAssignments;
+  }
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
@@ -199,7 +233,7 @@ export const ClassDetailPage = () => {
           </h2>
           <div className="flex flex-col gap-[15px]">
             <div className="flex justify-between">
-              <img src={copyIcon} alt="copy"/>
+              <img src={copyIcon} alt="copy" />
               <span className="text-[24px] text-[#362D2E] font-light ml-1">
                 {`vgu6g25`}
               </span>
@@ -224,15 +258,39 @@ export const ClassDetailPage = () => {
             Assignments
           </h2>
 
-          <div className="flex flex-row ml-auto items-center">
+          <div className="flex flex-row ml-auto items-center relative">
             <span className="text-[16px] text-brownText font-light">
               Filter
             </span>
-            <img src={filterIcon} alt="filter" />
+            <img src={filterIcon} alt="filter" onClick={toggleDropdown} ref={dropdownRef}/>
+            {isFilterOpen && (
+              <div className="absolute right-0 top-[20px] mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="py-1">
+                  <button
+                    onMouseDown={() => handleFilter('newest')}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                  >
+                    Freshest
+                  </button>
+                  <button
+                    onMouseDown={() => handleFilter('oldest')}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                  >
+                    Oldest
+                  </button>
+                  <button
+                    onMouseDown={() => handleFilter('alphabetical')}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                  >
+                    Alphabetical
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {!isAssignmentsRefetching && assignmentsData?.map((assignment, index) => (
+        {!isAssignmentsRefetching && filteredAssignments?.map((assignment, index) => (
           <Assignment
             key={index}
             assignment={assignment}
