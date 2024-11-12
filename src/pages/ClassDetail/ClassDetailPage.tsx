@@ -266,22 +266,22 @@ export const ClassDetailPage = () => {
             </span>
             <img src={filterIcon} alt="filter" onClick={toggleDropdown} ref={dropdownRef}/>
             {isFilterOpen && (
-              <div className="absolute right-0 top-[20px] mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div className="py-1">
+              <div className="absolute z-10 right-0 top-[20px] mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="py-1" ref={dropdownRef}>
                   <button
-                    onMouseDown={() => handleFilter('newest')}
+                    onClick={() => handleFilter('newest')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
                     Freshest
                   </button>
                   <button
-                    onMouseDown={() => handleFilter('oldest')}
+                    onClick={() => handleFilter('oldest')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
                     Oldest
                   </button>
                   <button
-                    onMouseDown={() => handleFilter('alphabetical')}
+                    onClick={() => handleFilter('alphabetical')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
                     Alphabetical
