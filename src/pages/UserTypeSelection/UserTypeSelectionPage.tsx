@@ -1,16 +1,22 @@
 import { useTranslation } from "react-i18next";
 
-import UserType from "../../assets/icons/user-type-icon.svg";
+import { useNavigate } from "react-router-dom";
+
 import { Button, Loader } from "../../components";
 import { useContext } from "react";
+
 import UserContext from "../../context/UserContext";
+import SchoolNamesContext from "../../context/SchoolNamesContext";
+
 import { useUpdateUser } from "../../hooks/api/users";
-import { useNavigate } from 'react-router-dom';
+
+import UserType from "../../assets/icons/user-type-icon.svg";
 
 export const UserTypeSelectionPage = () => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const { mutate, isPending } = useUpdateUser();
 
@@ -19,7 +25,7 @@ export const UserTypeSelectionPage = () => {
       { id: user?.id as string, role: userType },
       {
         onSuccess: () => {
-          navigate('/join-your-school');
+          navigate(`/${currentSchoolName}/join-your-school`);
         },
       }
     );
@@ -31,13 +37,13 @@ export const UserTypeSelectionPage = () => {
       <img src={`${UserType}`} alt="microphone" className="mt-24" />
       <div className="flex flex-col items-center justify-center mt-auto">
         <Button
-          className={`w-[360px] bg-main-red text-white`}
+          className={`w-[360px] bg-main text-white`}
           onClick={() => onUserTypeSelected("student")}
         >
           {t("authPages.userTypeSelection.iAmStudentButton")}
         </Button>
         <Button
-          className={`w-[360px] mt-2 bg-primary text-main-red border-[1px] border-main-red`}
+          className={`w-[360px] mt-2 bg-primary text-main border-[1px] border-main`}
           onClick={() => onUserTypeSelected("teacher")}
         >
           {t("authPages.userTypeSelection.iAmTeacherButton")}

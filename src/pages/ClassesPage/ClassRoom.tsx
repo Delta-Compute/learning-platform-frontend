@@ -1,6 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from "react";
+
+import SchoolNamesContext from "../../context/SchoolNamesContext";
+
 import plus from '../../assets/icons/plus-icon.svg';
 import BottomNavigation from '../../components/Navigation';
 import CreateClassModal from '../../components/CreateClassModal';
@@ -12,10 +15,12 @@ import { useNavigate, Link } from "react-router-dom";
 
 const ClassesPage = () => {
   const { t } = useTranslation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const { data, isPending, refetch, isRefetching } = useGetClassesTeacherId(user?.id as string);  
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -34,7 +39,7 @@ const ClassesPage = () => {
         {isPending || isRefetching && <Loader />}
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-semibold text-[#524344]">{t("teacherPages.classes.headerTitle")}</h1>
-          <button className="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-[70px]">
+          <button className="bg-main text-white w-8 h-8 rounded-full flex items-center justify-center mr-[70px]">
             <img className="w-[70%] h-[70%]" src={plus} onClick={openModal} />
           </button>
         </div>
@@ -49,13 +54,13 @@ const ClassesPage = () => {
               <div className="bg-gray-200 h-24 rounded-[8px]"></div>
 
               <h2 
-                onClick={() => navigate(`/classes/${classItem.id}`, { state: { classItem } })} 
+                onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { classItem } })}
                 className="text-[24px] text-[#362D2E] font-semibold"
               >
                 {classItem.name}
               </h2>
 
-              <Link to={`/teacher-assignments/${classItem.id}`} className="text-blue-400">{t("teacherPages.classes.addAssignmentLinkText")}</Link>
+              <Link to={`/${currentSchoolName}/teacher-assignments/${classItem.id}`} className="text-blue-400">{t("teacherPages.classes.addAssignmentLinkText")}</Link>
 
               <div className="flex justify-between">
                 <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
@@ -70,7 +75,7 @@ const ClassesPage = () => {
         </div>
       </div>
       <CreateClassModal isOpen={isModalOpen} onClose={closeModal} onRefreshClasses={onRefreshClasses} />
-      <BottomNavigation />
+      <BottomNavigation classRoomId={data?.length > 0 ? data[0].id :  ""} />
     </>
   );
 };

@@ -27,12 +27,12 @@ export const UserContextProvider = ({
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState<string>("");
-  const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || '');
+  const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || "");
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/initial");
+    navigate("/");
   };
 
   const { 

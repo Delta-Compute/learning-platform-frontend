@@ -11,6 +11,7 @@ import { teacherInstructions, studentInstructionsForAI, studentFeedbackInstructi
 import { IAssignment } from "../../types";
 
 import UserContext from "../../context/UserContext";
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { Link, useParams } from "react-router-dom";
 
@@ -19,10 +20,10 @@ import { AssignmentModal } from "./AssignmentModal";
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-import { SpeakingDots } from '../../components/SpeakingDots/index.tsx';
+import { SpeakingDots } from '../../components/SpeakingDots/index';
 import { useGenerateAssignmentSummary, useGetStudentAssignments } from "../../hooks";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ClassRoomProgressApiService } from "../../services/index.ts";
+import { ClassRoomProgressApiService } from "../../services";
 
 import { toast } from "react-hot-toast";
 import { useClassById } from "../../hooks/api/classes.ts";
@@ -30,7 +31,7 @@ import { Class } from "../../types/class.ts";
 import { AssignmentsBasedOnLearningPlan } from "./AssignmentsBasedOnLearningPlan.tsx";
 import { openai } from "../../vars/open-ai.ts";
 
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 interface RealtimeEvent {
   time: string;
@@ -48,6 +49,7 @@ interface ConversationPageProps {
 export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
@@ -174,11 +176,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         wavStreamPlayer.connect()
       ]);
   
-      console.log("connected");
-  
       if (client.getTurnDetectionType() === "server_vad") {
-        console.log("server vad");
-        
         await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
         
         setConnectionLoading(false);
@@ -432,7 +430,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
-            <Link to={role === "teacher" ? "/classes" : "/student-assignments"}>
+            <Link to={role === "teacher" ? `/${currentSchoolName}/classes` : `/${currentSchoolName}/student-assignments`}>
               <img src={`${LeftArrowIcon}`} />
             </Link>
           </div>
@@ -538,7 +536,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       >
         {isConnected && (
           <button
-            className="relative z-[2] bg-main-red p-[12px] rounded-[50%]"
+            className="relative z-[2] bg-main p-[12px] rounded-[50%]"
             onClick={disconnectConversation}
           >
             <img src={`${CrossIconWhite}`} alt="close" />
@@ -617,7 +615,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         {items.length > 0 && !isConnected && user?.role === "teacher" && (
           <div className="self-end relative z-[2]">
             <Button
-              className="text-main-red border-main-red px-[22px] hover:bg-main-red hover:text-white"
+              className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
               onClick={() => setIsAssignmentModalOpen(true)}
             >
               {t("conversationPage.assignButton")}
@@ -629,7 +627,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           <div className="absolute right-[20px] bottom-[20px]">
             {timeCounter >= currentAssignment.timeToDiscuss ? (
               <Button
-                className="border-main-red w-full px-[22px] bg-main-red text-white"
+                className="border-main w-full px-[22px] bg-main text-white"
                 onClick={() => {
                   updateStudentStatusHandler();
                 }}

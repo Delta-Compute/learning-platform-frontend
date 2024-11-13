@@ -1,10 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
 import UserContext from "../../context/UserContext";
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { useGetStudentAssignments } from "../../hooks";
 
@@ -14,6 +15,7 @@ import { IAssignment } from '../../types';
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
   const { user, logout } = useContext(UserContext);
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const [openAssignment, setOpenAssignment] = useState<IAssignment[]>([]);
   const [closedAssignment, setClosedAssignment] = useState<IAssignment[]>([]);
   const [openedAssignmentId, setOpenedAssignmentId] = useState('');
@@ -39,7 +41,7 @@ export const StudentAssignmentsPage = () => {
     e.preventDefault();
     e.stopPropagation();
     if (openedAssignmentId === id) {
-      setOpenedAssignmentId('');
+      setOpenedAssignmentId("");
     } else {
       setOpenedAssignmentId(id);
     }
@@ -56,23 +58,23 @@ export const StudentAssignmentsPage = () => {
       <div className="pt-[100px] pb-[150px] px-[20px]">
         <div className="w-full">
           <div className='flex gap-2'>
-            <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "open" ? 'font-semibold border-[#CC1316] border-b' : 'border-transparent'}`}
+            <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "open" ? 'font-semibold border-main border-b' : 'border-transparent'}`}
               onClick={() => setSelectedTab('open')}
             >
               {t("studentPages.studentAssignments.tabs.openAssignments")}
             </div>
-            <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "closed" ? 'font-semibold border-[#CC1316] border-b' : 'border-transparent'}`}
+            <div className={`flex-1 flex justify-center border-b transition-all pb-2 ${selectedTab === "closed" ? 'font-semibold border-main border-b' : 'border-transparent'}`}
               onClick={() => setSelectedTab('closed')}
             >
               {t("studentPages.studentAssignments.tabs.closedAssignments")}
             </div>
           </div>
-          {selectedTab === 'open' && !isRefetching &&
+          {selectedTab === "open" && !isRefetching &&
             <ul className="py-[20px] flex flex-col gap-[8px]">
               {openAssignment.length ? openAssignment?.map((assignment) => (
                 <Link
                   key={assignment.id}
-                  to={`/student-assignments/${assignment.id}`}
+                  to={`/${currentSchoolName}/student-assignments/${assignment.id}`}
                   className="block"
                 >
                   <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
@@ -106,12 +108,12 @@ export const StudentAssignmentsPage = () => {
               }
             </ul>
           }
-          {selectedTab === 'closed' && !isRefetching &&
+          {selectedTab === "closed" && !isRefetching &&
             <ul className="py-[20px] flex flex-col gap-[8px]">
               {closedAssignment.length ? closedAssignment?.map((assignment) => (
                 <Link
                   key={assignment.id}
-                  to={`/student-assignments/${assignment.id}`}
+                  to={`/${currentSchoolName}/student-assignments/${assignment.id}`}
                   className="block"
                 >
                   <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">

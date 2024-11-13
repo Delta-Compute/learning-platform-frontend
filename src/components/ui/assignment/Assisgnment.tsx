@@ -1,10 +1,12 @@
 import { FC } from "react";
-import menuIcon from "../../../assets/icons/menu-icon.svg";
-import { IAssignment } from '../../../types';
+
+import { IAssignment } from "../../../types";
 
 import { format } from "date-fns";
 
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+
+import menuIcon from "../../../assets/icons/menu-icon.svg";
 
 type Props = {
   assignment: IAssignment;

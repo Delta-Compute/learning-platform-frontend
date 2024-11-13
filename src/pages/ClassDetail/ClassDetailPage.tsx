@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -18,6 +18,8 @@ import Assignment from "../../components/ui/assignment/Assisgnment";
 import { useMutation } from "@tanstack/react-query";
 import { ClassRoomApiService } from "../../services";
 
+import SchoolNamesContext from "../../context/SchoolNamesContext";
+
 // import * as pdfjsLib from "pdfjs-dist";
 import pdfToText from "react-pdftotext";
 
@@ -35,6 +37,7 @@ export const ClassDetailPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [classItem, setClassItem] = useState<Class | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -71,7 +74,7 @@ export const ClassDetailPage = () => {
   });
 
   const onAssignmentClick = (assignment: IAssignment) => {
-    navigate(`/classes/${id}/${assignment.id}`);
+    navigate(`/${currentSchoolName}/classes/${id}/${assignment.id}`);
     window.scrollTo(0, 0);
   };
 
@@ -199,7 +202,7 @@ export const ClassDetailPage = () => {
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
       {isPending || isAssigmentsPending || isAssignmentsRefetching && <Loader />}
-      <Header title={classItem?.name as string} linkTo="/classes" />
+      <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
       <div className=" px-4 mt-12">
         <div
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2`}
@@ -345,7 +348,7 @@ export const ClassDetailPage = () => {
               placeholder={t("teacherPages.class.addStudentModal.studentEmailInputPlaceholder")}
             />
             <Button
-              className="bg-main-red text-white w-full border-main-red mt-[10px] disabled:bg-red-300 disabled:border-red-300 sm:w-[120px]"
+              className="bg-main text-white w-full border-main mt-[10px] disabled:opacity-40 sm:w-[120px]"
               disabled={isAddingStudentPending}
             >
               {!isAddingStudentPending ? t("teacherPages.class.addStudentModal.addStudentButton") : t("teacherPages.class.addStudentModal.loading") }

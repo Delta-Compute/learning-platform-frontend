@@ -1,45 +1,80 @@
-import { useTranslation } from "react-i18next";
+import {useContext} from "react";
 
-import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
+
+import {Link} from "react-router-dom";
+
+import SchoolNamesContext, {School} from "../../context/SchoolNamesContext";
+
 import Onboarding from "../../assets/icons/onboarding.svg";
-import { Button } from "../../components";
+import AdeliaCostaLogo from "../../assets/images/adelia-costa-logo.png";
+import SBLogo from "../../assets/images/sb-logo.png";
+import EducareLogo from "../../assets/images/educare-logo.png";
+
+const SCHOOL_LOGOS = {
+  [School.AdeliaCosta]: AdeliaCostaLogo,
+  [School.SB]: SBLogo,
+  [School.Edurace]: EducareLogo,
+};
 
 export const InitialPage = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return (
-    <div className="flex flex-col items-center h-screen justify-center  py-12">
-      <h3 className="text-[24px] text-main-red font-normal absolute top-1/3">
-        Maple Bear
-      </h3>
+    <div
+      className={`
+        ${currentSchoolName === School.Edurace && "bg-main"}
+        flex flex-col items-center h-screen justify-center 
+        py-12 
+      `}
+    >
+      {currentSchoolName === School.MappleBear && (
+        <h3 className="text-[24px] text-main font-normal absolute top-1/3">
+          Maple Bear
+        </h3>
+      )}
+
+      {currentSchoolName !== School.MappleBear && (<div className="mt-[100px]">
+        <img src={`${SCHOOL_LOGOS[currentSchoolName]}`} className="w-[340px]" />
+      </div>)}
       <h1
-        className="text-5xl font-handwriting text-brownText text-center absolute top-2/3"
+        className={`
+          ${currentSchoolName === School.Edurace && "text-white"}
+          text-5xl font-handwriting text-brownText text-center absolute top-2/3
+        `}
         style={{
           fontFamily: "Edu AU VIC WA NT Guides",
         }}
       >
         {t("authPages.initial.title")}
       </h1>
+
       <div className="flex flex-col items-center justify-center mt-auto">
-        <Button
-          className={`w-[360px] bg-main-red text-white`}
-          onClick={() => navigate("/sign-up")}
+        <Link
+          to={`/${currentSchoolName}/sign-up`}
+          className={`
+            ${currentSchoolName === School.Edurace ? "bg-white text-main" : "bg-main text-white"}
+            w-[360px] py-4 rounded-full text-center
+          `}
         >
           {t("authPages.initial.signUpButton")}
-        </Button>
-        <Button
-          className={`w-[360px] mt-2 bg-primary text-main-red border-[1px] border-main-red`}
-          onClick={() => navigate("/sign-in")}
+        </Link>
+        <Link
+          className={`
+            ${currentSchoolName === School.Edurace ? "bg-main text-white border-white" : "bg-white text-main border-main"}
+            w-[360px] mt-2 bg-primary border-[1px] py-4 rounded-full text-center
+          `}
+          to={`/${currentSchoolName}/sign-in`}
         >
           {t("authPages.initial.signInButton")}
-        </Button>
+        </Link>
       </div>
-      <img
+      {currentSchoolName === School.MappleBear && <img
         src={`${Onboarding}`}
         alt="microphone"
-        className="absolute top-0 h-full w-full -z-10"
-      />
+        className="absolute top-0 left-0 h-full w-full -z-10"
+      />}
     </div>
   );
 };

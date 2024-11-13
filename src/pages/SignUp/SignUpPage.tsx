@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
 
+import SchoolNamesContext from "../../context/SchoolNamesContext";
+
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader } from "../../components";
-import { useState } from "react";
+import {useContext, useState} from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
@@ -18,6 +20,7 @@ type UserInfo = {
 
 export const SignUpPage = () => {
   const { t } = useTranslation();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
     password: "",
@@ -38,13 +41,13 @@ export const SignUpPage = () => {
   };
 
   const onSignInClick = () => {
-    navigate("/sign-in");
+    navigate(`/${currentSchoolName}/sign-in`);
   };
 
   return (
     <div className="flex flex-col h-screen py-12 bg-bg-color">
       {isPending && <Loader />}
-      <Header linkTo="/" title={t("authPages.signUp.headerTitle")} />
+      <Header linkTo={`${currentSchoolName}/initial`} title={t("authPages.signUp.headerTitle")} />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.emailLabel")}</h3>
         <input
@@ -80,7 +83,7 @@ export const SignUpPage = () => {
           value={userInfo.confirmPassword}
         />
         <Button
-          className={`mt-10 bg-primary bg-main-red text-white`}
+          className={`mt-10 bg-primary bg-main text-white`}
           onClick={onSignUp}
         >
           {t("authPages.signUp.submitButton")}
@@ -120,7 +123,7 @@ export const SignUpPage = () => {
           {t("authPages.signUp.bottomText")}
         </p>
         <p
-          className="text-main-red text-[16px] font-light cursor-pointer"
+          className="text-main text-[16px] font-light cursor-pointer"
           onClick={onSignInClick}
         >
           {t("authPages.signUp.bottomLinkText")}

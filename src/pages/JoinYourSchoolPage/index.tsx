@@ -1,14 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
-import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-import arrowDropdown from "../../assets/icons/arrow_dropdown.svg";
 import { useContext, useRef, useState } from "react";
-import UserContext from '../../context/UserContext';
+
+import { Link, useNavigate } from "react-router-dom";
+
+import UserContext from "../../context/UserContext";
+import SchoolNamesContext from "../../context/SchoolNamesContext";
+
 import { useUpdateUser } from '../../hooks';
 
 import { useTranslation } from "react-i18next";
 
+import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
+import arrowDropdown from "../../assets/icons/arrow_dropdown.svg";
+
 const JoinYourSchoolPage = () => {
   const { t } = useTranslation();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("School: choose");
   const [firstName, setFirstName] = useState("");
@@ -33,11 +39,11 @@ const JoinYourSchoolPage = () => {
   {
     onSuccess: () => {
       if (user?.role === "teacher") {
-        navigate('/classes');
+        navigate(`/${currentSchoolName}/classes`);
       }
 
       if (user?.role === "student") {
-        navigate('/student-assignments');
+        navigate(`/${currentSchoolName}/student-assignments`);
       }
     }
   });
@@ -49,7 +55,7 @@ const JoinYourSchoolPage = () => {
     <div className="flex flex-col min-h-screen">
       <div className="fixed z-[1] top-0 w-full bg-white pt-4 pb-[5px] flex justify-center items-center">
         <div className="absolute left-4 top-[22px]">
-          <Link to="/teacher-tasks">
+          <Link to={`/${currentSchoolName}/teacher-tasks`}>
             <img src={LeftArrowIcon} alt="Back" className="w-6 h-6" />
           </Link>
         </div>
@@ -131,7 +137,10 @@ const JoinYourSchoolPage = () => {
           </div>
         </div>
 
-        <button onClick={() => handleOnSubmit()} className="w-full bg-red-600 text-white rounded-[40px] font-medium p-[16px] hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+        <button
+          onClick={() => handleOnSubmit()}
+          className="w-full bg-main text-white rounded-[40px] font-medium p-[16px] focus:outline-none focus:ring-2"
+        >
           {t("authPages.joinYourSchool.submitButton")}
         </button>
       </div>

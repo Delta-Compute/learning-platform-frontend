@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { useParams } from "react-router-dom";
+
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { Loader } from "../../components";
 import Header from "../../components/ui/header/Header";
@@ -24,6 +26,8 @@ export const AssignmentDetailPage = () => {
   const { classRoomId, assignmentId } = useParams();
   const { data, isPending, isRefetching: isAssignmentRefetching } = useGetRoomsAssignments(classRoomId as string);
   const { data: classRoomProgress, isPending: classRoomProgressPending, refetch, isRefetching } = useGetClassRoomProgress(classRoomId as string, assignmentId as string);
+
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   useEffect(() => {
     refetch();
@@ -48,7 +52,7 @@ export const AssignmentDetailPage = () => {
     <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
       <Header
         title={assignmentData?.title ?? t("teacherPages.assignment.headerTitle")}
-        linkTo={`/classes/${classRoomId}`}
+        linkTo={`/${currentSchoolName}/classes/${classRoomId}`}
       />
 
       {(isPending || classRoomProgressPending || isRefetching || isAssignmentRefetching) && <Loader />}

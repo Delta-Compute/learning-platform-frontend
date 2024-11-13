@@ -1,10 +1,14 @@
+import { useContext } from "react";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { UsersApiService } from "../../services";
-import { useContext } from "react";
+
 import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../types";
+
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 export const useGetUser = (id: string) => {
   return useQuery({
@@ -48,6 +52,7 @@ export const useUpdateUser = () => {
 export const useLogin = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
     mutationFn: (credentials: { email: string; password: string }) =>
@@ -58,7 +63,7 @@ export const useLogin = () => {
       
       setUser(user);
       
-      navigate(user?.role === "student" ? "/student-assignments" : "/classes");
+      navigate(user?.role === "student" ? `/${currentSchoolName}/student-assignments` : `/${currentSchoolName}/classes`);
     },
     onError: (error) => {
       console.error("Login failed:", error);
@@ -69,6 +74,7 @@ export const useLogin = () => {
 export const useSingUp = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
     mutationFn: (data: { email: string; password: string }) =>
@@ -78,7 +84,7 @@ export const useSingUp = () => {
       const user: User | null = await UsersApiService.getUser(data.id);
       if (user) {
         setUser(user);
-        navigate("/user-type-selection");
+        navigate(`/${currentSchoolName}/user-type-selection`);
       }
     },
     onError: (error) => {

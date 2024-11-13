@@ -276,7 +276,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
         </div>
         <div className="flex justify-center">
           <Button
-            className="bg-main-red text-white w-full border-main-red disabled:bg-red-300 disabled:border-red-300 sm:w-[120px]"
+            className="bg-main text-white w-full border-main-red disabled:opacity-40 sm:w-[120px]"
             disabled={isCreateAssignmentPending}
             onClick={() => {
               if (selectedClassRoom) {

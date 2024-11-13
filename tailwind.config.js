@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         // components
-        "main-red": "#CC1316",
+        "main": "var(--main)",
         "light-gray": "#E9ECEF",
 
         // backgrounds

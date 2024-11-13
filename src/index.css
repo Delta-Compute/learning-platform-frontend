@@ -12,3 +12,20 @@
   outline: none;
   font-family: Poppins;
 }
+
+/* themes */
+.mapple-bear-light {
+  --main: #CC1316;
+}
+
+.adelia-costa-light {
+  --main: #DCAD3A;
+}
+
+.sb-light {
+  --main: #0C3C69;
+}
+
+.educare-light {
+  --main: #5D0000;
+}

@@ -3,12 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader } from "../../components";
-import { useState } from "react";
+import {useContext, useState} from "react";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
 import { AuthProvider } from "../api/types";
 import { useLogin } from "../../hooks/api/users";
+
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 type UserInfo = {
   email: string;
@@ -17,6 +19,7 @@ type UserInfo = {
 
 export const SignInPage = () => {
   const { t } = useTranslation();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
     password: "",
@@ -28,7 +31,7 @@ export const SignInPage = () => {
   };
 
   const onSignUpClick = () => {
-    navigate("/sign-up");
+    navigate(`/${currentSchoolName}/sign-up`);
   };
 
   const handleLogin = async () => {
@@ -64,7 +67,7 @@ export const SignInPage = () => {
           value={userInfo.password}
         />
         <Button
-          className={`mt-10 bg-primary bg-main-red text-white`}
+          className={`mt-10 bg-primary bg-main text-white`}
           onClick={() => handleLogin()}
         >
           {t("authPages.signIn.submitButton")}
@@ -104,7 +107,7 @@ export const SignInPage = () => {
           {t("authPages.signIn.bottomText")}
         </p>
         <p
-          className="text-main-red text-[16px] font-light cursor-pointer"
+          className="text-main text-[16px] font-light cursor-pointer"
           onClick={onSignUpClick}
         >
           {t("authPages.signIn.bottomLinkText")}

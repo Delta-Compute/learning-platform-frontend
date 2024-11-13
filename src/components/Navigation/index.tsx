@@ -5,18 +5,20 @@ import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 
 import UserContext from "../../context/UserContext";
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-const BottomNavigation = () => {
+const BottomNavigation = ({ classRoomId }: { classRoomId: string }) => {
   const { t } = useTranslation();
   const location = useLocation();
   const { logout } = useContext(UserContext);
+  const { currentSchoolName } = useContext(SchoolNamesContext);
  
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="fixed bottom-[10px] w-[90%] bg-white shadow-lg py-2 rounded-[40px] left-1/2 transform -translate-x-1/2">
       <div className="flex justify-around items-center">
-        <Link to="/classes" className="flex flex-col items-center">
+        <Link to={`/${currentSchoolName}/classes`} className="flex flex-col items-center">
           <svg
             width="20"
             height="24"
@@ -27,45 +29,25 @@ const BottomNavigation = () => {
           >
             <path
               d="M1 9.9575C1 5.01069 4.94029 1 9.80019 1C14.6601 1 18.6004 5.01069 18.6004 9.9575C18.6004 14.8658 15.792 20.5947 11.4095 22.6419C10.9058 22.8777 10.3564 23 9.80019 23C9.24399 23 8.69458 22.8777 8.19086 22.6419C3.80836 20.5936 1 14.8669 1 9.9586V9.9575Z"
-              stroke={isActive('/classes') ? '#000000' : '#ADB5BD'}
+              stroke={isActive(`/${currentSchoolName}/classes`) ? '#000000' : '#ADB5BD'}
               strokeWidth="1.5"
             />
             <path
               d="M8.94623 6.09993C9.4978 5.90028 10.1019 5.90028 10.6535 6.09993L13.2297 7.04155C13.7907 7.24616 13.7907 7.95457 13.2297 8.15918L10.6535 9.1008C10.1019 9.30044 9.4978 9.30044 8.94623 9.1008L6.36998 8.15918C5.80897 7.95457 5.80897 7.24616 6.36998 7.04155L8.94623 6.09993Z"
-              stroke={isActive('/classes') ? '#000000' : '#ADB5BD'}
+              stroke={isActive(`/${currentSchoolName}/classes`) ? '#000000' : '#ADB5BD'}
               strokeWidth="1.5"
             />
             <path
               d="M12.5502 8.7002V11.6703C12.5547 11.8786 12.4948 12.0834 12.3787 12.2564C12.2625 12.4295 12.0957 12.5625 11.9012 12.6372C11.3357 12.8451 10.5008 13.1003 9.80011 13.1003C9.09939 13.1003 8.26447 12.8451 7.69906 12.6372C7.50448 12.5625 7.33771 12.4295 7.22154 12.2564C7.10538 12.0834 7.04548 11.8786 7.05005 11.6703V8.7002"
-              stroke={isActive('/classes') ? '#000000' : '#ADB5BD'}
+              stroke={isActive(`/${currentSchoolName}/classes`) ? '#000000' : '#ADB5BD'}
               strokeWidth="1.5"
               strokeLinecap="round"
             />
           </svg>
-          <span className={`text-xs ${isActive('/classes') ? 'text-black' : 'text-gray-400'}`}>{t("teacherPages.navigation.classesText")}</span>
+          <span className={`text-xs ${isActive(`/${currentSchoolName}/classes`) ? 'text-black' : 'text-gray-400'}`}>{t("teacherPages.navigation.classesText")}</span>
         </Link>
 
-        <button onClick={logout} className="flex flex-col gap-[3px] items-center">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg"
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            className="w-5 h-5"
-          >
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" x2="9" y1="12" y2="12" />
-          </svg>
-          <span className="text-xs">{t("teacherPages.navigation.logoutText")}</span>
-        </button>
-
-        {/* <Link to="/" className="flex flex-col items-center">
+        <Link to={`/${currentSchoolName}/teacher-assignments/${classRoomId}`} className="flex flex-col items-center">
           <svg
             width="24"
             height="24"
@@ -90,7 +72,27 @@ const BottomNavigation = () => {
             />
           </svg>
           <span className={`text-xs ${isActive('/ai-conversation') ? 'text-black' : 'text-gray-400'}`}>AI</span>
-        </Link> */}
+        </Link>
+
+        <button onClick={logout} className="flex flex-col gap-[3px] items-center">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="w-5 h-5"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" x2="9" y1="12" y2="12" />
+          </svg>
+          <span className="text-xs">{t("teacherPages.navigation.logoutText")}</span>
+        </button>
 
         {/* <Link to="/profile" className="flex flex-col items-center">
           <svg
