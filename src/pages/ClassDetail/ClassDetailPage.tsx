@@ -23,6 +23,8 @@ import SchoolNamesContext from "../../context/SchoolNamesContext";
 // import * as pdfjsLib from "pdfjs-dist";
 import pdfToText from "react-pdftotext";
 
+import { useClickOutside } from '../../hooks/actions/useClickOutside';
+
 import mammoth from "mammoth";
 
 import { toast } from "react-hot-toast";
@@ -31,7 +33,7 @@ import settingsIcon from "../../assets/icons/settings-icon.svg";
 import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
-import { useClickOutside } from '../../hooks/actions/useClickOutside';
+import AddClassIcon from "../../assets/icons/add-class-icon.svg";
 
 export const ClassDetailPage = () => {
   const { t } = useTranslation();
@@ -45,7 +47,12 @@ export const ClassDetailPage = () => {
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
   const [studentEmail, setStudentEmail] = useState("");
 
-  const { data: classRoom, isPending, refetch: refetchClassRoom } = useClassById(id as string);
+  const {
+    data: classRoom,
+    isPending: isClassRoomPending,
+    refetch: refetchClassRoom,
+    isRefetching: isClassRoomRefetching,
+  } = useClassById(id as string);
   const dropdownRef = useRef(null);
 
   useClickOutside(dropdownRef, () => setIsFilterOpen(false));
@@ -59,20 +66,6 @@ export const ClassDetailPage = () => {
 
   const [filteredAssignments, setFilteredAssignments] = useState<IAssignment[]>(assignmentsData ?? []);
 
-  const { mutate: addNewStudentMutation, isPending: isAddingStudentPending } = useMutation({
-    mutationFn: (data: { classRoomId: string, studentEmails: string[] }) => {
-      return ClassRoomApiService.updateClassRoom(data.classRoomId, { studentEmails: data.studentEmails });
-    },
-    onSuccess: () => {
-      toast.success(t("teacherPages.class.addStudentModal.successfullyAddedText"));
-      setIsAddStudentModalOpen(false);
-      refetchClassRoom();
-    },
-    onError: () => {
-      toast.error("Something went wrong");
-    },
-  });
-
   const onAssignmentClick = (assignment: IAssignment) => {
     navigate(`/${currentSchoolName}/classes/${id}/${assignment.id}`);
     window.scrollTo(0, 0);
@@ -83,13 +76,15 @@ export const ClassDetailPage = () => {
     setFilteredAssignments(assignmentsData ?? []);
   }, [id, assignmentsRefetch, assignmentsData]);
 
-  const { mutate: updateClassRoomMutation } = useMutation({
-    mutationFn: (data: { classRoomId: string, learningPlan: string }) => {
-      return ClassRoomApiService.updateClassRoom(data.classRoomId, { learningPlan: data.learningPlan });
+  const { mutate: updateClassRoomMutation, isPending: isUpdateClassRoomPending } = useMutation({
+    mutationFn: (data: FormData) => {
+      return ClassRoomApiService.updateClassRoom(id as string, data);
     },
     onSuccess: () => {
       setIsUploadPlanModal(false);
+      setIsAddStudentModalOpen(false);
       toast.success(t("teacherPages.class.uploadPlanModal.successfullyUploadedText"));
+      refetchClassRoom();
     },
     onError: () => {
       toast.error("Something went wrong");
@@ -139,7 +134,11 @@ export const ClassDetailPage = () => {
       return;
     }
 
-    updateClassRoomMutation({ classRoomId: id as string, learningPlan, });
+    const formData = new FormData();
+
+    formData.append("learningPlan", learningPlan);
+
+    updateClassRoomMutation(formData as FormData);
   };
 
   const submitStudentEmail = (event: React.FormEvent) => {
@@ -158,7 +157,13 @@ export const ClassDetailPage = () => {
 
     studentEmails.push(studentEmail);
 
-    addNewStudentMutation({ classRoomId: id as string, studentEmails });
+    const formData = new FormData();
+
+    studentEmails.forEach((email) => {
+      formData.append("studentEmails[]", email);
+    });
+
+    updateClassRoomMutation(formData as FormData);
   };
 
   useEffect(() => {
@@ -201,15 +206,43 @@ export const ClassDetailPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
-      {isPending || isAssigmentsPending || isAssignmentsRefetching && <Loader />}
+      {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending) && <Loader />}
       <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
-      <div className=" px-4 mt-12">
+      <div className="px-4 mt-12">
         <div
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2`}
         >
-          <div className="bg-gray-200 h-24 rounded-[8px]"></div>
+          <div className="bg-gray-200 h-[140px] rounded-[8px] relative overflow-hidden z-10">
+            <div className="z-40 absolute w-[40px] right-[10px] bottom-[10px]">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  const selectedFile = event.target?.files?.[0];
+
+                  if (!selectedFile) return;
+
+                  const formData = new FormData();
+                  formData.append("file", selectedFile);
+
+                  updateClassRoomMutation(formData as FormData);
+                }}
+                className="relative z-30 opacity-0"
+              />
+            </div>
+
+            <img src={`${AddClassIcon}`} className="absolute block right-[10px] bottom-[10px] z-20"/>
+
+            {classRoom?.logo !== "" && (
+              <img
+                src={classRoom?.logo}
+                alt="logo"
+                className="absolute left-0 top-0 w-full h-full z-10 object-cover"
+              />
+            )}
+          </div>
           <div className="flex items-center gap-[10px] justify-between">
-            <p className="text-[14px] text-gray-500 font-light">
+          <p className="text-[14px] text-gray-500 font-light">
               {t("teacherPages.class.uploadPlanText")}
             </p>
 
@@ -344,14 +377,13 @@ export const ClassDetailPage = () => {
               type="email"
               value={studentEmail}
               onChange={(event) => setStudentEmail(event.target.value)}
-              className=""
               placeholder={t("teacherPages.class.addStudentModal.studentEmailInputPlaceholder")}
             />
             <Button
               className="bg-main text-white w-full border-main mt-[10px] disabled:opacity-40 sm:w-[120px]"
-              disabled={isAddingStudentPending}
+              disabled={isUpdateClassRoomPending}
             >
-              {!isAddingStudentPending ? t("teacherPages.class.addStudentModal.addStudentButton") : t("teacherPages.class.addStudentModal.loading") }
+              {!isUpdateClassRoomPending ? t("teacherPages.class.addStudentModal.addStudentButton") : t("teacherPages.class.addStudentModal.loading") }
             </Button>
           </form>
         </div>

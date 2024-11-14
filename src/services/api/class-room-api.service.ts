@@ -38,21 +38,20 @@ export const getAllClassRooms = async (): Promise<ClassRoom[] | null> => {
 // update class room fields 
 export const updateClassRoom = async (
   classRoomId: string, 
-  classRoom : { learningPlan?: string, studentEmails?: string[], summary?: string }
+  data: FormData,
 ) => {
   try {
-    const response = await apiClient.patch<ClassRoom[]>(
+    await apiClient.patch(
       `/class-room/${classRoomId}`,
+      data,
       {
-        learningPlan: classRoom.learningPlan,
-        studentEmails: classRoom.studentEmails,
-        summary: classRoom.summary,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
       }
     );
-
-    console.log(response);
   } catch (error) {
-    console.log(error);
+    console.log("classroom updating error", error);
   }
 };
 

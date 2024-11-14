@@ -11,7 +11,7 @@ const App = () => {
     <>
       <Toaster />
 
-      <div className="fixed top-[10px] right-[10px] z-[4]">
+      <div className="fixed top-[10px] right-[10px] z-40">
         <LanguageSwitch />
       </div>
 

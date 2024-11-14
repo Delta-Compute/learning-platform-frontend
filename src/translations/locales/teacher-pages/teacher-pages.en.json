@@ -14,7 +14,8 @@
         "classNameLabel": "Class name",
         "classNameInputPlaceholder": "Enter class name",
         "submitButton": "Create"
-      }
+      },
+      "noClassesText": "No classes yet"
     },
     "class": {
       "uploadPlanText": "Upload class learning plan to have more suitable task recommendations",
@@ -45,7 +46,7 @@
       "uploadPlanModal": {
         "title": "Upload learning plan",
         "uploadButton": "Upload",
-        "successfullyUploadedText": "Successfully uploaded"
+        "successfullyUploadedText": "Class successfully updated"
       },
       "noAssignmentsText": "No assignments yet"
     },

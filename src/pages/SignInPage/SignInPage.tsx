@@ -38,6 +38,7 @@ export const SignInPage = () => {
     await mutate({
       email: userInfo.email,
       password: userInfo.password,
+      school: currentSchoolName,
     });
   };
 

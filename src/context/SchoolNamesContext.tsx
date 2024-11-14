@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export enum School {
-  MappleBear = "mapple-bear",
+  MappleBear = "maple-bear",
   AdeliaCosta = "adelia-costa",
   SB = "sb",
-  Edurace = "educare"
+  Educare = "educare",
+  Beka = "beka"
 };
 
 interface SchoolNamesContextType {
@@ -23,7 +24,7 @@ export const SchoolNamesContextProvider = ({ children }: { children: React.React
 
   useEffect(() => {
     if (localStorage.getItem("school-name")) {
-      setCurrentSchoolName(JSON.parse(localStorage.getItem("school-name")));
+      setCurrentSchoolName(JSON.parse(localStorage.getItem("school-name") || ""));
     }
   }, [location]);
 
