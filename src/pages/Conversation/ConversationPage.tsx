@@ -155,6 +155,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [connectionLoading, setConnectionLoading] = useState(false);
 
+  console.log('items', items)
+
   const connectConversation = useCallback(async () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
@@ -343,7 +345,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     });
     const items = client.conversation.getItems();
     setItems(items);
-
 
     return () => {
       client.reset();

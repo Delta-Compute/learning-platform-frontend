@@ -8,7 +8,9 @@ import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../types";
 
-import SchoolNamesContext from "../../context/SchoolNamesContext";
+import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
+
+import { toast } from "react-hot-toast";
 
 export const useGetUser = (id: string) => {
   return useQuery({
@@ -44,6 +46,8 @@ export const useUpdateUser = () => {
       }
     },
     onError: (error) => {
+      toast.error("Something went wrong");
+
       console.error("Update user failed:", error);
     },
   });
@@ -55,7 +59,7 @@ export const useLogin = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
-    mutationFn: (credentials: { email: string; password: string }) =>
+    mutationFn: (credentials: { email: string; password: string, school: School }) =>
       UsersApiService.signIn(credentials),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
@@ -66,6 +70,7 @@ export const useLogin = () => {
       navigate(user?.role === "student" ? `/${currentSchoolName}/student-assignments` : `/${currentSchoolName}/classes`);
     },
     onError: (error) => {
+      toast.error("Something went wrong");
       console.error("Login failed:", error);
     },
   });
@@ -77,7 +82,7 @@ export const useSingUp = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
-    mutationFn: (data: { email: string; password: string }) =>
+    mutationFn: (data: { email: string; password: string, school: School }) =>
       UsersApiService.signUp(data),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
@@ -88,6 +93,8 @@ export const useSingUp = () => {
       }
     },
     onError: (error) => {
+      toast.error("Something went wrong");
+
       console.error("Sign up failed:", error);
     },
   });

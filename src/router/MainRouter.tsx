@@ -32,8 +32,10 @@ export const MainRouter = () => {
 
   const schoolPaths = Object.values(School);
 
+  // redirect and delete token if different schools
+
   useEffect(() => {
-    if (schoolName && schoolPaths.includes(schoolName)) {
+    if (schoolName && schoolPaths.includes(schoolName as School)) {
       localStorage.setItem("school-name", JSON.stringify(schoolName));
 
       document.body.classList.add(`${schoolName}-light`);

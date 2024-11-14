@@ -37,6 +37,7 @@ export const SignUpPage = () => {
     await mutate({
       email: userInfo.email,
       password: userInfo.password,
+      school: currentSchoolName,
     });
   };
 

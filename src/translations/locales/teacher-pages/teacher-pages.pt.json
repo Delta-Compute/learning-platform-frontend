@@ -14,7 +14,8 @@
         "classNameLabel": "Nome da classe",
         "classNameInputPlaceholder": "Introduzir o nome da turma",
         "submitButton": "Criar"
-      }
+      },
+      "noClassesText": "Ainda não há aulas"
     },
     "class": {
       "uploadPlanText": "Carregar o plano de aprendizagem da turma para obter recomendações de tarefas mais adequadas",
@@ -38,7 +39,7 @@
       "uploadPlanModal": {
         "title": "Carregar plano de aprendizagem",
         "uploadButton": "Carregar",
-        "successfullyUploadedText": "Carregado com sucesso"
+        "successfullyUploadedText": "Classe actualizada com sucesso"
       },
       "addStudentModal": {
         "title": "Adicionar o e-mail do aluno",

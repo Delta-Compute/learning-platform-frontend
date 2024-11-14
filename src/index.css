@@ -14,7 +14,7 @@
 }
 
 /* themes */
-.mapple-bear-light {
+.maple-bear-light {
   --main: #CC1316;
 }
 
@@ -28,4 +28,15 @@
 
 .educare-light {
   --main: #5D0000;
+}
+
+.beka-light {
+  --main: #0B4F6D;
+}
+
+.bg-main {
+  background-color: var(--main) !important;
+}
+.text-main {
+  color: var(--main) !important;
 }

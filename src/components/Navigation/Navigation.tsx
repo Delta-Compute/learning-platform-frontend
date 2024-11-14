@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-const BottomNavigation = ({ classRoomId }: { classRoomId: string }) => {
+const BottomNavigation = ({ classRoomId }: { classRoomId: string | undefined }) => {
   const { t } = useTranslation();
   const location = useLocation();
   const { logout } = useContext(UserContext);
@@ -47,7 +47,7 @@ const BottomNavigation = ({ classRoomId }: { classRoomId: string }) => {
           <span className={`text-xs ${isActive(`/${currentSchoolName}/classes`) ? 'text-black' : 'text-gray-400'}`}>{t("teacherPages.navigation.classesText")}</span>
         </Link>
 
-        <Link to={`/${currentSchoolName}/teacher-assignments/${classRoomId}`} className="flex flex-col items-center">
+        <Link to={`/${currentSchoolName}/teacher-assignments/${classRoomId ?? ""}`} className="flex flex-col items-center">
           <svg
             width="24"
             height="24"
@@ -71,7 +71,7 @@ const BottomNavigation = ({ classRoomId }: { classRoomId: string }) => {
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`text-xs ${isActive('/ai-conversation') ? 'text-black' : 'text-gray-400'}`}>AI</span>
+          <span className={`text-xs ${isActive("/ai-conversation") ? "text-black" : "text-gray-400"}`}>AI</span>
         </Link>
 
         <button onClick={logout} className="flex flex-col gap-[3px] items-center">

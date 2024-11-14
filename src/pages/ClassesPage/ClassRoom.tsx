@@ -5,12 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import plus from '../../assets/icons/plus-icon.svg';
-import BottomNavigation from '../../components/Navigation';
+import BottomNavigation from '../../components/Navigation/Navigation.tsx';
 import CreateClassModal from '../../components/CreateClassModal';
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 import { Class } from '../../types/class';
 import { Loader } from '../../components';
+
 import { useNavigate, Link } from "react-router-dom";
 
 const ClassesPage = () => {
@@ -25,10 +26,6 @@ const ClassesPage = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const onRefreshClasses = () => {
-    refetch();
-  }
-
   useEffect(() => {
     refetch();
   }, [user?.id])
@@ -36,7 +33,7 @@ const ClassesPage = () => {
   return (
     <>
       <div className="p-4">
-        {isPending || isRefetching && <Loader />}
+        {(isPending || isRefetching) && <Loader />}
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-semibold text-[#524344]">{t("teacherPages.classes.headerTitle")}</h1>
           <button className="bg-main text-white w-8 h-8 rounded-full flex items-center justify-center mr-[70px]">
@@ -44,14 +41,22 @@ const ClassesPage = () => {
           </button>
         </div>
 
-        <div className="space-y-4 pb-[60px]">
+        <ul className="space-y-4 pb-[60px]">
           {data?.map((classItem: Class, index) => (
-            <div
+            <li
               key={index}
               className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data.length - 1 ? 'mb-[60px]' : ''
                 }`}
             >
-              <div className="bg-gray-200 h-24 rounded-[8px]"></div>
+              <div className="bg-gray-200 h-[140px] rounded-[8px] overflow-hidden">
+                {classItem.logo !== "" && (
+                  <img
+                    src={classItem.logo}
+                    alt="logo"
+                    className="w-full h-full "
+                  />
+                )}
+              </div>
 
               <h2 
                 onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { classItem } })}
@@ -70,12 +75,22 @@ const ClassesPage = () => {
                   {classItem.assignmentIds?.length} {t("teacherPages.classes.assignmentsText")}
                 </span>
               </div>
-            </div>
+            </li>
           ))}
+        </ul>
+
+        <div className="mt-[100px]">
+          {data?.length === 0 && !isPending && !isRefetching && <p className="text-center text-gray-500">{t("teacherPages.classes.noClassesText")}</p>}
         </div>
       </div>
-      <CreateClassModal isOpen={isModalOpen} onClose={closeModal} onRefreshClasses={onRefreshClasses} />
-      <BottomNavigation classRoomId={data?.length > 0 ? data[0].id :  ""} />
+
+      <CreateClassModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onRefreshClasses={refetch}
+      />
+
+      <BottomNavigation />
     </>
   );
 };
