@@ -43,7 +43,16 @@
       "firstNameInputPlaceholder": "Your first name",
       "lastNameLabel": "Last name",
       "lastNameInputPlaceholder": "Your last name",
-      "submitButton": "Submit"
+      "submitButton": "Submit",
+      "natureLanguageLabel": "Nature language",
+      "natureLanguagePlaceholder": "Select your nature language",
+      "foreingLanguageLabel": "Foreign language",
+      "foreingLanguagePlaceholder": "Select your foreign language",
+      "roleLabel": "Role",
+      "rolePlaceholder": "Select your role"
+    },
+    "introducingAIPage": {
+      "createProfileButton": "Create profile"
     }
   }
 }

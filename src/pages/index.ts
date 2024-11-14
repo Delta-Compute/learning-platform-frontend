@@ -7,3 +7,4 @@ export * from "./ClassDetail/ClassDetailPage";
 export * from "./AssignmentDetail/AssignmentDetailPage";
 export * from "./SignInPage/SignInPage";
 export * from "./StudentAssignments";
+export * from "./IntroducingWithAI/IntroducingWithAI"

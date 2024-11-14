@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
@@ -14,11 +14,19 @@ import arrowDropdown from "../../assets/icons/arrow_dropdown.svg";
 
 const JoinYourSchoolPage = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  console.log(location.state);
+  
+  const { firstName, lastName, natureLanguage, foreingLanguage, role } = location.state as { firstName: string, lastName: string, natureLanguage: string, foreingLanguage: string, role: string };
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("School: choose");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [natureLanguageUpdate, setNatureLanguageUpdate] = useState(natureLanguage);
+  const [foreignLanguageUpdate, setForeignLanguageUpdate] = useState(foreingLanguage);
+  const [roleUpdate] = useState(role);
+  const [firstNameUpdate, setFirstNameUpdate] = useState(firstName);
+  const [lastNameUpdate, setLastNameUpdate] = useState(lastName);
   const { user } = useContext(UserContext);
   const { mutate } = useUpdateUser();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -30,11 +38,14 @@ const JoinYourSchoolPage = () => {
     }
   };
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = async () => {    
     await mutate({
       id: user?.id as string,
-      firstName: firstName,
-      lastName: lastName,
+      firstName: firstNameUpdate,
+      lastName: lastNameUpdate,
+      role: role.toLowerCase(),
+      natureLanguage: natureLanguageUpdate,
+      foreignLanguage: foreignLanguageUpdate
     }, 
   {
     onSuccess: () => {
@@ -118,8 +129,8 @@ const JoinYourSchoolPage = () => {
               type="text"
               placeholder={t("authPages.joinYourSchool.firstNameInputPlaceholder")}
               className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value.trim())}
+              value={firstNameUpdate}
+              onChange={(e) => setFirstNameUpdate(e.target.value.trim())}
             />
           </div>
 
@@ -131,10 +142,52 @@ const JoinYourSchoolPage = () => {
               type="text"
               placeholder={t("authPages.joinYourSchool.lastNameInputPlaceholder")}
               className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value.trim())}
+              value={lastNameUpdate}
+              onChange={(e) => setLastNameUpdate(e.target.value.trim())}
             />
           </div>
+
+          <div>
+            <label className="block text-sm font-normal mb-2">
+              {t("authPages.joinYourSchool.natureLanguageLabel")}
+            </label>
+            <input
+              type="text"
+              placeholder={t("authPages.joinYourSchool.natureLanguagePlaceholder")}
+              className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
+              value={natureLanguageUpdate}
+              onChange={(e) => setNatureLanguageUpdate(e.target.value.trim())}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-normal mb-2">
+              {t("authPages.joinYourSchool.foreingLanguageLabel")}
+            </label>
+            <input
+              type="text"
+              placeholder={t("authPages.joinYourSchool.foreingLanguagePlaceholder")}
+              className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
+              value={foreignLanguageUpdate}
+              onChange={(e) => setForeignLanguageUpdate(e.target.value.trim())}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-normal mb-2">
+              {t("authPages.joinYourSchool.roleLabel")}
+            </label>
+            <input
+              disabled
+              type="text"
+              placeholder={t("authPages.joinYourSchool.rolePlaceholder")}
+              className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
+              value={roleUpdate}
+              onChange={(e) => setLastNameUpdate(e.target.value.trim())}
+            />
+          </div>
+
+          
         </div>
 
         <button

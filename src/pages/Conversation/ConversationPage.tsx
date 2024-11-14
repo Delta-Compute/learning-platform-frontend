@@ -144,6 +144,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
+  console.log(items);
+  
 
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);

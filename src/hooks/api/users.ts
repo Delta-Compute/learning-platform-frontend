@@ -27,12 +27,16 @@ export const useUpdateUser = () => {
       firstName?: string;
       lastName?: string;
       role?: string;
+      natureLanguage?: string;
+      foreignLanguage?: string;
     }) =>
       UsersApiService.updateUser(
         data.id,
         data.firstName,
         data.lastName,
-        data.role
+        data.role,
+        data.foreignLanguage,
+        data.natureLanguage,
       ),
     onSuccess: async (data) => {
       const user: User | null = await UsersApiService.getUser(
@@ -60,10 +64,14 @@ export const useLogin = () => {
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
       const user: User | null = await UsersApiService.getUser(data.id);
-      
+
       setUser(user);
-      
-      navigate(user?.role === "student" ? `/${currentSchoolName}/student-assignments` : `/${currentSchoolName}/classes`);
+
+      navigate(
+        user?.role === "student"
+          ? `/${currentSchoolName}/student-assignments`
+          : `/${currentSchoolName}/classes`
+      );
     },
     onError: (error) => {
       console.error("Login failed:", error);
@@ -84,7 +92,7 @@ export const useSingUp = () => {
       const user: User | null = await UsersApiService.getUser(data.id);
       if (user) {
         setUser(user);
-        navigate(`/${currentSchoolName}/user-type-selection`);
+        navigate(`/${currentSchoolName}/introducing-with-ai`);
       }
     },
     onError: (error) => {
