@@ -202,7 +202,18 @@ export const ClassDetailPage = () => {
     setFilteredAssignments(filteredAssignments);
 
     return filteredAssignments;
-  }
+  };
+
+  const changeImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target?.files?.[0];
+
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    updateClassRoomMutation(formData as FormData);
+  };
 
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
@@ -217,16 +228,7 @@ export const ClassDetailPage = () => {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(event) => {
-                  const selectedFile = event.target?.files?.[0];
-
-                  if (!selectedFile) return;
-
-                  const formData = new FormData();
-                  formData.append("file", selectedFile);
-
-                  updateClassRoomMutation(formData as FormData);
-                }}
+                onChange={changeImageHandler}
                 className="relative z-30 opacity-0"
               />
             </div>

@@ -10,9 +10,7 @@ import { Loader } from "../../components";
 import { AssignmentSummaryConversation } from "./AssignmentSummaryConversation";
 import Header from "../../components/ui/header/Header";
 
-import { useGetRoomsAssignments, useGetStudentsProgress } from "../../hooks";
-
-import { useGetClassRoomProgress } from '../../hooks/api/class-room-progress.ts';
+import { useGetRoomsAssignments, useGetStudentsProgress, useGetClassRoomProgress } from "../../hooks";
 
 import { IAssignment } from "../../types";
 

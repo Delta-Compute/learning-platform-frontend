@@ -10,7 +10,13 @@ import AppleIcon from "../../assets/icons/apple-icon.svg";
 import { AuthProvider } from "../api/types";
 import { useLogin } from "../../hooks/api/users";
 
+import { GoogleLogin } from "@react-oauth/google";
+
+import { jwtDecode } from "jwt-decode";
+
 import SchoolNamesContext from "../../context/SchoolNamesContext";
+
+import { UserAuthType } from "../../types";
 
 type UserInfo = {
   email: string;
@@ -39,7 +45,23 @@ export const SignInPage = () => {
       email: userInfo.email,
       password: userInfo.password,
       school: currentSchoolName,
+      auth: UserAuthType.Email,
     });
+  };
+
+  const googleSignInSuccessHandler = async (credentialResponse: unknown) => {
+    const user: { email: string } = jwtDecode(credentialResponse.credential as string);
+
+    await mutate({
+      email: user.email,
+      password: "",
+      school: currentSchoolName,
+      auth: UserAuthType.Google,
+    });
+  };
+
+  const googleSignInErrorHandler = () => {
+    console.error('Помилка авторизації Google');
   };
 
   return (
@@ -82,23 +104,25 @@ export const SignInPage = () => {
           {t("authPages.signIn.orTitle")}
         </p>
 
-        <div className="flex flex-row justify-center mt-4">
-          <img
-            src={`${GoogleIcon}`}
-            alt="google"
-            className="mr-4"
-            onClick={() => onSocialAuth(AuthProvider.Google)}
-          />
+        <div className="flex flex-row justify-center mt-4 gap-4">
+          <div className="flex items-center relative">
+            <img
+              src={`${GoogleIcon}`}
+              alt="google"
+              className=""
+            />
+            <div className="w-[40px] absolute left-0 opacity-0">
+              <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
+            </div>
+          </div>
           <img
             src={`${FacebookIcon}`}
             alt="facebook"
-            className="mr-4"
             onClick={() => onSocialAuth(AuthProvider.Facebook)}
           />
           <img
             src={`${AppleIcon}`}
             alt="apple"
-            className="mr-4"
             onClick={() => onSocialAuth(AuthProvider.Apple)}
           />
         </div>

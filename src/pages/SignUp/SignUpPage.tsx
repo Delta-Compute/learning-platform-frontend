@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
+import { UserAuthType } from "../../types";
+
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader } from "../../components";
@@ -10,7 +12,14 @@ import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
 import { AuthProvider } from "../api/types";
+
 import { useSingUp } from '../../hooks';
+
+import { GoogleLogin } from "@react-oauth/google";
+
+import { jwtDecode } from "jwt-decode";
+
+import { toast } from "react-hot-toast";
 
 type UserInfo = {
   email: string;
@@ -38,11 +47,28 @@ export const SignUpPage = () => {
       email: userInfo.email,
       password: userInfo.password,
       school: currentSchoolName,
+      auth: UserAuthType.Email,
     });
   };
 
   const onSignInClick = () => {
     navigate(`/${currentSchoolName}/sign-in`);
+  };
+
+  const googleSignUpSuccessHandler = async (credentialResponse: unknown) => {
+    const user: { email: string } = jwtDecode(credentialResponse.credential as string);
+
+    await mutate({
+      email: user.email,
+      password: "",
+      school: currentSchoolName,
+      auth: UserAuthType.Google,
+    });
+  };
+
+  const googleSignUpErrorHandler = () => {
+    console.log("error google sign up");
+    toast.error("Something went wrong");
   };
 
   return (
@@ -98,23 +124,25 @@ export const SignUpPage = () => {
           {t("authPages.signUp.orTitle")}
         </p>
 
-        <div className="flex flex-row justify-center mt-4">
-          <img
-            src={`${GoogleIcon}`}
-            alt="google"
-            className="mr-4"
-            onClick={() => onSocialAuth(AuthProvider.Google)}
-          />
+        <div className="flex flex-row justify-center mt-4 gap-4">
+          <div className="flex items-center relative">
+            <img
+              src={`${GoogleIcon}`}
+              alt="google"
+              className=""
+            />
+            <div className="w-[40px] absolute left-0 opacity-0">
+              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler}/>
+            </div>
+          </div>
           <img
             src={`${FacebookIcon}`}
             alt="facebook"
-            className="mr-4"
             onClick={() => onSocialAuth(AuthProvider.Facebook)}
           />
           <img
             src={`${AppleIcon}`}
             alt="apple"
-            className="mr-4"
             onClick={() => onSocialAuth(AuthProvider.Apple)}
           />
         </div>

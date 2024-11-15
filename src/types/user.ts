@@ -5,6 +5,11 @@ export enum UserRole {
   Student = "student",
 };
 
+export enum UserAuthType {
+  Email = "email",
+  Google = "google",
+}
+
 export type User = {
   id?: string;
   firstName?: string;
@@ -14,4 +19,5 @@ export type User = {
   school: School;
   nativeLanguage?: string;
   foreignLanguage?: string;
+  auth: UserAuthType;
 };

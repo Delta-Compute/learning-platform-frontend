@@ -2,11 +2,12 @@ import { useContext } from "react";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import { User, UserAuthType } from "../../types";
+
 import { UsersApiService } from "../../services";
 
 import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../types";
 
 import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
 
@@ -63,7 +64,7 @@ export const useLogin = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
-    mutationFn: (credentials: { email: string; password: string, school: School }) =>
+    mutationFn: (credentials: { email: string; password: string, school: School, auth: UserAuthType }) =>
       UsersApiService.signIn(credentials),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
@@ -90,7 +91,7 @@ export const useSingUp = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
-    mutationFn: (data: { email: string; password: string, school: School }) =>
+    mutationFn: (data: { email: string; password: string, school: School, auth: UserAuthType }) =>
       UsersApiService.signUp(data),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
