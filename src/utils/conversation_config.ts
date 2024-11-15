@@ -150,7 +150,9 @@ export const introductionWithAIInstruction = () => {
   `;
 };
 
-export const feedbackAndGeneralInformationInstruction = (conversation: string) => {
+export const feedbackAndGeneralInformationInstruction = (
+  conversation: string
+) => {
   return `
     You must analyze the conversation with AI and generate information about the user (teacher or student) and feedback for the user.
     The feedback must be a general information about the conversation with AI and must be constructive. (Such as, general feedback, first name, last name, nature language, foreing language, and role of the user, teacher or student)
@@ -169,4 +171,22 @@ export const feedbackAndGeneralInformationInstruction = (conversation: string) =
 
     IMPORTANT: The feedback must be based on the user's work and must be constructive.
   `;
-}
+};
+
+export const instructionForSummaryAI = (
+  userName: string,
+  summary: string,
+  classProgress: string
+) => {
+  return `
+    Start the conversation with greeting: Hello, ${userName} - I’m your personal Teachers Aid, and here to help you analyze the class progress and the progress of the assignment.
+    You get a summary of a class progress and class progres of the assignment.
+    Here is the summary of the class progress: ${summary}
+    Here is the class progress of the assignment of each student: ${classProgress}
+
+    Teacher can ask you about each student and their progress, so you must be helpfull and responsive to answer on that questions.
+    You must help teacher to improve the class progress and to make a better class progress in the future.
+    You should help the teacher with his/her questions about the student he/she is asking about
+    You should help the teacher to improve the student's skills and give advice on how to do so
+  `;
+};

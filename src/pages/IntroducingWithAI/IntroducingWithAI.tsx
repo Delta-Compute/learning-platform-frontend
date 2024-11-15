@@ -30,15 +30,6 @@ interface RealtimeEvent {
   event: { [key: string]: any };
 }
 
-const feedbackString = `
-**First name**: Ben
-**Last name**: Trapper
-**Native language**: English
-**Foreign language**: Portuguese
-**Role**: Teacher
-**Feedback**: Ben Trapper, you engaged well in the conversation with the AI teacher assistant. You provided clear and concise responses, showing a good understanding of the questions asked. Keep up the great work in your teaching journey, and continue to enhance your skills in teaching Portuguese at an advanced level. Your positive interaction with the AI teacher assistant sets a good foundation for future interactions and improvements in your teaching experience.
-`;
-
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
 export const IntroducingWithAI = () => {
@@ -99,7 +90,7 @@ export const IntroducingWithAI = () => {
 
       if (response.choices[0].message.content) {
 
-        const parsedData = parseFeedbackString(feedbackString);
+        const parsedData = parseFeedbackString(response.choices[0].message.content);
 
         setFirstName(parsedData.firstName);
         setLastName(parsedData.lastName);

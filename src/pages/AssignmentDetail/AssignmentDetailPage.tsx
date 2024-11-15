@@ -17,9 +17,11 @@ import { IAssignment } from "../../types";
 import { format } from "date-fns";
 
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
+import UserContext from '../../context/UserContext';
 
 export const AssignmentDetailPage = () => {
   const { t } = useTranslation();
+  const { user } = useContext(UserContext);
   const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [isProgressOpen, setIsProgressOpen] = useState(true);
   const [assignmentData, setAssignmentData] = useState<IAssignment | null>(null);
@@ -74,7 +76,7 @@ export const AssignmentDetailPage = () => {
                     text-sm rounded-full
                   `}
                   >
-                    {assignmentData.deadline >= new Date().getTime() ?  t("teacherPages.assignment.assignmentStatus.inProgress") : t("teacherPages.assignment.assignmentStatus.completed")}
+                    {assignmentData.deadline >= new Date().getTime() ? t("teacherPages.assignment.assignmentStatus.inProgress") : t("teacherPages.assignment.assignmentStatus.completed")}
                   </div>
                 )}
 
@@ -131,11 +133,11 @@ export const AssignmentDetailPage = () => {
                         <span className="text-sm capitalize">{student.firstName} {student.lastName[0]}.</span>
                       </div>
                       <span className="text-sm text-gray-500">
-                      {student.progress ?
-                        <span className="text-green-500">{t("teacherPages.assignment.assignmentStatus.completed")}</span> :
-                        <span className="text-blue-400">{t("teacherPages.assignment.assignmentStatus.inProgress")}</span>
-                      }
-                    </span>
+                        {student.progress ?
+                          <span className="text-green-500">{t("teacherPages.assignment.assignmentStatus.completed")}</span> :
+                          <span className="text-blue-400">{t("teacherPages.assignment.assignmentStatus.inProgress")}</span>
+                        }
+                      </span>
 
                     </div>
                     <div className="px-[10px] pt-[10px] text-[14px]">
@@ -151,6 +153,8 @@ export const AssignmentDetailPage = () => {
 
       {isShownConversation && (
         <AssignmentSummaryConversation
+          userName={user?.firstName ?? ""}
+          assignmentSummary={assignmentData?.summary ?? ""}
           classRoomProgress={studentsProgress ?? ""}
           onClose={() => setIsShownConversation(false)}
         />
