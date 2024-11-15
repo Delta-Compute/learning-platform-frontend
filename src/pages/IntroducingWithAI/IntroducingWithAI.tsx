@@ -18,7 +18,7 @@ import { SpeakingDots } from '../../components/SpeakingDots/index';
 
 import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
-import { Button } from '../../components/index.ts';
+import { Button, Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
 import { parseFeedbackString } from '../../utils/informationParser.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
@@ -35,6 +35,8 @@ const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 export const IntroducingWithAI = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000, bufferLength: 4096 })
@@ -49,7 +51,12 @@ export const IntroducingWithAI = () => {
     })
   );
 
-  
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -73,6 +80,7 @@ export const IntroducingWithAI = () => {
     const conversation = items.map(item => item.formatted.transcript).join(" ");
 
     try {
+      setLoading(true);
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
@@ -98,7 +106,7 @@ export const IntroducingWithAI = () => {
         setForeingLanguage(parsedData.foreignLanguage);
         setRole(parsedData.role);
       }
-
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching topics from OpenAI:", error);
       return null;
@@ -258,6 +266,7 @@ export const IntroducingWithAI = () => {
       data-component="ConsolePage"
       className="flex flex-col justify-between h-[100vh] w-full m-auto"
     >
+      {loading && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
@@ -274,7 +283,7 @@ export const IntroducingWithAI = () => {
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
               <div className="h-full justify-center flex items-center">
-                <div>start talking</div>
+                <div>It's your first interaction with Teacher AI, introduce yourself</div>
               </div>
             ) : (
               <div className="h-full flex justify-center items-center">

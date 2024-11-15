@@ -15,7 +15,7 @@ import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { Link, useParams } from "react-router-dom";
 
-import { Button } from "../../components";
+import { Button, Loader } from "../../components";
 import { AssignmentModal } from "./AssignmentModal";
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
@@ -75,6 +75,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const [studentInstructions, setStudentInstructions] = useState("");
   const [classRoom, setClassRoom] = useState<Class | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const [currentAssignment, setCurrentAssignment] = useState<IAssignment | null>(null);
   const [classRoomId, setClassRoomId] = useState("");
@@ -92,6 +93,13 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const { data } = useClassById(params.classId as string);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -144,8 +152,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
-  console.log(items);
-  
 
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -430,6 +436,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       data-component="ConsolePage"
       className="flex flex-col justify-between h-[100vh] w-full m-auto"
     >
+      {loading && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
