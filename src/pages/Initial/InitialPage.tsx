@@ -43,9 +43,9 @@ export const InitialPage = () => {
 
           <h1
             className={`
-          ${currentSchoolName === School.Educare && "text-white"}
-          text-5xl font-handwriting text-brownText text-center
-        `}
+              ${currentSchoolName === School.Educare && "text-white"}
+              text-5xl font-handwriting text-brownText text-center
+            `}
             style={{
               fontFamily: "Edu AU VIC WA NT Guides",
             }}
@@ -56,9 +56,8 @@ export const InitialPage = () => {
       ) : (
         <h1
           className={`
-          ${currentSchoolName === School.Educare && "text-white"}
-          text-5xl font-handwriting text-brownText text-center absolute top-2/3
-        `}
+            text-brownText text-5xl font-handwriting text-center absolute top-2/3
+          `}
           style={{
             fontFamily: "Edu AU VIC WA NT Guides",
           }}

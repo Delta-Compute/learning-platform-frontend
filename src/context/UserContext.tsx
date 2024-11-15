@@ -62,7 +62,7 @@ export const UserContextProvider = ({
     if (userId !== "") {
       refetchUser();
     }
-  }, [userId]);
+  }, [userId, refetchUser]);
 
   useEffect(() => {
     if (userData && !isUserRefetching) {

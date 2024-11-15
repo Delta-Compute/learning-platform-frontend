@@ -13,3 +13,15 @@ export const useGetClassRoomProgress = (classRoomId: string, assignmentId: strin
     ...rest,
   };
 };
+
+export const useGetStudentsProgress = (classRoomId: string, assignmentId: string) => {
+  const { ...rest } = useQuery({
+    queryFn: () => ClassRoomProgressApiService.getStudentsProgress(classRoomId, assignmentId),
+    queryKey: ["studentsRoomProgress"],
+    staleTime: 5_000_000,
+  });
+
+  return {
+    ...rest,
+  };
+};

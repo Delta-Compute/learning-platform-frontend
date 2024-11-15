@@ -24,18 +24,22 @@ import JoinYourSchoolPage from "../pages/JoinYourSchoolPage";
 import { School } from "../context";
 
 import SchoolNamesContext from "../context/SchoolNamesContext";
+import UserContext from "../context/UserContext";
 
 export const MainRouter = () => {
   const { schoolName } = useParams();
   const navigate = useNavigate();
 
   const { currentSchoolName } = useContext(SchoolNamesContext);
+  const { user } = useContext(UserContext);
 
   const schoolPaths = Object.values(School);
 
-  // redirect and delete token if different schools
-
   useEffect(() => {
+    if (user && user.school !== currentSchoolName) {
+      navigate(`/${currentSchoolName}/initial`);
+    }
+
     if (schoolName && schoolPaths.includes(schoolName as School)) {
       localStorage.setItem("school-name", JSON.stringify(schoolName));
 
@@ -47,7 +51,7 @@ export const MainRouter = () => {
     } else {
       navigate(`/${currentSchoolName}/initial`);
     }
-  }, [schoolName, currentSchoolName]);
+  }, [schoolName, currentSchoolName, user]);
 
   return (
     <Routes>

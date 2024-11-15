@@ -53,7 +53,7 @@ const ClassesPage = () => {
                   <img
                     src={classItem.logo}
                     alt="logo"
-                    className="w-full h-full "
+                    className="w-full h-full object-cover"
                   />
                 )}
               </div>
@@ -90,7 +90,7 @@ const ClassesPage = () => {
         onRefreshClasses={refetch}
       />
 
-      <BottomNavigation />
+      <BottomNavigation classRoomId={data && data.length > 0 ? data[0].id : undefined} />
     </>
   );
 };

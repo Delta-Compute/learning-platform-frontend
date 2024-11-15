@@ -47,7 +47,10 @@ const BottomNavigation = ({ classRoomId }: { classRoomId: string | undefined }) 
           <span className={`text-xs ${isActive(`/${currentSchoolName}/classes`) ? 'text-black' : 'text-gray-400'}`}>{t("teacherPages.navigation.classesText")}</span>
         </Link>
 
-        <Link to={`/${currentSchoolName}/teacher-assignments/${classRoomId ?? ""}`} className="flex flex-col items-center">
+        <Link
+          to={classRoomId ? `/${currentSchoolName}/teacher-assignments/${classRoomId}` : `/${currentSchoolName}/classes`}
+          className="flex flex-col items-center"
+        >
           <svg
             width="24"
             height="24"

@@ -264,7 +264,7 @@ export const ClassDetailPage = () => {
           </div>
         </div>
         <div
-          className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2  mt-2`}
+          className="bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2  mt-2"
         >
           <h2 className="text-[16px] text-placholderText font-light">
             {t("teacherPages.class.classCodeText")}
