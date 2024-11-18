@@ -43,7 +43,7 @@ const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefres
           onClose();
         },
         onError: () => {
-          toast.error("Something went wrong");
+          toast.error(t("teacherPages.classes.classModal.somethingWentWrongText"));
         }
       }
     );

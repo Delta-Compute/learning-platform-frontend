@@ -46,7 +46,7 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, on
           onClose();
         },
         onError: () => {
-          toast.error("Something went wrong");
+          toast.error(t("teacherPages.classes.classModal.somethingWentWrongText"));
         }
       }
     );

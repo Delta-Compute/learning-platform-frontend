@@ -19,7 +19,8 @@
         "classSettingsTitle": "Configurações de classe",
         "submitSettingsButton": "Salvar configurações",
         "successfullyUpdatedText": "Classe actualizada com sucesso",
-        "successfullyCreatedText": "Classe criada com sucesso"
+        "successfullyCreatedText": "Classe criada com sucesso",
+        "somethingWentWrongText": "Algo correu mal"
       },
       "noClassesText": "Ainda não há aulas"
     },

@@ -19,7 +19,8 @@
         "classSettingsTitle": "Class settings",
         "submitSettingsButton": "Save settings",
         "successfullyUpdatedText": "Class successfully updated",
-        "successfullyCreatedText": "Class successfully created"
+        "successfullyCreatedText": "Class successfully created",
+        "somethingWentWrongText": "Something went wrong"
       },
       "noClassesText": "No classes yet"
     },
