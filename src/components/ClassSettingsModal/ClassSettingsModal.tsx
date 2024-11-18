@@ -28,7 +28,7 @@ const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefres
 
   const { mutate, isPending } = useUpdateClass(classItem?.id as string);
 
-  const handleCreateClass = () => {
+  const handleUpdateClass = () => {
     if (!className) return;
 
     mutate(
@@ -39,7 +39,7 @@ const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefres
       {
         onSuccess: () => {
           onRefreshClasses();
-          toast.success("Class successfully updated");
+          toast.success(t("teacherPages.classes.classModal.successfullyUpdatedText"));
           onClose();
         },
         onError: () => {
@@ -93,7 +93,7 @@ const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefres
         {/*  </div>*/}
         {/*</div>*/}
         <button
-          onClick={() => handleCreateClass()}
+          onClick={() => handleUpdateClass()}
           className="w-full bg-main text-white py-3 rounded-full font-semibold"
         >
           {t("teacherPages.classes.classModal.submitSettingsButton")}

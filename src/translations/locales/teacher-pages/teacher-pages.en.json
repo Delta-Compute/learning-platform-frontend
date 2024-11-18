@@ -17,7 +17,9 @@
         "classSubjectLabel": "Subject",
         "classSubjectInputPlaceholder": "Enter class subject",
         "classSettingsTitle": "Class settings",
-        "submitSettingsButton": "Save settings"
+        "submitSettingsButton": "Save settings",
+        "successfullyUpdatedText": "Class successfully updated",
+        "successfullyCreatedText": "Class successfully created"
       },
       "noClassesText": "No classes yet"
     },

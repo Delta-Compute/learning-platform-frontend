@@ -40,7 +40,9 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, on
       {
         onSuccess: () => {
           onRefreshClasses();
-          toast.success("Class successfully added");
+          toast.success(t("teacherPages.classes.classModal.successfullyCreatedText"));
+          setClassName("");
+          setClassSubject("");
           onClose();
         },
         onError: () => {
