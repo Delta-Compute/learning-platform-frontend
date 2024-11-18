@@ -18,10 +18,7 @@ interface UpdateClassModalProps {
 const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefreshClasses, classItem }) => {
   const { t } = useTranslation();
   const [className, setClassName] = useState<string>(classItem?.name);
-  const [classSubject, setClassSubject] = useState<string>(classItem?.subject);
-
-  console.log(className, classSubject);
-  
+  const [classSubject, setClassSubject] = useState<string>(classItem?.subject);  
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
