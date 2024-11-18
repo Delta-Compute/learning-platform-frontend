@@ -69,6 +69,16 @@
       "classProgressText": "Progresso das aulas",
       "studentFeedback": "Comentários",
       "noStudentFeedbackText": "Na resposta"
+    },
+    "profile": {
+      "classesCount": "Aulas",
+      "studentsCount": "Alunos",
+      "darkModeText": "Modo escuro",
+      "helpText": "Ajuda",
+      "languageText": "Linguagem",
+      "privacyPolicyText": "Política de Privacidade",
+      "termsOfServiceText": "Termos",
+      "logoutText": "Sair"
     }
   }
 }

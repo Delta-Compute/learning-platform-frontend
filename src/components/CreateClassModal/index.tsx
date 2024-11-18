@@ -30,7 +30,7 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, on
 
   const handleCreateClass = () => {
     if (!className) return;
-  
+
     mutate(
       {
         name: className,

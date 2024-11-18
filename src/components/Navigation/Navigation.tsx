@@ -7,10 +7,14 @@ import { Link, useLocation } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-const BottomNavigation = ({ classRoomId }: { classRoomId: string | undefined }) => {
+interface BottomNavigationProps {
+  classRoomId?: string | undefined;
+}
+
+const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId ) => {
   const { t } = useTranslation();
   const location = useLocation();
-  const { logout } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
  
   const isActive = (path: string) => location.pathname === path;
@@ -77,7 +81,7 @@ const BottomNavigation = ({ classRoomId }: { classRoomId: string | undefined }) 
           <span className={`text-xs ${isActive("/ai-conversation") ? "text-black" : "text-gray-400"}`}>AI</span>
         </Link>
 
-        <button onClick={logout} className="flex flex-col gap-[3px] items-center">
+        {/* <button onClick={logout} className="flex flex-col gap-[3px] items-center">
           <svg 
             xmlns="http://www.w3.org/2000/svg"
             width="24" 
@@ -95,9 +99,9 @@ const BottomNavigation = ({ classRoomId }: { classRoomId: string | undefined }) 
             <line x1="21" x2="9" y1="12" y2="12" />
           </svg>
           <span className="text-xs">{t("teacherPages.navigation.logoutText")}</span>
-        </button>
+        </button> */}
 
-        {/* <Link to="/profile" className="flex flex-col items-center">
+        <Link to={`/${currentSchoolName}/profile/${user?.id}`} className="flex flex-col items-center">
           <svg
             width="24"
             height="24"
@@ -108,14 +112,14 @@ const BottomNavigation = ({ classRoomId }: { classRoomId: string | undefined }) 
           >
             <path
               d="M23.1431 18V21.4286C23.1431 21.8833 22.9625 22.3193 22.641 22.6408C22.3195 22.9623 21.8835 23.1429 21.4289 23.1429H18.0003M18.0003 0.857178H21.4289C21.8835 0.857178 22.3195 1.03779 22.641 1.35928C22.9625 1.68077 23.1431 2.11681 23.1431 2.57146V6.00003M0.857422 6.00003V2.57146C0.857422 2.11681 1.03803 1.68077 1.35952 1.35928C1.68102 1.03779 2.11705 0.857178 2.57171 0.857178H6.00028M6.00028 23.1429H2.57171C2.11705 23.1429 1.68102 22.9623 1.35952 22.6408C1.03803 22.3193 0.857422 21.8833 0.857422 21.4286V18M12.0003 11.1429C12.9096 11.1429 13.7817 10.7817 14.4246 10.1387C15.0676 9.49571 15.4289 8.62363 15.4289 7.71432C15.4289 6.80501 15.0676 5.93294 14.4246 5.28995C13.7817 4.64697 12.9096 4.28575 12.0003 4.28575C11.091 4.28575 10.2189 4.64697 9.57591 5.28995C8.93293 5.93294 8.57171 6.80501 8.57171 7.71432C8.57171 8.62363 8.93293 9.49571 9.57591 10.1387C10.2189 10.7817 11.091 11.1429 12.0003 11.1429ZM18.5197 18.8572C18.0766 17.4763 17.2065 16.2719 16.0349 15.4173C14.8632 14.5628 13.4505 14.1023 12.0003 14.1023C10.5501 14.1023 9.13736 14.5628 7.96569 15.4173C6.79403 16.2719 5.92394 17.4763 5.48085 18.8572H18.5197Z"
-              stroke={isActive('/profile') ? '#000000' : '#ADB5BD'}
+              stroke={isActive(`/${currentSchoolName}/profile/${user?.id}`) ? '#000000' : '#ADB5BD'}
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
-          <span className={`text-xs ${isActive('/profile') ? 'text-black' : 'text-gray-400'}`}>Profile</span>
-        </Link> */}
+          <span className={`text-xs ${isActive(`/${currentSchoolName}/profile/${user?.id}`) ? 'text-black' : 'text-gray-400'}`}>Profile</span>
+        </Link>
       </div>
     </div>
   );

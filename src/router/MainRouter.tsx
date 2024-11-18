@@ -14,6 +14,7 @@ import {
   FollowLinkPage,
   InitialPage,
   IntroducingWithAI,
+  ProfilePage,
   SignInPage,
   SignUpPage, StudentAssignmentsPage, UserTypeSelectionPage
 } from "../pages";
@@ -111,6 +112,7 @@ export const MainRouter = () => {
       <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
       <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
       <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
+      <Route path="/profile/:userId" element={<ProfilePage />} />
 
       <Route
         path="/user-type-selection"
