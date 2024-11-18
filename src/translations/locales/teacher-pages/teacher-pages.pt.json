@@ -13,7 +13,11 @@
         "title": "Criar uma nova classe",
         "classNameLabel": "Nome da classe",
         "classNameInputPlaceholder": "Introduzir o nome da turma",
-        "submitButton": "Criar"
+        "submitButton": "Criar",
+        "classSubjectLabel": "Assunto",
+        "classSubjectInputPlaceholder": "Introduzir o assunto da turma",
+        "classSettingsTitle": "Configurações de classe",
+        "submitSettingsButton": "Salvar configurações"
       },
       "noClassesText": "Ainda não há aulas"
     },

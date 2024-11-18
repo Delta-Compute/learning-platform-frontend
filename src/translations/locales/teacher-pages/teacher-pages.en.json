@@ -13,7 +13,11 @@
         "title": "Create a new class",
         "classNameLabel": "Class name",
         "classNameInputPlaceholder": "Enter class name",
-        "submitButton": "Create"
+        "submitButton": "Create",
+        "classSubjectLabel": "Subject",
+        "classSubjectInputPlaceholder": "Enter class subject",
+        "classSettingsTitle": "Class settings",
+        "submitSettingsButton": "Save settings"
       },
       "noClassesText": "No classes yet"
     },

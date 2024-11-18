@@ -1,24 +1,27 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { useCreateClass } from '../../hooks/api/classes';
-import UserContext from '../../context/UserContext';
+import { useUpdateClass } from '../../hooks/api/classes';
 import { Loader } from '../ui/loader/Loader';
 
 import { toast } from "react-hot-toast";
+import { Class } from '../../types/class';
 
-interface CreateClassModalProps {
+interface UpdateClassModalProps {
   isOpen: boolean;
   onClose: () => void;
   onRefreshClasses: () => void;
+  classItem: Class;
 }
 
-const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, onRefreshClasses }) => {
+const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefreshClasses, classItem }) => {
   const { t } = useTranslation();
-  const [className, setClassName] = useState<string>("");
-  const [classSubject, setClassSubject] = useState<string>("");
-  const { user } = useContext(UserContext);
+  const [className, setClassName] = useState<string>(classItem?.name);
+  const [classSubject, setClassSubject] = useState<string>(classItem?.subject);
+
+  console.log(className, classSubject);
+  
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -26,21 +29,20 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, on
     }
   };
 
-  const { mutate, isPending } = useCreateClass();
+  const { mutate, isPending } = useUpdateClass(classItem?.id as string);
 
   const handleCreateClass = () => {
     if (!className) return;
-  
+
     mutate(
       {
         name: className,
-        teacherId: user?.id as string,
         subject: classSubject
       },
       {
         onSuccess: () => {
           onRefreshClasses();
-          toast.success("Class successfully added");
+          toast.success("Class successfully updated");
           onClose();
         },
         onError: () => {
@@ -50,14 +52,11 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, on
     );
   };
 
-
-  if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
       {isPending && <Loader />}
       <div className="bg-white w-[95%] max-w-md p-2 pt-4 rounded-[32px] shadow-lg">
-        <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.title")}</h2>
+        <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.classSettingsTitle")}</h2>
 
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classNameLabel")}</label>
@@ -100,11 +99,11 @@ const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, on
           onClick={() => handleCreateClass()}
           className="w-full bg-main text-white py-3 rounded-full font-semibold"
         >
-          {t("teacherPages.classes.classModal.submitButton")}
+          {t("teacherPages.classes.classModal.submitSettingsButton")}
         </button>
       </div>
     </div>
   );
 };
 
-export default CreateClassModal;
+export default ClassSettingsModal;

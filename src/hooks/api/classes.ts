@@ -30,3 +30,15 @@ export const useClassById = (id: string) => {
         staleTime: 5_000_000,
     });
 }
+
+export const useUpdateClass = (id: string) => {
+    return useMutation({
+        mutationFn: (data: Class) => ClassesApiService.updateClass(id, data),
+        onSuccess: (data: Class) => {
+            console.log("Class updated:", data);
+        },
+        onError: (error) => {
+            console.error("Update class failed:", error);
+        },
+    });
+}

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -34,6 +34,7 @@ import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 import AddClassIcon from "../../assets/icons/add-class-icon.svg";
+import ClassSettingsModal from '../../components/ClassSettingsModal/ClassSettingsModal';
 
 export const ClassDetailPage = () => {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ export const ClassDetailPage = () => {
   const { id } = useParams();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
+  const [classSettingsOpen, setClassSettingsOpen] = useState(false);
   const [classItem, setClassItem] = useState<Class | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
@@ -185,7 +187,7 @@ export const ClassDetailPage = () => {
 
   const handleFilter = (type: string) => {
     console.log(type, 'type');
-    
+
     let filteredAssignments = assignmentsData ? [...assignmentsData] : [];
 
     console.log(filteredAssignments, 'filteredAssignmnetrer');
@@ -233,7 +235,7 @@ export const ClassDetailPage = () => {
               />
             </div>
 
-            <img src={`${AddClassIcon}`} className="absolute block right-[10px] bottom-[10px] z-20"/>
+            <img src={`${AddClassIcon}`} className="absolute block right-[10px] bottom-[10px] z-20" />
 
             {classRoom?.logo !== "" && (
               <img
@@ -244,7 +246,7 @@ export const ClassDetailPage = () => {
             )}
           </div>
           <div className="flex items-center gap-[10px] justify-between">
-          <p className="text-[14px] text-gray-500 font-light">
+            <p className="text-[14px] text-gray-500 font-light">
               {t("teacherPages.class.uploadPlanText")}
             </p>
 
@@ -260,7 +262,10 @@ export const ClassDetailPage = () => {
             <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-3 rounded-full text-sm">
               {classItem?.assignmentIds?.length} {t("teacherPages.class.assignmentsText")}
             </span>
-            <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-1 rounded-full text-sm">
+            <span
+              className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-1 rounded-full text-sm"
+              onClick={() => setClassSettingsOpen(true)}
+            >
               <img src={settingsIcon} alt="settings" />
             </span>
           </div>
@@ -302,7 +307,7 @@ export const ClassDetailPage = () => {
             <span className="text-[16px] text-brownText font-light">
               {t("teacherPages.class.filterText")}
             </span>
-            <img src={filterIcon} alt="filter" onClick={toggleDropdown} ref={dropdownRef}/>
+            <img src={filterIcon} alt="filter" onClick={toggleDropdown} ref={dropdownRef} />
             {isFilterOpen && (
               <div className="absolute z-10 right-0 top-[20px] mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                 <div className="py-1" ref={dropdownRef}>
@@ -385,11 +390,12 @@ export const ClassDetailPage = () => {
               className="bg-main text-white w-full border-main mt-[10px] disabled:opacity-40 sm:w-[120px]"
               disabled={isUpdateClassRoomPending}
             >
-              {!isUpdateClassRoomPending ? t("teacherPages.class.addStudentModal.addStudentButton") : t("teacherPages.class.addStudentModal.loading") }
+              {!isUpdateClassRoomPending ? t("teacherPages.class.addStudentModal.addStudentButton") : t("teacherPages.class.addStudentModal.loading")}
             </Button>
           </form>
         </div>
       </Modal>
+      {classSettingsOpen && <ClassSettingsModal isOpen={classSettingsOpen} onClose={() => setClassSettingsOpen(false)} onRefreshClasses={refetchClassRoom} classItem={classItem!}/>}
     </div>
   );
 };

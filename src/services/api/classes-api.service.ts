@@ -21,6 +21,7 @@ export const createClass = async (
     studentEmails?: string[],
     assignmentIds?: string[],
     learningPlan?: string,
+    subject?: string,
 }): Promise<Class> => {
   try {
     const response = await apiClient.post(
@@ -48,8 +49,20 @@ export const getClassById = async (id: string): Promise<Class> => {
   }
 };
 
+export const updateClass = async (id: string, data: Class): Promise<Class> => {
+  try {
+    const response = await apiClient.patch(`/class-room/${id}`, data);
+
+    return response.data as Class;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export const ClassesApiService = {
   getClassesTeacherId,
   createClass,
   getClassById,
+  updateClass,
 };
