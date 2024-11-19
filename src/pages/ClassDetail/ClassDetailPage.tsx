@@ -33,6 +33,7 @@ import settingsIcon from "../../assets/icons/settings-icon.svg";
 import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
+import reportIcon from "../../assets/icons/reportIcon.svg";
 import AddClassIcon from "../../assets/icons/add-class-icon.svg";
 
 
@@ -47,6 +48,7 @@ export const ClassDetailPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [studentEmail, setStudentEmail] = useState("");
 
   const {
@@ -181,13 +183,11 @@ export const ClassDetailPage = () => {
     if (id) {
       assignmentsRefetch();
     }
-  }, [id]);
+  }, [id, assignmentsRefetch]);
 
   const toggleDropdown = () => setIsFilterOpen(!isFilterOpen);
 
   const handleFilter = (type: string) => {
-    console.log(type, 'type');
-
     let filteredAssignments = assignmentsData ? [...assignmentsData] : [];
 
     console.log(filteredAssignments, 'filteredAssignmnetrer');
@@ -270,7 +270,7 @@ export const ClassDetailPage = () => {
                 {t("teacherPages.class.reportText")}
               </p>
               <button onClick={() => setIsUploadPlanModal(true)}>
-                <img src={`${UploadPlanIcon}`} alt="Upload Plan" className='w-[17px] h-[16px]' />
+                <img src={`${reportIcon}`} alt="Upload Plan" className='w-[17px] h-[16px]' />
               </button>
             </div>
           </div>

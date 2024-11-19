@@ -28,7 +28,7 @@ const ClassesPage = () => {
 
   useEffect(() => {
     refetch();
-  }, [user?.id])
+  }, [user?.id, refetch]);
 
   return (
     <>
