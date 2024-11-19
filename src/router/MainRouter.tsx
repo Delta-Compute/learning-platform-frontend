@@ -1,4 +1,4 @@
-import {useContext, useEffect} from "react";
+import { useContext, useEffect } from "react";
 
 import {
   Navigate,
@@ -16,11 +16,13 @@ import {
   IntroducingWithAI,
   ProfilePage,
   SignInPage,
-  SignUpPage, StudentAssignmentsPage, UserTypeSelectionPage
+  SignUpPage,
+  StudentAssignmentsPage,
+  UserTypeSelectionPage,
 } from "../pages";
 
 import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
-import JoinYourSchoolPage from "../pages/JoinYourSchoolPage";
+import JoinYourSchoolPage from "../pages/JoinYourSchoolPage/JoinYourSchool.tsx";
 
 import { School } from "../context";
 

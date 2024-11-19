@@ -55,8 +55,8 @@ export const SignUpPage = () => {
     navigate(`/${currentSchoolName}/sign-in`);
   };
 
-  const googleSignUpSuccessHandler = async (credentialResponse: unknown) => {
-    const user: { email: string } = jwtDecode(credentialResponse.credential as string);
+  const googleSignUpSuccessHandler = async (credentialResponse: any) => {
+    const user: { email: string } = jwtDecode(credentialResponse?.credential as string);
 
     await mutate({
       email: user.email,
@@ -67,8 +67,22 @@ export const SignUpPage = () => {
   };
 
   const googleSignUpErrorHandler = () => {
-    console.log("error google sign up");
     toast.error("Something went wrong");
+  };
+
+  const appleSignUpHandler = () => {
+    const clientId = "com.example.client";
+    const redirectURI = `http://localhost:5173/${currentSchoolName}/introducing-with-ai`;
+    const scope = "email name";
+    const responseType = "code";
+
+    const url = `https://appleid.apple.com/auth/authorize? 
+      response_type=${responseType}&
+      client_id=${clientId}&
+      redirect_uri=${encodeURIComponent(redirectURI)}&
+      scope=${scope}`;
+
+    window.location.href = url;
   };
 
   return (
@@ -140,11 +154,13 @@ export const SignUpPage = () => {
             alt="facebook"
             onClick={() => onSocialAuth(AuthProvider.Facebook)}
           />
-          <img
-            src={`${AppleIcon}`}
-            alt="apple"
-            onClick={() => onSocialAuth(AuthProvider.Apple)}
-          />
+          <button onClick={appleSignUpHandler}>
+            <img
+              src={`${AppleIcon}`}
+              alt="apple"
+              onClick={() => onSocialAuth(AuthProvider.Apple)}
+            />
+          </button>
         </div>
       </div>
       <div className="flex flex-row items-center mt-auto justify-center">

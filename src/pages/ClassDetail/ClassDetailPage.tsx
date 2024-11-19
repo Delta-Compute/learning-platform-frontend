@@ -217,6 +217,16 @@ export const ClassDetailPage = () => {
     updateClassRoomMutation(formData as FormData);
   };
 
+  const copyClassRoomCodeHandler = async () => {
+    try {
+      await navigator.clipboard.writeText(classRoom?.verificationCode as string);
+
+      toast.success(t("teacherPages.class.copiedCodeText"));
+    } catch (error) {
+      console.error("error:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
       {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending) && <Loader />}
@@ -277,16 +287,21 @@ export const ClassDetailPage = () => {
             {t("teacherPages.class.classCodeText")}
           </h2>
           <div className="flex flex-col gap-[15px]">
-            <div className="flex justify-between">
-              <img src={copyIcon} alt="copy" />
-              <span className="text-[24px] text-[#362D2E] font-light ml-1">
-                {`vgu6g25`}
-              </span>
-              <div className="ml-auto items-center border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={copyClassRoomCodeHandler}
+                className="w-30 flex items-center gap-1"
+              >
+                <img src={copyIcon} alt="copy" />
+                <span className="text-[24px] text-[#362D2E] font-light ml-1 truncate">
+                  {classRoom?.verificationCode}
+                </span>
+              </button>
+              <button className="ml-auto items-center border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full">
                 <span className="text-[14px] text-blueText font-light">
                   {t("teacherPages.class.inviteStudentText")}
                 </span>
-              </div>
+              </button>
             </div>
 
             <button

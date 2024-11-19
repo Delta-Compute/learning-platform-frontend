@@ -9,7 +9,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     <button
       {...props}
       className={cn(
-        "pt-[10px] py-4 rounded-[40px] border-[1px] ease-in-out transition-all duration-25",
+        "pt-[10px] py-3 rounded-[40px] border-[1px] ease-in-out transition-all duration-25",
         props.className
       )}
     >

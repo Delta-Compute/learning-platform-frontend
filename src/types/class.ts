@@ -6,5 +6,6 @@ export interface Class {
   studentEmails?: string[];
   assignmentIds?: string[];
   learningPlan?: string;
+  verificationCode: string;
   subject: string;
-}
+};

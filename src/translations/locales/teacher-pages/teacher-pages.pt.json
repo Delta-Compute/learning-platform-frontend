@@ -55,6 +55,7 @@
         "addStudentButton": "Adicionar novo aluno",
         "successfullyAddedText": "Carregado com sucesso"
       },
+      "copiedCodeText": "Copiado",
       "noAssignmentsText": "Ainda não foram atribuídas tarefas"
     },
     "assignment": {

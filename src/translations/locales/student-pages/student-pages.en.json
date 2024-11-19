@@ -15,6 +15,15 @@
       },
       "logoutButton": {
         "text": "Logout"
+      },
+      "joinToClassButton": "Join to class",
+      "verificationModal": {
+        "title": "Join your class room",
+        "verificationCodeLabel": "Verification code",
+        "verificationCodeInputPlaceholder": "Enter verification code",
+        "verifyButton": "Submit",
+        "successfullyAddedToastText": "Successfully joined",
+        "errorToastText": "Verification code is not correct"
       }
     }
   }

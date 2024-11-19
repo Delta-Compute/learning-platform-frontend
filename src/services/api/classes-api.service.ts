@@ -13,16 +13,7 @@ export const getClassesTeacherId = async (teacherId: string): Promise<Class[]> =
   }
 };
 
-export const createClass = async (
-  data: {
-    name?: string,
-    teacherId?: string,
-    logo?: string,
-    studentEmails?: string[],
-    assignmentIds?: string[],
-    learningPlan?: string,
-    subject?: string,
-}): Promise<Class> => {
+export const createClass = async (data: Omit<Class, "verificationCode">): Promise<Class> => {
   try {
     const response = await apiClient.post(
       "/class-room",
@@ -49,7 +40,7 @@ export const getClassById = async (id: string): Promise<Class> => {
   }
 };
 
-export const updateClass = async (id: string, data: Class): Promise<Class> => {
+export const updateClass = async (id: string, data: Omit<Class, "verificationCode">): Promise<Class> => {
   try {
     const response = await apiClient.patch(`/class-room/${id}`, data);
 

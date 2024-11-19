@@ -46,12 +46,12 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     <>
       {isOpen && (
         <div
-          className="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-[#00143480] z-[1000]">
+          className="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-[#00143480] z-40">
           <div
             ref={modalRef}
             className="
               relative bg-[#FFF] w-[94%] sm:min-w-[500px]
-              rounded-[20px] sm:max-w-[70%] md:max-w-[60%]
+              rounded-[32px] sm:max-w-[70%] md:max-w-[60%]
               no-scrollbar p-[12px] sm:p-[20px]
             "
           >

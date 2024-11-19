@@ -9,7 +9,7 @@ export const Input: React.FC<InputProps> = props => {
     <input
       {...props}
       className={cn(
-        "border-[1px] p-[16px] rounded-full",
+        "border-[1px] p-4 rounded-full focus:border-main",
         props.className,
       )}
     />

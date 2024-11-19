@@ -55,8 +55,17 @@ export const updateClassRoom = async (
   }
 };
 
+export const verifyClassRoomCodeAndAddEmail = async (verificationCode: string, email: string) => {
+  try {
+    await apiClient.patch(`/class-room/verification-code/${verificationCode}/${email}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const ClassRoomApiService = {
   getClassRoom,
   getAllClassRooms,
   updateClassRoom,
+  verifyClassRoomCodeAndAddEmail,
 };

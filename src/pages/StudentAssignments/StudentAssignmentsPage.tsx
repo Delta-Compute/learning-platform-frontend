@@ -4,13 +4,19 @@ import { Link } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
+import { useMutation } from "@tanstack/react-query";
+import { ClassRoomApiService } from "../../services";
+
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { useGetStudentAssignments } from "../../hooks";
 
-import { Loader } from "../../components";
-import { IAssignment } from '../../types';
+import { Loader, Modal, Button, Input } from "../../components";
+import { IAssignment } from "../../types";
+
+import CopyIcon from "../../assets/icons/copy-icon.svg";
+import {toast} from "react-hot-toast";
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
@@ -18,10 +24,24 @@ export const StudentAssignmentsPage = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const [openAssignment, setOpenAssignment] = useState<IAssignment[]>([]);
   const [closedAssignment, setClosedAssignment] = useState<IAssignment[]>([]);
-  const [openedAssignmentId, setOpenedAssignmentId] = useState('');
+  const [openedAssignmentId, setOpenedAssignmentId] = useState("");
+  const [isVerifyClassRoomCodeModalOpen, setIsVerifyClassRoomCodeModalOpen] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
   const [selectedTab, setSelectedTab] = useState("open");
   const { data: assignments, refetch, isRefetching } = useGetStudentAssignments(user?.email ?? "");
+
+  const { mutate: verificationCodeMutation, isPending: isVerificationPending } = useMutation({
+    mutationFn: (data: { verificationCode: string, email: string, }) => ClassRoomApiService.verifyClassRoomCodeAndAddEmail(data.verificationCode, data.email),
+    onSuccess: () => {
+      toast.success(t("studentPages.studentAssignments.verificationModal.successfullyAddedToastText"));
+      setIsVerifyClassRoomCodeModalOpen(false);
+      refetch();
+    },
+    onError: () => {
+      toast.error(t("studentPages.studentAssignments.tabs.verificationModal.errorToastText"));
+    },
+  });
 
   useEffect(() => {
     if (assignments) {
@@ -47,9 +67,15 @@ export const StudentAssignmentsPage = () => {
     }
   };
 
+  const submitVerificationHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    verificationCodeMutation({ verificationCode, email: user?.email as string });
+  };
+
   return (
-    <div>
-      {isRefetching && <Loader />}
+    <>
+      {(isRefetching || isVerificationPending) && <Loader />}
 
       <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
         <h2 className="text-center text-[20px]">{t("studentPages.studentAssignments.headerTitle")}</h2>
@@ -149,31 +175,57 @@ export const StudentAssignmentsPage = () => {
           }
         </div>
       </div>
-      <button
-        className="
-          fixed bottom-[20px] right-[10px] rounded-full border-[1px] px-[15px] py-[8px]
-          flex items-center gap-[8px]
-        "
-        onClick={logout}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="w-5 h-5"
+
+      <div className="fixed bottom-5 right-2 flex items-center gap-2">
+        <button
+          onClick={() => setIsVerifyClassRoomCodeModalOpen(true)}
+          className="flex items-center rounded-full border-[1px] gap-2 px-4 py-2"
         >
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/>
-          <line x1="21" x2="9" y1="12" y2="12"/>
-        </svg>
-        <span>{t("studentPages.studentAssignments.logoutButton.text")}</span>
-      </button>
-    </div>
+          <img src={`${CopyIcon}`} alt="Class room code image" />
+          <span>{t("studentPages.studentAssignments.joinToClassButton")}</span>
+        </button>
+
+        <button
+          className="
+            rounded-full border-[1px] px-4 py-2
+            flex items-center gap-2
+          "
+          onClick={logout}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+          <span>{t("studentPages.studentAssignments.logoutButton.text")}</span>
+        </button>
+      </div>
+
+      <Modal isOpen={isVerifyClassRoomCodeModalOpen} onClose={() => setIsVerifyClassRoomCodeModalOpen(false)}>
+        <div>
+          <p className="text-center text-dark-blue font-semibold text-[18px]">{t("studentPages.studentAssignments.verificationModal.title")}</p>
+          <form onSubmit={submitVerificationHandler} className="mt-5 flex flex-col gap-2">
+            <Input
+              className="w-full"
+              placeholder={t("studentPages.studentAssignments.verificationModal.verificationCodeInputPlaceholder")}
+              value={verificationCode}
+              onChange={(event) => setVerificationCode(event.target.value)}
+            />
+            <Button className="w-full bg-main text-white border-main">{t("studentPages.studentAssignments.verificationModal.verifyButton")}</Button>
+          </form>
+        </div>
+      </Modal>
+    </>
   );
 };

@@ -6,11 +6,11 @@ import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import plus from '../../assets/icons/plus-icon.svg';
 import BottomNavigation from '../../components/Navigation/Navigation.tsx';
-import CreateClassModal from '../../components/CreateClassModal';
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
-import { Class } from '../../types/class';
-import { Loader } from '../../components';
+import { Class } from "../../types/class";
+
+import { Loader, CreateClassModal } from "../../components";
 
 import { useNavigate, Link } from "react-router-dom";
 

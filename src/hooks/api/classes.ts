@@ -4,7 +4,7 @@ import { Class } from "../../types/class.ts";
 
 export const useCreateClass = () => {
     return useMutation({
-        mutationFn: (data: Class) => ClassesApiService.createClass(data),
+        mutationFn: (data: Omit<Class, "verificationCode">) => ClassesApiService.createClass(data),
         onSuccess: (data: Class) => {
             console.log("Class created:", data);
         },
@@ -33,7 +33,7 @@ export const useClassById = (id: string) => {
 
 export const useUpdateClass = (id: string) => {
     return useMutation({
-        mutationFn: (data: Class) => ClassesApiService.updateClass(id, data),
+        mutationFn: (data: Omit<Class, "verificationCode">) => ClassesApiService.updateClass(id, data),
         onSuccess: (data: Class) => {
             console.log("Class updated:", data);
         },

@@ -5,3 +5,4 @@ export * from "./ui/header/Header";
 export * from "./ui/loader/Loader";
 export * from "./ui/assignment/Assisgnment";
 export * from "./LanguageSwitch/LanguageSwitch";
+export * from "./CreateClassModal/CreateClassModal";

@@ -136,8 +136,8 @@ export const AssignmentSummaryConversation: React.FC<AssignmentSummaryConversati
       } else {
         toast.error("Something went wrong, please try again");
       }
-    } catch (error) {
-      toast.error("Something went wrong, please try again", error);
+    } catch (error: any) {
+      toast.error("Something went wrong, please try again");
     } finally {
       setConnectionLoading(false);
     }

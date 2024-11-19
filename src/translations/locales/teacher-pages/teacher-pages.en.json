@@ -55,6 +55,7 @@
         "uploadButton": "Upload",
         "successfullyUploadedText": "Class successfully updated"
       },
+      "copiedCodeText": "Copied",
       "noAssignmentsText": "No assignments yet"
     },
     "assignment": {

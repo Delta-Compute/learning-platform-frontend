@@ -1,12 +1,12 @@
+import {useContext, useState} from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { useNavigate } from "react-router-dom";
+
 import Header from "../../components/ui/header/Header";
 import { Button, Loader } from "../../components";
-import {useContext, useState} from "react";
-import GoogleIcon from "../../assets/icons/google-icon.svg";
-import FacebookIcon from "../../assets/icons/fb-icon.svg";
-import AppleIcon from "../../assets/icons/apple-icon.svg";
+
 import { AuthProvider } from "../api/types";
 import { useLogin } from "../../hooks/api/users";
 
@@ -17,6 +17,12 @@ import { jwtDecode } from "jwt-decode";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { UserAuthType } from "../../types";
+
+import { toast } from "react-hot-toast";
+
+import GoogleIcon from "../../assets/icons/google-icon.svg";
+import FacebookIcon from "../../assets/icons/fb-icon.svg";
+import AppleIcon from "../../assets/icons/apple-icon.svg";
 
 type UserInfo = {
   email: string;
@@ -49,8 +55,8 @@ export const SignInPage = () => {
     });
   };
 
-  const googleSignInSuccessHandler = async (credentialResponse: unknown) => {
-    const user: { email: string } = jwtDecode(credentialResponse.credential as string);
+  const googleSignInSuccessHandler = async (credentialResponse: any) => {
+    const user: { email: string } = jwtDecode(credentialResponse?.credential as string);
 
     await mutate({
       email: user.email,
@@ -61,7 +67,22 @@ export const SignInPage = () => {
   };
 
   const googleSignInErrorHandler = () => {
-    console.error('Помилка авторизації Google');
+    toast.error("Something went wrong");
+  };
+
+  const appleSignInHandler = () => {
+    const clientId = "com.example.client";
+    const redirectURI = "";
+    const scope = "email name";
+    const responseType = "code";
+
+    const url = `https://appleid.apple.com/auth/authorize?
+      response_type=${responseType}&
+      client_id=${clientId}&
+      redirect_uri=${encodeURIComponent(redirectURI)}&
+      scope=${scope}`;
+
+    window.location.href = url;
   };
 
   return (
@@ -120,11 +141,13 @@ export const SignInPage = () => {
             alt="facebook"
             onClick={() => onSocialAuth(AuthProvider.Facebook)}
           />
-          <img
-            src={`${AppleIcon}`}
-            alt="apple"
-            onClick={() => onSocialAuth(AuthProvider.Apple)}
-          />
+          <button onClick={appleSignInHandler}>
+            <img
+              src={`${AppleIcon}`}
+              alt="apple"
+              onClick={() => onSocialAuth(AuthProvider.Apple)}
+            />
+          </button>
         </div>
       </div>
       <div className="flex flex-row items-center mt-auto justify-center">

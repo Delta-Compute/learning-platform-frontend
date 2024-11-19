@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -10,33 +10,23 @@ import { useUpdateUser } from '../../hooks';
 import { useTranslation } from "react-i18next";
 
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-import arrowDropdown from "../../assets/icons/arrow_dropdown.svg";
 
 const JoinYourSchoolPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  console.log(location.state);
+  const { user } = useContext(UserContext);
   
   const { firstName, lastName, natureLanguage, foreingLanguage, role } = location.state as { firstName: string, lastName: string, natureLanguage: string, foreingLanguage: string, role: string };
+  const { mutate } = useUpdateUser();
   const { currentSchoolName } = useContext(SchoolNamesContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("School: choose");
+
   const [natureLanguageUpdate, setNatureLanguageUpdate] = useState(natureLanguage);
   const [foreignLanguageUpdate, setForeignLanguageUpdate] = useState(foreingLanguage);
   const [roleUpdate] = useState(role);
   const [firstNameUpdate, setFirstNameUpdate] = useState(firstName);
   const [lastNameUpdate, setLastNameUpdate] = useState(lastName);
-  const { user } = useContext(UserContext);
-  const { mutate } = useUpdateUser();
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.relatedTarget)) {
-      setIsOpen(false);
-    }
-  };
 
   const handleOnSubmit = async () => {    
     await mutate({
@@ -60,8 +50,6 @@ const JoinYourSchoolPage = () => {
   });
   };
 
-  const options = ["School 1", "School 2", "School 3"];
-
   return (
     <div className="flex flex-col min-h-screen">
       <div className="fixed z-[1] top-0 w-full bg-white pt-4 pb-[5px] flex justify-center items-center">
@@ -78,49 +66,6 @@ const JoinYourSchoolPage = () => {
 
       <div className="flex flex-col flex-grow min-h-0 mt-20 p-4 max-w-md mx-auto w-full space-y-4">
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
-          <div>
-            <label className="block text-sm font-normal mb-2">
-              {t("authPages.joinYourSchool.selectSchoolLabel")}
-            </label>
-            <div className="relative" ref={dropdownRef}>
-              <div
-                className={`w-full border-[0.5px] rounded-[40px] p-[16px] bg-white cursor-pointer flex justify-between items-center ${selected === "School: choose"
-                  ? "text-gray-400"
-                  : "text-gray-700"
-                  }`}
-                tabIndex={0}
-                onClick={() => setIsOpen((prev) => !prev)}
-                onBlur={handleBlur}
-              >
-                {selected}
-                <img
-                  src={arrowDropdown}
-                  className={`w-4 h-4 transform ${isOpen ? "rotate-180" : "rotate-0"
-                    } transition-transform duration-300`}
-                />
-              </div>
-              <div
-                className={`absolute z-10 mt-2 w-full bg-white border-[0.5px] rounded-[10px] shadow-lg overflow-hidden transition-all duration-300 ease-out transform origin-top ${isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
-                  }`}
-                style={{ transformOrigin: "top" }}
-              >
-                {options.map((option, index) => (
-                  <div
-                    key={index}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                    onClick={() => {
-                      setSelected(option);
-                      setIsOpen(false);
-                    }}
-                    tabIndex={0}
-                  >
-                    {option}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-normal mb-2">
               {t("authPages.joinYourSchool.firstNameLabel")}
