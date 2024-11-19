@@ -48,7 +48,6 @@ export const ClassDetailPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [studentEmail, setStudentEmail] = useState("");
 
   const {
