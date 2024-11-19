@@ -40,3 +40,15 @@
 .text-main {
   color: var(--main) !important;
 }
+
+@media screen and (max-width: 393px)  {
+  .maple-bear-logo-box {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 443px)  {
+  .maple-bear-logo-box {
+    width: 393px;
+  }
+}
