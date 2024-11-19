@@ -290,10 +290,10 @@ export const ClassDetailPage = () => {
             <div className="flex items-center justify-between">
               <button
                 onClick={copyClassRoomCodeHandler}
-                className="w-30 flex items-center gap-1"
+                className="flex items-center gap-1"
               >
                 <img src={copyIcon} alt="copy" />
-                <span className="text-[24px] text-[#362D2E] font-light ml-1 truncate">
+                <span className="text-[24px] w-[120px] text-[#362D2E] font-light ml-1 truncate">
                   {classRoom?.verificationCode}
                 </span>
               </button>

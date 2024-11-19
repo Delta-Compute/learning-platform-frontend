@@ -15,8 +15,9 @@ import { useGetStudentAssignments } from "../../hooks";
 import { Loader, Modal, Button, Input } from "../../components";
 import { IAssignment } from "../../types";
 
+import { toast } from "react-hot-toast";
+
 import CopyIcon from "../../assets/icons/copy-icon.svg";
-import {toast} from "react-hot-toast";
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
@@ -179,7 +180,7 @@ export const StudentAssignmentsPage = () => {
       <div className="fixed bottom-5 right-2 flex items-center gap-2">
         <button
           onClick={() => setIsVerifyClassRoomCodeModalOpen(true)}
-          className="flex items-center rounded-full border-[1px] gap-2 px-4 py-2"
+          className="flex items-center rounded-full border-[1px] gap-2 px-4 py-2 bg-white"
         >
           <img src={`${CopyIcon}`} alt="Class room code image" />
           <span>{t("studentPages.studentAssignments.joinToClassButton")}</span>
@@ -188,7 +189,7 @@ export const StudentAssignmentsPage = () => {
         <button
           className="
             rounded-full border-[1px] px-4 py-2
-            flex items-center gap-2
+            flex items-center gap-2 bg-white
           "
           onClick={logout}
         >
@@ -212,7 +213,10 @@ export const StudentAssignmentsPage = () => {
         </button>
       </div>
 
-      <Modal isOpen={isVerifyClassRoomCodeModalOpen} onClose={() => setIsVerifyClassRoomCodeModalOpen(false)}>
+      <Modal
+        isOpen={isVerifyClassRoomCodeModalOpen}
+        onClose={() => setIsVerifyClassRoomCodeModalOpen(false)}
+      >
         <div>
           <p className="text-center text-dark-blue font-semibold text-[18px]">{t("studentPages.studentAssignments.verificationModal.title")}</p>
           <form onSubmit={submitVerificationHandler} className="mt-5 flex flex-col gap-2">
@@ -222,7 +226,9 @@ export const StudentAssignmentsPage = () => {
               value={verificationCode}
               onChange={(event) => setVerificationCode(event.target.value)}
             />
-            <Button className="w-full bg-main text-white border-main">{t("studentPages.studentAssignments.verificationModal.verifyButton")}</Button>
+            <Button className="w-full bg-main text-white border-main">
+              {t("studentPages.studentAssignments.verificationModal.verifyButton")}
+            </Button>
           </form>
         </div>
       </Modal>

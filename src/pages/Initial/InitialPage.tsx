@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
 
-import Onboarding from "../../assets/icons/onboarding.svg";
+import MapleBearLogo from "../../assets/images/maple-bear-logo.png";
 import AdeliaCostaLogo from "../../assets/images/adelia-costa-logo.png";
 import SBLogo from "../../assets/images/sb-logo.png";
 import EducareLogo from "../../assets/images/educare-logo.png";
@@ -17,6 +17,7 @@ const SCHOOL_LOGOS = {
   [School.SB]: SBLogo,
   [School.Educare]: EducareLogo,
   [School.Beka]: BekaLogo,
+  [School.MapleBear]: MapleBearLogo,
 };
 
 export const InitialPage = () => {
@@ -31,13 +32,19 @@ export const InitialPage = () => {
         py-12 
       `}
     >
-      {currentSchoolName === School.MappleBear && (
-        <h3 className="text-[24px] text-main font-normal absolute top-1/3">
-          Maple Bear
-        </h3>
+      {currentSchoolName === School.MapleBear && (
+        <div className="relative flex items-center justify-center min-h-[300px] w-[393px] mt-[50px] maple-bear-logo-box">
+          <h3 className="text-[24px] mt-[40px] text-main font-normal">
+            Maple Bear
+          </h3>
+          <img
+            src={`${SCHOOL_LOGOS[currentSchoolName]}`}
+            className="absolute left-0 top-0 w-full h-full"
+          />
+        </div>
       )}
 
-      {currentSchoolName !== School.MappleBear ? (
+      {currentSchoolName !== School.MapleBear ? (
         <div className="mt-[100px] flex flex-col gap-[80px]">
           <img src={`${SCHOOL_LOGOS[currentSchoolName]}`} className="w-[280px] h-[220px]"/>
 
@@ -56,8 +63,8 @@ export const InitialPage = () => {
       ) : (
         <h1
           className={`
-            text-brownText text-5xl font-handwriting text-center absolute top-2/3
-          `}
+          text-brownText text-5xl font-handwriting text-center absolute top-2/3
+        `}
           style={{
             fontFamily: "Edu AU VIC WA NT Guides",
           }}
@@ -86,11 +93,6 @@ export const InitialPage = () => {
           {t("authPages.initial.signInButton")}
         </Link>
       </div>
-      {currentSchoolName === School.MappleBear && <img
-        src={`${Onboarding}`}
-        alt="microphone"
-        className="absolute top-0 left-0 h-full w-full -z-10"
-      />}
     </div>
   );
 };

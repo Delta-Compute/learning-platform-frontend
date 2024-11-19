@@ -35,7 +35,7 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, us
 
     mutate(
       {
-        id: user?.id,
+        id: user?.id as string,
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
@@ -55,7 +55,7 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, us
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={handleCloseModalBlur}>
       {isPending && <Loader />}
       <div className="bg-white w-[95%] max-w-md p-2 pt-4 rounded-[32px] shadow-lg">
         <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.profile.profileModalTitle")}</h2>
