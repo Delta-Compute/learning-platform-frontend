@@ -249,7 +249,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || "") : studentInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || "", user.nativeLanguage, user.foreignLanguage) : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 

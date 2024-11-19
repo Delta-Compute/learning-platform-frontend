@@ -16,6 +16,21 @@ export const getUser = async (id: string): Promise<User | null> => {
   }
 };
 
+export const getUsersByEmails = async (emails: string[]): Promise<User[] | null> => {
+  try {
+    const response = await apiClient.get<User[]>("/users/find-users/find-all", {
+      emails,
+    });
+
+    const data = response.data as User[];
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export const updateUser = async (
   id: string,
   firstName?: string,
@@ -74,4 +89,5 @@ export const UsersApiService = {
   updateUser,
   signIn,
   signUp,
+  getUsersByEmails,
 };

@@ -8,3 +8,4 @@ export * from "./LanguageSwitch/LanguageSwitch";
 export * from "./CreateClassModal/CreateClassModal";
 export * from "./ProfileSettingsModal/ProfileSettingsModal";
 export * from "./ClassSettingsModal/ClassSettingsModal";
+export * from "./ReportModal/ReportModal";

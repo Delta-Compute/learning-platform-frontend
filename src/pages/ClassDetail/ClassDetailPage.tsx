@@ -8,7 +8,7 @@ import { Class } from '../../types/class';
 
 import { useClassById } from '../../hooks/api/classes';
 
-import { Loader, Modal, Input, Button, ClassSettingsModal } from "../../components";
+import { Loader, Modal, Input, Button, ClassSettingsModal, ReportModal } from "../../components";
 import { useGetRoomsAssignments } from "../../hooks";
 import { IAssignment } from "../../types";
 
@@ -269,7 +269,7 @@ export const ClassDetailPage = () => {
               <p className="text-[14px] text-gray-500 font-light w-fit">
                 {t("teacherPages.class.reportText")}
               </p>
-              <button onClick={() => setIsUploadPlanModal(true)}>
+              <button onClick={() => setIsReportModalOpen(true)}>
                 <img src={`${reportIcon}`} alt="Upload Plan" className='w-[17px] h-[16px]' />
               </button>
             </div>
@@ -421,6 +421,7 @@ export const ClassDetailPage = () => {
         </div>
       </Modal>
       {classSettingsOpen && <ClassSettingsModal isOpen={classSettingsOpen} onClose={() => setClassSettingsOpen(false)} onRefreshClasses={refetchClassRoom} classItem={classItem!} />}
+      {isReportModalOpen && <ReportModal onClose={() => setIsReportModalOpen(false)} classItem={classItem} />}
     </div>
   );
 };
