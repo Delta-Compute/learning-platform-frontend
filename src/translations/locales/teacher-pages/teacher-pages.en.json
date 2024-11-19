@@ -25,7 +25,7 @@
       "noClassesText": "No classes yet"
     },
     "class": {
-      "uploadPlanText": "Upload class learning plan to have more suitable task recommendations",
+      "uploadPlanText": "Learning plan",
       "studentsText": "Students",
       "assignmentsText": "Assignments",
       "classCodeText": "Class code",
@@ -33,6 +33,7 @@
       "addStudentButton": "Add student",
       "assignmentsTitleText": "Assignments",
       "filterText": "Filter",
+      "reportText": "Report",
       "assignmentDeadlineText": "Deadline",
       "assignmentStatus": {
         "completed": "Completed",

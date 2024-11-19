@@ -25,7 +25,7 @@
       "noClassesText": "Ainda não há aulas"
     },
     "class": {
-      "uploadPlanText": "Carregar o plano de aprendizagem da turma para obter recomendações de tarefas mais adequadas",
+      "uploadPlanText": "Plano de aprendizagem",
       "studentsText": "Estudantes",
       "assignmentsText": "Atribuições",
       "classCodeText": "Código de classe",

@@ -14,7 +14,7 @@ interface ProfileSettingsModalProps {
   user: User;
 }
 
-const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, user }) => {
+export const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, user }) => {
   const { t } = useTranslation();
   const [userFirstName, setUserFirstName] = useState<string>(user?.firstName || "");
   const [userLastName, setUserLastName] = useState<string>(user?.lastName || "");
@@ -137,5 +137,3 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, us
     </div>
   );
 };
-
-export default ProfileSettingsModal;

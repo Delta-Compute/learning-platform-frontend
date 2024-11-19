@@ -6,3 +6,5 @@ export * from "./ui/loader/Loader";
 export * from "./ui/assignment/Assisgnment";
 export * from "./LanguageSwitch/LanguageSwitch";
 export * from "./CreateClassModal/CreateClassModal";
+export * from "./ProfileSettingsModal/ProfileSettingsModal";
+export * from "./ClassSettingsModal/ClassSettingsModal";

@@ -139,7 +139,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     if (user && user.role === "student" && assignments) {
       assignments.map(item => {
         if (item.id === params.assignmentId && user.firstName) {
-          setStudentInstructions(studentInstructionsForAI(user.firstName, item.description));
+          setStudentInstructions(studentInstructionsForAI(user.firstName, user.foreignLanguage, item.topic, user.nativeLanguage, (item.timeToDiscuss / 60).toString(), item.description));
           setClassRoomId(item.classRoomId);
           setCurrentAssignment(item);
         }
@@ -162,8 +162,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   // const [summary, setSummary] = useState("");
 
   const [connectionLoading, setConnectionLoading] = useState(false);
-
-  console.log('items', items)
 
   const connectConversation = useCallback(async () => {
     const client = clientRef.current;
