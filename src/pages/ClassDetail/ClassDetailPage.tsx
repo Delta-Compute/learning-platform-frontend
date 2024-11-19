@@ -8,7 +8,7 @@ import { Class } from '../../types/class';
 
 import { useClassById } from '../../hooks/api/classes';
 
-import { Loader, Modal, Input, Button } from "../../components";
+import { Loader, Modal, Input, Button, ClassSettingsModal } from "../../components";
 import { useGetRoomsAssignments } from "../../hooks";
 import { IAssignment } from "../../types";
 
@@ -34,7 +34,7 @@ import copyIcon from "../../assets/icons/copy-icon.svg";
 import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 import AddClassIcon from "../../assets/icons/add-class-icon.svg";
-import ClassSettingsModal from '../../components/ClassSettingsModal/ClassSettingsModal';
+
 
 export const ClassDetailPage = () => {
   const { t } = useTranslation();
@@ -255,14 +255,24 @@ export const ClassDetailPage = () => {
               />
             )}
           </div>
-          <div className="flex items-center gap-[10px] justify-between">
-            <p className="text-[14px] text-gray-500 font-light">
-              {t("teacherPages.class.uploadPlanText")}
-            </p>
+          <div className="w-full flex flex-wrap gap-[8px]">
+            <div className="flex items-center justify-center gap-[8px] border w-[calc(50%-4px)] px-[10px] py-[7px] rounded-2xl">
+              <p className="text-[14px] font-light w-fit text-[#3ABF38]">
+                {t("teacherPages.class.uploadPlanText")}
+              </p>
+              <button onClick={() => setIsUploadPlanModal(true)}>
+                <img src={`${UploadPlanIcon}`} className='w-[17px] h-[16px]' alt="Upload Plan" />
+              </button>
+            </div>
 
-            <button className="w-[34px]" onClick={() => setIsUploadPlanModal(true)}>
-              <img src={`${UploadPlanIcon}`} />
-            </button>
+            <div className="flex items-center justify-center gap-[8px] border w-[calc(50%-4px)] px-[10px] py-[7px] rounded-2xl">
+              <p className="text-[14px] text-gray-500 font-light w-fit">
+                {t("teacherPages.class.reportText")}
+              </p>
+              <button onClick={() => setIsUploadPlanModal(true)}>
+                <img src={`${UploadPlanIcon}`} alt="Upload Plan" className='w-[17px] h-[16px]' />
+              </button>
+            </div>
           </div>
 
           <div className="flex justify-between">
@@ -410,7 +420,7 @@ export const ClassDetailPage = () => {
           </form>
         </div>
       </Modal>
-      {classSettingsOpen && <ClassSettingsModal isOpen={classSettingsOpen} onClose={() => setClassSettingsOpen(false)} onRefreshClasses={refetchClassRoom} classItem={classItem!}/>}
+      {classSettingsOpen && <ClassSettingsModal isOpen={classSettingsOpen} onClose={() => setClassSettingsOpen(false)} onRefreshClasses={refetchClassRoom} classItem={classItem!} />}
     </div>
   );
 };

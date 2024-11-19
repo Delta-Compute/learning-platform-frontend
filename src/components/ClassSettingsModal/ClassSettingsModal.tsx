@@ -15,7 +15,7 @@ interface UpdateClassModalProps {
   classItem: Class;
 }
 
-const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefreshClasses, classItem }) => {
+export const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefreshClasses, classItem }) => {
   const { t } = useTranslation();
   const [className, setClassName] = useState<string>(classItem?.name);
   const [classSubject, setClassSubject] = useState<string>(classItem?.subject);  
@@ -102,5 +102,3 @@ const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefres
     </div>
   );
 };
-
-export default ClassSettingsModal;
