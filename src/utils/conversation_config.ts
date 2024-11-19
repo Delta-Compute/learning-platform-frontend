@@ -31,11 +31,11 @@ Here is a Lesson Plan the teacher has provided. These are general goals the teac
 
 export const studentInstructionsForAI = (
   studentName: string,
-  // description: string,
   classLanguage?: string,
   topic?: string,
   userNativeLanguage?: string,
   time?: string,
+  // description: string,
 ) => {
   return `
     You are an AI language tutor talking with a student learning ${classLanguage} and your job is to work at home with the students to complete the assignments designed by the student’s teacher and an AI. A copy of the conversation between the teacher and AI creating this assignment is included for you below. 
