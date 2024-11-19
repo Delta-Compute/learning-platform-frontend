@@ -12,12 +12,14 @@ import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import { Loader } from '../../components';
 import BottomNavigation from '../../components/Navigation/Navigation';
 import { useTranslation } from 'react-i18next';
+import ProfileSettingsModal from '../../components/ProfileSettingsModal/ProfileSettingsModal';
 
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { userId } = useParams();
   const { user } = useContext(UserContext);
   const [darkModeOn, setDarkModeOn] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
   const { data, isPending, refetch } = useGetClassesTeacherId(userId as string);
 
@@ -46,7 +48,7 @@ export const ProfilePage = () => {
           </div>
         </div>
         <button className="flex items-center justify-center w-10 h-10 rounded-full border bg-white hover:bg-gray-100">
-          <img src={settingsIcon} alt="settings" />
+          <img src={settingsIcon} alt="settings" onClick={() => setOpenSettings(true)}/>
         </button>
       </div>
 
@@ -89,6 +91,7 @@ export const ProfilePage = () => {
         </li>
       </ul>
       <BottomNavigation />
+      {openSettings && <ProfileSettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} user={user!}/>}
     </div>
   );
 };

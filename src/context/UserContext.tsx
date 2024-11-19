@@ -37,7 +37,7 @@ export const UserContextProvider = ({
 
   const { 
     data: userData, 
-    refetch: refetchUser, 
+    refetch: refetchUser,
     isRefetching: isUserRefetching, 
     isPending: userPending,
   } = useGetUser(userId);
