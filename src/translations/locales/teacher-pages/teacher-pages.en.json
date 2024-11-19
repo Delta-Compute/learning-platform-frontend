@@ -79,7 +79,18 @@
       "languageText": "Language",
       "privacyPolicyText": "Privacy policy",
       "termsOfServiceText": "Terms",
-      "logoutText": "Logout"
+      "logoutText": "Logout",
+      "firstNameModal": "First name",
+      "lastNameModal": "Last name",
+      "firstNameInputPlaceholder": "Enter first name",
+      "lastNameInputPlaceholder": "Enter last name",
+      "emailModal": "Email",
+      "emailInputPlaceholder": "Enter email",
+      "profileModalTitle": "Profile settings",
+      "nativeLanguage": "Nature language",
+      "nativeLanguageInputPlaceholder": "Write a native language",
+      "foreignLanguage": "Foreign language",
+      "foreignLanguageInputPlaceholder": "Write a foreign language"
     }
   }
 }

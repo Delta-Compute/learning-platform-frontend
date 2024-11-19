@@ -17,7 +17,10 @@ interface ProfileSettingsModalProps {
 const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, user }) => {
   const { t } = useTranslation();
   const [userFirstName, setUserFirstName] = useState<string>(user?.firstName || "");
-  const [userLastName, setUserLastName] = useState<string>(user?.lastName || "");  
+  const [userLastName, setUserLastName] = useState<string>(user?.lastName || "");
+  const [userEmail, setUserEmail] = useState<string>(user?.email || "");
+  const [userNatureLanguage, setUserNatureLanguage] = useState<string>(user?.nativeLanguage || "");
+  const [userForeignLanguage, setUserForeignLanguage] = useState<string>(user?.foreignLanguage || "");
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -35,6 +38,9 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, us
         id: user?.id,
         firstName: userFirstName,
         lastName: userLastName,
+        email: userEmail,
+        natureLanguage: userNatureLanguage,
+        foreignLanguage: userForeignLanguage,
       },
       {
         onSuccess: () => {
@@ -52,26 +58,56 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onClose, us
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
       {isPending && <Loader />}
       <div className="bg-white w-[95%] max-w-md p-2 pt-4 rounded-[32px] shadow-lg">
-        <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.classSettingsTitle")}</h2>
+        <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.profile.profileModalTitle")}</h2>
 
         <div className="mb-4">
-          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classNameLabel")}</label>
+          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.firstNameModal")}</label>
           <input
             value={userFirstName}
             type="text"
-            placeholder={t("teacherPages.classes.classModal.classNameInputPlaceholder")}
+            placeholder={t("teacherPages.profile.firstNameInputPlaceholder")}
             className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
             onChange={(e) => setUserFirstName(e.target.value)}
           />
         </div>
         <div className="mb-4">
-          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classSubjectLabel")}</label>
+          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.lastNameModal")}</label>
           <input
             value={userLastName}
             type="text"
-            placeholder={t("teacherPages.classes.classModal.classSubjectInputPlaceholder")}
+            placeholder={t("teacherPages.profile.lastNameInputPlaceholder")}
             className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
             onChange={(e) => setUserLastName(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.emailModal")}</label>
+          <input
+            value={userEmail}
+            type="text"
+            placeholder={t("teacherPages.profile.emailInputPlaceholder")}
+            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            onChange={(e) => setUserEmail(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.nativeLanguage")}</label>
+          <input
+            value={userNatureLanguage}
+            type="text"
+            placeholder={t("teacherPages.profile.nativeLanguageInputPlaceholder")}
+            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            onChange={(e) => setUserNatureLanguage(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.foreignLanguage")}</label>
+          <input
+            value={userForeignLanguage}
+            type="text"
+            placeholder={t("teacherPages.profile.foreignLanguageInputPlaceholder")}
+            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            onChange={(e) => setUserForeignLanguage(e.target.value)}
           />
         </div>
 

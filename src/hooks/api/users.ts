@@ -32,6 +32,7 @@ export const useUpdateUser = () => {
       role?: string;
       natureLanguage?: string;
       foreignLanguage?: string;
+      email?: string;
     }) =>
       UsersApiService.updateUser(
         data.id,
@@ -40,6 +41,7 @@ export const useUpdateUser = () => {
         data.role,
         data.foreignLanguage,
         data.natureLanguage,
+        data.email,
       ),
     onSuccess: async (data) => {
       const user: User | null = await UsersApiService.getUser(

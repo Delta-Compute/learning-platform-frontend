@@ -22,7 +22,8 @@ export const updateUser = async (
   lastName?: string,
   role?: string,
   foreignLanguage?: string,
-  natureLanguage?: string
+  natureLanguage?: string,
+  email?: string
 ) => {
   try {
     
@@ -32,6 +33,7 @@ export const updateUser = async (
       role,
       natureLanguage,
       foreignLanguage,
+      email,
     });
 
     return response.data;

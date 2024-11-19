@@ -79,7 +79,18 @@
       "languageText": "Linguagem",
       "privacyPolicyText": "Política de Privacidade",
       "termsOfServiceText": "Termos",
-      "logoutText": "Sair"
+      "logoutText": "Sair",
+      "firstNameModal": "Primeiro nome",
+      "lastNameModal": "Último nome",
+      "firstNameInputPlaceholder": "Introduzir o primeiro nome",
+      "lastNameInputPlaceholder": "Introduzir o último nome",
+      "emailModal": "E-mail",
+      "emailInputPlaceholder": "Introduzir o e-mail",
+      "profileModalTitle": "Configurações de perfil",
+      "nativeLanguage": "Língua nativa",
+      "nativeLanguageInputPlaceholder": "Escolha a língua nativa",
+      "foreignLanguage": "Língua estrangeira",
+      "foreignLanguageInputPlaceholder": "Escolha a língua estrangeira"
     }
   }
 }
