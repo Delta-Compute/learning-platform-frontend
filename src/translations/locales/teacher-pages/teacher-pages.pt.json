@@ -20,13 +20,20 @@
         "submitSettingsButton": "Salvar configurações",
         "successfullyUpdatedText": "Classe actualizada com sucesso",
         "successfullyCreatedText": "Classe criada com sucesso",
-        "somethingWentWrongText": "Algo correu mal"
+        "somethingWentWrongText": "Algo correu mal",
+        "studentDropdownLabel": "Estudante",
+        "studentDropdownPlaceholder": "Selecione o estudante",
+        "dateDropdownLabel": "Período de tempo",
+        "dateDropdownPlaceholder": "Selecione o período de tempo",
+        "dateDropdownManualButton": "Definir manualmente",
+        "dateDropdownCloseButton": "Salvar"
       },
       "noClassesText": "Ainda não há aulas"
     },
     "class": {
       "uploadPlanText": "Plano de aprendizagem",
       "studentsText": "Estudantes",
+      "reportText": "Relatório",
       "assignmentsText": "Atribuições",
       "classCodeText": "Código de classe",
       "inviteStudentText": "Convidar estudante",

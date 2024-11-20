@@ -20,7 +20,13 @@
         "submitSettingsButton": "Save settings",
         "successfullyUpdatedText": "Class successfully updated",
         "successfullyCreatedText": "Class successfully created",
-        "somethingWentWrongText": "Something went wrong"
+        "somethingWentWrongText": "Something went wrong",
+        "studentDropdownLabel": "Student",
+        "studentDropdownPlaceholder": "Select student",
+        "dateDropdownLabel": "Period of time",
+        "dateDropdownPlaceholder": "Select period of time",
+        "dateDropdownManualButton": "Set manually",
+        "dateDropdownCloseButton": "Save"
       },
       "noClassesText": "No classes yet"
     },

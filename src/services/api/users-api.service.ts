@@ -16,10 +16,10 @@ export const getUser = async (id: string): Promise<User | null> => {
   }
 };
 
-export const getUsersByEmails = async (emails: string[]): Promise<User[] | null> => {
+export const getUsersByEmails = async (emails: string[]): Promise<User[] | null> => {  
   try {
     const response = await apiClient.get<User[]>("/users/find-users/find-all", {
-      emails,
+      params: { email: emails.join(",") },
     });
 
     const data = response.data as User[];

@@ -4,10 +4,12 @@ import { User } from '../../types';
 interface StudentDropdownProps {
   students: User[] | [];
   t: (key: string) => string;
+  setSelectedStudent: React.Dispatch<React.SetStateAction<User | string>>;
+  selectedStudent: User | string;
 }
 
-const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t }) => {
-  const [selectedStudent, setSelectedStudent] = useState<User | string>("All");
+const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelectedStudent, selectedStudent }) => {
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
 
@@ -25,14 +27,14 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t }) => {
   return (
     <div className="mb-4 relative">
       <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">
-        {t("teacherPages.classes.studentDropdownLabel")}
+        {t("teacherPages.classes.classModal.studentDropdownLabel")}
       </label>
       <input
         value={typeof selectedStudent === "string" ? "All" : `${selectedStudent.firstName} ${selectedStudent.lastName}`}
         type="text"
         placeholder={t("teacherPages.classes.studentDropdownPlaceholder")}
         className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
-        onFocus={() => setIsDropdownOpen(true)}
+        onClick={() => setIsDropdownOpen((prevState) => !prevState)}
         onBlur={handleBlur}
         readOnly
       />
@@ -40,7 +42,7 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t }) => {
         <ul
           ref={dropdownRef}
           tabIndex={0}
-          className="absolute z-10 bg-white border rounded-md shadow-md mt-1 w-full max-h-40 overflow-y-auto"
+          className="absolute z-10 bg-white border rounded-2xl shadow-md mt-1 w-full max-h-40 overflow-y-auto"
         >
           <li
             className="p-2 cursor-pointer hover:bg-gray-100"
@@ -48,15 +50,15 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t }) => {
           >
             All
           </li>
-          {students.map((student: User) => (
+          {students.map((student: User) =>
             <li
-              key={student.id}
+              key={student.email}
               className="p-2 cursor-pointer hover:bg-gray-100"
               onMouseDown={() => handleSelect(student)}
             >
               {student.firstName} {student.lastName}
             </li>
-          ))}
+          )}
         </ul>
       )}
     </div>

@@ -115,9 +115,11 @@ export const useGetUsersByEmails = (emails: string[]) => {
   return useQuery({
     queryFn: ({ queryKey }) => {
       const [, emails] = queryKey;
+      
       return UsersApiService.getUsersByEmails(emails as string[]);
     },
     queryKey: ["users", emails],
     staleTime: 5_000_000,
+    enabled: emails.length > 0,
   });
 };

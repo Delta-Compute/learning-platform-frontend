@@ -44,6 +44,7 @@ export const ClassDetailPage = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [classSettingsOpen, setClassSettingsOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [classItem, setClassItem] = useState<Class | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
