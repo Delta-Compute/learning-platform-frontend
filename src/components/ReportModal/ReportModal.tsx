@@ -59,7 +59,7 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
       {isClassesPending && isStudentsPending && isRefetchingStudents && <Loader />}
       <div className="bg-white w-[95%] max-w-md p-2 pt-4 rounded-[32px] shadow-lg">
-        <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.classSettingsTitle")}</h2>
+        <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.reportTitle")}</h2>
 
         <ClassesDropdown classes={classRooms!} setSelectedClass={setClassChosenItem} classChosenItem={classChosenItem} t={t} />
         <StudentDropdown students={studentsList!} t={t} setSelectedStudent={setSelectedStudent} selectedStudent={selectedStudent} />

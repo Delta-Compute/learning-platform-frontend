@@ -11,6 +11,7 @@
       "assignmentsText": "Atribuições",
       "classModal": {
         "title": "Criar uma nova classe",
+        "reportTitle": "Relatório",
         "classNameLabel": "Nome da classe",
         "classNameInputPlaceholder": "Introduzir o nome da turma",
         "submitButton": "Criar",

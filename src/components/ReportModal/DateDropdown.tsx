@@ -99,6 +99,7 @@ export const DateDropdown: React.FC<DateDropdownProps> = ({ t, setSelectedOption
             mode="range"
             selected={range?.from && range?.to ? { from: range.from, to: range.to } : undefined}
             onSelect={(range) => handleDateRangeSelection(range as { from: Date; to: Date })}
+            disabled={{ after: new Date() }}
           />
           <button
             className="mt-4 w-full p-2 bg-blue-500 text-white rounded-lg"

@@ -11,6 +11,7 @@
       "assignmentsText": "Assignments",
       "classModal": {
         "title": "Create a new class",
+        "reportTitle": "Report",
         "classNameLabel": "Class name",
         "classNameInputPlaceholder": "Enter class name",
         "submitButton": "Create",

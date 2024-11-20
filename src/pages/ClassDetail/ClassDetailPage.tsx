@@ -256,20 +256,26 @@ export const ClassDetailPage = () => {
             )}
           </div>
           <div className="w-full flex flex-wrap gap-[8px]">
-            <div className="flex items-center justify-center gap-[8px] border w-[calc(50%-4px)] px-[10px] py-[7px] rounded-2xl">
+            <div
+              className="flex items-center justify-center gap-[8px] border w-[calc(50%-4px)] px-[10px] py-[7px] rounded-2xl"
+              onClick={() => setIsUploadPlanModal(true)}
+            >
               <p className="text-[14px] font-light w-fit text-[#3ABF38]">
                 {t("teacherPages.class.uploadPlanText")}
               </p>
-              <button onClick={() => setIsUploadPlanModal(true)}>
+              <button>
                 <img src={`${UploadPlanIcon}`} className='w-[17px] h-[16px]' alt="Upload Plan" />
               </button>
             </div>
 
-            <div className="flex items-center justify-center gap-[8px] border w-[calc(50%-4px)] px-[10px] py-[7px] rounded-2xl">
+            <div
+              onClick={() => setIsReportModalOpen(true)}
+              className="flex items-center justify-center gap-[8px] border w-[calc(50%-4px)] px-[10px] py-[7px] rounded-2xl"
+            >
               <p className="text-[14px] text-gray-500 font-light w-fit">
                 {t("teacherPages.class.reportText")}
               </p>
-              <button onClick={() => setIsReportModalOpen(true)}>
+              <button>
                 <img src={`${reportIcon}`} alt="Upload Plan" className='w-[17px] h-[16px]' />
               </button>
             </div>
@@ -421,7 +427,7 @@ export const ClassDetailPage = () => {
         </div>
       </Modal>
       {classSettingsOpen && <ClassSettingsModal isOpen={classSettingsOpen} onClose={() => setClassSettingsOpen(false)} onRefreshClasses={refetchClassRoom} classItem={classItem!} />}
-      {isReportModalOpen && <ReportModal onClose={() => setIsReportModalOpen(false)} classItem={classItem} />}
+      {isReportModalOpen && <ReportModal onClose={() => setIsReportModalOpen(false)} classItem={classItem!} />}
     </div>
   );
 };
