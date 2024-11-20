@@ -1,11 +1,11 @@
-import {useContext, useState} from "react";
+import { useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Header from "../../components/ui/header/Header";
-import { Button, Loader } from "../../components";
+import { Button, Loader, Input } from "../../components";
 
 import { AuthProvider } from "../api/types";
 import { useLogin } from "../../hooks/api/users";
@@ -36,14 +36,9 @@ export const SignInPage = () => {
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
   const { isPending, mutate } = useLogin();
   const onSocialAuth = (provider: AuthProvider) => {
     alert(`Sign in with ${provider} is not implemented yet`);
-  };
-
-  const onSignUpClick = () => {
-    navigate(`/${currentSchoolName}/sign-up`);
   };
 
   const handleLogin = async () => {
@@ -91,8 +86,7 @@ export const SignInPage = () => {
       <Header linkTo="/" title={t("authPages.signIn.headerTitle")} />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signIn.emailLabel")}</h3>
-        <input
-          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
+        <Input
           placeholder={t("authPages.signIn.emailInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, email: e.target.value }))
@@ -101,8 +95,7 @@ export const SignInPage = () => {
           value={userInfo.email}
         />
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signIn.passwordLabel")}</h3>
-        <input
-          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
+        <Input
           placeholder={t("authPages.signIn.passwordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, password: e.target.value }))
@@ -111,7 +104,7 @@ export const SignInPage = () => {
           value={userInfo.password}
         />
         <Button
-          className={`mt-10 bg-primary bg-main text-white`}
+          className={`mt-5 bg-primary bg-main text-white`}
           onClick={() => handleLogin()}
         >
           {t("authPages.signIn.submitButton")}
@@ -130,7 +123,6 @@ export const SignInPage = () => {
             <img
               src={`${GoogleIcon}`}
               alt="google"
-              className=""
             />
             <div className="w-[40px] absolute left-0 opacity-0">
               <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
@@ -154,12 +146,12 @@ export const SignInPage = () => {
         <p className="text-[14px] text-placholderText font-light mr-1">
           {t("authPages.signIn.bottomText")}
         </p>
-        <p
-          className="text-main text-[16px] font-light cursor-pointer"
-          onClick={onSignUpClick}
+        <Link
+          to={`/${currentSchoolName}/sign-up`}
+          className="text-main text-[16px] font-semibold cursor-pointer"
         >
           {t("authPages.signIn.bottomLinkText")}
-        </p>
+        </Link>
       </div>
     </div>
   );

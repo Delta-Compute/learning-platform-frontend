@@ -7,7 +7,8 @@ export enum School {
   AdeliaCosta = "adelia-costa",
   SB = "sb",
   Educare = "educare",
-  Beka = "beka"
+  Beka = "beka",
+  Cincinatti = "cincinatti",
 };
 
 interface SchoolNamesContextType {

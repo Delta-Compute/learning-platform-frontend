@@ -1,16 +1,15 @@
+import { useContext, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { UserAuthType } from "../../types";
 
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader } from "../../components";
-import {useContext, useState} from "react";
-import GoogleIcon from "../../assets/icons/google-icon.svg";
-import FacebookIcon from "../../assets/icons/fb-icon.svg";
-import AppleIcon from "../../assets/icons/apple-icon.svg";
+
 import { AuthProvider } from "../api/types";
 
 import { useSingUp } from '../../hooks';
@@ -20,6 +19,10 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
 import { toast } from "react-hot-toast";
+
+import GoogleIcon from "../../assets/icons/google-icon.svg";
+import FacebookIcon from "../../assets/icons/fb-icon.svg";
+import AppleIcon from "../../assets/icons/apple-icon.svg";
 
 type UserInfo = {
   email: string;
@@ -35,7 +38,6 @@ export const SignUpPage = () => {
     password: "",
     confirmPassword: "",
   });
-  const navigate = useNavigate();
   const { isPending, mutate } = useSingUp();
 
   const onSocialAuth = (provider: AuthProvider) => {
@@ -49,10 +51,6 @@ export const SignUpPage = () => {
       school: currentSchoolName,
       auth: UserAuthType.Email,
     });
-  };
-
-  const onSignInClick = () => {
-    navigate(`/${currentSchoolName}/sign-in`);
   };
 
   const googleSignUpSuccessHandler = async (credentialResponse: any) => {
@@ -124,7 +122,7 @@ export const SignUpPage = () => {
           value={userInfo.confirmPassword}
         />
         <Button
-          className={`mt-10 bg-primary bg-main text-white`}
+          className={`mt-5 bg-primary bg-main text-white`}
           onClick={onSignUp}
         >
           {t("authPages.signUp.submitButton")}
@@ -167,12 +165,12 @@ export const SignUpPage = () => {
         <p className="text-[14px] text-placholderText font-light mr-1">
           {t("authPages.signUp.bottomText")}
         </p>
-        <p
-          className="text-main text-[16px] font-light cursor-pointer"
-          onClick={onSignInClick}
+        <Link
+          to={`/${currentSchoolName}/sign-in`}
+          className="text-main text-[16px] font-semibold cursor-pointer"
         >
           {t("authPages.signUp.bottomLinkText")}
-        </p>
+        </Link>
       </div>
     </div>
   );

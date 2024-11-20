@@ -13,7 +13,7 @@ import { useGetUsersByEmails } from '../../hooks';
 import { ClassesDropdown } from './ClassesDropdown';
 import { User } from '../../types';
 import { DateDropdown } from './DateDropdown';
-import { calculateRange } from '../../utils/calculateRange';
+// import { calculateRange } from '../../utils/calculateRange';
 
 interface UpdateClassModalProps {
   onClose: () => void;

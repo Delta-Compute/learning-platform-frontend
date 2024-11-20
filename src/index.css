@@ -34,9 +34,14 @@
   --main: #0B4F6D;
 }
 
+.cincinatti-light {
+  --main: #C40521;
+}
+
 .bg-main {
   background-color: var(--main) !important;
 }
+
 .text-main {
   color: var(--main) !important;
 }
