@@ -4,9 +4,9 @@ import { User } from '../../types';
 interface StudentDropdownProps {
   students: User[] | [];
   t: (key: string) => string;
-  setSelectedStudent: React.Dispatch<React.SetStateAction<User | string>>;
+  setSelectedStudent: (student: User | string) => void;
   selectedStudent: User | string;
-  setChosenStudent: React.Dispatch<React.SetStateAction<string[]>>;
+  setChosenStudent: (emails: string[]) => void;
 }
 
 const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelectedStudent, selectedStudent, setChosenStudent }) => {
@@ -23,6 +23,8 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelec
   const handleSelect = (student: User | string) => {
     if (typeof student === "string") {
       const studentEmails = students.map((student) => student.email);
+      console.log(studentEmails, 'studentEmails');
+      
       setSelectedStudent(student);
       setChosenStudent(studentEmails);
     } else {
@@ -46,7 +48,7 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelec
         onBlur={handleBlur}
         readOnly
       />
-      {isDropdownOpen && (
+      {isDropdownOpen && students && (
         <ul
           ref={dropdownRef}
           tabIndex={0}
