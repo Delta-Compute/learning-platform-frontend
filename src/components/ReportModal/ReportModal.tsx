@@ -24,8 +24,7 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
   const [classChosenItem, setClassChosenItem] = useState<Class | null>(classItem);
   const [selectedStudent, setSelectedStudent] = useState<User | string>("All");
   const [selectedRange, setSelectedRange] = useState<string | { from: number; to: number }>("Last week");
-  
-  
+
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { data: classRooms, isPending: isClassesPending } = useGetClassesTeacherId(user?.id as string);

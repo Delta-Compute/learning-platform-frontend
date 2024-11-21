@@ -111,12 +111,12 @@ export const useSingUp = () => {
   });
 };
 
-export const useGetUsersByEmails = (emails: string[]) => {
+export const useGetUsersByEmails = (emails: string[], school: School) => {
   return useQuery({
     queryFn: ({ queryKey }) => {
       const [, emails] = queryKey;
       
-      return UsersApiService.getUsersByEmails(emails as string[]);
+      return UsersApiService.getUsersByEmails(emails as string[], school);
     },
     queryKey: ["users", emails],
     staleTime: 5_000_000,
