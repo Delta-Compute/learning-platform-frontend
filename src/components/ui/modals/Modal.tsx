@@ -50,7 +50,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
           <div
             ref={modalRef}
             className="
-              relative bg-[#FFF] w-[94%] sm:min-w-[500px]
+              relative bg-white w-[94%] sm:min-w-[500px]
               rounded-[32px] sm:max-w-[70%] md:max-w-[60%]
               no-scrollbar p-[12px] sm:p-[20px]
             "

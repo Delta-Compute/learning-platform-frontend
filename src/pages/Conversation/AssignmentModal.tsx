@@ -21,6 +21,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
 import DropdownChevronUp from "../../assets/icons/dropdown-chevron-up.svg";
+import SchoolNamesContext from "../../context/SchoolNamesContext.tsx";
 
 interface AssignmentModalProps {
   isOpen: boolean;
@@ -40,6 +41,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   assignmentTime,
 }) => {
   const { t } = useTranslation();
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const [time, setTime] = useState("00:00");
   const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
   const [isRoomsDropdownOpen, setIsRoomsDropdownOpen] = useState(false);
@@ -113,7 +115,15 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
 
   const addNewAssignment = async (assignment: { classRoomId: string, description: string, title: string, topic: string, deadline: number, timeToDiscuss: number }) => {
     try {
-      const data = await addAssignment(assignment.classRoomId, assignment.description, assignment.topic, assignment.title, assignment.deadline, assignment.timeToDiscuss);
+      const data = await addAssignment(
+        currentSchoolName,
+        assignment.classRoomId,
+        assignment.description,
+        assignment.topic,
+        assignment.title,
+        assignment.deadline,
+        assignment.timeToDiscuss
+      );
 
       setNewAssignment(data);
     } catch(error) {

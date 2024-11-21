@@ -2,6 +2,7 @@ import { User } from "../../types";
 import { UserResponse } from "../../types/userResponse.ts";
 
 import { apiClient } from "../../vars/axios-var.ts";
+import {School} from "../../context";
 
 export const getUser = async (id: string): Promise<User | null> => {
   try {
@@ -16,9 +17,9 @@ export const getUser = async (id: string): Promise<User | null> => {
   }
 };
 
-export const getUsersByEmails = async (emails: string[]): Promise<User[] | null> => {  
+export const getUsersByEmails = async (emails: string[], school: School): Promise<User[] | null> => {
   try {
-    const response = await apiClient.get<User[]>("/users/find-users/find-all", {
+    const response = await apiClient.get<User[]>(`/users/find-users/find-all/${school}`, {
       params: { email: emails.join(",") },
     });
 

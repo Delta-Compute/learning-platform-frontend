@@ -11,6 +11,7 @@ import AdeliaCostaLogo from "../../assets/images/adelia-costa-logo.png";
 import SBLogo from "../../assets/images/sb-logo.png";
 import EducareLogo from "../../assets/images/educare-logo.png";
 import BekaLogo from "../../assets/images/beka-logo.png";
+import CincinattiLogo from "../../assets/images/cincinatti-logo.png";
 
 const SCHOOL_LOGOS = {
   [School.AdeliaCosta]: AdeliaCostaLogo,
@@ -18,6 +19,7 @@ const SCHOOL_LOGOS = {
   [School.Educare]: EducareLogo,
   [School.Beka]: BekaLogo,
   [School.MapleBear]: MapleBearLogo,
+  [School.Cincinatti]: CincinattiLogo,
 };
 
 export const InitialPage = () => {
@@ -44,40 +46,29 @@ export const InitialPage = () => {
         </div>
       )}
 
-      {currentSchoolName !== School.MapleBear ? (
+      {currentSchoolName !== School.MapleBear && (
         <div className="mt-[100px] flex flex-col gap-[80px]">
-          <img src={`${SCHOOL_LOGOS[currentSchoolName]}`} className="w-[280px] h-[220px]"/>
-
-          <h1
-            className={`
-              ${currentSchoolName === School.Educare && "text-white"}
-              text-5xl font-handwriting text-brownText text-center
-            `}
-            style={{
-              fontFamily: "Edu AU VIC WA NT Guides",
-            }}
-          >
-            {t("authPages.initial.title")}
-          </h1>
+          <img src={`${SCHOOL_LOGOS[currentSchoolName]}`} className="w-[300px]"/>
         </div>
-      ) : (
-        <h1
+      )}
+
+      <div className="flex flex-col items-center justify-center mt-auto">
+        <p
           className={`
-          text-brownText text-5xl font-handwriting text-center absolute top-2/3
-        `}
+            ${currentSchoolName === School.Educare && "text-white"}
+            text-5xl font-handwriting text-brownText text-center
+          `}
           style={{
             fontFamily: "Edu AU VIC WA NT Guides",
           }}
         >
           {t("authPages.initial.title")}
-        </h1>
-      )}
+        </p>
 
-      <div className="flex flex-col items-center justify-center mt-auto">
         <Link
           to={`/${currentSchoolName}/sign-up`}
           className={`
-            ${currentSchoolName === School.Educare ? "bg-white text-main" : "bg-main text-white"}
+            ${currentSchoolName === School.Educare ? "bg-white text-main mt-[60px]" : "bg-main text-white mt-[100px]"}
             w-[360px] py-4 rounded-full text-center
           `}
         >

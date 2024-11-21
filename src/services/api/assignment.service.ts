@@ -2,10 +2,20 @@ import { IAssignment } from "../../types/assignment.ts";
 
 import { apiClient } from "../../vars/axios-var.ts";
 
-export const addAssignment = async (classRoomId: string, description: string, topic: string, title: string, deadline: number, timeToDiscuss: number): Promise<IAssignment | null> => {
+import { School } from "../../context";
+
+export const addAssignment = async (
+  schoolName: School,
+  classRoomId: string,
+  description: string,
+  topic: string,
+  title: string,
+  deadline: number,
+  timeToDiscuss: number
+): Promise<IAssignment | null> => {
   try {
     const response = await apiClient.post<IAssignment>(
-      "/assignments",
+      `/assignments/${schoolName}`,
       {
         description,
         classRoomId,
