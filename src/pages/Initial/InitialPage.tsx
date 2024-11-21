@@ -34,7 +34,7 @@ export const InitialPage = () => {
       `}
     >
       {currentSchoolName === School.MapleBear && (
-        <div className="relative flex items-center justify-center min-h-[300px] w-[393px] mt-[70px] maple-bear-logo-box">
+        <div className="relative flex items-center justify-center min-h-[300px] m-auto w-[393px] mt-[70px] maple-bear-logo-box">
           <h3 className="text-[24px] mt-[40px] text-main font-normal">
             Maple Bear
           </h3>
