@@ -6,9 +6,10 @@ interface StudentDropdownProps {
   t: (key: string) => string;
   setSelectedStudent: React.Dispatch<React.SetStateAction<User | string>>;
   selectedStudent: User | string;
+  setChosenStudent: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelectedStudent, selectedStudent }) => {
+const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelectedStudent, selectedStudent, setChosenStudent }) => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
@@ -20,7 +21,14 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelec
   };
 
   const handleSelect = (student: User | string) => {
-    setSelectedStudent(student);
+    if (typeof student === "string") {
+      const studentEmails = students.map((student) => student.email);
+      setSelectedStudent(student);
+      setChosenStudent(studentEmails);
+    } else {
+      setSelectedStudent(student);
+      setChosenStudent([student.email]);
+    }
     setIsDropdownOpen(false);
   };
 

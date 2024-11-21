@@ -9,11 +9,13 @@ import { Loader } from '../ui/loader/Loader';
 import { Class } from '../../types/class';
 import UserContext from '../../context/UserContext';
 import StudentDropdown from './StudentsDropdown';
-import { useGetUsersByEmails } from '../../hooks';
+import { useClassRoomReport, useGetUsersByEmails } from '../../hooks';
 import { ClassesDropdown } from './ClassesDropdown';
 import { User } from '../../types';
 import { DateDropdown } from './DateDropdown';
 import { calculateRange } from '../../utils/calculateRange';
+import { DownloadSendReportModal } from './DownloadSendReportModal';
+import { ReportData } from '../../types/reportData';
 
 interface UpdateClassModalProps {
   onClose: () => void;
@@ -21,11 +23,14 @@ interface UpdateClassModalProps {
 }
 
 export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classItem }) => {
-  const [classChosenItem, setClassChosenItem] = useState<Class | null>(classItem);
+  const [classChosenItem, setClassChosenItem] = useState<Class>(classItem);
   const [selectedStudent, setSelectedStudent] = useState<User | string>("All");
+  const [chosenStudent, setChosenStudent] = useState<string[]>([]);
   const [selectedRange, setSelectedRange] = useState<string | { from: number; to: number }>("Last week");
-  
-  
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [downloadModalData, setDownloadModalData] = useState<ReportData | null>(null);
+
+
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { data: classRooms, isPending: isClassesPending } = useGetClassesTeacherId(user?.id as string);
@@ -42,6 +47,8 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
     }
   };
 
+  const { data, isLoading, isError } = useClassRoomReport(classChosenItem.id, chosenStudent, from, to);
+
   // useEffect(() => {
   //   if (typeof selectedRange === "string") {
   //     const range = calculateRange(selectedRange);
@@ -55,6 +62,16 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
     }
   }, [classChosenItem, refetchStudents]);
 
+  const handleOnSave = () => {
+    const range = typeof selectedRange === "string" ? calculateRange(selectedRange) : selectedRange;
+    setIsDownloadModalOpen(true);
+    setDownloadModalData({
+      classId: classChosenItem?.id || "",
+      studentEmail: chosenStudent,
+      range,
+    });
+  }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
       {isClassesPending && isStudentsPending && isRefetchingStudents && <Loader />}
@@ -62,15 +79,16 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
         <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.reportTitle")}</h2>
 
         <ClassesDropdown classes={classRooms!} setSelectedClass={setClassChosenItem} classChosenItem={classChosenItem} t={t} />
-        <StudentDropdown students={studentsList!} t={t} setSelectedStudent={setSelectedStudent} selectedStudent={selectedStudent} />
+        <StudentDropdown students={studentsList!} t={t} setSelectedStudent={setSelectedStudent} selectedStudent={selectedStudent} setChosenStudent={setChosenStudent}/>
         <DateDropdown t={t} selectedOption={selectedRange} setSelectedOption={setSelectedRange} />
         <button
-          onClick={() => { }}
+          onClick={handleOnSave}
           className="w-full bg-main text-white py-3 rounded-full font-semibold"
         >
           {t("teacherPages.classes.classModal.submitSettingsButton")}
         </button>
       </div>
+      {isDownloadModalOpen && <DownloadSendReportModal data={downloadModalData!} onClose={() => setIsDownloadModalOpen(false)}/>}
     </div>
   );
 };
