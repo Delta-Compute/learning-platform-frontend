@@ -13,6 +13,7 @@ import { useGetUsersByEmails } from '../../hooks';
 import { ClassesDropdown } from './ClassesDropdown';
 import { User } from '../../types';
 import { DateDropdown } from './DateDropdown';
+import SchoolNamesContext from "../../context/SchoolNamesContext.tsx";
 // import { calculateRange } from '../../utils/calculateRange';
 
 interface UpdateClassModalProps {
@@ -21,6 +22,7 @@ interface UpdateClassModalProps {
 }
 
 export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classItem }) => {
+  const { currentSchoolName } = useContext(SchoolNamesContext);
   const [classChosenItem, setClassChosenItem] = useState<Class | null>(classItem);
   const [selectedStudent, setSelectedStudent] = useState<User | string>("All");
   const [selectedRange, setSelectedRange] = useState<string | { from: number; to: number }>("Last week");
@@ -33,7 +35,7 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
     isPending: isStudentsPending,
     refetch: refetchStudents,
     isRefetching: isRefetchingStudents,
-  } = useGetUsersByEmails(classChosenItem?.studentEmails || []);
+  } = useGetUsersByEmails(classChosenItem?.studentEmails || [], currentSchoolName);
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
