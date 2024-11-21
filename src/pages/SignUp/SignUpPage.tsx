@@ -8,9 +8,7 @@ import { UserAuthType } from "../../types";
 
 import { Link } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
-import { Button, Loader } from "../../components";
-
-import { AuthProvider } from "../api/types";
+import { Button, Loader, Input } from "../../components";
 
 import { useSingUp } from '../../hooks';
 
@@ -39,10 +37,6 @@ export const SignUpPage = () => {
     confirmPassword: "",
   });
   const { isPending, mutate } = useSingUp();
-
-  const onSocialAuth = (provider: AuthProvider) => {
-    alert(`Sign up with ${provider} is not implemented yet`);
-  };
 
   const onSignUp = async () => {
     await mutate({
@@ -84,13 +78,12 @@ export const SignUpPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen py-12 bg-bg-color">
+    <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {isPending && <Loader />}
       <Header linkTo={`${currentSchoolName}/initial`} title={t("authPages.signUp.headerTitle")} />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.emailLabel")}</h3>
-        <input
-          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
+        <Input
           placeholder={t("authPages.signUp.emailInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, email: e.target.value }))
@@ -99,8 +92,7 @@ export const SignUpPage = () => {
           value={userInfo.email}
         />
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.passwordLabel")}</h3>
-        <input
-          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
+        <Input
           placeholder={t("authPages.signUp.passwordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, password: e.target.value }))
@@ -109,8 +101,7 @@ export const SignUpPage = () => {
           value={userInfo.password}
         />
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.confirmPasswordLabel")}</h3>
-        <input
-          className="border border-border rounded-full p-2 w-full h-14 px-4 mt-1 text-text-color"
+        <Input
           placeholder={t("authPages.signUp.confirmPasswordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({
@@ -150,13 +141,11 @@ export const SignUpPage = () => {
           <img
             src={`${FacebookIcon}`}
             alt="facebook"
-            onClick={() => onSocialAuth(AuthProvider.Facebook)}
           />
           <button onClick={appleSignUpHandler}>
             <img
               src={`${AppleIcon}`}
               alt="apple"
-              onClick={() => onSocialAuth(AuthProvider.Apple)}
             />
           </button>
         </div>
