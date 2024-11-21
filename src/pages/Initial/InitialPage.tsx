@@ -30,12 +30,11 @@ export const InitialPage = () => {
     <div
       className={`
         ${currentSchoolName === School.Educare && "bg-main"}
-        flex flex-col items-center h-screen justify-center 
-        py-12 
+        h-[100dvh] flex flex-col justify-between pb-4
       `}
     >
       {currentSchoolName === School.MapleBear && (
-        <div className="relative flex items-center justify-center min-h-[300px] w-[393px] mt-[50px] maple-bear-logo-box">
+        <div className="relative flex items-center justify-center min-h-[300px] m-auto w-[393px] mt-[70px] maple-bear-logo-box">
           <h3 className="text-[24px] mt-[40px] text-main font-normal">
             Maple Bear
           </h3>
@@ -47,7 +46,7 @@ export const InitialPage = () => {
       )}
 
       {currentSchoolName !== School.MapleBear && (
-        <div className="mt-[100px] flex flex-col gap-[80px]">
+        <div className="mt-[100px] flex items-center justify-center gap-[80px]">
           <img src={`${SCHOOL_LOGOS[currentSchoolName]}`} className="w-[300px]"/>
         </div>
       )}

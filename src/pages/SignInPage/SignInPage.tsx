@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader, Input } from "../../components";
 
-import { AuthProvider } from "../api/types";
 import { useLogin } from "../../hooks/api/users";
 
 import { GoogleLogin } from "@react-oauth/google";
@@ -37,9 +36,6 @@ export const SignInPage = () => {
     password: "",
   });
   const { isPending, mutate } = useLogin();
-  const onSocialAuth = (provider: AuthProvider) => {
-    alert(`Sign in with ${provider} is not implemented yet`);
-  };
 
   const handleLogin = async () => {
     await mutate({
@@ -81,7 +77,7 @@ export const SignInPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen py-12 bg-bg-color">
+    <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {isPending && <Loader />}
       <Header linkTo="/" title={t("authPages.signIn.headerTitle")} />
       <div className="flex flex-col  mt-12 mx-4">
@@ -131,13 +127,11 @@ export const SignInPage = () => {
           <img
             src={`${FacebookIcon}`}
             alt="facebook"
-            onClick={() => onSocialAuth(AuthProvider.Facebook)}
           />
           <button onClick={appleSignInHandler}>
             <img
               src={`${AppleIcon}`}
               alt="apple"
-              onClick={() => onSocialAuth(AuthProvider.Apple)}
             />
           </button>
         </div>
