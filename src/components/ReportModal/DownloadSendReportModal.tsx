@@ -1,11 +1,22 @@
-import { ReportData } from '../../types/reportData';
+import toast from 'react-hot-toast';
+import { DataForReport } from '../../types/reportData';
+import { generateWordDocument } from '../../utils/createDoc';
 
 interface SecondModalProps {
-  data: ReportData;
+  data: DataForReport;
   onClose: () => void;
 }
 
 export const DownloadSendReportModal: React.FC<SecondModalProps> = ({ data, onClose }) => {
+  const handleCreateDoc = async () => {
+    try {
+      await generateWordDocument(data);
+      toast.success("Document created successfully");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Error creating document");
+    }
+  }
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50"
@@ -15,13 +26,8 @@ export const DownloadSendReportModal: React.FC<SecondModalProps> = ({ data, onCl
         <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">
           Second Modal
         </h2>
-        <p>{`Selected Class: ${data.classId || "None"}`}</p>
-        <p>{`Selected Student: ${
-          typeof data.studentEmail === "string" ? data.studentEmail : data.range
-        }`}</p>
-        <p>{`Selected Range: ${JSON.stringify(data.range)}`}</p>
         <button
-          onClick={onClose}
+          onClick={handleCreateDoc}
           className="w-full bg-red-500 text-white py-2 rounded-full font-semibold"
         >
           Close

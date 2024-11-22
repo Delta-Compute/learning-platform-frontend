@@ -15,8 +15,9 @@ import { User } from '../../types';
 import { DateDropdown } from './DateDropdown';
 import { calculateRange } from '../../utils/calculateRange';
 import { DownloadSendReportModal } from './DownloadSendReportModal';
-import { ReportData } from '../../types/reportData';
+import { DataForReport } from '../../types/reportData';
 import SchoolNamesContext from "../../context/SchoolNamesContext.tsx";
+import toast from 'react-hot-toast';
 
 interface UpdateClassModalProps {
   onClose: () => void;
@@ -30,7 +31,7 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
   const [chosenStudent, setChosenStudent] = useState<string[]>([]);
   const [selectedRange, setSelectedRange] = useState<string | { from: number; to: number }>("Last week");
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
-  const [downloadModalData, setDownloadModalData] = useState<ReportData | null>(null);
+  const [downloadModalData, setDownloadModalData] = useState<DataForReport | null>(null);
 
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
@@ -72,24 +73,29 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
     memoizedChosenStudent,
     range.from,
     range.to
-  );
+  );  
 
   useEffect(() => {
     refetch();
   }, [classChosenItem, memoizedChosenStudent, range, refetch]);
 
   const handleOnSave = () => {
-    const range = typeof selectedRange === "string" ? calculateRange(selectedRange) : selectedRange;
+    if (!data || !data.length) {
+      toast.error(t("teacherPages.classes.classModal.noDataError"));
+      return;
+    }
+    const reportData: DataForReport = {
+      dataForReport: data,
+      baseData: {
+        schoolName: currentSchoolName,
+        teacherName: `${user?.firstName} ${user?.lastName}` as string,
+        className: classChosenItem.name,
+        dateRange: typeof selectedRange === "string" ? selectedRange : `${selectedRange.from} - ${selectedRange.to}`,
+      },
+    }
+    setDownloadModalData(reportData);
     setIsDownloadModalOpen(true);
-    setDownloadModalData({
-      classId: classChosenItem?.id || "",
-      studentEmail: chosenStudent,
-      range,
-    });
   };
-
-  console.log(data, 'data');
-
 
   const handleSetSelectedStudent = useCallback((student: User | string) => {
     setSelectedStudent(student);

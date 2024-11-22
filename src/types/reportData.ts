@@ -1,5 +1,20 @@
+import { IAssignment } from "./assignment";
+
+interface BaseReportData {
+  schoolName: string;
+  teacherName: string;
+  className: string;
+  dateRange: string;
+}
+
 export interface ReportData {
-  classId: string;
-  studentEmail: string[];
-  range: { from: number; to: number };
+  completedAssignments: IAssignment[];
+  inCompletedAssignments: IAssignment[];
+  studentEmail: string;
+  studentName: string;
+}
+
+export interface DataForReport {
+  dataForReport: ReportData[];
+  baseData: BaseReportData;
 }
