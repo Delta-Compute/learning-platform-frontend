@@ -1,0 +1,31 @@
+{
+  "studentPages": {
+    "studentAssignments": {
+      "headerTitle": "Tareas de los estudiantes",
+      "assignment": {
+        "title": "Título",
+        "topic": "Tema",
+        "description": "Descripción"
+      },
+      "tabs": {
+        "openAssignments": "Abrir",
+        "closedAssignments": "Cerrado",
+        "noOpenItemsTitle": "No hay asignaciones abiertas",
+        "noClosedItemsTitle": "No hay asignaciones cerradas"
+      },
+      "logoutButton": {
+        "text": "Cierre de sesión"
+      },
+      "joinToClassButton": "Join to class",
+      "verificationModal": {
+        "title": "Join your class room",
+        "verificationCodeLabel": "Verification code",
+        "verificationCodeInputPlaceholder": "Enter verification code",
+        "verifyButton": "Submit",
+        "successfullyAddedToastText": "Successfully joined",
+        "errorToastText": "Verification code is not correct"
+      },
+      "inClassText": "In class"
+    }
+  }
+}
