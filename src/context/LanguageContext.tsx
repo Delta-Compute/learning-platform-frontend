@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 export enum Languages {
   English = "en",
   Portuguese = "pt",
+  Spanish = "sp",
 };
 
 interface LanguageContextType {
   language: Languages;
-  toggleLanguage: (lang: Languages) => void;
+  changeLanguage: (lang: Languages) => void;
 }
 
 const LanguageContext = React.createContext({} as LanguageContextType);
@@ -26,10 +27,10 @@ export const LanguageContextProvider = ({
 
   useEffect(() => {
     localStorage.setItem("language", JSON.stringify(lang));
-    toggle(lang);
+    changeLanguage(lang);
   }, [lang]);
 
-  const toggle = useCallback((lang: Languages) => {
+  const changeLanguage = useCallback((lang: Languages) => {
     i18n.changeLanguage(lang);
     setLang(lang);
   }, []);
@@ -38,7 +39,7 @@ export const LanguageContextProvider = ({
     <LanguageContext.Provider
       value={{
         language: lang,
-        toggleLanguage: toggle,
+        changeLanguage,
       }}
     >
       {children}
