@@ -10,5 +10,5 @@ export interface Class {
   learningPlan?: string;
   verificationCode: string;
   subject: string;
-  school: School;
+  school?: School;
 };
