@@ -197,7 +197,7 @@ export const StudentAssignmentsPage = () => {
         ) : (
           <div className="py-2 px-4 border-[1px] rounded-full flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400" />
-            <span>{t("studentPages.studentAssignments.inClassText")}</span>
+            <span>{t("studentPages.studentAssignments.inClassText")}: "{studentClassRoom?.name.toUpperCase()}"</span>
           </div>
         )}
 
