@@ -15,9 +15,11 @@ import { User } from '../../types';
 import { DateDropdown } from './DateDropdown';
 import { calculateRange } from '../../utils/calculateRange';
 import { DownloadSendReportModal } from './DownloadSendReportModal';
-import { DataForReport } from '../../types/reportData';
+import { DataForReport, ReportData } from '../../types/reportData';
 import SchoolNamesContext from "../../context/SchoolNamesContext.tsx";
 import toast from 'react-hot-toast';
+import { openai } from '../../vars/open-ai.ts';
+import { instructionsForReport } from '../../utils/conversation_config.ts';
 
 interface UpdateClassModalProps {
   onClose: () => void;
@@ -26,6 +28,7 @@ interface UpdateClassModalProps {
 
 export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classItem }) => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
+  const [ isFeedbackGenerating, setIsFeedbackGenerating ] = useState(false);
   const [classChosenItem, setClassChosenItem] = useState<Class>(classItem);
   const [selectedStudent, setSelectedStudent] = useState<User | string>("All");
   const [chosenStudent, setChosenStudent] = useState<string[]>([]);
@@ -68,24 +71,96 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
 
   const memoizedChosenStudent = useMemo(() => [...chosenStudent], [chosenStudent]);
 
-  const { data, isLoading, refetch, isRefetching } = useClassRoomReport(
+  const { data: reportData, isLoading, refetch, isRefetching } = useClassRoomReport(
     classChosenItem?.id || "",
     memoizedChosenStudent,
     range.from,
     range.to
-  );  
+  );
 
   useEffect(() => {
     refetch();
   }, [classChosenItem, memoizedChosenStudent, range, refetch]);
 
-  const handleOnSave = () => {
-    if (!data || !data.length) {
+  const generateFeedbackForEachStudentAssignments = async (student: ReportData) => {
+    try {
+      const completedAssignments = student.completedAssignments
+        .map(
+          (assignment) =>
+            `${assignment.title}, ${assignment.createdAt ? new Date(assignment.createdAt).toLocaleString() : "No date"}, ${assignment.feedback || "No feedback"}`
+        )
+        .join("\n");
+      const inCompletedAssignments = student.inCompletedAssignments
+        .map(
+          (assignment) =>
+            `${assignment.title}, ${assignment.createdAt ? new Date(assignment.createdAt).toLocaleString() : "No date"}, ${assignment.feedback || "No feedback"}`
+        )
+        .join("\n");
+
+
+      const instructions = `
+        Student: ${student.studentName} (${student.studentEmail})
+        Completed Assignments:
+        ${completedAssignments || "No completed assignments"}
+  
+        Incompleted Assignments:
+        ${inCompletedAssignments || "No incompleted assignments"}
+        `;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You must create a feedback for student based on their assignments.",
+          },
+          {
+            role: "user",
+            content: `${instructionsForReport(instructions)}`,
+          },
+        ],
+        max_tokens: 350,
+      });
+
+      if (response.choices[0].message.content) {
+        const feedback = response.choices[0].message.content.trim();
+        return feedback;
+      }
+
+
+    } catch (error) {
+      console.error("Error fetching topics from OpenAI:", error);
+    }
+  };
+
+  const generateFeedbackForAllStudents = async (reportData: ReportData[]) => {
+    try {
+      const updatedReportData = await Promise.all(
+        reportData.map(async (student) => {
+          const feedback = await generateFeedbackForEachStudentAssignments(student);
+          return {
+            ...student,
+            feedback,
+          };
+        })
+      );
+
+      return updatedReportData;
+    } catch (error) {
+      console.error("Error generating feedback for all students:", error);
+      return [];
+    }
+  };
+
+  const handleOnSave = async () => {
+    setIsFeedbackGenerating(true);
+    const updatedReportData = await generateFeedbackForAllStudents(reportData);
+    if (!reportData || !reportData.length) {
       toast.error(t("teacherPages.classes.classModal.noDataError"));
       return;
     }
-    const reportData: DataForReport = {
-      dataForReport: data,
+    const reportDataState: DataForReport = {
+      dataForReport: updatedReportData,
       baseData: {
         schoolName: currentSchoolName,
         teacherName: `${user?.firstName} ${user?.lastName}` as string,
@@ -93,7 +168,10 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
         dateRange: typeof selectedRange === "string" ? selectedRange : `${selectedRange.from} - ${selectedRange.to}`,
       },
     }
-    setDownloadModalData(reportData);
+
+    setIsFeedbackGenerating(false);
+
+    setDownloadModalData(reportDataState);
     setIsDownloadModalOpen(true);
   };
 
@@ -107,7 +185,7 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#00143480] bg-opacity-50" onClick={(e) => handleCloseModalBlur(e)}>
-      {(isClassesPending || isStudentsPending || isRefetchingStudents || isLoading || isRefetching) && <Loader />}
+      {(isClassesPending || isStudentsPending || isRefetchingStudents || isLoading || isRefetching || isFeedbackGenerating) && <Loader />}
       <div className="bg-white w-[95%] max-w-md p-2 pt-4 rounded-[32px] shadow-lg">
         <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">{t("teacherPages.classes.classModal.reportTitle")}</h2>
 
@@ -121,7 +199,13 @@ export const ReportModal: React.FC<UpdateClassModalProps> = ({ onClose, classIte
           {t("teacherPages.classes.classModal.submitSettingsButton")}
         </button>
       </div>
-      {isDownloadModalOpen && <DownloadSendReportModal data={downloadModalData!} onClose={() => setIsDownloadModalOpen(false)} />}
+      {isDownloadModalOpen &&
+        <DownloadSendReportModal
+          data={downloadModalData!}
+          onClose={() => setIsDownloadModalOpen(false)}
+          baseData={{ student: selectedStudent, range: typeof selectedRange === "string" ? calculateRange(selectedRange) : selectedRange, className: classChosenItem.name }}
+        />
+      }
     </div>
   );
 };

@@ -1,64 +1,85 @@
-import { Document, Packer, Paragraph, TextRun } from "docx";
+import { Document, ImageRun, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from "file-saver";
-import { DataForReport } from '../types/reportData';
+import { DataForReport } from "../types/reportData";
 
-export const generateWordDocument = (reportData: DataForReport) => {
+export const generateWordDocument = async (
+  reportData: DataForReport,
+  schoolLogo: string
+) => {
   const { baseData, dataForReport } = reportData;
+
+  const fetchImageBuffer = async (imagePath: string): Promise<ArrayBuffer> => {
+    const response = await fetch(imagePath);
+    const blob = await response.blob();
+    return blob.arrayBuffer();
+  };
+  
+  const schoolLogoBuffer = await fetchImageBuffer(schoolLogo);
 
   const doc = new Document({
     sections: [
       {
         children: [
-          // Логотипи
           new Paragraph({
+            alignment: "center",
             children: [
-              new TextRun({
-                text: "Teacher’s AI-d (teachers ai-d logo)",
-                bold: true,
-                size: 28,
-              }),
-            ],
-            spacing: { after: 300 },
-          }),
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: "(school logo)",
-                italics: true,
-                size: 24,
+              new ImageRun({
+                data: schoolLogoBuffer,
+                transformation: {
+                  width: 300,
+                  height: 300,
+                },
+                type: "png",
               }),
             ],
             spacing: { after: 400 },
           }),
 
-          // Заголовок
           new Paragraph({
             children: [
               new TextRun({
-                text: `Summary Usage Report for:`,
+                text: `School Name: ${baseData.schoolName}`,
                 bold: true,
-                size: 24,
+                size: 28,
               }),
             ],
-            spacing: { after: 200 },
           }),
-          new Paragraph(`School Name: ${baseData.schoolName}`),
-          new Paragraph(`Teacher: ${baseData.teacherName}`),
-          new Paragraph(`Class: ${baseData.className}`),
-          new Paragraph(`Date range: ${baseData.dateRange}`),
-
-          // Клас
           new Paragraph({
             children: [
               new TextRun({
-                text: `Class ${baseData.className}:`,
+                text: `Teacher: ${baseData.teacherName}`,
                 bold: true,
-                size: 20,
+                size: 28,
               }),
             ],
-            spacing: { before: 400, after: 200 },
           }),
-          new Paragraph("Total time spent on App"),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: `Class: ${baseData.className}`,
+                bold: true,
+                size: 28,
+              }),
+            ],
+          }),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: `Date range: ${baseData.dateRange}`,
+                bold: true,
+                size: 28,
+              }),
+            ],
+          }),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: `Class ${baseData.className}`,
+                bold: true,
+                size: 32,
+              }),
+            ],
+          }),
         ],
       },
       ...dataForReport.map((student) => ({
@@ -68,51 +89,38 @@ export const generateWordDocument = (reportData: DataForReport) => {
               new TextRun({
                 text: `Student: ${student.studentName}`,
                 bold: true,
-                size: 20,
+                size: 32,
               }),
             ],
             spacing: { before: 400, after: 200 },
           }),
-          new Paragraph("Lessons completed successfully:"),
-          ...student.completedAssignments.map(
-            (assignment) =>
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `- ${assignment.title}`,
-                  }),
-                ],
-              })
-          ),
-          new Paragraph("Incomplete lessons:"),
-          ...student.inCompletedAssignments.map(
-            (assignment) =>
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `- ${assignment.title}`,
-                  }),
-                ],
-              })
-          ),
           new Paragraph({
-            children: [
-              new TextRun({
-                text: "AI Generated qualitative review of student performance:",
-                bold: true,
-              }),
-            ],
+            children: student.feedback
+              ? student.feedback.split("\n").map(
+                  (line) =>
+                    new TextRun({
+                      text: line.trim(),
+                      break: 1,
+                      size: 28,
+                    })
+                )
+              : [
+                  new TextRun({
+                    text: "No feedback available.",
+                  }),
+                ],
           }),
-          new Paragraph(
-            "Areas where student performed well, and where student struggled. Any noticed improvement from previous time interval."
-          ),
         ],
       })),
     ],
   });
 
-  // Завантаження документа
   Packer.toBlob(doc).then((blob) => {
-    saveAs(blob, "Summary_Report.docx");
+    saveAs(
+      blob,
+      `Summary_Report_${baseData.schoolName}_${
+        baseData.className
+      }_${new Date().toLocaleDateString()}.docx`
+    );
   });
-}
+};

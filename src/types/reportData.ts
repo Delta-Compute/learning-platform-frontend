@@ -12,6 +12,7 @@ export interface ReportData {
   inCompletedAssignments: IAssignment[];
   studentEmail: string;
   studentName: string;
+  feedback?: string;
 }
 
 export interface DataForReport {

@@ -2,7 +2,7 @@ export const teacherInstructions = (
   teacherName: string,
   learningPlan: string,
   teacherNativeLanguage?: string,
-  classLanguage?: string,
+  classLanguage?: string
 ) => {
   return `
   You are speaking with a teacher of a foreign language.
@@ -35,7 +35,7 @@ export const studentInstructionsForAI = (
   topic?: string,
   userNativeLanguage?: string,
   time?: string,
-  description?: string,
+  description?: string
 ) => {
   return `
     You are an AI language tutor talking with a student learning ${classLanguage} and your job is to work at home with the students to complete the assignments designed by the student’s teacher and an AI. A copy of the conversation between the teacher and AI creating this assignment is included for you below. 
@@ -198,5 +198,36 @@ export const instructionForSummaryAI = (
     You must help teacher to improve the class progress and to make a better class progress in the future.
     You should help the teacher with his/her questions about the student he/she is asking about
     You should help the teacher to improve the student's skills and give advice on how to do so
+  `;
+};
+
+export const instructionsForReport = (instructions: string) => {
+  return `
+    You are an educational assistant helping teachers evaluate student performance. Based on the provided data, generate a qualitative review for each student. The review should include:
+
+1. Areas where the student performed well: Mention specific strengths or tasks the student excelled in.
+2. Areas where the student struggled: Highlight any challenges or areas for improvement.
+3. Improvements noticed: Identify any progress or improvements compared to the previous time interval.
+
+All of points must be on new line and separated with new line
+
+Here is the data for the student: ${instructions}
+
+
+the structure of the data must be:
+
+Completed Assignments:
+- Assignment 1: [Title of Assignment 1] - Feedback: [Feedback for Assignment 1]
+- Assignment 2: [Title of Assignment 2] - Feedback: [Feedback for Assignment 2]
+- ...
+
+Incompleted Assignments:
+- Assignment 3: [Title of Assignment 3] - Feedback: [Feedback for Assignment 3]
+- ...
+
+Additional Notes:
+- [Insert any additional notes or observations about the student]
+
+Please summarize the qualitative review in a professional and encouraging tone. The output should include actionable suggestions to help the student improve.
   `;
 };
