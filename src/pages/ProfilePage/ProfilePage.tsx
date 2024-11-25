@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { userId } = useParams();
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [darkModeOn, setDarkModeOn] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
 
@@ -47,7 +47,7 @@ export const ProfilePage = () => {
           </div>
         </div>
         <button className="flex items-center justify-center w-10 h-10 rounded-full border bg-white hover:bg-gray-100">
-          <img src={settingsIcon} alt="settings" onClick={() => setOpenSettings(true)}/>
+          <img src={settingsIcon} alt="settings" onClick={() => setOpenSettings(true)} />
         </button>
       </div>
 
@@ -84,13 +84,16 @@ export const ProfilePage = () => {
           <img src={termsIcon} alt="termsIcon" />
           <span className="ml-4">{t("teacherPages.profile.termsOfServiceText")}</span>
         </li>
-        <li className="flex items-center text-red-500 mt-6">
+        <li
+          className="flex items-center text-red-500 mt-6"
+          onClick={() => logout()}
+        >
           <img src={logoutIcon} alt="logoutIcon" />
           <span className="ml-4">{t("teacherPages.profile.logoutText")}</span>
         </li>
       </ul>
       <BottomNavigation />
-      {openSettings && <ProfileSettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} user={user!}/>}
+      {openSettings && <ProfileSettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} user={user!} />}
     </div>
   );
 };

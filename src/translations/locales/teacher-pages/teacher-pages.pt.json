@@ -27,7 +27,8 @@
         "dateDropdownLabel": "Período de tempo",
         "dateDropdownPlaceholder": "Selecione o período de tempo",
         "dateDropdownManualButton": "Definir manualmente",
-        "dateDropdownCloseButton": "Salvar"
+        "dateDropdownCloseButton": "Salvar",
+        "noDataError": "Sem dados"
       },
       "noClassesText": "Ainda não há aulas"
     },

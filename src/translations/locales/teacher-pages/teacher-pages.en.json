@@ -27,7 +27,8 @@
         "dateDropdownLabel": "Period of time",
         "dateDropdownPlaceholder": "Select period of time",
         "dateDropdownManualButton": "Set manually",
-        "dateDropdownCloseButton": "Save"
+        "dateDropdownCloseButton": "Save",
+        "noDataError": "No data"
       },
       "noClassesText": "No classes yet"
     },

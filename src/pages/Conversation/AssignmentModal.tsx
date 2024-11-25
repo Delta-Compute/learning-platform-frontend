@@ -169,8 +169,6 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
     >
       <p className="text-center font-semibold text-[18px] text-dark-blue">
         {t("conversationPage.assignmentModal.title")}
-
-        {t("conversationPage.assignmentModal.successfullyCreatedText")}
       </p>
 
       <div className="flex flex-col gap-[10px] pt-[20px] relative">

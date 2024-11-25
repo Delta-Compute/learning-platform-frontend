@@ -44,7 +44,7 @@ export const AssignmentDetailPage = () => {
     if (assignment) {
       setAssignmentData(assignment);
     }
-  }, [data, isPending, assignmentId]);
+  }, [data, isPending, assignmentId]);  
 
   const studentsDone = classRoomProgress?.studentsProgress.filter(student => student.progress).length;
   const allStudents = classRoomProgress?.studentsProgress.length;

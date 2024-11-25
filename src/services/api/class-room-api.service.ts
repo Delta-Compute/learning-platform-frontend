@@ -75,10 +75,27 @@ export const findStudentInClassRoom = async (email: string, school: School): Pro
   }
 };
 
+export const getClassRoomReport = async (classRoomId: string, students: string[], from: number, to: number) => {
+  try {
+    const response = await apiClient.get(`/class-room/report/${classRoomId}`, {
+      params: {
+        students,
+        from,
+        to,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching classroom report:", error);
+    throw error;
+  }
+};
+
 export const ClassRoomApiService = {
   getClassRoom,
   getAllClassRooms,
   updateClassRoom,
   verifyClassRoomCodeAndAddEmail,
   findStudentInClassRoom,
+  getClassRoomReport,
 };
