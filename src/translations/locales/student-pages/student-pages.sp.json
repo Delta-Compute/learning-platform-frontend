@@ -1,20 +1,20 @@
 {
   "studentPages": {
     "studentAssignments": {
-      "headerTitle": "Student assignments",
+      "headerTitle": "Tareas de los estudiantes",
       "assignment": {
-        "title": "Title",
-        "topic": "Topic",
-        "description": "Description"
+        "title": "Título",
+        "topic": "Tema",
+        "description": "Descripción"
       },
       "tabs": {
-        "openAssignments": "Open",
-        "closedAssignments": "Closed",
-        "noOpenItemsTitle": "No open assignments",
-        "noClosedItemsTitle": "No closed assignments"
+        "openAssignments": "Abrir",
+        "closedAssignments": "Cerrado",
+        "noOpenItemsTitle": "No hay asignaciones abiertas",
+        "noClosedItemsTitle": "No hay asignaciones cerradas"
       },
       "logoutButton": {
-        "text": "Logout"
+        "text": "Cierre de sesión"
       },
       "joinToClassButton": "Join to class",
       "verificationModal": {

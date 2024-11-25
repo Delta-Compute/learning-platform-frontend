@@ -8,9 +8,9 @@
     "signIn": {
       "headerTitle": "Sign In",
       "emailLabel": "E-mail",
-      "emailInputPlaceholder": "E-mail",
+      "emailInputPlaceholder": "email@mail.com",
       "passwordLabel": "Password",
-      "passwordInputPlaceholder": "Password",
+      "passwordInputPlaceholder": "Create a password",
       "submitButton": "Sign in",
       "orText": "or",
       "orTitle": "sign in through",

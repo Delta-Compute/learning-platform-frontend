@@ -1,3 +1,4 @@
-export * from "./user.ts";
-export * from "./class-room.ts";
-export * from "./assignment.ts";
+export * from "./user";
+export * from "./class-room";
+export * from "./assignment";
+export * from "./class";

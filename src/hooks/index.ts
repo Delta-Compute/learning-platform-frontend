@@ -3,3 +3,4 @@ export * from "./api/class-rooms";
 export * from "./api/assignments";
 export * from "./actions/useGenerateAssignmentSummary";
 export * from "./api/class-room-progress.ts";
+export * from "./api/classes";

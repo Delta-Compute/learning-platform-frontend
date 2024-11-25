@@ -8,9 +8,9 @@
     "signIn": {
       "headerTitle": "Iniciar sessão",
       "emailLabel": "Correio eletrónico",
-      "emailInputPlaceholder": "Correio eletrónico",
+      "emailInputPlaceholder": "email@mail.com",
       "passwordLabel": "Palavra-passe",
-      "passwordInputPlaceholder": "Palavra-passe",
+      "passwordInputPlaceholder": "Criar uma palavra-passe",
       "submitButton": "Iniciar sessão",
       "orText": "ou",
       "orTitle": "iniciar sessão através de",

@@ -1,3 +1,5 @@
+import { School } from "../context";
+
 export interface Class {
   id?: string;
   name: string;
@@ -8,4 +10,5 @@ export interface Class {
   learningPlan?: string;
   verificationCode: string;
   subject: string;
+  school?: School;
 };

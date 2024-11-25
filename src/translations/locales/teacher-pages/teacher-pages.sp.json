@@ -1,0 +1,105 @@
+{
+  "teacherPages": {
+    "navigation": {
+      "classesText": "Clases",
+      "logoutText": "Cierre de sesión"
+    },
+    "classes": {
+      "headerTitle": "Clases",
+      "addAssignmentLinkText": "Añadir asignación",
+      "studentsText": "Estudiantes",
+      "assignmentsText": "Asignaciones",
+      "classModal": {
+        "title": "Crear una nueva clase",
+        "reportTitle": "Informe",
+        "classNameLabel": "Nombre de la clase",
+        "classNameInputPlaceholder": "Introduzca el nombre de la clase",
+        "submitButton": "Cree",
+        "classSubjectLabel": "Asunto",
+        "classSubjectInputPlaceholder": "Introduzca el tema de la clase",
+        "classSettingsTitle": "Ajustes de clase",
+        "submitSettingsButton": "Guardar ajustes",
+        "successfullyUpdatedText": "Clase actualizada correctamente",
+        "successfullyCreatedText": "Clase creada con éxito",
+        "somethingWentWrongText": "Algo salió mal",
+        "studentDropdownLabel": "Estudiante",
+        "studentDropdownPlaceholder": "Seleccionar estudiante",
+        "dateDropdownLabel": "Periodo de tiempo",
+        "dateDropdownPlaceholder": "Seleccionar periodo de tiempo",
+        "dateDropdownManualButton": "Ajustar manualmente",
+        "dateDropdownCloseButton": "Guardar",
+        "noDataError": "Sin datos"
+      },
+      "noClassesText": "Aún no hay clases"
+    },
+    "class": {
+      "uploadPlanText": "Plan de aprendizaje",
+      "studentsText": "Estudiantes",
+      "assignmentsText": "Asignaciones",
+      "classCodeText": "Código de clase",
+      "inviteStudentText": "Invitar a un estudiante",
+      "addStudentButton": "Añadir estudiante",
+      "assignmentsTitleText": "Asignaciones",
+      "filterText": "Filtro",
+      "reportText": "Informe",
+      "assignmentDeadlineText": "Plazo",
+      "assignmentStatus": {
+        "completed": "Completado",
+        "inProgress": "En curso"
+      },
+      "filterOptions": {
+        "freshest": "Más fresco",
+        "oldest": "Más antiguo",
+        "alphabetically": "Alfabéticamente"
+      },
+      "addStudentModal": {
+        "title": "Añadir correo electrónico del estudiante",
+        "studentEmailInputPlaceholder": "Introducir correo electrónico del estudiante",
+        "loading": "Cargando...",
+        "addStudentButton": "Añadir nuevo estudiante",
+        "successfullyAddedText": "Cargado correctamente"
+      },
+      "uploadPlanModal": {
+        "title": "Cargar el plan de aprendizaje",
+        "uploadButton": "Cargar",
+        "successfullyUploadedText": "Clase actualizada correctamente"
+      },
+      "copiedCodeText": "Copiado",
+      "noAssignmentsText": "Aún no hay asignaciones"
+    },
+    "assignment": {
+      "headerTitle": "Asignación",
+      "readyText": "Listo",
+      "assignmentStatus": {
+        "completed": "Completado",
+        "inProgress": "En curso"
+      },
+      "topicText": "Tema",
+      "classSummaryText": "Resumen de la clase",
+      "classProgressText": "Progreso de la clase",
+      "studentFeedback": "Comentarios",
+      "noStudentFeedbackText": "Sin comentarios"
+    },
+    "profile": {
+      "classesCount": "Clases",
+      "studentsCount": "Estudiantes",
+      "darkModeText": "Modo oscuro",
+      "helpText": "Ayuda",
+      "languageText": "Idioma",
+      "privacyPolicyText": "Política de privacidad",
+      "termsOfServiceText": "Términos",
+      "logoutText": "Cierre de sesión",
+      "firstNameModal": "Nombre",
+      "lastNameModal": "Apellido",
+      "firstNameInputPlaceholder": "Introduzca el nombre",
+      "lastNameInputPlaceholder": "Introduzca el apellido",
+      "emailModal": "Correo electrónico",
+      "emailInputPlaceholder": "Introducir correo electrónico",
+      "profileModalTitle": "Configuración del perfil",
+      "nativeLanguage": "Lenguaje natural",
+      "nativeLanguageInputPlaceholder": "Escribir una lengua materna",
+      "foreignLanguage": "Lengua extranjera",
+      "foreignLanguageInputPlaceholder": "Escribir una lengua extranjera"
+    }
+  }
+}

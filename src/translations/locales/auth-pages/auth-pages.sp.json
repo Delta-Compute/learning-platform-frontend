@@ -1,0 +1,58 @@
+{
+  "authPages": {
+    "initial": {
+      "title": "Profesores Ai-d",
+      "signInButton": "Iniciar sesión",
+      "signUpButton": "Inscríbete"
+    },
+    "signIn": {
+      "headerTitle": "Iniciar sesión",
+      "emailLabel": "Correo electrónico",
+      "emailInputPlaceholder": "email@mail.com",
+      "passwordLabel": "Contraseña",
+      "passwordInputPlaceholder": "Crear una contraseña",
+      "submitButton": "Iniciar sesión",
+      "orText": "o",
+      "orTitle": "inicie sesión a través de",
+      "bottomText": "¿No tiene cuenta?",
+      "bottomLinkText": "Inscríbete"
+    },
+    "signUp": {
+      "headerTitle": "Inscríbete",
+      "emailLabel": "Correo electrónico",
+      "emailInputPlaceholder": "email@mail.com",
+      "passwordLabel": "Contraseña",
+      "passwordInputPlaceholder": "Crear una contraseña",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "confirmPasswordInputPlaceholder": "Confirmar contraseña",
+      "submitButton": "Inscríbete",
+      "orText": "o",
+      "orTitle": "inscríbase a través de",
+      "bottomText": "¿Ya tiene una cuenta?",
+      "bottomLinkText": "Iniciar sesión"
+    },
+    "userTypeSelection": {
+      "iAmStudentButton": "Soy estudiante",
+      "iAmTeacherButton": "Soy profesor"
+    },
+    "joinYourSchool": {
+      "headerTitle": "Únete a tu escuela",
+      "selectSchoolLabel": "Seleccionar escuela",
+      "selectSchoolInputPlaceholder": "Seleccione su escuela",
+      "firstNameLabel": "Nombre",
+      "firstNameInputPlaceholder": "Su nombre",
+      "lastNameLabel": "Apellido",
+      "lastNameInputPlaceholder": "Su apellido",
+      "submitButton": "Enviar",
+      "natureLanguageLabel": "Lenguaje natural",
+      "natureLanguagePlaceholder": "Seleccione su lengua natural",
+      "foreingLanguageLabel": "Lengua extranjera",
+      "foreingLanguagePlaceholder": "Seleccione su lengua extranjera",
+      "roleLabel": "Papel",
+      "rolePlaceholder": "Seleccione su papel"
+    },
+    "introducingAIPage": {
+      "createProfileButton": "Crear perfil"
+    }
+  }
+}

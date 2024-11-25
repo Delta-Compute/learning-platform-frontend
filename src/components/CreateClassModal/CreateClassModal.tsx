@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useCreateClass } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
+import SchoolNamesContext from "../../context/SchoolNamesContext";
 import { Loader } from '../ui/loader/Loader';
 
 import { toast } from "react-hot-toast";
@@ -24,6 +25,7 @@ type StudentEmailItem = {
 export const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onClose, onRefreshClasses }) => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
+  const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [className, setClassName] = useState("");
   const [classSubject, setClassSubject] = useState("");
@@ -48,6 +50,7 @@ export const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onCl
         teacherId: user?.id as string,
         subject: classSubject,
         studentEmails,
+        school: currentSchoolName,
       },
       {
         onSuccess: () => {
