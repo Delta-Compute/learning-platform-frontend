@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -17,18 +17,20 @@ const JoinYourSchoolPage = () => {
   const navigate = useNavigate();
 
   const { user } = useContext(UserContext);
-  
+
   const { firstName, lastName, natureLanguage, foreingLanguage, role } = location.state as { firstName: string, lastName: string, natureLanguage: string, foreingLanguage: string, role: string };
   const { mutate } = useUpdateUser();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [natureLanguageUpdate, setNatureLanguageUpdate] = useState(natureLanguage);
   const [foreignLanguageUpdate, setForeignLanguageUpdate] = useState(foreingLanguage);
-  const [roleUpdate] = useState(role);
+  const [selectedRole, setSelectedRole] = useState(role);
   const [firstNameUpdate, setFirstNameUpdate] = useState(firstName);
   const [lastNameUpdate, setLastNameUpdate] = useState(lastName);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleOnSubmit = async () => {    
+  const handleOnSubmit = async () => {
     await mutate({
       id: user?.id as string,
       firstName: firstNameUpdate,
@@ -36,18 +38,34 @@ const JoinYourSchoolPage = () => {
       role: role.toLowerCase(),
       natureLanguage: natureLanguageUpdate,
       foreignLanguage: foreignLanguageUpdate
-    }, 
-  {
-    onSuccess: () => {
-      if (user?.role === "teacher") {
-        navigate(`/${currentSchoolName}/classes`);
-      }
+    },
+      {
+        onSuccess: () => {
+          if (user?.role === "teacher") {
+            navigate(`/${currentSchoolName}/classes`);
+          }
 
-      if (user?.role === "student") {
-        navigate(`/${currentSchoolName}/student-assignments`);
+          if (user?.role === "student") {
+            navigate(`/${currentSchoolName}/student-assignments`);
+          }
+        }
+      });
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
       }
-    }
-  });
+    };
+  
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  const handleRoleChange = (role: string) => {
+    setSelectedRole(role);
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -59,7 +77,6 @@ const JoinYourSchoolPage = () => {
           </Link>
         </div>
         <h2 className="text-center text-[24px] font-semibold text-[#524344] max-w-[190px]">
-          {/*Join your { user?.role === "teacher" ? "school" : "class" }*/}
           {t("authPages.joinYourSchool.headerTitle")}
         </h2>
       </div>
@@ -119,20 +136,42 @@ const JoinYourSchoolPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-normal mb-2">
+            <label
+              htmlFor="roleDropdown"
+              className="block text-sm font-normal mb-2 text-gray-700"
+            >
               {t("authPages.joinYourSchool.roleLabel")}
             </label>
-            <input
-              disabled
-              type="text"
-              placeholder={t("authPages.joinYourSchool.rolePlaceholder")}
-              className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 focus:outline-none focus:ring-none"
-              value={roleUpdate}
-              onChange={(e) => setLastNameUpdate(e.target.value.trim())}
-            />
+            <div className="relative" ref={dropdownRef}>
+              <button
+                id="roleDropdown"
+                type="button"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 bg-white text-left focus:outline-none"
+              >
+                {selectedRole || t("authPages.joinYourSchool.rolePlaceholder")}
+              </button>
+
+              {isDropdownOpen && (
+                <ul className="absolute z-10 w-full bg-white border-[0.5px] rounded-[16px] mt-2 shadow-lg">
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-[8px]"
+                    onClick={() => handleRoleChange("Student")}
+                  >
+                    Student
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-[8px]"
+                    onClick={() => handleRoleChange("Teacher")}
+                  >
+                    Teacher
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
 
-          
+
         </div>
 
         <button
