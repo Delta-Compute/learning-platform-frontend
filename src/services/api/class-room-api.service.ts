@@ -1,6 +1,8 @@
-import { ClassRoom } from "../../types";
+import { ClassRoom, Class } from "../../types";
 
-import { apiClient } from "../../vars/axios-var.ts";
+import { apiClient } from "../../vars/axios-var";
+
+import { School } from "../../context";
 
 export const getClassRoom = async (id: string): Promise<ClassRoom | null> => {
   try {
@@ -63,9 +65,20 @@ export const verifyClassRoomCodeAndAddEmail = async (verificationCode: string, e
   }
 };
 
+export const findStudentInClassRoom = async (email: string, school: School): Promise<Class | ""> => {
+  try {
+    const response = await apiClient.get(`/class-room/find-class-room/for-student/${email}/${school}`);
+
+    return response.data as Class;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const ClassRoomApiService = {
   getClassRoom,
   getAllClassRooms,
   updateClassRoom,
   verifyClassRoomCodeAndAddEmail,
+  findStudentInClassRoom,
 };

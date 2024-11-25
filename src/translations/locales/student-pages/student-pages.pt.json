@@ -24,7 +24,8 @@
         "verifyButton": "Enviar",
         "successfullyAddedToastText": "Aderiu com sucesso",
         "errorToastText": "O código de verificação não está correto"
-      }
+      },
+      "inClassText": "Na aula"
     }
   }
 }

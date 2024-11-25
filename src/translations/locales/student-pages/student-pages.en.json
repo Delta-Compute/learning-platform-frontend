@@ -24,7 +24,8 @@
         "verifyButton": "Submit",
         "successfullyAddedToastText": "Successfully joined",
         "errorToastText": "Verification code is not correct"
-      }
+      },
+      "inClassText": "In class"
     }
   }
 }
