@@ -9,4 +9,5 @@ export interface IAssignment {
   status?: string;
   summary?: string;
   timeToDiscuss: number;
+  feedback?: string;
 }
