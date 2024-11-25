@@ -4,15 +4,15 @@ import { useContext, useEffect, useState } from "react";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import plus from '../../assets/icons/plus-icon.svg';
-import BottomNavigation from '../../components/Navigation/Navigation.tsx';
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 import { Class } from "../../types/class";
 
-import { Loader, CreateClassModal } from "../../components";
+import { Loader, CreateClassModal, BottomNavigation } from "../../components";
 
 import { useNavigate, Link } from "react-router-dom";
+
+import plus from "../../assets/icons/plus-icon.svg";
 
 const ClassesPage = () => {
   const { t } = useTranslation();

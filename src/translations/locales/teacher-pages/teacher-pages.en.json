@@ -2,7 +2,8 @@
   "teacherPages": {
     "navigation": {
       "classesText": "Classes",
-      "logoutText": "Logout"
+      "logoutText": "Logout",
+      "profileText": "Profile"
     },
     "classes": {
       "headerTitle": "Classes",

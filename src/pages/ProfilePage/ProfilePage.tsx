@@ -9,8 +9,8 @@ import termsIcon from "../../assets/icons/termsIcon.svg";
 import logoutIcon from "../../assets/icons/logoutIcon.svg";
 import { useParams } from 'react-router-dom';
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
-import { Loader, ProfileSettingsModal } from '../../components';
-import BottomNavigation from '../../components/Navigation/Navigation';
+import { Loader, ProfileSettingsModal, BottomNavigation } from '../../components';
+
 import { useTranslation } from 'react-i18next';
 
 export const ProfilePage = () => {
