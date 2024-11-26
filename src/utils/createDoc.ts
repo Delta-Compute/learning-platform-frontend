@@ -4,7 +4,8 @@ import { DataForReport } from "../types/reportData";
 
 export const generateWordDocument = async (
   reportData: DataForReport,
-  schoolLogo: string
+  schoolLogo: string,
+  isSendingEmail = false
 ) => {
   const { baseData, dataForReport } = reportData;
 
@@ -115,12 +116,16 @@ export const generateWordDocument = async (
     ],
   });
 
-  Packer.toBlob(doc).then((blob) => {
-    saveAs(
-      blob,
-      `Summary_Report_${baseData.schoolName}_${
-        baseData.className
-      }_${new Date().toLocaleDateString()}.docx`
-    );
-  });
+  if (!isSendingEmail) {
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(
+        blob,
+        `Summary_Report_${baseData.schoolName}_${
+          baseData.className
+        }_${new Date().toLocaleDateString()}.docx`
+      );
+    });
+  } else {
+    return await Packer.toBuffer(doc);
+  }
 };
