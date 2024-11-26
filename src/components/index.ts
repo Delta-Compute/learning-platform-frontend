@@ -4,6 +4,7 @@ export * from "./ui/inputs/Input";
 export * from "./ui/header/Header";
 export * from "./ui/loader/Loader";
 export * from "./ui/assignment/Assisgnment";
+export * from "./ui/dropdown-menu/DropdownMenu.tsx";
 export * from "./LanguageSwitch/LanguageSwitch";
 export * from "./CreateClassModal/CreateClassModal";
 export * from "./ProfileSettingsModal/ProfileSettingsModal";
