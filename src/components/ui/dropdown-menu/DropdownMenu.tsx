@@ -26,7 +26,7 @@ export const DropdownMenu: React.FC<DropDownMenuProps> = ({
         <div className="py-1">
           {menuItems.map(item => (
             <MenuItem key={item.title}>
-              {item.title}
+              <div>{item.title}</div>
             </MenuItem>
           ))}
         </div>
