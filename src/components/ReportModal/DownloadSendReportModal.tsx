@@ -49,12 +49,12 @@ export const DownloadSendReportModal: React.FC<SecondModalProps> = ({ data, onCl
       if (file && user) {
         const blob = new Blob([file], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
         const fileForEmail = new File([blob], "report.docx", { type: blob.type });
-        sendReport(fileForEmail, user.email, `${user.firstName} ${user.lastName}`);
+        await sendReport(fileForEmail, { email: user.email, name: `${user.firstName} ${user.lastName}` });
         toast.success("Document sent successfully");
       } else {
         toast.error("Error generating document for email");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Error sending document");
     } finally {

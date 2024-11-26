@@ -1,11 +1,14 @@
 import { apiClient } from "../../vars/axios-var.ts";
 
-export const sendReport = async (file: File, email: string, name: string): Promise<void> => {
+export const sendReport = async (
+  file: File,
+  data: { email: string; name: string }
+): Promise<void> => {
   try {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("email", email);
-    formData.append("name", name);
+    formData.append("name", data.name);
+    formData.append("email", data.email);
 
     const response = await apiClient.post("/mail/send", formData, {
       headers: {
