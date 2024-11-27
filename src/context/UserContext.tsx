@@ -9,13 +9,13 @@ import { useGetUser } from "../hooks";
 interface UserContext {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  userId: string | null;
+  userId: string;
   setAccessToken: React.Dispatch<React.SetStateAction<string>>;
   accessToken: string;
   isUserRefetching: boolean;
-  userPending: boolean;
+  isUserPending: boolean;
   logout: () => void;
-}
+};
 
 const UserContext = React.createContext({} as UserContext);
 
@@ -26,11 +26,8 @@ export const UserContextProvider = ({
 }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState("");
   const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || "");
-
-  console.log(user, 'userContext');
-  
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -42,27 +39,28 @@ export const UserContextProvider = ({
     data: userData, 
     refetch: refetchUser,
     isRefetching: isUserRefetching, 
-    isPending: userPending,
+    isPending: isUserPending,
   } = useGetUser(userId);
+
+  const getUserId = async () => {
+    try {
+      const decoded = jwtDecode(accessToken);
+
+      if (decoded?.sub) {
+        setUserId(decoded.sub);
+      } else {
+        console.error("Token does not contain 'sub'");
+      }
+    } catch (error) {
+      console.error("Failed to decode JWT token:", error);
+    }
+  };
 
   useEffect(() => {
     if (accessToken) {
-      try {
-        const decoded = jwtDecode(accessToken);
-
-        console.log(decoded, 'decoded');
-        
-
-        if (decoded?.sub) {
-          setUserId(decoded.sub);
-        } else {
-          console.error("Token does not contain 'sub'");
-        }
-      } catch (error) {
-        console.error("Failed to decode JWT token:", error);
-      }
+      (async () => await getUserId())();
     }
-  }, [accessToken, userId]);
+  }, [accessToken]);
 
   useEffect(() => {
     if (userId !== "") {
@@ -85,7 +83,7 @@ export const UserContextProvider = ({
         setAccessToken,
         accessToken,
         isUserRefetching,
-        userPending,
+        isUserPending,
         logout,
       }}
     >

@@ -18,7 +18,6 @@ export const useGetUser = (id: string) => {
     queryFn: () => UsersApiService.getUser(id),
     queryKey: ["user", id],
     enabled: !!id,
-    staleTime: 5_000_000,
   });
 };
 

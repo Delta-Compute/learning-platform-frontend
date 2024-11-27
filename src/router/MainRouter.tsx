@@ -29,7 +29,7 @@ import { School } from "../context";
 
 import SchoolNamesContext from "../context/SchoolNamesContext";
 import UserContext from "../context/UserContext";
-import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretInfoPage.tsx';
+import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretInfoPage';
 
 export const MainRouter = () => {
   const { schoolName } = useParams();
