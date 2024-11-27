@@ -21,7 +21,11 @@ import { AssignmentModal } from "./AssignmentModal";
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index';
-import { useGenerateAssignmentSummary, useGetStudentAssignments } from "../../hooks";
+import {
+  useGenerateAssignmentSummary,
+  useGetStudentAssignments,
+  useWakeLock
+} from "../../hooks";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ClassRoomProgressApiService } from "../../services";
 
@@ -50,6 +54,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
+  const { requestWakeLock, releaseWakeLock } = useWakeLock();
 
   const params = useParams();
   const wavRecorderRef = useRef<WavRecorder>(
@@ -230,6 +235,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       }
     }
   }, [realtimeEvents]);
+
+  // wake lock
+  useEffect(() => {
+    requestWakeLock();
+
+    return () => {
+      releaseWakeLock();
+    };
+  }, []);
 
   useEffect(() => {
     const conversationEls = [].slice.call(

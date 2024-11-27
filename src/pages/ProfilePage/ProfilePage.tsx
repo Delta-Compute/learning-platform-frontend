@@ -29,9 +29,20 @@ export const ProfilePage = () => {
   return (
     <div className="flex flex-col h-full p-4">
       {isPending && <Loader />}
-      <div className="flex items-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-gray-300" />
-        <div className="ml-4">
+      <div className="flex items-center gap-4">
+        <div>
+          <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              className="text-gray-500"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </div>
+        <div>
           <h2 className="text-xl font-semibold">{user?.firstName} {user?.lastName}</h2>
           <p className="text-sm text-gray-500">{user?.email}</p>
           {/* <span className="text-green-500 text-sm">online</span> */}
