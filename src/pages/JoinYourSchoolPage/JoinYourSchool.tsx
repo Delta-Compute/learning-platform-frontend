@@ -78,14 +78,14 @@ const JoinYourSchoolPage = () => {
             <img src={LeftArrowIcon} alt="Back" className="w-6 h-6" />
           </Link>
         </div>
-        <h2 className="text-center text-[24px] font-semibold text-[#524344] max-w-[190px]">
+        <h2 className="text-center text-[24px] font-semibold text-[#524344] max-w-[200px] text-wrap">
           {t("authPages.joinYourSchool.headerTitle")}
         </h2>
       </div>
 
       <div className="flex flex-col flex-grow min-h-0 mt-20 p-4 max-w-md mx-auto w-full space-y-4">
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
-          <div>
+          <div className=''>
             <label>{t("authPages.joinYourSchool.selectSchoolLabel")}</label>
 
             <SchoolSearchAutocomplete

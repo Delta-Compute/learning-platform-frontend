@@ -282,7 +282,7 @@ export const IntroducingWithAI = () => {
         {!isConnected ? (
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
-              <div className="h-full justify-center flex items-center">
+              <div className="h-full justify-center flex items-center text-center">
                 <div>It's your first interaction with Teacher AI, introduce yourself</div>
               </div>
             ) : (
