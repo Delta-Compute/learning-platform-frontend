@@ -33,7 +33,7 @@ export const useUpdateUser = () => {
       natureLanguage?: string;
       foreignLanguage?: string;
       email?: string;
-      schoolName: string
+      schoolName?: string
     }) =>
       UsersApiService.updateUser(
         data.id,
