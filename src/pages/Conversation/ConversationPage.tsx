@@ -169,6 +169,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [connectionLoading, setConnectionLoading] = useState(false);
 
   const connectConversation = useCallback(async () => {
+    requestWakeLock();
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
     const wavStreamPlayer = wavStreamPlayerRef.current;
@@ -204,6 +205,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   }, []);
 
   const disconnectConversation = useCallback(async () => {
+    releaseWakeLock();
     setIsConnected(false);
     setRealtimeEvents([]);
 
@@ -623,6 +625,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                 } else {
                   disconnectConversation();
                   setIsTimerRunning(false);
+
 
                   if (intervalRef.current) {
                     clearInterval(intervalRef.current);
