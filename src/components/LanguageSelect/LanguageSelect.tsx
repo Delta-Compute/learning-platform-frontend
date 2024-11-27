@@ -22,7 +22,7 @@ const LANGUAGES_LIST = [
   },
 ];
 
-export const LanguageSwitch = () => {
+export const LanguageSelect = () => {
   const { language, changeLanguage } = useContext(LanguageContext);
 
   return (

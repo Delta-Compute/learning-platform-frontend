@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
-import { SCHOOL_LOGOS } from '../../utils/schoolLogo';
+import { SCHOOL_LOGOS } from "./data/school-logos";
 
 export const InitialPage = () => {
   const { t } = useTranslation();

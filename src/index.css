@@ -14,6 +14,10 @@
 }
 
 /* themes */
+.def-light {
+  --main: #001434;
+}
+
 .maple-bear-light {
   --main: #CC1316;
 }
@@ -36,6 +40,10 @@
 
 .cincinatti-light {
   --main: #C40521;
+}
+
+.st-mary-light {
+  --main: #163B89;
 }
 
 .bg-main {

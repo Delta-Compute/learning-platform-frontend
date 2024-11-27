@@ -62,7 +62,7 @@ export const SignInPage = () => {
   };
 
   const appleSignInHandler = () => {
-    const clientId = "com.example.client";
+    const clientId = "";
     const redirectURI = "";
     const scope = "email name";
     const responseType = "code";

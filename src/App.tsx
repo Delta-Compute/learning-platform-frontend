@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { Toaster } from "react-hot-toast";
 
-import { LanguageSwitch } from "./components";
+import { LanguageSelect } from "./components";
 
 import { MainRouter } from "./router/MainRouter";
 
@@ -12,7 +12,7 @@ const App = () => {
       <Toaster />
 
       <div className="fixed top-[10px] right-[10px] z-40">
-        <LanguageSwitch />
+        <LanguageSelect />
       </div>
 
       <Routes>

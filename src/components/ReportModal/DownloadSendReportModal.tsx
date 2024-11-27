@@ -3,7 +3,7 @@ import { DataForReport } from '../../types/reportData';
 import { generateWordDocument } from '../../utils/createDoc';
 import SchoolNamesContext from '../../context/SchoolNamesContext';
 import { useContext } from 'react';
-import { SCHOOL_LOGOS } from '../../utils/schoolLogo';
+import { SCHOOL_LOGOS } from '../../pages/Initial/data/school-logos';
 import { User } from '../../types';
 
 interface BaseData {

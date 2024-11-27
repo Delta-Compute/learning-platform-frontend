@@ -39,10 +39,10 @@ export const updateUser = async (
   role?: string,
   foreignLanguage?: string,
   natureLanguage?: string,
-  email?: string
+  email?: string,
+  schoolName?: string,
 ) => {
   try {
-    
     const response = await apiClient.patch(`/users/${id}`, {
       firstName,
       lastName,
@@ -50,6 +50,7 @@ export const updateUser = async (
       natureLanguage,
       foreignLanguage,
       email,
+      schoolName,
     });
 
     return response.data;

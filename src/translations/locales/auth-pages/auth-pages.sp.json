@@ -49,7 +49,8 @@
       "foreingLanguageLabel": "Lengua extranjera",
       "foreingLanguagePlaceholder": "Seleccione su lengua extranjera",
       "roleLabel": "Papel",
-      "rolePlaceholder": "Seleccione su papel"
+      "rolePlaceholder": "Seleccione su papel",
+      "loadingText": "Cargando..."
     },
     "introducingAIPage": {
       "createProfileButton": "Crear perfil"
