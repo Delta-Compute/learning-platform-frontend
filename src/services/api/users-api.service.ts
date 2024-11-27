@@ -41,6 +41,10 @@ export const updateUser = async (
   natureLanguage?: string,
   email?: string,
   schoolName?: string,
+  secretWords?: {
+    color: string;
+    number: number;
+  }
 ) => {
   try {
     const response = await apiClient.patch(`/users/${id}`, {
@@ -51,6 +55,7 @@ export const updateUser = async (
       foreignLanguage,
       email,
       schoolName,
+      secretWords,
     });
 
     return response.data;

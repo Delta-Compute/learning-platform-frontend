@@ -34,6 +34,10 @@ export const useUpdateUser = () => {
       foreignLanguage?: string;
       email?: string;
       schoolName?: string
+      secretWords?: {
+        color: string;
+        number: number;
+      }
     }) =>
       UsersApiService.updateUser(
         data.id,
@@ -44,6 +48,7 @@ export const useUpdateUser = () => {
         data.natureLanguage,
         data.email,
         data.schoolName,
+        data.secretWords,
       ),
     onSuccess: async (data) => {
       const user: User | null = await UsersApiService.getUser(

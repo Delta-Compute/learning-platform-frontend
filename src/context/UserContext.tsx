@@ -29,6 +29,9 @@ export const UserContextProvider = ({
   const [userId, setUserId] = useState<string>("");
   const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || "");
 
+  console.log(user, 'userContext');
+  
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
@@ -46,6 +49,9 @@ export const UserContextProvider = ({
     if (accessToken) {
       try {
         const decoded = jwtDecode(accessToken);
+
+        console.log(decoded, 'decoded');
+        
 
         if (decoded?.sub) {
           setUserId(decoded.sub);

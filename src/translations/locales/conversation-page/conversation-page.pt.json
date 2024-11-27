@@ -1,6 +1,7 @@
 {
   "conversationPage": {
     "headerTitle": "Assistente de IA",
+    "secondTitleSecret": "Diga sua cor favorita e número",
     "studentTimeTitle": "Tempo para discutir",
     "startTalkText": "Iniciar conversa",
     "connectingText": "Ligar... Por favor, aguarde",

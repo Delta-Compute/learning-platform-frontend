@@ -15,6 +15,7 @@ import {
   InitialPage,
   IntroducingWithAI,
   ProfilePage,
+  SecretInfo,
   SignInPage,
   SignUpPage,
   StudentAssignmentsPage,
@@ -28,6 +29,7 @@ import { School } from "../context";
 
 import SchoolNamesContext from "../context/SchoolNamesContext";
 import UserContext from "../context/UserContext";
+import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretInfoPage.tsx';
 
 export const MainRouter = () => {
   const { schoolName } = useParams();
@@ -115,6 +117,8 @@ export const MainRouter = () => {
       <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
       <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
       <Route path="/profile/:userId" element={<ProfilePage />} />
+      <Route path="/secret-info-ai" element={<SecretInfo />} />
+      <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
 
       <Route
         path="/user-type-selection"

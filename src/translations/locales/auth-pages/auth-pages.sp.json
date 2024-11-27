@@ -37,6 +37,7 @@
     },
     "joinYourSchool": {
       "headerTitle": "Únete a tu escuela",
+      "secretPageTitle": "Pagina secreta",
       "selectSchoolLabel": "Seleccionar escuela",
       "selectSchoolInputPlaceholder": "Seleccione su escuela",
       "firstNameLabel": "Nombre",
@@ -50,10 +51,15 @@
       "foreingLanguagePlaceholder": "Seleccione su lengua extranjera",
       "roleLabel": "Papel",
       "rolePlaceholder": "Seleccione su papel",
-      "loadingText": "Cargando..."
+      "loadingText": "Cargando...",
+      "favouriteColorLabel": "Color favorito",
+      "favouriteColorPlaceholder": "Seleccione su color favorito",
+      "favouriteNumberLabel": "Número favorito",
+      "favouriteNumberPlaceholder": "Seleccione su número favorito"
     },
     "introducingAIPage": {
-      "createProfileButton": "Crear perfil"
+      "createProfileButton": "Crear perfil",
+      "updateProfileButton": "Actualice su perfil"
     }
   }
 }

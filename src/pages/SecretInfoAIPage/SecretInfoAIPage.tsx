@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { feedbackAndGeneralInformationInstruction, introductionWithAIInstruction } from "../../utils/conversation_config.ts";
+import { getFavoiriteColorAndNumberInstructions, instructionsForSecretWords } from "../../utils/conversation_config.ts";
 
 
 import { Link, useNavigate } from "react-router-dom";
@@ -20,8 +20,8 @@ import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
 import { Button, Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
-import { parseFeedbackString } from '../../utils/informationParser.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
+import { parseSecrets } from '../../utils/parseSecrets.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -32,7 +32,7 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const IntroducingWithAI = () => {
+export const SecretInfo = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -58,11 +58,8 @@ export const IntroducingWithAI = () => {
     }, 1500);
   }, []);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [natureLanguage, setNatureLanguage] = useState("");
-  const [foreingLanguage, setForeingLanguage] = useState("");
-  const [role, setRole] = useState("");
+  const [color, setColor] = useState("");
+  const [number, setNumber] = useState(0);
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -86,25 +83,24 @@ export const IntroducingWithAI = () => {
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that asks for personal information to create a profile for the user. Please ask for the user's first name, last name, native language, foreign language, and role.",
+            content: "You are a helpful assistant that asks for favorite color and number",
           },
           {
             role: "user",
-            content: `${feedbackAndGeneralInformationInstruction(conversation)}`,
+            content: `${getFavoiriteColorAndNumberInstructions(conversation)}`,
           },
         ],
         max_tokens: 150,
       });
 
       if (response.choices[0].message.content) {
+        console.log("response", response.choices[0].message.content);
+        
 
-        const parsedData = parseFeedbackString(response.choices[0].message.content);
+        const parsedData = parseSecrets(response.choices[0].message.content);        
 
-        setFirstName(parsedData.firstName);
-        setLastName(parsedData.lastName);
-        setNatureLanguage(parsedData.nativeLanguage);
-        setForeingLanguage(parsedData.foreignLanguage);
-        setRole(parsedData.role);
+        setColor(parsedData.color);
+        setNumber(+parsedData.number);
       }
       setLoading(false);
     } catch (error) {
@@ -196,7 +192,7 @@ export const IntroducingWithAI = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: introductionWithAIInstruction() });
+    client.updateSession({ instructions: instructionsForSecretWords() });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -258,7 +254,7 @@ export const IntroducingWithAI = () => {
   }, []);
 
   const handleNavigateToCreateProfile = () => {
-    navigate(`/${currentSchoolName}/join-your-school`, { state: { firstName, lastName, natureLanguage, foreingLanguage, role } });
+    navigate(`/${currentSchoolName}/confirm-secret-info-ai`, { state: { color, number } });
   };
 
   return (
@@ -282,8 +278,8 @@ export const IntroducingWithAI = () => {
         {!isConnected ? (
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
-              <div className="h-full justify-center flex items-center">
-                <div>It's your first interaction with Teacher AI, introduce yourself</div>
+              <div className="h-full justify-center flex items-center text-center">
+                <div>{t("conversationPage.secondTitleSecret")}</div>
               </div>
             ) : (
               <div className="h-full flex justify-center items-center">
@@ -291,7 +287,7 @@ export const IntroducingWithAI = () => {
                   className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
                   onClick={() => handleNavigateToCreateProfile()}
                 >
-                  {t("authPages.introducingAIPage.createProfileButton")}
+                  {t("authPages.introducingAIPage.updateProfileButton")}
                 </Button>
               </div>
             )}

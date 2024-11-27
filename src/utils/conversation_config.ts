@@ -231,3 +231,29 @@ Additional Notes:
 Please summarize the qualitative review in a professional and encouraging tone. The output should include actionable suggestions to help the student improve.
   `;
 };
+
+export const instructionsForSecretWords = () => {
+  return `
+    You must ask user his favourite color.
+    Then ask user his favourite number.
+
+    When you have all of the information, just tell user, that you have all of the information and you can generate secret words for him.
+    End the conversation with the user.
+  `;
+}
+
+
+export const getFavoiriteColorAndNumberInstructions = (conversation: string) => {
+  return `
+  You must analyze the conversation with AI and generate fields with favourite color and number.
+  The fields must be based on the conversation with AI.
+  here is the conversation with user: ${conversation}
+
+  The only thing you can write is the favorite color and number of the user.
+  The structure of the must be:
+  **Favorite color**: The favorite color of the user
+  **Favorite number**: The favorite number of the user
+
+  Do not write anything else, only the favorite color and number of the user.
+  `
+};

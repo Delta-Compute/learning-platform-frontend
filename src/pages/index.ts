@@ -9,3 +9,4 @@ export * from "./SignInPage/SignInPage";
 export * from "./StudentAssignments";
 export * from "./IntroducingWithAI/IntroducingWithAI"
 export * from "./ProfilePage/ProfilePage";
+export * from "./SecretInfoAIPage/SecretInfoAIPage";

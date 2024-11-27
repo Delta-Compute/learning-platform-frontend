@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { Input, SchoolSearchAutocomplete } from "../../components";
+import { Input, Loader, SchoolSearchAutocomplete } from "../../components";
 
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
@@ -23,7 +23,7 @@ const JoinYourSchoolPage = () => {
   const { user } = useContext(UserContext);
 
   const { firstName, lastName, natureLanguage, foreingLanguage, role } = location.state as { firstName: string, lastName: string, natureLanguage: string, foreingLanguage: string, role: string };
-  const { mutate } = useUpdateUser();
+  const { mutate, isPending } = useUpdateUser();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [natureLanguageUpdate, setNatureLanguageUpdate] = useState(natureLanguage);
@@ -48,13 +48,7 @@ const JoinYourSchoolPage = () => {
     },
       {
         onSuccess: () => {
-          if (user?.role === "teacher") {
-            navigate(`/${currentSchoolName}/classes`);
-          }
-
-          if (user?.role === "student") {
-            navigate(`/${currentSchoolName}/student-assignments`);
-          }
+          navigate(`/${currentSchoolName}/secret-info-ai`);
         }
       });
   };
@@ -77,6 +71,7 @@ const JoinYourSchoolPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {isPending && <Loader />}
       <div className="fixed z-[1] top-0 w-full bg-white pt-4 pb-[5px] flex justify-center items-center">
         <div className="absolute left-4 top-[22px]">
           <Link to={`/${currentSchoolName}/teacher-tasks`}>
