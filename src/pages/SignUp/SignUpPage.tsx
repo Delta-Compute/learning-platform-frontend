@@ -185,7 +185,7 @@ export const SignUpPage = () => {
               alt="google"
               className="relative z-10"
             />
-            <div className="w-[48px] h-[48px] absolute left-0 top-0 opacity-0 z-20">
+            <div className="w-[48px] h-[48px] absolute left-0 top-0 opacity-1 z-20">
               <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
             </div>
           </div>
