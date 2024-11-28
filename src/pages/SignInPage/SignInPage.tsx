@@ -9,17 +9,17 @@ import { Button, Loader, Input, Modal } from "../../components";
 
 import { useLogin } from "../../hooks/api/users";
 
-import { GoogleLogin } from "@react-oauth/google";
-
-import { jwtDecode } from "jwt-decode";
+// import { GoogleLogin } from "@react-oauth/google";
+//
+// import { jwtDecode } from "jwt-decode";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { UserAuthType } from "../../types";
 
-import { toast } from "react-hot-toast";
+// import { toast } from "react-hot-toast";
 
-import GoogleIcon from "../../assets/icons/google-icon.svg";
+// import GoogleIcon from "../../assets/icons/google-icon.svg";
 // import FacebookIcon from "../../assets/icons/fb-icon.svg";
 // import AppleIcon from "../../assets/icons/apple-icon.svg";
 import AILogo from "../../assets/icons/openai-logo.svg";
@@ -53,20 +53,20 @@ export const SignInPage = () => {
     });
   };
 
-  const googleSignInSuccessHandler = async (credentialResponse: any) => {
-    const user: { email: string } = jwtDecode(credentialResponse?.credential as string);
-
-    await mutate({
-      email: user.email,
-      password: "",
-      school: currentSchoolName,
-      auth: UserAuthType.Google,
-    });
-  };
-
-  const googleSignInErrorHandler = () => {
-    toast.error("Something went wrong");
-  };
+  // const googleSignInSuccessHandler = async (credentialResponse: any) => {
+  //   const user: { email: string } = jwtDecode(credentialResponse?.credential as string);
+  //
+  //   await mutate({
+  //     email: user.email,
+  //     password: "",
+  //     school: currentSchoolName,
+  //     auth: UserAuthType.Google,
+  //   });
+  // };
+  //
+  // const googleSignInErrorHandler = () => {
+  //   toast.error("Something went wrong");
+  // };
 
   // const appleSignInHandler = () => {
   //   const clientId = "";
@@ -149,15 +149,15 @@ export const SignInPage = () => {
         </p>
 
         <div className="flex flex-row justify-center mt-4 gap-4">
-          <div className="flex items-center relative">
-            <img
-              src={`${GoogleIcon}`}
-              alt="google"
-            />
-            <div className="w-[40px] absolute left-0 opacity-0">
-              <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
-            </div>
-          </div>
+          {/*<div className="flex items-center relative">*/}
+          {/*  <img*/}
+          {/*    src={`${GoogleIcon}`}*/}
+          {/*    alt="google"*/}
+          {/*  />*/}
+          {/*  <div className="w-[49px] h-[49px] absolute left-0 opacity-0">*/}
+          {/*    <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           {/*<img*/}
           {/*  src={`${FacebookIcon}`}*/}
           {/*  alt="facebook"*/}
