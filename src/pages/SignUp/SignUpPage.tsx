@@ -185,8 +185,8 @@ export const SignUpPage = () => {
               alt="google"
               className="relative z-10"
             />
-            <div className="w-[48px] h-[48px] absolute left-0 top-0 opacity-1 z-20">
-              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
+            <div className="absolute left-0 top-0 opacity-0 z-20">
+              <GoogleLogin style={{ width: "48px", height: "48px" }} onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
             </div>
           </div>
           {/*<div className="flex relative">*/}

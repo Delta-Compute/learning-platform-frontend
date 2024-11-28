@@ -155,8 +155,8 @@ export const SignInPage = () => {
               alt="google"
               className="relative z-10"
             />
-            <div className="w-[49px] h-[49px] absolute left-0 top-0 opacity-1 z-20">
-              <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
+            <div className="absolute left-0 top-0 opacity-0 z-20">
+              <GoogleLogin style={{ width: "48px", height: "48px" }} onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
             </div>
           </div>
           {/*<img*/}
