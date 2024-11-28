@@ -179,7 +179,7 @@ export const SignUpPage = () => {
         </p>
 
         <div className="flex flex-row justify-center mt-4 gap-4">
-          <div className="relative w-[49px] border-[1px] border-red-500">
+          <div className="relative w-[49px] border-[1px] border-red-500 overflow-hidden">
             <img
               src={`${GoogleIcon}`}
               alt="google"
