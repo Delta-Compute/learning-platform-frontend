@@ -28,7 +28,7 @@ const JoinYourSchoolPage = () => {
 
   const [natureLanguageUpdate, setNatureLanguageUpdate] = useState(natureLanguage);
   const [foreignLanguageUpdate, setForeignLanguageUpdate] = useState(foreingLanguage);
-  const [selectedRole, setSelectedRole] = useState(role);
+  const [selectedRole, setSelectedRole] = useState(role === "Teacher" || role === "Student" ? role : "Student");
   const [firstNameUpdate, setFirstNameUpdate] = useState(firstName);
   const [lastNameUpdate, setLastNameUpdate] = useState(lastName);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

@@ -29,9 +29,6 @@ export const UserContextProvider = ({
   const [userId, setUserId] = useState("");
   const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || "");
 
-  console.log(user, 'user');
-  
-
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
