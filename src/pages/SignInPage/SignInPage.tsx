@@ -19,7 +19,7 @@ import { UserAuthType } from "../../types";
 
 import { toast } from "react-hot-toast";
 
-import GoogleIcon from "../../assets/icons/google-icon.svg";
+// import GoogleIcon from "../../assets/icons/google-icon.svg";
 // import FacebookIcon from "../../assets/icons/fb-icon.svg";
 // import AppleIcon from "../../assets/icons/apple-icon.svg";
 import AILogo from "../../assets/icons/openai-logo.svg";
@@ -150,7 +150,7 @@ export const SignInPage = () => {
 
         <div className="flex flex-row justify-center mt-4 gap-4">
           <div>
-              <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
+            <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
           </div>
           {/*<img*/}
           {/*  src={`${FacebookIcon}`}*/}

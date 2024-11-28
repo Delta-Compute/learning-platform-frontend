@@ -21,7 +21,7 @@ import { jwtDecode } from "jwt-decode";
 
 import { toast } from "react-hot-toast";
 
-import GoogleIcon from "../../assets/icons/google-icon.svg";
+// import GoogleIcon from "../../assets/icons/google-icon.svg";
 // import FacebookIcon from "../../assets/icons/fb-icon.svg";
 // import AppleIcon from "../../assets/icons/apple-icon.svg";
 import AILogo from "../../assets/icons/openai-logo.svg";
