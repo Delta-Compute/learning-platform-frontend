@@ -254,6 +254,7 @@ export const getFavoiriteColorAndNumberInstructions = (conversation: string) => 
   **Favorite color**: The favorite color of the user
   **Favorite number**: The favorite number of the user
 
+  Write favorite number only in numbers, not in words. Like 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, etc. Not one, two, three, four, five, six, seven, eight, nine, ten, etc.
   Do not write anything else, only the favorite color and number of the user.
   `
 };

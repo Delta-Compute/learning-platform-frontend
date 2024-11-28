@@ -12,6 +12,7 @@ import { useUpdateUser } from '../../hooks';
 import { useTranslation } from "react-i18next";
 
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
+import { UserRole } from '../../types';
 
 
 const ConfirmSecretInfoPage = () => {
@@ -20,8 +21,6 @@ const ConfirmSecretInfoPage = () => {
   const navigate = useNavigate();
 
   const { user } = useContext(UserContext);
-
-  console.log(user);
 
   const { color, number } = location.state as { color: string, number: number };
   const { mutate, isPending } = useUpdateUser();
@@ -40,11 +39,11 @@ const ConfirmSecretInfoPage = () => {
     },
       {
         onSuccess: () => {
-          if (user?.role === "teacher") {
+          if (user?.role === UserRole.Teacher) {
             navigate(`/${currentSchoolName}/classes`);
           }
 
-          if (user?.role === "student") {
+          if (user?.role === UserRole.Student) {
             navigate(`/${currentSchoolName}/student-assignments`);
           }
         }
