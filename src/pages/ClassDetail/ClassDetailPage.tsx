@@ -228,10 +228,10 @@ export const ClassDetailPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen py-6 px-2 bg-bg-color">
+    <div className="flex flex-col min-h-screen bg-bg-color">
       {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending) && <Loader />}
       <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
-      <div className="px-4 mt-12">
+      <div className="px-4 mt-20">
         <div
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2`}
         >

@@ -15,7 +15,7 @@ const Header: FC<Props> = ({ linkTo, title }) => {
           <img src={`${LeftArrowIcon}`} />
         </Link>
       </div>
-      <h2 className="text-center text-[24px] text-text-color">{title} </h2>
+      <h2 className="text-center text-[24px] text-text-color text-wrap">{title} </h2>
     </div>
   );
 };

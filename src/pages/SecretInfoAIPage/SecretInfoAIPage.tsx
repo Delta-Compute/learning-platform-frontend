@@ -94,10 +94,7 @@ export const SecretInfo = () => {
       });
 
       if (response.choices[0].message.content) {
-        console.log("response", response.choices[0].message.content);
-        
-
-        const parsedData = parseSecrets(response.choices[0].message.content);        
+        const parsedData = parseSecrets(response.choices[0].message.content);
 
         setColor(parsedData.color);
         setNumber(+parsedData.number);
