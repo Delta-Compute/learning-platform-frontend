@@ -13,14 +13,17 @@ import { Button, Loader, Input, Modal } from "../../components";
 import { useSingUp } from '../../hooks';
 
 import { GoogleLogin } from "@react-oauth/google";
+// import { FacebookProvider, LoginButton } from "react-facebook";
+
+// const facebookAppId = import.meta.env.VITE_FACEBOOK_APP_ID;
 
 import { jwtDecode } from "jwt-decode";
 
 import { toast } from "react-hot-toast";
 
 import GoogleIcon from "../../assets/icons/google-icon.svg";
-import FacebookIcon from "../../assets/icons/fb-icon.svg";
-import AppleIcon from "../../assets/icons/apple-icon.svg";
+// import FacebookIcon from "../../assets/icons/fb-icon.svg";
+// import AppleIcon from "../../assets/icons/apple-icon.svg";
 import AILogo from "../../assets/icons/openai-logo.svg";
 import { cn } from '../../utils';
 
@@ -66,21 +69,21 @@ export const SignUpPage = () => {
     toast.error("Something went wrong");
   };
 
-  const appleSignUpHandler = () => {
-    const clientId = "com.example.client";
-    const redirectURI = `http://localhost:5173/${currentSchoolName}/introducing-with-ai`;
-    const scope = "email name";
-    const responseType = "code";
-
-    const url = `https://appleid.apple.com/auth/authorize? 
-      response_type=${responseType}&
-      client_id=${clientId}&
-      redirect_uri=${encodeURIComponent(redirectURI)}&
-      scope=${scope}`;
-
-    window.location.href = url;
-  };
-
+  // const appleSignUpHandler = () => {
+  //   const clientId = "com.example.client";
+  //   const redirectURI = `http://localhost:5173/${currentSchoolName}/introducing-with-ai`;
+  //   const scope = "email name";
+  //   const responseType = "code";
+  //
+  //   const url = `https://appleid.apple.com/auth/authorize?
+  //     response_type=${responseType}&
+  //     client_id=${clientId}&
+  //     redirect_uri=${encodeURIComponent(redirectURI)}&
+  //     scope=${scope}`;
+  //
+  //   window.location.href = url;
+  // };
+  
   const handleOpenAi = () => {
     setIsAiAuthOpen(true);
   };
@@ -114,7 +117,16 @@ export const SignUpPage = () => {
       school: currentSchoolName,
       auth: UserAuthType.AI,
     });
-  }
+  };
+  
+  // const signUpFacebookHandler = (response: any) => {
+  //   if (response?.status === "unknown") {
+  //     console.error('Sorry!', 'Something went wrong with facebook Login.');
+  //     return;
+  //   };
+  //
+  //   console.log(response);
+  // };
 
   return (
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
@@ -177,17 +189,30 @@ export const SignUpPage = () => {
               <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
             </div>
           </div>
-          <img
-            src={`${FacebookIcon}`}
-            alt="facebook"
-          />
-          <button onClick={appleSignUpHandler}>
-            <img
-              src={`${AppleIcon}`}
-              alt="apple"
+          {/*<div className="flex relative">*/}
+          {/*  <img*/}
+          {/*    src={`${FacebookIcon}`}*/}
+          {/*    alt="facebook"*/}
+          {/*  />*/}
+          {/*  <div className="w-[49px] h-[48px] absolute left-0 top-0 opacity-1 ">*/}
+          {/*    <FacebookProvider appId={facebookAppId}>*/}
+          {/*      <LoginButton*/}
+          {/*        scope="email"*/}
+          {/*        onSuccess={signUpFacebookHandler}*/}
+          {/*        style={{ backgroundColor: "red", width: "100%", height: "100%", borderRadius: "100%" }}*/}
+          {/*      >*/}
+          {/*        login*/}
+          {/*      </LoginButton>*/}
+          {/*    </FacebookProvider>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+          {/*<button onClick={appleSignUpHandler}>*/}
+          {/*  <img*/}
+          {/*    src={`${AppleIcon}`}*/}
+          {/*    alt="apple"*/}
 
-            />
-          </button>
+          {/*  />*/}
+          {/*</button>*/}
           <button onClick={handleOpenAi}>
             <img
               src={AILogo}

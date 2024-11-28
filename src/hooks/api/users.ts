@@ -73,7 +73,7 @@ export const useLogin = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
-    mutationFn: (credentials: { email: string; password: string, school: School, auth: UserAuthType, secretWords: SecretWords }) =>
+    mutationFn: (credentials: { email: string; password: string, school: School, auth: UserAuthType, secretWords?: SecretWords }) =>
       UsersApiService.signIn(credentials),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);

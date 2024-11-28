@@ -20,8 +20,8 @@ import { UserAuthType } from "../../types";
 import { toast } from "react-hot-toast";
 
 import GoogleIcon from "../../assets/icons/google-icon.svg";
-import FacebookIcon from "../../assets/icons/fb-icon.svg";
-import AppleIcon from "../../assets/icons/apple-icon.svg";
+// import FacebookIcon from "../../assets/icons/fb-icon.svg";
+// import AppleIcon from "../../assets/icons/apple-icon.svg";
 import AILogo from "../../assets/icons/openai-logo.svg";
 import { cn } from '../../utils';
 
@@ -68,24 +68,25 @@ export const SignInPage = () => {
     toast.error("Something went wrong");
   };
 
-  const appleSignInHandler = () => {
-    const clientId = "";
-    const redirectURI = "";
-    const scope = "email name";
-    const responseType = "code";
-
-    const url = `https://appleid.apple.com/auth/authorize?
-      response_type=${responseType}&
-      client_id=${clientId}&
-      redirect_uri=${encodeURIComponent(redirectURI)}&
-      scope=${scope}`;
-
-    window.location.href = url;
-  };
+  // const appleSignInHandler = () => {
+  //   const clientId = "";
+  //   const redirectURI = "/";
+  //   const scope = "email name";
+  //   const responseType = "code";
+  //
+  //   const url = `https://appleid.apple.com/auth/authorize?
+  //     response_type=${responseType}&
+  //     client_id=${clientId}&
+  //     redirect_uri=${encodeURIComponent(redirectURI)}&
+  //     scope=${scope}`;
+  //
+  //   window.location.href = url;
+  // };
 
   const handleOpenAi = () => {
     setIsAiModalOpen(true);
   };
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -157,16 +158,16 @@ export const SignInPage = () => {
               <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
             </div>
           </div>
-          <img
-            src={`${FacebookIcon}`}
-            alt="facebook"
-          />
-          <button onClick={appleSignInHandler}>
-            <img
-              src={`${AppleIcon}`}
-              alt="apple"
-            />
-          </button>
+          {/*<img*/}
+          {/*  src={`${FacebookIcon}`}*/}
+          {/*  alt="facebook"*/}
+          {/*/>*/}
+          {/*<button onClick={appleSignInHandler}>*/}
+          {/*  <img*/}
+          {/*    src={`${AppleIcon}`}*/}
+          {/*    alt="apple"*/}
+          {/*  />*/}
+          {/*</button>*/}
           <button onClick={handleOpenAi}>
             <img
               src={AILogo}

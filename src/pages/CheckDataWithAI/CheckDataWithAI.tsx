@@ -9,7 +9,7 @@ import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 import { getFavoiriteColorAndNumberInstructions, parseSecretWordsInstructions } from "../../utils/conversation_config.ts";
 
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
@@ -40,7 +40,6 @@ export const CheckDataAI = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const state = location.state as { email: string };
-  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const { currentSchoolName } = useContext(SchoolNamesContext);

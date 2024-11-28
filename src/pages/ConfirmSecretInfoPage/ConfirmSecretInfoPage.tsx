@@ -88,7 +88,7 @@ const ConfirmSecretInfoPage = () => {
               className="w-full"
               placeholder={t("authPages.joinYourSchool.favouriteNumberPlaceholder")}
               value={favouriteNumber}
-              onChange={(e) => setFavouriteNumber(Number(e.target.value.trim()))}
+              onChange={(e) => setFavouriteNumber(e.target.value.trim())}
             />
           </div>
         </div>
