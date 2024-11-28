@@ -156,7 +156,7 @@ export const SignInPage = () => {
               className="relative z-10"
             />
             <div className="absolute left-0 top-0 opacity-0 z-20">
-              <GoogleLogin style={{ width: "48px", height: "48px" }} onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
+              <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
             </div>
           </div>
           {/*<img*/}
@@ -169,7 +169,7 @@ export const SignInPage = () => {
           {/*    alt="apple"*/}
           {/*  />*/}
           {/*</button>*/}
-          <button onClick={handleOpenAi}>
+          <button onClick={handleOpenAi} className="relative z-30">
             <img
               src={AILogo}
               alt="aiLogo"

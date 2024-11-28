@@ -186,7 +186,7 @@ export const SignUpPage = () => {
               className="relative z-10"
             />
             <div className="absolute left-0 top-0 opacity-0 z-20">
-              <GoogleLogin style={{ width: "48px", height: "48px" }} onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
+              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
             </div>
           </div>
           {/*<div className="flex relative">*/}
@@ -213,7 +213,7 @@ export const SignUpPage = () => {
 
           {/*  />*/}
           {/*</button>*/}
-          <button onClick={handleOpenAi}>
+          <button onClick={handleOpenAi} className="relative z-30">
             <img
               src={AILogo}
               alt="aiLogo"
