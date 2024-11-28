@@ -258,3 +258,11 @@ export const getFavoiriteColorAndNumberInstructions = (conversation: string) => 
   Do not write anything else, only the favorite color and number of the user.
   `
 };
+
+export const parseSecretWordsInstructions = () => {
+  return `
+    You are verifying the secret words of the user.
+    Ask the user for his favorite color and favorite number.
+    Do not ask any other questions.
+  `;
+}

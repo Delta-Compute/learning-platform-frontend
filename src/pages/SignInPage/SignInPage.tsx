@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Header from "../../components/ui/header/Header";
-import { Button, Loader, Input } from "../../components";
+import { Button, Loader, Input, Modal } from "../../components";
 
 import { useLogin } from "../../hooks/api/users";
 
@@ -22,6 +22,8 @@ import { toast } from "react-hot-toast";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
+import AILogo from "../../assets/icons/openai-logo.svg";
+import { cn } from '../../utils';
 
 type UserInfo = {
   email: string;
@@ -30,11 +32,16 @@ type UserInfo = {
 
 export const SignInPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
     password: "",
   });
+  const [emailForAi, setEmailForAi] = useState("");
+
+  const [emailError, setEmailError] = useState("");
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const { isPending, mutate } = useLogin();
 
   const handleLogin = async () => {
@@ -74,6 +81,32 @@ export const SignInPage = () => {
       scope=${scope}`;
 
     window.location.href = url;
+  };
+
+  const handleOpenAi = () => {
+    setIsAiModalOpen(true);
+  };
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    setEmailForAi(email);
+
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleNavigate = () => {
+    if (emailError) {
+      return;
+    }
+    navigate(`/${currentSchoolName}/check-data`, { state: { email: emailForAi } });
   };
 
   return (
@@ -134,6 +167,13 @@ export const SignInPage = () => {
               alt="apple"
             />
           </button>
+          <button onClick={handleOpenAi}>
+            <img
+              src={AILogo}
+              alt="aiLogo"
+              className='w-[32px] h-[32px] mt-[5px]'
+            />
+          </button>
         </div>
       </div>
       <div className="flex flex-row items-center mt-auto justify-center">
@@ -147,6 +187,29 @@ export const SignInPage = () => {
           {t("authPages.signIn.bottomLinkText")}
         </Link>
       </div>
+      <Modal isOpen={isAiModalOpen} onClose={() => setIsAiModalOpen(false)}>
+        <div className="flex flex-col items-center gap-1">
+          <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">
+            {t("authPages.signIn.aiAuthModalTitle")}
+          </h2>
+          <Input
+            type='email'
+            value={emailForAi}
+            onChange={(e) => handleChange(e)}
+            placeholder={t("authPages.signIn.aiAuthEmailPlaceholder")}
+            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            required
+          />
+          {emailError && <p className="text-red-500 mt-2">{emailError}</p>}
+
+          <Button
+            className="mt-4 bg-main text-white w-full"
+            onClick={() => handleNavigate()}
+          >
+            {t("authPages.signIn.aiAuthModalButton")}
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

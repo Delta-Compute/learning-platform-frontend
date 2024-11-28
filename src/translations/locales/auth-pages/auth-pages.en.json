@@ -15,7 +15,15 @@
       "orText": "or",
       "orTitle": "sign in through",
       "bottomText": "Don't have an account?",
-      "bottomLinkText": "Sign up"
+      "bottomLinkText": "Sign up",
+      "aiAuthModalTitle": "AI Auth",
+      "aiAuthEmailPlaceholder": "Enter your email",
+      "aiAuthColorLabel": "Favourite color",
+      "aiAuthColorPlaceholder": "Select your favourite color",
+      "aiAuthNumberLabel": "Favourite number",
+      "aiAuthNumberPlaceholder": "Select your favourite number",
+      "aiAuthModalButton": "Sign in with AI",
+      "checkDataButton": "Check data"
     },
     "signUp": {
       "headerTitle": "Sign up",
@@ -29,7 +37,10 @@
       "orText": "or",
       "orTitle": "sign up through",
       "bottomText": "Already have an account?",
-      "bottomLinkText": "Sign in"
+      "bottomLinkText": "Sign in",
+      "aiAuthModalTitle": "AI Auth",
+      "aiAuthInputPlaceholder": "Enter your email",
+      "aiAuthModalButton": "Create account with AI"
     },
     "userTypeSelection": {
       "iAmStudentButton": "I am a student",

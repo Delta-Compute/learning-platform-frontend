@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +8,7 @@ import { UserAuthType } from "../../types";
 
 import { Link } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
-import { Button, Loader, Input } from "../../components";
+import { Button, Loader, Input, Modal } from "../../components";
 
 import { useSingUp } from '../../hooks';
 
@@ -21,6 +21,8 @@ import { toast } from "react-hot-toast";
 import GoogleIcon from "../../assets/icons/google-icon.svg";
 import FacebookIcon from "../../assets/icons/fb-icon.svg";
 import AppleIcon from "../../assets/icons/apple-icon.svg";
+import AILogo from "../../assets/icons/openai-logo.svg";
+import { cn } from '../../utils';
 
 type UserInfo = {
   email: string;
@@ -30,6 +32,8 @@ type UserInfo = {
 
 export const SignUpPage = () => {
   const { t } = useTranslation();
+  const [isAiAuthOpen, setIsAiAuthOpen] = useState(false);
+  const [emailForAi, setEmailForAi] = useState("");
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
@@ -76,6 +80,41 @@ export const SignUpPage = () => {
 
     window.location.href = url;
   };
+
+  const handleOpenAi = () => {
+    setIsAiAuthOpen(true);
+  };
+
+  const [emailError, setEmailError] = useState("");
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    setEmailForAi(email);
+
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleAiAuth = async () => {
+    if (emailError) {
+      return;
+    }
+
+    mutate({
+      email: emailForAi,
+      password: "",
+      school: currentSchoolName,
+      auth: UserAuthType.AI,
+    });
+  }
 
   return (
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
@@ -135,7 +174,7 @@ export const SignUpPage = () => {
               className=""
             />
             <div className="w-[40px] absolute left-0 opacity-0">
-              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler}/>
+              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
             </div>
           </div>
           <img
@@ -146,6 +185,14 @@ export const SignUpPage = () => {
             <img
               src={`${AppleIcon}`}
               alt="apple"
+
+            />
+          </button>
+          <button onClick={handleOpenAi}>
+            <img
+              src={AILogo}
+              alt="aiLogo"
+              className='w-[32px] h-[32px] mt-[5px]'
             />
           </button>
         </div>
@@ -161,6 +208,28 @@ export const SignUpPage = () => {
           {t("authPages.signUp.bottomLinkText")}
         </Link>
       </div>
+      <Modal isOpen={isAiAuthOpen} onClose={() => setIsAiAuthOpen(false)}>
+        <div className="flex flex-col items-center">
+          <h1 className="text-[24px] text-text-color font-semibold mt-4">
+            {t("authPages.signUp.aiAuthModalTitle")}
+          </h1>
+          <Input
+            type='email'
+            value={emailForAi}
+            onChange={(e) => handleChange(e)}
+            placeholder={t("authPages.signUp.aiAuthInputPlaceholder")}
+            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            required
+          />
+          {emailError && <p className="text-red-500 mt-2">{emailError}</p>}
+          <Button
+            className="mt-4 bg-main text-white w-full"
+            onClick={() => handleAiAuth()}
+          >
+            {t("authPages.signUp.aiAuthModalButton")}
+          </Button>
+        </div>
+      </ Modal>
     </div>
   );
 };

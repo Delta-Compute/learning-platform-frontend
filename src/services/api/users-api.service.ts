@@ -43,7 +43,7 @@ export const updateUser = async (
   schoolName?: string,
   secretWords?: {
     color: string;
-    number: number;
+    number: string;
   }
 ) => {
   try {
@@ -68,8 +68,14 @@ export const updateUser = async (
 export const signIn = async (credentials: {
   email: string;
   password: string;
+  secretWords: {
+    color: string;
+    number: string;
+  };
 }): Promise<UserResponse> => {
   try {
+    console.log("credentials", credentials);
+    
     const response = await apiClient.post("/auth/sign-in", credentials);
     return response.data;
   } catch (error) {

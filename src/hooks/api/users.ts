@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
 
 import { toast } from "react-hot-toast";
+import { SecretWords } from '../../types/secretWords';
 
 export const useGetUser = (id: string) => {
   return useQuery({
@@ -35,7 +36,7 @@ export const useUpdateUser = () => {
       schoolName?: string
       secretWords?: {
         color: string;
-        number: number;
+        number: string;
       }
     }) =>
       UsersApiService.updateUser(
@@ -72,7 +73,7 @@ export const useLogin = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   return useMutation({
-    mutationFn: (credentials: { email: string; password: string, school: School, auth: UserAuthType }) =>
+    mutationFn: (credentials: { email: string; password: string, school: School, auth: UserAuthType, secretWords: SecretWords }) =>
       UsersApiService.signIn(credentials),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);

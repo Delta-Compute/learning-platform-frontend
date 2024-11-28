@@ -22,7 +22,7 @@ const ConfirmSecretInfoPage = () => {
 
   const { user } = useContext(UserContext);
 
-  const { color, number } = location.state as { color: string, number: number };
+  const { color, number } = location.state as { color: string, number: string };
   const { mutate, isPending } = useUpdateUser();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 

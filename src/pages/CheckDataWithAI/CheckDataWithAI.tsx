@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState, useContext } from "react";
+import { useEffect, useRef, useCallback, useState, useContext, ChangeEvent } from "react";
 
 import { RealtimeClient } from "@openai/realtime-api-beta";
 // @ts-ignore
@@ -6,10 +6,10 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { getFavoiriteColorAndNumberInstructions, instructionsForSecretWords } from "../../utils/conversation_config.ts";
+import { getFavoiriteColorAndNumberInstructions, parseSecretWordsInstructions } from "../../utils/conversation_config.ts";
 
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
@@ -18,10 +18,14 @@ import { SpeakingDots } from '../../components/SpeakingDots/index';
 
 import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
-import { Button, Loader } from '../../components/index.ts';
+import { Button, Loader, Modal } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
 import { parseSecrets } from '../../utils/parseSecrets.ts';
+import { Input } from '@headlessui/react';
+import { cn } from '../../utils/tailwind-cn.ts';
+import { useLogin } from '../../hooks/index.ts';
+import { UserAuthType } from '../../types/user.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -32,8 +36,10 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const SecretInfo = () => {
+export const CheckDataAI = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+  const state = location.state as { email: string };
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -58,19 +64,29 @@ export const SecretInfo = () => {
     }, 1500);
   }, []);
 
-  const [color, setColor] = useState("");
-  const [number, setNumber] = useState("");
+  const [infoForLogin, setInfoForLogin] = useState({
+    email: state.email,
+    secretWords:
+    {
+      color: "",
+      number: ""
+    }
+  });
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
+  const [isOpened, setIsOpened] = useState(false);
+  const [emailError, setEmailError] = useState("");
 
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
   const [connectionLoading, setConnectionLoading] = useState(false);
+
+  const { isPending, mutate } = useLogin();
 
   const getFeedBackAndGeneralInformation = async (): Promise<any> => {
 
@@ -96,8 +112,13 @@ export const SecretInfo = () => {
       if (response.choices[0].message.content) {
         const parsedData = parseSecrets(response.choices[0].message.content);
 
-        setColor(parsedData.color);
-        setNumber(parsedData.number);
+        setInfoForLogin({
+          ...infoForLogin,
+          secretWords: {
+            color: parsedData.color,
+            number: parsedData.number
+          }
+        });
       }
       setLoading(false);
     } catch (error) {
@@ -189,7 +210,7 @@ export const SecretInfo = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: instructionsForSecretWords() });
+    client.updateSession({ instructions: parseSecretWordsInstructions() });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -250,16 +271,49 @@ export const SecretInfo = () => {
     };
   }, []);
 
-  const handleNavigateToCreateProfile = () => {
-    navigate(`/${currentSchoolName}/confirm-secret-info-ai`, { state: { color, number } });
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    setInfoForLogin({ ...infoForLogin, email });
+
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleAuthWithAI = async () => {
+    if (emailError || !infoForLogin.secretWords.color || !infoForLogin.secretWords.number) {
+      return;
+    }
+
+    await mutate({
+      email: infoForLogin.email,
+      password: "",
+      school: currentSchoolName,
+      auth: UserAuthType.AI,
+      secretWords: {
+        color: infoForLogin.secretWords.color,
+        number: infoForLogin.secretWords.number
+      }
+    }, {
+      onError: () => {
+        toast.error("Error authenticating with AI");
+      }
+    });
+  }
 
   return (
     <div
       data-component="ConsolePage"
       className="flex flex-col justify-between h-[100vh] w-full m-auto"
     >
-      {loading && <Loader />}
+      {(loading || isPending) && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
@@ -282,9 +336,9 @@ export const SecretInfo = () => {
               <div className="h-full flex justify-center items-center">
                 <Button
                   className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
-                  onClick={() => handleNavigateToCreateProfile()}
+                  onClick={() => setIsOpened(true)}
                 >
-                  {t("authPages.introducingAIPage.updateProfileButton")}
+                  {t("authPages.signIn.checkDataButton")}
                 </Button>
               </div>
             )}
@@ -334,6 +388,47 @@ export const SecretInfo = () => {
           />
         </div>
       </div>
+      <Modal isOpen={isOpened} onClose={() => setIsOpened(false)}>
+        <div className="flex flex-col items-center gap-1">
+          <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">
+            {t("authPages.signIn.aiAuthModalTitle")}
+          </h2>
+          <Input
+            type='email'
+            value={infoForLogin.email}
+            onChange={(e) => handleChange(e)}
+            placeholder={t("authPages.signIn.aiAuthEmailPlaceholder")}
+            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            required
+          />
+          {emailError && <p className="text-red-500 mt-2">{emailError}</p>}
+
+          <Input
+            type='text'
+            value={infoForLogin.secretWords.color}
+            onChange={(e) => setInfoForLogin({ ...infoForLogin, secretWords: { ...infoForLogin.secretWords, color: e.target.value } })}
+            placeholder={t("authPages.signIn.aiAuthColorPlaceholder")}
+            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            required
+          />
+
+          <Input
+            type='number'
+            value={infoForLogin.secretWords.number}
+            onChange={(e) => setInfoForLogin({ ...infoForLogin, secretWords: { ...infoForLogin.secretWords, number: e.target.value } })}
+            placeholder={t("authPages.signIn.aiAuthNumberPlaceholder")}
+            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            required
+          />
+
+          <Button
+            className="mt-4 bg-main text-white w-full"
+            onClick={() => handleAuthWithAI()}
+          >
+            {t("authPages.signIn.aiAuthModalButton")}
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };
