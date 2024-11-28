@@ -149,12 +149,13 @@ export const SignInPage = () => {
         </p>
 
         <div className="flex flex-row justify-center mt-4 gap-4">
-          <div className="relative">
+          <div className="relative w-[49px] border-[1px] border-red-500">
             <img
               src={`${GoogleIcon}`}
               alt="google"
+              className="relative z-10"
             />
-            <div className="w-[49px] h-[49px] absolute left-0 top-0 opacity-0">
+            <div className="w-[49px] h-[49px] absolute left-0 top-0 opacity-1 z-20">
               <GoogleLogin onSuccess={googleSignInSuccessHandler} onError={googleSignInErrorHandler} />
             </div>
           </div>
