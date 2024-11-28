@@ -41,7 +41,7 @@ const JoinYourSchoolPage = () => {
       id: user?.id as string,
       firstName: firstNameUpdate,
       lastName: lastNameUpdate,
-      role: role.toLowerCase(),
+      role: selectedRole.toLowerCase(),
       natureLanguage: natureLanguageUpdate,
       foreignLanguage: foreignLanguageUpdate,
       schoolName: selectedSchool?.name ?? "",
