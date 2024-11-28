@@ -8,6 +8,7 @@ export enum UserRole {
 export enum UserAuthType {
   Email = "email",
   Google = "google",
+  AI = "ai"
 }
 
 export type User = {
