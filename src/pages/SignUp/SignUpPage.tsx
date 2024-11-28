@@ -12,16 +12,16 @@ import { Button, Loader, Input, Modal } from "../../components";
 
 import { useSingUp } from '../../hooks';
 
-// import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 // import { FacebookProvider, LoginButton } from "react-facebook";
 
 // const facebookAppId = import.meta.env.VITE_FACEBOOK_APP_ID;
 
-// import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
-// import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
-// import GoogleIcon from "../../assets/icons/google-icon.svg";
+import GoogleIcon from "../../assets/icons/google-icon.svg";
 // import FacebookIcon from "../../assets/icons/fb-icon.svg";
 // import AppleIcon from "../../assets/icons/apple-icon.svg";
 import AILogo from "../../assets/icons/openai-logo.svg";
@@ -54,20 +54,20 @@ export const SignUpPage = () => {
     });
   };
 
-  // const googleSignUpSuccessHandler = async (credentialResponse: any) => {
-  //   const user: { email: string } = jwtDecode(credentialResponse?.credential as string);
-  //
-  //   await mutate({
-  //     email: user.email,
-  //     password: "",
-  //     school: currentSchoolName,
-  //     auth: UserAuthType.Google,
-  //   });
-  // };
-  //
-  // const googleSignUpErrorHandler = () => {
-  //   toast.error("Something went wrong");
-  // };
+  const googleSignUpSuccessHandler = async (credentialResponse: any) => {
+    const user: { email: string } = jwtDecode(credentialResponse?.credential as string);
+
+    await mutate({
+      email: user.email,
+      password: "",
+      school: currentSchoolName,
+      auth: UserAuthType.Google,
+    });
+  };
+
+  const googleSignUpErrorHandler = () => {
+    toast.error("Something went wrong");
+  };
 
   // const appleSignUpHandler = () => {
   //   const clientId = "com.example.client";
@@ -179,16 +179,16 @@ export const SignUpPage = () => {
         </p>
 
         <div className="flex flex-row justify-center mt-4 gap-4">
-          {/*<div className="flex items-center relative">*/}
-          {/*  <img*/}
-          {/*    src={`${GoogleIcon}`}*/}
-          {/*    alt="google"*/}
-          {/*    className=""*/}
-          {/*  />*/}
-          {/*  <div className="w-[40px] absolute left-0 opacity-1">*/}
-          {/*    <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          <div className="relative">
+            <img
+              src={`${GoogleIcon}`}
+              alt="google"
+              className=""
+            />
+            <div className="w-[48px] h-[48px] absolute left-0 top-0 opacity-0">
+              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
+            </div>
+          </div>
           {/*<div className="flex relative">*/}
           {/*  <img*/}
           {/*    src={`${FacebookIcon}`}*/}
@@ -217,7 +217,7 @@ export const SignUpPage = () => {
             <img
               src={AILogo}
               alt="aiLogo"
-              className='w-[32px] h-[32px] mt-[5px]'
+              className="w-[32px] h-[32px]"
             />
           </button>
         </div>
