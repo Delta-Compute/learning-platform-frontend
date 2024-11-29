@@ -190,8 +190,6 @@ export const ClassDetailPage = () => {
   const handleFilter = (type: string) => {
     let filteredAssignments = assignmentsData ? [...assignmentsData] : [];
 
-    console.log(filteredAssignments, 'filteredAssignmnetrer');
-
     if (type === "newest") {
       filteredAssignments = filteredAssignments.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
     } else if (type === "oldest") {
