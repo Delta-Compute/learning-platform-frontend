@@ -23,7 +23,6 @@ const StudentDropdown: React.FC<StudentDropdownProps> = ({ students, t, setSelec
   const handleSelect = (student: User | string) => {
     if (typeof student === "string") {
       const studentEmails = students.map((student) => student.email);
-      console.log(studentEmails, 'studentEmails');
       
       setSelectedStudent(student);
       setChosenStudent(studentEmails);

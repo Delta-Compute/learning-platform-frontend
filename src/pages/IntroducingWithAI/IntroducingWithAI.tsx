@@ -134,6 +134,13 @@ export const IntroducingWithAI = () => {
         wavStreamPlayer.connect()
       ]);
 
+      client.sendUserMessageContent([
+        {
+          type: "input_text",
+          text: "say something first",
+        },
+      ]);
+
       if (client.getTurnDetectionType() === "server_vad") {
         await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
 
