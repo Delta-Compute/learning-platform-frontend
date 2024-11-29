@@ -186,7 +186,7 @@ export const SignUpPage = () => {
             {/*  className="relative z-10"*/}
             {/*/>*/}
             {/*<div className="absolute left-0 top-0 opacity-1 z-20">*/}
-              <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
+            <GoogleLogin onSuccess={googleSignUpSuccessHandler} onError={googleSignUpErrorHandler} />
             {/*</div>*/}
           </div>
           {/*<div className="flex relative">*/}

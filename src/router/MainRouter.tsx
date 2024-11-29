@@ -69,7 +69,6 @@ export const MainRouter = () => {
       {/*        <Route path="/follow-link" element={<FollowLinkPage />} />*/}
       {/*        <Route path="/sign-up" element={<SignUpPage />} />*/}
       {/*        <Route path="/sign-in" element={<SignInPage />} />*/}
-      {/*        <Route path="/*" element={<Navigate to="/initial" replace />} />*/}
       {/*      </>*/}
       {/*    )}*/}
 
@@ -79,7 +78,6 @@ export const MainRouter = () => {
       {/*        <Route path="/classes" element={<ClassesPage />} />*/}
       {/*        <Route path="/classes/:id" element={<ClassDetailPage />} />*/}
       {/*        <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />*/}
-      {/*        <Route path="/*" element={<Navigate to="/classes" replace />} />*/}
       {/*      </>*/}
       {/*    )}*/}
 
@@ -87,7 +85,6 @@ export const MainRouter = () => {
       {/*      <>*/}
       {/*        <Route path="/student-assignments" element={<StudentAssignmentsPage />} />*/}
       {/*        <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />*/}
-      {/*        <Route path="/*" element={<Navigate to="/student-assignments" replace />} />*/}
       {/*      </>*/}
       {/*    )}*/}
 
@@ -98,7 +95,6 @@ export const MainRouter = () => {
       {/*          element={<UserTypeSelectionPage />}*/}
       {/*        />*/}
       {/*        <Route path="/join-your-school" element={<JoinYourSchoolPage />} />*/}
-      {/*        <Route path="/*" element={<Navigate to="/user-type-selection" replace />} />*/}
       {/*      </>*/}
       {/*    )}*/}
       {/*  </Routes>*/}

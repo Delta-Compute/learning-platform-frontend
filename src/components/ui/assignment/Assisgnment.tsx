@@ -6,7 +6,7 @@ import { format } from "date-fns";
 
 import { useTranslation } from "react-i18next";
 
-import menuIcon from "../../../assets/icons/menu-icon.svg";
+// import menuIcon from "../../../assets/icons/menu-icon.svg";
 
 type Props = {
   assignment: IAssignment;
@@ -18,16 +18,16 @@ const Assignment: FC<Props> = ({ assignment, onClick }) => {
 
   return (
     <li
-      className="border-[0.5px] relative list-none border-[#E9ECEF] text-gray-700  rounded-2xl text-sm p-[15px] mt-4 bg-white"
+      className="border-[0.5px] relative list-none border-[#E9ECEF] text-gray-700  rounded-2xl text-sm p-[15px] bg-white"
     >
       <div className="flex items-center justify-between">
         <p onClick={() => onClick(assignment)} className="text-[20px] text-brownText font-semibold leading-6">
           {assignment.title ? `${assignment.title}` : "Assigment"}
         </p>
 
-        <button className="absolute right-[2px] top-[5px] p-[10px]">
-          <img src={menuIcon} alt="menu" className="w-[20px]" />
-        </button>
+        {/*<button className="absolute right-[2px] top-[5px] p-[10px]">*/}
+        {/*  <img src={menuIcon} alt="menu" className="w-[20px]" />*/}
+        {/*</button>*/}
       </div>
       <div className="flex items-center mt-2">
         <h3 className="text-[14px] text-placholderText font-light">
@@ -38,7 +38,12 @@ const Assignment: FC<Props> = ({ assignment, onClick }) => {
         {/* <div className="border-[0.5px] border-[#E9ECEF] text-gray-700 rounded-full text-[16px] px-4  py-2 mt-4">
           15/24 ready
         </div> */}
-        <div className="border-[0.5px] border-[#E9ECEF] text-gray-700 rounded-full text-[16px] px-4  py-2 mt-4">
+        <div
+          className={`
+            ${assignment.deadline >= new Date().getTime() ? "text-main-blue border-main-blue" : "text-light-green border-light-green"}
+            border-[1px] rounded-full text-[16px] px-4  py-2 mt-4
+         `}
+        >
           {assignment.deadline >= new Date().getTime() ? t("teacherPages.class.assignmentStatus.inProgress") : t("teacherPages.class.assignmentStatus.completed")}
         </div>
       </div>
