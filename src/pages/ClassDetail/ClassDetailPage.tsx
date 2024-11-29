@@ -8,7 +8,14 @@ import { Class } from '../../types/class';
 
 import { useClassById } from '../../hooks/api/classes';
 
-import { Loader, Modal, Input, Button, ClassSettingsModal, ReportModal } from "../../components";
+import {
+  Loader,
+  Modal,
+  Input,
+  Button,
+  ClassSettingsModal,
+  ReportModal,
+} from "../../components";
 import { useGetRoomsAssignments } from "../../hooks";
 import { IAssignment } from "../../types";
 
@@ -35,7 +42,6 @@ import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 import reportIcon from "../../assets/icons/reportIcon.svg";
 import AddClassIcon from "../../assets/icons/add-class-icon.svg";
-
 
 export const ClassDetailPage = () => {
   const { t } = useTranslation();
@@ -226,20 +232,20 @@ export const ClassDetailPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-bg-color">
+    <div className="flex flex-col min-h-screen bg-bg-color pb-10">
       {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending) && <Loader />}
       <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
-      <div className="px-4 mt-20">
+      <div className="px-4 mt-20 relative">
         <div
           className={`bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2`}
         >
           <div className="bg-gray-200 h-[140px] rounded-[8px] relative overflow-hidden z-10">
-            <div className="z-40 absolute w-[40px] right-[10px] bottom-[10px]">
+            <div className="w-[40px] right-[10px] bottom-[10px]">
               <input
                 type="file"
                 accept="image/*"
                 onChange={changeImageHandler}
-                className="relative z-30 opacity-0"
+                className="absolute left-0 top-0 z-30 opacity-0 w-full h-full"
               />
             </div>
 
@@ -304,26 +310,21 @@ export const ClassDetailPage = () => {
             <div className="flex items-center justify-between">
               <button
                 onClick={copyClassRoomCodeHandler}
-                className="flex items-center gap-1"
+                className="flex items-center"
               >
                 <img src={copyIcon} alt="copy" />
-                <span className="text-[24px] w-[120px] text-[#362D2E] font-light ml-1 truncate">
+                <span className="text-[24px] w-[120px] font-light truncate">
                   {classRoom?.verificationCode}
-                </span>
-              </button>
-              <button className="ml-auto items-center border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full">
-                <span className="text-[14px] text-blueText font-light">
-                  {t("teacherPages.class.inviteStudentText")}
                 </span>
               </button>
             </div>
 
-            <button
-              className="py-[10px] border-[0.5px] border-[#E9ECEF] px-3 rounded-full"
+            <Button
+              className="py-[8px] text-main-blue"
               onClick={() => setIsAddStudentModalOpen(true)}
             >
               {t("teacherPages.class.addStudentButton")}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -364,13 +365,15 @@ export const ClassDetailPage = () => {
           </div>
         </div>
 
-        {!isAssignmentsRefetching && filteredAssignments?.map((assignment, index) => (
-          <Assignment
-            key={index}
-            assignment={assignment}
-            onClick={onAssignmentClick}
-          />
-        ))}
+        <ul className="flex flex-col-reverse gap-2 pt-3">
+          {!isAssignmentsRefetching && filteredAssignments?.map((assignment, index) => (
+            <Assignment
+              key={index}
+              assignment={assignment}
+              onClick={onAssignmentClick}
+            />
+          ))}
+        </ul>
 
         {!isAssignmentsRefetching && !isAssigmentsPending && assignmentsData?.length === 0 && <p className="text-gray-500 text-center mt-[60px]">{t("teacherPages.class.noAssignmentsText")}</p>}
       </div>
@@ -378,25 +381,18 @@ export const ClassDetailPage = () => {
       <Modal
         isOpen={isUploadPlanModalOpen}
         onClose={() => setIsUploadPlanModal(false)}
+        title={t("teacherPages.class.uploadPlanModal.title")}
       >
-        <div className="flex flex-col gap-[20px] items-center">
-          <p className="text-center text-[18px] font-semibold">{t("teacherPages.class.uploadPlanModal.title")}</p>
-
-          <div className="relative mt-[20px]">
-            <input
+        <div className="flex flex-col items-center">
+          <div className="relative mt-[16px]">
+            <Input
               type="file"
-              className="relative py-[14px] z-[2] opacity-0"
+              className="w-full pr-[60px]"
               accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword"
               onChange={uploadLearningPlanHandler}
             />
-            <div
-              className="
-                flex absolute top-0 left-0 z-[0] items-center w-full justify-center 
-                gap-[10px] bg-gray-300 py-[14px] rounded-[8px]
-              "
-            >
-              {t("teacherPages.class.uploadPlanModal.uploadButton")} <img src={`${UploadPlanIcon}`} />
-            </div>
+
+            <img src={`${UploadPlanIcon}`} className="w-[20px] absolute top-4 right-4" />
           </div>
         </div>
       </Modal>

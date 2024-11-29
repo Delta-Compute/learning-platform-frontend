@@ -13,6 +13,8 @@ export default {
 
         // text
         "light-blue": "#067ECF",
+        "light-green": "#3ABF38",
+        "main-blue": "#2957A4",
         "dark-blue": "#001434",
       },
     },

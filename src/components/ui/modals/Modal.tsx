@@ -3,10 +3,16 @@ import React, { useRef, useEffect } from "react";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
   children: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+}) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,6 +61,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
               no-scrollbar p-[12px] sm:p-[20px]
             "
           >
+            {title && <p className="text-[24px] font-semibold text-center text-dark-blue">{title}</p>}
             {children}
           </div>
         </div>
