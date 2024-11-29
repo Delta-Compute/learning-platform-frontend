@@ -40,7 +40,7 @@ const Assignment: FC<Props> = ({ assignment, onClick }) => {
         </div> */}
         <div
           className={`
-            ${assignment.deadline >= new Date().getTime() ? "text-main-blue border-main-blue" : "text-light-green border-light-green"}
+            ${assignment.deadline >= new Date().getTime() ? "text-text-main-blue border-text-main-blue" : "text-text-light-green border-text-light-green"}
             border-[1px] rounded-full text-[16px] px-4  py-2 mt-4
          `}
         >

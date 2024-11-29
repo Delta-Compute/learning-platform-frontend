@@ -280,7 +280,7 @@ export const ClassDetailPage = () => {
                 {t("teacherPages.class.reportText")}
               </p>
               <button>
-                <img src={`${reportIcon}`} alt="Upload Plan" className='w-[17px] h-[16px]' />
+                <img src={`${reportIcon}`} alt="Upload Plan" className="w-[17px] h-[16px]" />
               </button>
             </div>
           </div>
@@ -320,7 +320,7 @@ export const ClassDetailPage = () => {
             </div>
 
             <Button
-              className="py-[8px] text-main-blue"
+              className="py-[8px] text-text-main-blue"
               onClick={() => setIsAddStudentModalOpen(true)}
             >
               {t("teacherPages.class.addStudentButton")}
