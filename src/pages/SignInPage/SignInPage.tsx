@@ -184,7 +184,7 @@ export const SignInPage = () => {
       </div>
       <Modal isOpen={isAiModalOpen} onClose={() => setIsAiModalOpen(false)}>
         <div className="flex flex-col items-center gap-1">
-          <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">
+          <h2 className="text-[24px] font-semibold text-center text-[#001434]">
             {t("authPages.signIn.aiAuthModalTitle")}
           </h2>
           <Input

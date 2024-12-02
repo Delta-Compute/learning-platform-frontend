@@ -3,7 +3,8 @@
     "initial": {
       "title": "Profesores Ai-d",
       "signInButton": "Iniciar sesión",
-      "signUpButton": "Inscríbete"
+      "signUpButton": "Inscríbete",
+      "identifyButton": "Autentificar"
     },
     "signIn": {
       "headerTitle": "Iniciar sesión",

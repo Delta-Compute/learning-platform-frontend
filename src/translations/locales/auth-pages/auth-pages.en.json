@@ -2,8 +2,9 @@
   "authPages": {
     "initial": {
       "title": "Teachers Ai-d",
-      "signInButton": "Sign in",
-      "signUpButton": "Sign up"
+      "signInButton": "Login",
+      "signUpButton": "Sign up",
+      "identifyButton": "Authorization"
     },
     "signIn": {
       "headerTitle": "Sign In",

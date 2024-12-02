@@ -72,8 +72,8 @@ export const AssignmentDetailPage = () => {
                   <div
                     className={`
                     px-3 py-1 
-                    ${assignmentData.deadline >= new Date().getTime() ? "bg-blue-100 text-blue-700" : "bg-green-200 text-green-800"} 
-                    text-sm rounded-full
+                    ${assignmentData.deadline >= new Date().getTime() ? "border-text-main-blue text-text-main-blue" : " border-text-light-green text-text-light-green"} 
+                    text-sm rounded-full border-[1px]
                   `}
                   >
                     {assignmentData.deadline >= new Date().getTime() ? t("teacherPages.assignment.assignmentStatus.inProgress") : t("teacherPages.assignment.assignmentStatus.completed")}
@@ -128,14 +128,14 @@ export const AssignmentDetailPage = () => {
                     <div className="flex justify-between">
                       <div className="flex items-center">
                         <div
-                          className={`w-3 h-3 rounded-full mr-2 ${student.progress ? 'bg-green-500' : 'bg-gray-400'}`}
+                          className={`w-3 h-3 rounded-full mr-2 ${student.progress ? "bg-text-light-green": "bg-gray-400"}`}
                         ></div>
                         <span className="text-sm capitalize">{student.firstName} {student.lastName[0]}.</span>
                       </div>
                       <span className="text-sm text-gray-500">
                         {student.progress ?
-                          <span className="text-green-500">{t("teacherPages.assignment.assignmentStatus.completed")}</span> :
-                          <span className="text-blue-400">{t("teacherPages.assignment.assignmentStatus.inProgress")}</span>
+                          <span className="text-text-light-green">{t("teacherPages.assignment.assignmentStatus.completed")}</span> :
+                          <span className="text-text-main-blue">{t("teacherPages.assignment.assignmentStatus.inProgress")}</span>
                         }
                       </span>
 
