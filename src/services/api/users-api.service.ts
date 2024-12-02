@@ -1,8 +1,9 @@
-import { User } from "../../types";
+import {User, UserAuthType} from "../../types";
 import { UserResponse } from "../../types/userResponse.ts";
 
 import { apiClient } from "../../vars/axios-var.ts";
-import {School} from "../../context";
+
+import { School } from "../../context";
 
 export const getUser = async (id: string): Promise<User | null> => {
   try {
@@ -95,10 +96,21 @@ export const signUp = async (data: {
   }
 };
 
+const findUserByEmail = async (email: string, schoolName: School, authType: UserAuthType): Promise<User[]> => {
+  try {
+    const response = await apiClient.get(`/users/find-by-email/${email}/${schoolName}/${authType}`);
+
+    return response.data as User[];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const UsersApiService = {
   getUser,
   updateUser,
   signIn,
   signUp,
   getUsersByEmails,
+  findUserByEmail,
 };

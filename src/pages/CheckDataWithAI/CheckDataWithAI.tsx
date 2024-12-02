@@ -8,24 +8,21 @@ import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
 import { getFavoiriteColorAndNumberInstructions, parseSecretWordsInstructions } from "../../utils/conversation_config.ts";
 
-
 import { Link, useLocation } from "react-router-dom";
-
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-import { SpeakingDots } from '../../components/SpeakingDots/index';
+import { SpeakingDots } from '../../components/SpeakingDots';
 
 import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
-import { Button, Loader, Modal } from '../../components/index.ts';
-import { openai } from '../../vars/open-ai.ts';
+import { Button, Loader, Modal, Input } from '../../components';
+import { openai } from '../../vars';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
 import { parseSecrets } from '../../utils/parseSecrets.ts';
-import { Input } from '@headlessui/react';
-import { cn } from '../../utils/tailwind-cn.ts';
-import { useLogin } from '../../hooks/index.ts';
-import { UserAuthType } from '../../types/user.ts';
+import { cn } from '../../utils';
+import { useLogin } from '../../hooks';
+import { UserAuthType } from '../../types';
 
 interface RealtimeEvent {
   time: string;
@@ -88,7 +85,6 @@ export const CheckDataAI = () => {
   const { isPending, mutate } = useLogin();
 
   const getFeedBackAndGeneralInformation = async (): Promise<any> => {
-
     const conversation = items.map(item => item.formatted.transcript).join(" ");
 
     try {
@@ -389,7 +385,7 @@ export const CheckDataAI = () => {
       </div>
       <Modal isOpen={isOpened} onClose={() => setIsOpened(false)}>
         <div className="flex flex-col items-center gap-1">
-          <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">
+          <h2 className="text-[24px] font-semibold text-center text-[#001434]">
             {t("authPages.signIn.aiAuthModalTitle")}
           </h2>
           <Input
@@ -397,7 +393,7 @@ export const CheckDataAI = () => {
             value={infoForLogin.email}
             onChange={(e) => handleChange(e)}
             placeholder={t("authPages.signIn.aiAuthEmailPlaceholder")}
-            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            className={cn('w-full mt-2', emailError && 'border-red-500')}
             required
           />
           {emailError && <p className="text-red-500 mt-2">{emailError}</p>}
@@ -407,7 +403,7 @@ export const CheckDataAI = () => {
             value={infoForLogin.secretWords.color}
             onChange={(e) => setInfoForLogin({ ...infoForLogin, secretWords: { ...infoForLogin.secretWords, color: e.target.value } })}
             placeholder={t("authPages.signIn.aiAuthColorPlaceholder")}
-            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            className={cn('w-full mt-2', emailError && 'border-red-500')}
             required
           />
 
@@ -416,12 +412,12 @@ export const CheckDataAI = () => {
             value={infoForLogin.secretWords.number}
             onChange={(e) => setInfoForLogin({ ...infoForLogin, secretWords: { ...infoForLogin.secretWords, number: e.target.value } })}
             placeholder={t("authPages.signIn.aiAuthNumberPlaceholder")}
-            className={cn('w-full mt-4', emailError && 'border-red-500')}
+            className={cn('w-full mt-2', emailError && 'border-red-500')}
             required
           />
 
           <Button
-            className="mt-4 bg-main text-white w-full"
+            className="mt-2 bg-main text-white w-full"
             onClick={() => handleAuthWithAI()}
           >
             {t("authPages.signIn.aiAuthModalButton")}

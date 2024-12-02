@@ -117,6 +117,7 @@ export const MainRouter = () => {
       <Route path="/secret-info-ai" element={<SecretInfo />} />
       <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
       <Route path="/check-data" element={<CheckDataAI />} />
+      <Route path="/auth-with-ai" element={<>Check information</>} />
 
       <Route
         path="/user-type-selection"

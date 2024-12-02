@@ -1,15 +1,19 @@
-import {ChangeEvent, useContext, useState} from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
+
+import { UsersApiService } from "../../services";
 
 import { Link, useNavigate } from "react-router-dom";
 
 import { Button, Input, Modal } from "../../components";
 
-import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
+import SchoolNamesContext, {School} from "../../context/SchoolNamesContext";
 import { SCHOOL_LOGOS } from "./data/school-logos";
 
 import { cn } from "../../utils";
+
+import { UserAuthType } from "../../types";
 
 export const InitialPage = () => {
   const { t } = useTranslation();
@@ -40,12 +44,23 @@ export const InitialPage = () => {
     }
   };
 
-  const handleNavigate = () => {
+  const handleNavigate = async () => {
     if (emailError) {
       return;
     }
-    navigate(`/${currentSchoolName}/check-data`, { state: { email: emailForAi } });
-  };
+
+    try {
+      const fetchedUsers = await UsersApiService.findUserByEmail(emailForAi, currentSchoolName, UserAuthType.AI);
+
+      if (fetchedUsers.length > 0) {
+        navigate(`/${currentSchoolName}/auth-with-ai`);
+      } else {
+        navigate(`/${currentSchoolName}/introducing-with-ai`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -136,7 +151,7 @@ export const InitialPage = () => {
             className="mt-4 bg-main text-white w-full"
             onClick={() => handleNavigate()}
           >
-            {t("authPages.signIn.aiAuthModalButton")}
+            {t("authPages.initial.aiModal.submitButton")}
           </Button>
         </div>
       </Modal>

@@ -4,7 +4,10 @@
       "title": "Teachers Ai-d",
       "signInButton": "Login",
       "signUpButton": "Sign up",
-      "identifyButton": "Authorization"
+      "identifyButton": "Authorization",
+      "aiModal": {
+        "submitButton": "Submit"
+      }
     },
     "signIn": {
       "headerTitle": "Sign In",

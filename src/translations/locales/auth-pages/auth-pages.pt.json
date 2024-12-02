@@ -4,7 +4,10 @@
       "title": "Professores Ai-d",
       "signInButton": "Iniciar sessão",
       "signUpButton": "Inscrever-se",
-      "identifyButton": "Autenticar"
+      "identifyButton": "Autenticar",
+      "aiModal": {
+        "submitButton": "Apresentar"
+      }
     },
     "signIn": {
       "headerTitle": "Iniciar sessão",
