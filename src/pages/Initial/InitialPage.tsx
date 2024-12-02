@@ -11,8 +11,6 @@ import { SCHOOL_LOGOS } from "./data/school-logos";
 
 import { cn } from "../../utils";
 
-import AILogo from "../../assets/icons/openai-logo.svg";
-
 export const InitialPage = () => {
   const { t } = useTranslation();
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -87,7 +85,7 @@ export const InitialPage = () => {
           {t("authPages.initial.title")}
         </p>
 
-        <div className="flex flex-col gap-4 items-center justify-center w-full px-3">
+        <div className="flex flex-col gap-2 items-center justify-center w-full px-3">
           <Button
             onClick={handleOpenAi}
             className={`
@@ -110,7 +108,7 @@ export const InitialPage = () => {
           <Link
             className={`
               ${currentSchoolName === School.Educare ? "bg-main text-white border-white" : "bg-white text-main border-main"}
-              rounded-full text-center 
+              rounded-full text-center p-3 border-[1px] w-full
             `}
             to={`/${currentSchoolName}/sign-in`}
           >
