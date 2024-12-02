@@ -103,6 +103,7 @@ const findUserByEmail = async (email: string, schoolName: School, authType: User
     return response.data as User[];
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
