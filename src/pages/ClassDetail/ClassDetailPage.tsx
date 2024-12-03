@@ -16,7 +16,7 @@ import {
   ClassSettingsModal,
   ReportModal,
 } from "../../components";
-import { useGetRoomsAssignments } from "../../hooks";
+import { useDeleteAssignment, useGetRoomsAssignments } from "../../hooks";
 import { IAssignment } from "../../types";
 
 import Header from "../../components/ui/header/Header";
@@ -73,6 +73,13 @@ export const ClassDetailPage = () => {
     refetch: assignmentsRefetch,
     isRefetching: isAssignmentsRefetching,
   } = useGetRoomsAssignments(id as string);
+
+  const { mutate, isPending: isAssignmentDeleting } = useDeleteAssignment();
+
+  const handleDelete = async (assignmentId: string, classRoomId: string) => {
+    mutate({ assignmentId, classRoomId });
+    assignmentsRefetch();
+  };
 
   const [filteredAssignments, setFilteredAssignments] = useState<IAssignment[]>(assignmentsData ?? []);
 
@@ -233,7 +240,7 @@ export const ClassDetailPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-bg-color pb-10">
-      {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending) && <Loader />}
+      {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending || isAssignmentDeleting) && <Loader />}
       <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
       <div className="px-4 mt-20 relative">
         <div
@@ -371,6 +378,7 @@ export const ClassDetailPage = () => {
               key={index}
               assignment={assignment}
               onClick={onAssignmentClick}
+              onDelete={() => handleDelete(assignment.id, assignment.classRoomId)}
             />
           ))}
         </ul>

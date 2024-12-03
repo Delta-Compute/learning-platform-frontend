@@ -95,10 +95,19 @@ export const updateAssignment = async (id: string, assignment: { summary?: strin
   }
 };
 
+export const deleteAssignment = async (assignmentId: string, classRoomId: string) => {
+  try {
+    await apiClient.delete(`/assignment/${assignmentId}/${classRoomId}`);
+  } catch (error) {
+    console.error("Error deleting assignment:", error);
+  }
+};
+
 export const AssignmentApiService = {
   addAssignment,
   getAssignmentsForStudent,
   getAssignmentsByClassRoomId,
   getAssignmentById,
   updateAssignment,
+  deleteAssignment,
 };
