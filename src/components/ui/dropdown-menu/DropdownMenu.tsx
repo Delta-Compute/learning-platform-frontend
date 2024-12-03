@@ -5,11 +5,13 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 interface DropDownMenuProps {
   menuItems: { title: string }[];
   children: React.ReactNode;
+  onClick: () => void;
 };
 
 export const DropdownMenu: React.FC<DropDownMenuProps> = ({
   menuItems,
   children,
+  onClick,
 }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -25,8 +27,8 @@ export const DropdownMenu: React.FC<DropDownMenuProps> = ({
       >
         <div className="py-1">
           {menuItems.map(item => (
-            <MenuItem key={item.title}>
-              <div>{item.title}</div>
+            <MenuItem key={item.title} >
+              <div onClick={onClick}>{item.title}</div>
             </MenuItem>
           ))}
         </div>

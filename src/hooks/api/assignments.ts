@@ -51,3 +51,12 @@ export const useUpdateAssignment = () => {
   });
 }
 
+export const useDeleteAssignment = () => {
+  return useMutation({
+    mutationFn: ({ assignmentId, classRoomId }: { assignmentId: string, classRoomId: string }) => AssignmentApiService.deleteAssignment(assignmentId, classRoomId),
+    onError: (error) => {
+      console.error("Delete assignment failed:", error);
+    },
+  });
+}
+
