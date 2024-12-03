@@ -2,7 +2,7 @@
   "authPages": {
     "initial": {
       "title": "Teachers Ai-d",
-      "signInButton": "Login",
+      "signInButton": "Sign in",
       "signUpButton": "Sign up",
       "identifyButton": "Authorization",
       "aiModal": {
