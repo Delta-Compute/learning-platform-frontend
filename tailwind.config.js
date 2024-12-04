@@ -19,6 +19,9 @@ export default {
           "dark-blue": "#001434",
         }
       },
+      maxWidth: {
+        'custom': 'calc(100% - 105px)',
+      },
     },
   },
   plugins: [],

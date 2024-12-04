@@ -13,12 +13,13 @@ import { Loader, CreateClassModal, BottomNavigation } from "../../components";
 import { useNavigate, Link } from "react-router-dom";
 
 import plus from "../../assets/icons/plus-icon.svg";
+import Header from '../../components/ui/header/Header';
 
 const ClassesPage = () => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
-  const { data, isPending, refetch, isRefetching } = useGetClassesTeacherId(user?.id as string);  
+  const { data, isPending, refetch, isRefetching } = useGetClassesTeacherId(user?.id as string);
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,18 +31,17 @@ const ClassesPage = () => {
     refetch();
   }, [user?.id, refetch]);
 
+  const addClassModal = () => (
+    <button className="bg-main text-white w-8 h-8 rounded-full flex items-center justify-center">
+      <img className="w-[70%] h-[70%]" src={plus} onClick={openModal} />
+    </button>
+  );
+
   return (
     <>
-      <div className="p-4">
         {(isPending || isRefetching) && <Loader />}
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-semibold text-[#524344]">{t("teacherPages.classes.headerTitle")}</h1>
-          <button className="bg-main text-white w-8 h-8 rounded-full flex items-center justify-center mr-[90px]">
-            <img className="w-[70%] h-[70%]" src={plus} onClick={openModal} />
-          </button>
-        </div>
-
-        <ul className="space-y-4 pb-[60px]">
+        <Header title={t("teacherPages.classes.headerTitle") as string} linkTo={`/${currentSchoolName}/classes`} modal={addClassModal()} />
+        <ul className="space-y-4 p-4 pb-[60px] mt-[80px]">
           {data?.map((classItem: Class, index) => (
             <li
               key={index}
@@ -58,7 +58,7 @@ const ClassesPage = () => {
                 )}
               </div>
 
-              <h2 
+              <h2
                 onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { classItem } })}
                 className="text-[24px] text-[#362D2E] font-semibold"
               >
@@ -82,7 +82,6 @@ const ClassesPage = () => {
         <div className="mt-[100px]">
           {data?.length === 0 && !isPending && !isRefetching && <p className="text-center text-gray-500">{t("teacherPages.classes.noClassesText")}</p>}
         </div>
-      </div>
 
       <CreateClassModal
         isOpen={isModalOpen}

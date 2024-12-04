@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import LeftArrowIcon from "../../../assets/icons/left-arrow.svg";
 import { FC } from "react";
+import { cn } from '../../../utils';
 
 type Props = {
   linkTo: string;
   title: string;
+  modal?: JSX.Element;
 };
 
-const Header: FC<Props> = ({ linkTo, title }) => {
+const Header: FC<Props> = ({ linkTo, title, modal }) => {
   return (
     <div className="p-5 fixed z-30 top-0 w-full bg-[#FBF9F9]">
       <div className="absolute top-[26px] left-p-5">
@@ -15,7 +17,10 @@ const Header: FC<Props> = ({ linkTo, title }) => {
           <img src={`${LeftArrowIcon}`} />
         </Link>
       </div>
-      <h2 className="text-center text-[24px] text-text-color text-wrap">{title} </h2>
+      <div className={cn("flex justify-between max-w-custom")}>
+        <h2 className="text-left ml-8 text-[24px] text-text-color text-wrap truncate max-w-custom">{title} </h2>
+        {modal ? modal : null}
+      </div>
     </div>
   );
 };

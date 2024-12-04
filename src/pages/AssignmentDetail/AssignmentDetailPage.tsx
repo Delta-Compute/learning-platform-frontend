@@ -53,7 +53,7 @@ export const AssignmentDetailPage = () => {
     <>
       <div className="flex flex-col h-screen py-6 px-2 bg-[#FBF9F9]">
         <Header
-          title={assignmentData?.title ?? t("teacherPages.assignment.headerTitle")}
+          title={assignmentData?.title ? assignmentData.title : 'Assignment'}
           linkTo={`/${currentSchoolName}/classes/${classRoomId}`}
         />
 
@@ -61,7 +61,7 @@ export const AssignmentDetailPage = () => {
 
         <div className="bg-[#FBF9F9] p-4 mt-20 pb-[80px]">
           <div className="bg-white p-4 rounded-lg shadow-md mb-4">
-            <h2 className="text-lg font-semibold">{assignmentData?.title}</h2>
+            <h2 className="text-lg font-semibold">{assignmentData?.title ? assignmentData.title : 'Assignment'}</h2>
             <p className="text-sm text-gray-500">{t("teacherPages.assignment.topicText")}: {assignmentData?.topic}</p>
             <p className="text-sm text-gray-500 mt-2">{assignmentData && format(new Date(assignmentData.deadline), "dd/MM/yyyy HH:mm")}</p>
 
