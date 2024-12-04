@@ -28,7 +28,7 @@ export const ProfilePage = () => {
     let counter = 0;
 
     data?.map(classRoom => {
-      counter = counter + classRoom.studentEmails?.length;
+      counter = counter + (classRoom.studentEmails?.length ?? 0);
     });
 
     setStudentsCounter(counter);
