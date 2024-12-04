@@ -17,7 +17,7 @@ const Header: FC<Props> = ({ linkTo, title, modal }) => {
           <img src={`${LeftArrowIcon}`} />
         </Link>
       </div>
-      <div className={cn("flex justify-between max-w-custom")}>
+      <div className={cn("flex justify-between", modal ? "max-w-custom" : "w-full")}>
         <h2 className="text-left ml-8 text-[24px] text-text-color text-wrap truncate max-w-custom">{title} </h2>
         {modal ? modal : null}
       </div>
