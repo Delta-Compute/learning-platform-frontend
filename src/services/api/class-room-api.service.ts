@@ -6,9 +6,7 @@ import { School } from "../../context";
 
 export const getClassRoom = async (id: string): Promise<ClassRoom | null> => {
   try {
-    const response = await apiClient.get<ClassRoom>(
-      `/class-room/${id}`,
-    );
+    const response = await apiClient.get<ClassRoom>(`/class-room/${id}`);
 
     const data = response.data as ClassRoom;
 
@@ -24,7 +22,7 @@ export const getClassRoom = async (id: string): Promise<ClassRoom | null> => {
 export const getAllClassRooms = async (): Promise<ClassRoom[] | null> => {
   try {
     const response = await apiClient.get<ClassRoom[]>(
-      "/class-room/class-rooms/find-all",
+      "/class-room/class-rooms/find-all"
     );
 
     const data = response.data as ClassRoom[];
@@ -37,29 +35,27 @@ export const getAllClassRooms = async (): Promise<ClassRoom[] | null> => {
   return null;
 };
 
-// update class room fields 
-export const updateClassRoom = async (
-  classRoomId: string, 
-  data: FormData,
-) => {
+// update class room fields
+export const updateClassRoom = async (classRoomId: string, data: FormData) => {
   try {
-    await apiClient.patch(
-      `/class-room/${classRoomId}`,
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }
-      }
-    );
+    await apiClient.patch(`/class-room/${classRoomId}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   } catch (error) {
     console.log("classroom updating error", error);
   }
 };
 
-export const verifyClassRoomCodeAndAddEmail = async (verificationCode: string, email: string) => {
+export const verifyClassRoomCodeAndAddEmail = async (
+  verificationCode: string,
+  email: string
+) => {
   try {
-    await apiClient.patch(`/class-room/verification-code/${verificationCode}/${email}`);
+    await apiClient.patch(
+      `/class-room/verification-code/${verificationCode}/${email}`
+    );
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +63,9 @@ export const verifyClassRoomCodeAndAddEmail = async (verificationCode: string, e
 
 export const findStudentInClassRoom = async (email: string, school: School) => {
   try {
-    const response = await apiClient.get(`/class-room/find-class-room/for-student/${email}/${school}`);
+    const response = await apiClient.get(
+      `/class-room/find-class-room/for-student/${email}/${school}`
+    );
 
     return response.data;
   } catch (error) {
@@ -75,7 +73,12 @@ export const findStudentInClassRoom = async (email: string, school: School) => {
   }
 };
 
-export const getClassRoomReport = async (classRoomId: string, students: string[], from: number, to: number) => {
+export const getClassRoomReport = async (
+  classRoomId: string,
+  students: string[],
+  from: number,
+  to: number
+) => {
   try {
     const response = await apiClient.get(`/class-room/report/${classRoomId}`, {
       params: {
@@ -91,6 +94,14 @@ export const getClassRoomReport = async (classRoomId: string, students: string[]
   }
 };
 
+export const deleteClassRoom = async (classRoomId: string) => {
+  try {
+    await apiClient.delete(`/class-room/${classRoomId}`);
+  } catch (error) {
+    console.log("classroom deleting error", error);
+  }
+};
+
 export const ClassRoomApiService = {
   getClassRoom,
   getAllClassRooms,
@@ -98,4 +109,5 @@ export const ClassRoomApiService = {
   verifyClassRoomCodeAndAddEmail,
   findStudentInClassRoom,
   getClassRoomReport,
+  deleteClassRoom,
 };

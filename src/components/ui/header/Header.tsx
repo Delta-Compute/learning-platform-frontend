@@ -18,7 +18,7 @@ const Header: FC<Props> = ({ linkTo, title, modal }) => {
         </Link>
       </div>
       <div className={cn("flex justify-between", modal ? "max-w-custom" : "w-full")}>
-        <h2 className="text-left ml-8 text-[24px] text-text-color text-wrap truncate max-w-custom">{title} </h2>
+        <h2 className="text-left ml-8 text-[24px] text-text-color truncate max-w-custom">{title} </h2>
         {modal ? modal : null}
       </div>
     </div>

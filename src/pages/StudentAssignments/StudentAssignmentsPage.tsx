@@ -18,6 +18,7 @@ import { IAssignment } from "../../types";
 import { toast } from "react-hot-toast";
 
 import CopyIcon from "../../assets/icons/copy-icon.svg";
+import Header from '../../components/ui/header/Header';
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
@@ -87,7 +88,7 @@ export const StudentAssignmentsPage = () => {
       {(isRefetching || isVerificationPending || isStudentInClassPending) && <Loader />}
 
       <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
-        <h2 className="text-center text-[20px]">{t("studentPages.studentAssignments.headerTitle")}</h2>
+        <Header title={t("studentPages.studentAssignments.headerTitle")} linkTo={`/${currentSchoolName}/initial`}/>
       </div>
 
       <div className="pt-[100px] pb-[150px] px-[20px]">

@@ -30,7 +30,7 @@ export const DropdownMenu: React.FC<DropDownMenuProps> = ({
             <MenuItem
               key={item.title}
             >
-              <div className="cursor-pointer" onClick={onClick}>{item.title}</div>
+              <div className="cursor-pointer text-red-600" onClick={onClick}>{item.title}</div>
             </MenuItem>
           ))}
         </div>

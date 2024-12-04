@@ -6,15 +6,16 @@ import { School } from "../../context";
 
 export const useCreateClass = () => {
   return useMutation({
-    mutationFn: (data: Omit<Class, "verificationCode">) => ClassesApiService.createClass(data),
+    mutationFn: (data: Omit<Class, "verificationCode">) =>
+      ClassesApiService.createClass(data),
     onSuccess: (data: Class) => {
-        console.log("Class created:", data);
+      console.log("Class created:", data);
     },
     onError: (error) => {
-        console.error("Create class failed:", error);
+      console.error("Create class failed:", error);
     },
   });
-}
+};
 
 export const useGetClassesTeacherId = (teacherId: string) => {
   return useQuery({
@@ -22,7 +23,7 @@ export const useGetClassesTeacherId = (teacherId: string) => {
     queryKey: ["classes"],
     staleTime: 5_000_000,
   });
-}
+};
 
 export const useClassById = (id: string) => {
   return useQuery({
@@ -31,11 +32,12 @@ export const useClassById = (id: string) => {
     enabled: !!id,
     staleTime: 5_000_000,
   });
-}
+};
 
 export const useUpdateClass = (id: string) => {
   return useMutation({
-    mutationFn: (data: Omit<Class, "verificationCode">) => ClassesApiService.updateClass(id, data),
+    mutationFn: (data: Omit<Class, "verificationCode">) =>
+      ClassesApiService.updateClass(id, data),
     onSuccess: (data: Class) => {
       console.log("Class updated:", data);
     },
@@ -43,7 +45,7 @@ export const useUpdateClass = (id: string) => {
       console.error("Update class failed:", error);
     },
   });
-}
+};
 
 export const useFindStudentInClass = (email: string, school: School) => {
   return useQuery({
@@ -52,4 +54,14 @@ export const useFindStudentInClass = (email: string, school: School) => {
     enabled: !!email,
     staleTime: 5_000_000,
   });
-}
+};
+
+export const useDeleteClassRoom = () => {
+  return useMutation({
+    mutationFn: (classRoomId: string) =>
+      ClassRoomApiService.deleteClassRoom(classRoomId),
+    onError: (error) => {
+      console.error("Delete class room failed:", error);
+    },
+  });
+};
