@@ -100,6 +100,7 @@ export const ClassDetailPage = () => {
     onSuccess: () => {
       setIsUploadPlanModal(false);
       setIsAddStudentModalOpen(false);
+      setStudentEmail("");
       toast.success(t("teacherPages.class.uploadPlanModal.successfullyUploadedText"));
       refetchClassRoom();
     },

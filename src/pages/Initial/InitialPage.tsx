@@ -63,7 +63,7 @@ export const InitialPage = () => {
           <Link
             className={`
               ${currentSchoolName === School.Educare ? "bg-main text-white border-white" : "bg-white text-main border-main"}
-              rounded-full text-center p-3 border-[1px] w-full
+              rounded-full text-center p-3 border-[1px] w-[360px]
             `}
             to={`/${currentSchoolName}/sign-in`}
           >
