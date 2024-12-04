@@ -372,7 +372,7 @@ export const ClassDetailPage = () => {
           </div>
         </div>
 
-        <ul className="flex flex-col-reverse gap-2 pt-3">
+        <ul className="flex flex-col gap-2 pt-3">
           {!isAssignmentsRefetching && filteredAssignments?.map((assignment, index) => (
             <Assignment
               key={index}

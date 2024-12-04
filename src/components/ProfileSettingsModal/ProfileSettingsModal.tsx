@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Loader } from '../ui/loader/Loader';
+import { Loader, Input } from "../../components";
 
 import { toast } from "react-hot-toast";
 import { User } from '../../types';
@@ -62,51 +62,51 @@ export const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onCl
 
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.firstNameModal")}</label>
-          <input
+          <Input
             value={userFirstName}
             type="text"
             placeholder={t("teacherPages.profile.firstNameInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            className="w-full"
             onChange={(e) => setUserFirstName(e.target.value)}
           />
         </div>
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.lastNameModal")}</label>
-          <input
+          <Input
             value={userLastName}
             type="text"
             placeholder={t("teacherPages.profile.lastNameInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            className="w-full"
             onChange={(e) => setUserLastName(e.target.value)}
           />
         </div>
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.emailModal")}</label>
-          <input
+          <Input
             value={userEmail}
             type="text"
             placeholder={t("teacherPages.profile.emailInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            className="w-full"
             onChange={(e) => setUserEmail(e.target.value)}
           />
         </div>
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.nativeLanguage")}</label>
-          <input
+          <Input
             value={userNatureLanguage}
             type="text"
             placeholder={t("teacherPages.profile.nativeLanguageInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            className="w-full"
             onChange={(e) => setUserNatureLanguage(e.target.value)}
           />
         </div>
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.foreignLanguage")}</label>
-          <input
+          <Input
             value={userForeignLanguage}
             type="text"
             placeholder={t("teacherPages.profile.foreignLanguageInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
+            className="w-full"
             onChange={(e) => setUserForeignLanguage(e.target.value)}
           />
         </div>

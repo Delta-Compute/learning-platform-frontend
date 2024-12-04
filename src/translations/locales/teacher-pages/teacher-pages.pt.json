@@ -15,6 +15,8 @@
         "reportTitle": "Relatório",
         "classNameLabel": "Nome da classe",
         "classNameInputPlaceholder": "Introduzir o nome da turma",
+        "addStudentEmailsLabel": "Adicionar e-mails de alunos",
+        "addStudentEmailsInputPlaceholder": "Introduzir o correio eletrónico",
         "submitButton": "Criar",
         "classSubjectLabel": "Assunto",
         "classSubjectInputPlaceholder": "Introduzir o assunto da turma",

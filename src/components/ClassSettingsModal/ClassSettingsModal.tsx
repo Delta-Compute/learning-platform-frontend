@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useUpdateClass } from '../../hooks/api/classes';
-import { Loader } from '../ui/loader/Loader';
+import { Loader, Input } from "../../components";
 
 import { toast } from "react-hot-toast";
 import { Class } from '../../types/class';
@@ -57,21 +57,21 @@ export const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, o
 
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classNameLabel")}</label>
-          <input
+          <Input
             value={className}
             type="text"
+            className="w-full"
             placeholder={t("teacherPages.classes.classModal.classNameInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
             onChange={(e) => setClassName(e.target.value)}
           />
         </div>
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classSubjectLabel")}</label>
-          <input
+          <Input
             value={classSubject}
             type="text"
+            className="w-full"
             placeholder={t("teacherPages.classes.classModal.classSubjectInputPlaceholder")}
-            className="w-full border rounded-full p-3 text-gray-700 focus:outline-none"
             onChange={(e) => setClassSubject(e.target.value)}
           />
         </div>

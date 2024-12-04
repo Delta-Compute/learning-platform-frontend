@@ -22,7 +22,7 @@ const Assignment: FC<Props> = ({ assignment, onClick, onDelete }) => {
     <li
       className="border-[0.5px] relative list-none border-[#E9ECEF] text-gray-700  rounded-2xl text-sm p-[15px] bg-white"
     >
-      <div className='absolute right-[2px] top-[5px] p-[10px]'>
+      <div className="absolute right-[2px] top-[5px] p-[10px]">
         <DropdownMenu menuItems={[{ title: "Delete" }]} onClick={() => onDelete(assignment.id, assignment.classRoomId)}>
           <button>
             <img src={menuIcon} alt="menu" className="w-[20px]" />

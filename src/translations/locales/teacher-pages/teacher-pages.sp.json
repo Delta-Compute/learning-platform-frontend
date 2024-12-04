@@ -15,6 +15,8 @@
         "reportTitle": "Informe",
         "classNameLabel": "Nombre de la clase",
         "classNameInputPlaceholder": "Introduzca el nombre de la clase",
+        "addStudentEmailsLabel": "Añadir emails de estudiantes",
+        "addStudentEmailsInputPlaceholder": "Introducir email",
         "submitButton": "Cree",
         "classSubjectLabel": "Asunto",
         "classSubjectInputPlaceholder": "Introduzca el tema de la clase",

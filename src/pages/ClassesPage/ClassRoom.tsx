@@ -65,7 +65,7 @@ const ClassesPage = () => {
                 {classItem.name}
               </h2>
 
-              <Link to={`/${currentSchoolName}/teacher-assignments/${classItem.id}`} className="text-blue-400">{t("teacherPages.classes.addAssignmentLinkText")}</Link>
+              <Link to={`/${currentSchoolName}/teacher-assignments/${classItem.id}`} className="text-text-light-blue">{t("teacherPages.classes.addAssignmentLinkText")}</Link>
 
               <div className="flex justify-between">
                 <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../context/UserContext';
+import LanguageContext from "../../context/LanguageContext";
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import darkModeIcon from "../../assets/icons/darkmodeLogo.svg";
 import helpIcon from "../../assets/icons/helpIcon.svg";
@@ -17,14 +18,31 @@ export const ProfilePage = () => {
   const { t } = useTranslation();
   const { userId } = useParams();
   const { user, logout } = useContext(UserContext);
+  const { language } = useContext(LanguageContext);
   const [darkModeOn, setDarkModeOn] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
+
+  const [studentsCounter, setStudentsCounter] = useState(0);
+
+  const countStudents = () => {
+    let counter = 0;
+
+    data?.map(classRoom => {
+      counter = counter + classRoom.studentEmails?.length;
+    });
+
+    setStudentsCounter(counter);
+  };
 
   const { data, isPending, refetch } = useGetClassesTeacherId(userId as string);
 
   useEffect(() => {
     refetch()
   }, [userId, refetch]);
+
+  useEffect(() => {
+    countStudents();
+  }, [refetch, data]);
 
   return (
     <div className="flex flex-col h-full p-4">
@@ -54,7 +72,7 @@ export const ProfilePage = () => {
             {`${data?.length} ${t("teacherPages.profile.classesCount")}`}
           </div>
           <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700">
-            56 {t("teacherPages.profile.studentsCount")}
+            {studentsCounter} {t("teacherPages.profile.studentsCount")}
           </div>
         </div>
         <button className="flex items-center justify-center w-10 h-10 rounded-full border bg-white hover:bg-gray-100">
@@ -85,7 +103,7 @@ export const ProfilePage = () => {
         <li className="flex items-center">
           <img src={languageIcon} alt="languageIcon" />
           <span className="ml-4">{t("teacherPages.profile.languageText")}</span>
-          <span className="ml-auto">Eng</span>
+          <span className="ml-auto capitalize">{language}</span>
         </li>
         <li className="flex items-center">
           <img src={privacyIcon} alt="privacyIcon" />

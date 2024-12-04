@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { useCreateClass } from '../../hooks/api/classes';
+import { useCreateClass } from "../../hooks";
 import UserContext from '../../context/UserContext';
 import SchoolNamesContext from "../../context/SchoolNamesContext";
-import { Loader } from '../ui/loader/Loader';
+import { Loader, Input } from "../../components";
 
 import { toast } from "react-hot-toast";
 
@@ -99,7 +99,7 @@ export const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onCl
 
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classNameLabel")}</label>
-          <input
+          <Input
             value={className}
             type="text"
             placeholder={t("teacherPages.classes.classModal.classNameInputPlaceholder")}
@@ -109,7 +109,7 @@ export const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onCl
         </div>
         <div className="mb-4">
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.classSubjectLabel")}</label>
-          <input
+          <Input
             value={classSubject}
             type="text"
             placeholder={t("teacherPages.classes.classModal.classSubjectInputPlaceholder")}
@@ -119,12 +119,12 @@ export const CreateClassModal: React.FC<CreateClassModalProps> = ({ isOpen, onCl
         </div>
 
         <div className="mb-4">
-          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">Download students e-mails list</label>
+          <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.classes.classModal.addStudentEmailsLabel")}</label>
           <div>
             <div className="flex items-center relative">
-              <input
+              <Input
                 type="text"
-                placeholder="Add student emails"
+                placeholder={t("teacherPages.classes.classModal.addStudentEmailsInputPlaceholder")}
                 value={studentEmail}
                 onChange={(event) => setStudentEmail(event.target.value)}
                 className="p-3 border rounded-full text-gray-700 w-full"
