@@ -29,9 +29,8 @@ export const DropdownMenu: React.FC<DropDownMenuProps> = ({
           {menuItems.map(item => (
             <MenuItem
               key={item.title}
-              className="p-2"
             >
-              <div onClick={onClick}>{item.title}</div>
+              <div className="cursor-pointer" onClick={onClick}>{item.title}</div>
             </MenuItem>
           ))}
         </div>
