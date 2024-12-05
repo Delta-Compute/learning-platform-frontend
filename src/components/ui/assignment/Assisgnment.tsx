@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { IAssignment } from "../../../types";
 
@@ -60,9 +60,8 @@ const Assignment: FC<Props> = ({ assignment, onClick, onDelete }) => {
                 {ASSIGNMENT_OPTION_ITEMS.map(item => (
                   <MenuItem
                     key={item.title}
-                    onClick={() => item.onSelect()}
                   >
-                    <div className="flex items-center gap-2 p-1">
+                    <div className="flex items-center gap-2 p-1" onClick={() => item.onSelect()}>
                       <div className="text-red-500">{item.icon}</div>
                       <div className="cursor-pointer text-red-600">{item.title}</div>
                     </div>
