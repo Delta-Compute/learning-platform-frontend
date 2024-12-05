@@ -341,7 +341,7 @@ export const ClassDetailPage = () => {
             {t("teacherPages.class.assignmentsTitleText")}
           </h2>
 
-          <div className="flex flex-row ml-auto items-center relative">
+          {assignmentsData?.length > 0 && !isAssigmentsPending && (<div className="flex flex-row ml-auto items-center relative">
             <span className="text-[16px] text-brownText font-light">
               {t("teacherPages.class.filterText")}
             </span>
@@ -370,7 +370,7 @@ export const ClassDetailPage = () => {
                 </div>
               </div>
             )}
-          </div>
+          </div>)}
         </div>
 
         <ul className="flex flex-col gap-2 pt-3">

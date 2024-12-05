@@ -66,9 +66,9 @@ const ClassesPage = () => {
                 menuItems={[{ title: "Delete" }]}
                 onClick={() => classItem.id && handleDeleteClass(classItem.id)}
               >
-                <button>
+                <>
                   <img src={menuIcon} alt="menu" className="w-[20px]" />
-                </button>
+                </>
               </DropdownMenu>
             </div>
             <div className="bg-gray-200 h-[140px] rounded-[8px] overflow-hidden">
