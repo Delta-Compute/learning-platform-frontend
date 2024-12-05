@@ -42,6 +42,7 @@ import filterIcon from "../../assets/icons/filter-icon.svg";
 import UploadPlanIcon from "../../assets/icons/upload-plan-icon.svg";
 import reportIcon from "../../assets/icons/reportIcon.svg";
 import AddClassIcon from "../../assets/icons/add-class-icon.svg";
+import tick from "../../assets/icons/tick-svg.svg";
 
 export const ClassDetailPage = () => {
   const { t } = useTranslation();
@@ -52,6 +53,7 @@ export const ClassDetailPage = () => {
   const [classSettingsOpen, setClassSettingsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [classItem, setClassItem] = useState<Class | null>(null);
+  const [filter, setFilter] = useState("newest");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadPlanModalOpen, setIsUploadPlanModal] = useState(false);
   const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
@@ -66,6 +68,24 @@ export const ClassDetailPage = () => {
   const dropdownRef = useRef(null);
 
   useClickOutside(dropdownRef, () => setIsFilterOpen(false));
+
+  const filterOptions = [
+    {
+      id: 1,
+      name: t("teacherPages.class.filterOptions.freshest"),
+      value: "newest",
+    },
+    {
+      id: 2,
+      name: t("teacherPages.class.filterOptions.oldest"),
+      value: "oldest",
+    },
+    {
+      id: 3,
+      name: t("teacherPages.class.filterOptions.alphabetically"),
+      value: "alphabetical",
+    }
+  ]
 
   const {
     data: assignmentsData,
@@ -203,19 +223,17 @@ export const ClassDetailPage = () => {
 
   const handleFilter = (type: string) => {
     let filteredAssignments = assignmentsData ? [...assignmentsData] : [];
-
-    if (type === "newest") {
+    setFilter(type);
+    if (filter === "newest") {
       filteredAssignments = filteredAssignments.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
-    } else if (type === "oldest") {
+    } else if (filter === "oldest") {
       filteredAssignments = filteredAssignments.sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
-    } else if (type === "alphabetical") {
+    } else if (filter === "alphabetical") {
       filteredAssignments = filteredAssignments.sort((a, b) => a.title.localeCompare(b.title));
     }
 
     setIsFilterOpen(false);
     setFilteredAssignments(filteredAssignments);
-
-    return filteredAssignments;
   };
 
   const changeImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,7 +259,14 @@ export const ClassDetailPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-bg-color pb-10">
-      {(isClassRoomPending || isAssigmentsPending || isAssignmentsRefetching || isClassRoomRefetching || isUpdateClassRoomPending || isAssignmentDeleting) && <Loader />}
+      {(
+        isClassRoomPending
+        || isAssigmentsPending
+        || isAssignmentsRefetching
+        || isClassRoomRefetching
+        || isUpdateClassRoomPending
+        || isAssignmentDeleting
+      ) && <Loader />}
       <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
       <div className="px-4 mt-20 relative">
         <div
@@ -321,7 +346,7 @@ export const ClassDetailPage = () => {
                 className="flex items-center"
               >
                 <img src={copyIcon} alt="copy" />
-                <span className="text-[24px] w-[120px] font-light truncate">
+                <span className="text-[24px] w-full font-light truncate">
                   {classRoom?.verificationCode}
                 </span>
               </button>
@@ -341,36 +366,32 @@ export const ClassDetailPage = () => {
             {t("teacherPages.class.assignmentsTitleText")}
           </h2>
 
-          {assignmentsData && assignmentsData?.length > 0 && !isAssigmentsPending && (<div className="flex flex-row ml-auto items-center relative">
-            <span className="text-[16px] text-brownText font-light">
-              {t("teacherPages.class.filterText")}
-            </span>
-            <img src={filterIcon} alt="filter" onClick={toggleDropdown} ref={dropdownRef} />
-            {isFilterOpen && (
-              <div className="absolute z-10 right-0 top-[20px] mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div className="py-1" ref={dropdownRef}>
-                  <button
-                    onClick={() => handleFilter('newest')}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    {t("teacherPages.class.filterOptions.freshest")}
-                  </button>
-                  <button
-                    onClick={() => handleFilter('oldest')}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    {t("teacherPages.class.filterOptions.oldest")}
-                  </button>
-                  <button
-                    onClick={() => handleFilter('alphabetical')}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    {t("teacherPages.class.filterOptions.alphabetically")}
-                  </button>
+          {assignmentsData && assignmentsData?.length > 0 && !isAssigmentsPending &&
+            <div className="flex flex-row ml-auto items-center relative">
+              <span className="text-[16px] text-brownText font-light">
+                {t("teacherPages.class.filterText")}
+              </span>
+              <img src={filterIcon} alt="filter" onClick={toggleDropdown} ref={dropdownRef} />
+              {isFilterOpen && (
+                <div className="absolute z-10 right-0 top-[20px] mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                  <div className="p-2" ref={dropdownRef}>
+                    {filterOptions.map((option) => (
+                      <div className='w-full flex content-center justify-between'>
+                        <button
+                          key={option.id}
+                          onClick={() => handleFilter(option.value)}
+                          className="block text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          {option.name}
+                        </button>
+                        {filter === option.value && <img src={tick} alt="tick" className="w-4 h-4 self-center" />}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>)}
+              )}
+            </div>
+          }
         </div>
 
         <ul className="flex flex-col gap-2 pt-3">

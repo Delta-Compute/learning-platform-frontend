@@ -200,7 +200,6 @@ export const CheckDataAI = () => {
 
   useEffect(() => {
     // Get refs
-    console.time("clientRef.current START");
     const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
@@ -223,8 +222,6 @@ export const CheckDataAI = () => {
         }
       });
     });
-    console.timeEnd("clientRef.current END");
-
     client.on("error", (event: any) => {
       console.error(event);
     });
