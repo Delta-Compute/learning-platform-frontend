@@ -144,7 +144,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     if (user && user.role === "student" && assignments) {
       assignments.map(item => {
         if (item.id === params.assignmentId && user.firstName) {
-          setStudentInstructions(studentInstructionsForAI(user.firstName, user.foreignLanguage, item.topic, user.nativeLanguage, (item.timeToDiscuss / 60).toString(), item.description));
+          setStudentInstructions(studentInstructionsForAI(user.firstName, user.foreignLanguage, item.topic, user.natureLanguage, (item.timeToDiscuss / 60).toString(), item.description));
           setClassRoomId(item.classRoomId);
           setCurrentAssignment(item);
         }
@@ -265,7 +265,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || "", user.nativeLanguage, user.foreignLanguage) : studentInstructions });
+    client.updateSession({ instructions: user?.role === "teacher" && user.firstName ? teacherInstructions(user.firstName, classRoom?.learningPlan || "", user.natureLanguage, user.foreignLanguage) : studentInstructions });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
