@@ -132,6 +132,7 @@ export const SignInPage = () => {
           }
           type="password"
           value={userInfo.password}
+          isPassword={true}
         />
         <Button
           className={`mt-5 bg-primary bg-main text-white`}

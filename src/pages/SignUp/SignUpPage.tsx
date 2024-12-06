@@ -150,6 +150,7 @@ export const SignUpPage = () => {
           }
           type="password"
           value={userInfo.password}
+          isPassword={true}
         />
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.confirmPasswordLabel")}</h3>
         <Input
@@ -162,6 +163,7 @@ export const SignUpPage = () => {
           }
           type="password"
           value={userInfo.confirmPassword}
+          isPassword={true}
         />
         <Button
           className={`mt-5 bg-primary bg-main text-white`}

@@ -45,7 +45,7 @@ const ClassesPage = () => {
         refetch();
       },
       onError: (error) => {
-        console.error("Помилка видалення класу:", error);
+        console.error("Class delete error:", error);
       },
     });
   };
