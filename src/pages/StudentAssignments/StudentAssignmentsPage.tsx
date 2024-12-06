@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
@@ -30,6 +30,7 @@ export const StudentAssignmentsPage = () => {
   const [openedAssignmentId, setOpenedAssignmentId] = useState("");
   const [isVerifyClassRoomCodeModalOpen, setIsVerifyClassRoomCodeModalOpen] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
+  const navigate = useNavigate();
 
   const [selectedTab, setSelectedTab] = useState("open");
   const { data: assignments, refetch, isRefetching } = useGetStudentAssignments(user?.email as string);
@@ -52,6 +53,10 @@ export const StudentAssignmentsPage = () => {
       toast.error(t("studentPages.studentAssignments.tabs.verificationModal.errorToastText"));
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [user?.id, refetch]);
 
   useEffect(() => {
     if (assignments) {
@@ -83,12 +88,14 @@ export const StudentAssignmentsPage = () => {
     verificationCodeMutation({ verificationCode, email: user?.email as string });
   };
 
+  console.log(studentClassRoom, 'studentClassRoom');
+
   return (
     <>
       {(isRefetching || isVerificationPending || isStudentInClassPending) && <Loader />}
 
       <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
-        <Header title={t("studentPages.studentAssignments.headerTitle")} linkTo={`/${currentSchoolName}/initial`}/>
+        <Header title={t("studentPages.studentAssignments.headerTitle")} linkTo={`/${currentSchoolName}/initial`} />
       </div>
 
       <div className="pt-[100px] pb-[150px] px-[20px]">
@@ -105,45 +112,55 @@ export const StudentAssignmentsPage = () => {
               {t("studentPages.studentAssignments.tabs.closedAssignments")}
             </div>
           </div>
-          {selectedTab === "open" && !isRefetching &&
+          {selectedTab === "open" && !isRefetching && (
             <ul className="py-[20px] flex flex-col gap-[8px]">
-              {openAssignment.length ? openAssignment?.map((assignment) => (
-                <Link
-                  key={assignment.id}
-                  to={`/${currentSchoolName}/student-assignments/${assignment.id}`}
-                  className="block"
-                >
-                  <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
-                    <button
-                      className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "rotate-180" : ""
-                        }`}
-                      onClick={(e) => {
-                        handleAsignmentClick(assignment.id, e);
-                      }}
+              {studentClassRoom && assignments?.length ? (
+                openAssignment.length ? (
+                  openAssignment.map((assignment) => (
+                    <Link
+                      key={assignment.id}
+                      to={`/${currentSchoolName}/student-assignments/${assignment.id}`}
+                      className="block"
                     >
-                      {"▲"}
-                    </button>
-                    <p className="font-semibold">
-                      Title: <span className="font-light">{assignment.title}</span>
-                    </p>
-                    <p className="font-semibold">
-                      Topic: <span className="font-light">{assignment.topic}</span>
-                    </p>
-                    <div
-                      className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[500px]" : "max-h-0"
-                        }`}
-                    >
-                      <p className="font-semibold">
-                        Description: <span className="font-light">{assignment.description}</span>
-                      </p>
-                    </div>
-                  </li>
-                </Link>
-              )) :
-                <div className='self-center flex-1 flex justify-center mt-5'>{t("studentPages.studentAssignments.tabs.noOpenItemsTitle")}</div>
-              }
+                      <li className="w-full block p-[10px] rounded-[14px] bg-gray-200 relative">
+                        <button
+                          className={`text-gray-500 absolute top-2 right-2 transform transition-transform duration-300 ${openedAssignmentId === assignment.id ? "rotate-180" : ""
+                            }`}
+                          onClick={(e) => {
+                            handleAsignmentClick(assignment.id, e);
+                          }}
+                        >
+                          {"▲"}
+                        </button>
+                        <p className="font-semibold">
+                          Title: <span className="font-light">{assignment.title}</span>
+                        </p>
+                        <p className="font-semibold">
+                          Topic: <span className="font-light">{assignment.topic}</span>
+                        </p>
+                        <div
+                          className={`transition-[max-height] overflow-hidden ${openedAssignmentId === assignment.id ? "max-h-[500px]" : "max-h-0"
+                            }`}
+                        >
+                          <p className="font-semibold">
+                            Description: <span className="font-light">{assignment.description}</span>
+                          </p>
+                        </div>
+                      </li>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="self-center flex-1 flex justify-center mt-5">
+                    {t("studentPages.studentAssignments.tabs.noOpenItemsTitle")}
+                  </div>
+                )
+              ) : (
+                <Button onClick={() => navigate(`/${currentSchoolName}/free-form-lesson`)} className='text-white bg-[#CC1316]'>
+                  {t("studentPages.studentAssignments.tabs.startFreeFormLesson")}
+                </Button>
+              )}
             </ul>
-          }
+          )}
           {selectedTab === "closed" && !isRefetching &&
             <ul className="py-[20px] flex flex-col gap-[8px]">
               {closedAssignment.length ? closedAssignment?.map((assignment) => (
@@ -221,9 +238,9 @@ export const StudentAssignmentsPage = () => {
             strokeLinejoin="round"
             className="w-5 h-5"
           >
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" x2="9" y1="12" y2="12"/>
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" x2="9" y1="12" y2="12" />
           </svg>
           <span>{t("studentPages.studentAssignments.logoutButton.text")}</span>
         </button>

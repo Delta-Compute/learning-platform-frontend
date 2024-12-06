@@ -6,10 +6,10 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { getFavoiriteColorAndNumberInstructions, instructionsForSecretWords } from "../../utils/conversation_config.ts";
+import { getSummaryOfLesson, instructionsForFreeLesson } from "../../utils/conversation_config.ts";
 
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
@@ -18,10 +18,10 @@ import { SpeakingDots } from '../../components/SpeakingDots/index';
 
 import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
-import { Button, Loader } from '../../components/index.ts';
+import { Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
-import { parseSecrets } from '../../utils/parseSecrets.ts';
+import UserContext from '../../context/UserContext.tsx';
 
 interface RealtimeEvent {
   time: string;
@@ -32,10 +32,9 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const SecretInfo = () => {
+export const FreeLessonPage = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const wavRecorderRef = useRef<WavRecorder>(
@@ -58,8 +57,7 @@ export const SecretInfo = () => {
     }, 1500);
   }, []);
 
-  const [color, setColor] = useState("");
-  const [number, setNumber] = useState("");
+  const [summaryOfLesson, setSummaryOfLesson] = useState("");
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -87,17 +85,14 @@ export const SecretInfo = () => {
           },
           {
             role: "user",
-            content: `${getFavoiriteColorAndNumberInstructions(conversation)}`,
+            content: `${getSummaryOfLesson(conversation)}`,
           },
         ],
         max_tokens: 150,
       });
 
       if (response.choices[0].message.content) {
-        const parsedData = parseSecrets(response.choices[0].message.content);
-
-        setColor(parsedData.color);
-        setNumber(parsedData.number);
+        setSummaryOfLesson(response.choices[0].message.content);
       }
       setLoading(false);
     } catch (error) {
@@ -195,7 +190,11 @@ export const SecretInfo = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: instructionsForSecretWords() });
+
+    client.updateSession({ instructions: instructionsForFreeLesson(user?.firstName as string, user?.natureLanguage as string, user?.foreignLanguage as string) });
+    console.log("user", user);
+    
+
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -253,11 +252,7 @@ export const SecretInfo = () => {
     return () => {
       client.reset();
     };
-  }, []);
-
-  const handleNavigateToCreateProfile = () => {
-    navigate(`/${currentSchoolName}/confirm-secret-info-ai`, { state: { color, number } });
-  };
+  }, [user]);
 
   return (
     <div
@@ -268,7 +263,7 @@ export const SecretInfo = () => {
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
-            <Link to={'/'}>
+            <Link to={`/${currentSchoolName}/student-assignments`}>
               <img src={`${LeftArrowIcon}`} />
             </Link>
           </div>
@@ -281,16 +276,11 @@ export const SecretInfo = () => {
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
               <div className="h-full justify-center flex items-center text-center">
-                <div>{t("conversationPage.secondTitleSecret")}</div>
+                <div>{t("conversationPage.freeFormLessonTitle")}</div>
               </div>
             ) : (
-              <div className="h-full flex justify-center items-center">
-                <Button
-                  className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
-                  onClick={() => handleNavigateToCreateProfile()}
-                >
-                  {t("authPages.introducingAIPage.updateProfileButton")}
-                </Button>
+              <div className="h-full overflow-auto flex justify-center items-center">
+                {summaryOfLesson}
               </div>
             )}
           </div>

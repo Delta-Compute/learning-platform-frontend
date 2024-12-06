@@ -2,6 +2,7 @@
   "conversationPage": {
     "headerTitle": "Asistente AI",
     "secondTitleSecret": "Di tu color y número favorito",
+    "freeFormLessonTitle": "Pulse el botón para iniciar la lección de prueba",
     "studentTimeTitle": "Hora de debatir",
     "startTalkText": "Empezar a hablar",
     "connectingText": "Conectando... Espere por favor",

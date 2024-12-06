@@ -11,7 +11,8 @@
         "openAssignments": "Open",
         "closedAssignments": "Closed",
         "noOpenItemsTitle": "No open assignments",
-        "noClosedItemsTitle": "No closed assignments"
+        "noClosedItemsTitle": "No closed assignments",
+        "startFreeFormLesson": "Start free form lesson"
       },
       "logoutButton": {
         "text": "Logout"

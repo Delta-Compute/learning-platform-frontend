@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 
 import { School } from "../../components";
+import { UserAuthType } from '../../types';
 
 const JoinYourSchoolPage = () => {
   const { t } = useTranslation();
@@ -48,7 +49,15 @@ const JoinYourSchoolPage = () => {
     },
       {
         onSuccess: () => {
-          navigate(`/${currentSchoolName}/secret-info-ai`);
+          if (user?.auth !== UserAuthType.AI ) {
+            if (user?.role === "teacher") {
+              navigate(`/${currentSchoolName}/classes`);
+            } else {
+              navigate(`/${currentSchoolName}/student-assignments`);
+            }
+          } else {
+            navigate(`/${currentSchoolName}/secret-info-ai`);
+          }
         }
       });
   };

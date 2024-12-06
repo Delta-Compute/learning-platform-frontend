@@ -24,6 +24,9 @@ const ClassesPage = () => {
   const { mutate, isPending: isClassDeleting } = useDeleteClassRoom();
   const navigate = useNavigate();
 
+  console.log(user, 'user');
+  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);

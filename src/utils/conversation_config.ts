@@ -239,10 +239,11 @@ export const instructionsForSecretWords = () => {
     When you have all of the information, just tell user, that you have all of the information and you can generate secret words for him.
     End the conversation with the user.
   `;
-}
+};
 
-
-export const getFavoiriteColorAndNumberInstructions = (conversation: string) => {
+export const getFavoiriteColorAndNumberInstructions = (
+  conversation: string
+) => {
   return `
   You must analyze the conversation with AI and generate fields with favourite color and number.
   The fields must be based on the conversation with AI.
@@ -255,7 +256,7 @@ export const getFavoiriteColorAndNumberInstructions = (conversation: string) => 
 
   Write favorite number only in numbers, not in words. Like 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, etc. Not one, two, three, four, five, six, seven, eight, nine, ten, etc.
   Do not write anything else, only the favorite color and number of the user.
-  `
+  `;
 };
 
 export const parseSecretWordsInstructions = () => {
@@ -264,4 +265,27 @@ export const parseSecretWordsInstructions = () => {
     Ask the user for his favorite color and favorite number.
     Do not ask any other questions.
   `;
-}
+};
+
+export const getSummaryOfLesson = (conversation: string) => {
+  return `
+    You must analyze the conversation with AI and generate a short summary of the lesson.
+    here is the conversation of the lesson with user: ${conversation}
+    `;
+};
+
+export const instructionsForFreeLesson = (studentName: string, nativeLanguage: string, foreignLanguage: string) => {
+  console.log(studentName, nativeLanguage, foreignLanguage);
+  
+  return `
+    You are an AI language tutor talking with a student learning a foreign language.
+    Ask student what level of foreing language he is learning, and then create a foreing language lesson for him based on his level.
+    IMPORTANT: Start by greeting the student ${studentName} in the student's native language. Native language is ${nativeLanguage}
+    Then tell ${studentName} in the student's native language that you are their foreign language tutor and that you will walk them through a speaking exercise.
+    Tell him or her that you will be working on a conversation in the foreign language the student is studying and that this is a maximum 5-minute assignment.
+    Then ask the student if they're ready to get started in the foreign language the student is studying.
+    The student's foreing language is ${foreignLanguage}
+    From here forward your conversation should be primarily in the foreign language the student is studying unless the student asks you to repeat things in their natural language. If the student is non-responsive, then start again in the student's natural language.
+    Lesson must be short and productive, maximum 5 minutes.
+  `;
+};

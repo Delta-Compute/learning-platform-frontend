@@ -18,7 +18,7 @@ export type User = {
   email: string;
   role?: UserRole;
   school: School;
-  nativeLanguage?: string;
+  natureLanguage?: string;
   foreignLanguage?: string;
   auth: UserAuthType;
   schoolName?: string;
