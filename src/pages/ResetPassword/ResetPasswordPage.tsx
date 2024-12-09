@@ -10,8 +10,6 @@ import Header from "../../components/ui/header/Header";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import { toast } from "react-hot-toast";
-
 export const ResetPasswordPage = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
 

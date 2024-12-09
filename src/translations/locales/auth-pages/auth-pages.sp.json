@@ -39,6 +39,15 @@
       "iAmStudentButton": "Soy estudiante",
       "iAmTeacherButton": "Soy profesor"
     },
+    "resetPassword": {
+      "resetPasswordButton": "Olvidé mi contraseña",
+      "modal": {
+        "title": "Recuperação da palavra-passe",
+        "emailLabel": "E-mail",
+        "emailInputPlaceholder": "Introduza o seu e-mail",
+        "submitButton": "Enviar"
+      }
+    },
     "joinYourSchool": {
       "headerTitle": "Únete a tu escuela",
       "secretPageTitle": "Pagina secreta",

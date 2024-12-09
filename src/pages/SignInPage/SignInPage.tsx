@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -8,6 +8,8 @@ import Header from "../../components/ui/header/Header";
 import { Button, Loader, Input, Modal } from "../../components";
 
 import { useLogin } from "../../hooks/api/users";
+import { useMutation } from "@tanstack/react-query";
+import { UsersApiService } from "../../services";
 
 import { GoogleLogin } from "@react-oauth/google";
 
@@ -44,6 +46,19 @@ export const SignInPage = () => {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const { isPending, mutate } = useLogin();
 
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetPasswordModalOpen, setResetPasswordModalOpen] = useState(false);
+
+  const { mutate: resetPasswordMutation, isPending: isResetPasswordPending } = useMutation({
+    mutationFn: (data: { email: string }) => UsersApiService.sendResetVerificationCode(data.email, currentSchoolName),
+    onSuccess: () => {
+      navigate(`/${currentSchoolName}/reset-password`);
+    },
+    onError: () => {
+      toast.error("Something went wrong! Check what you typing");
+    },
+  });
+
   const handleLogin = async () => {
     await mutate({
       email: userInfo.email,
@@ -67,21 +82,6 @@ export const SignInPage = () => {
   const googleSignInErrorHandler = () => {
     toast.error("Something went wrong");
   };
-
-  // const appleSignInHandler = () => {
-  //   const clientId = "";
-  //   const redirectURI = "/";
-  //   const scope = "email name";
-  //   const responseType = "code";
-  //
-  //   const url = `https://appleid.apple.com/auth/authorize?
-  //     response_type=${responseType}&
-  //     client_id=${clientId}&
-  //     redirect_uri=${encodeURIComponent(redirectURI)}&
-  //     scope=${scope}`;
-  //
-  //   window.location.href = url;
-  // };
 
   const handleOpenAi = () => {
     setIsAiModalOpen(true);
@@ -110,9 +110,18 @@ export const SignInPage = () => {
     navigate(`/${currentSchoolName}/check-data`, { state: { email: emailForAi } });
   };
 
+  const submitResetPasswordHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+
+    if (resetEmail === "") return;
+
+    resetPasswordMutation({ email: resetEmail });
+  };
+
   return (
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
-      {isPending && <Loader />}
+      {(isPending || isResetPasswordPending) && <Loader />}
       <Header linkTo="/" title={t("authPages.signIn.headerTitle")} />
       <div className="flex flex-col  mt-12 mx-4">
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signIn.emailLabel")}</h3>
@@ -172,16 +181,23 @@ export const SignInPage = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-row items-center mt-auto justify-center">
-        <p className="text-[14px] text-placholderText font-light mr-1">
+      <div className="flex flex-col items-center gap-2 mt-auto justify-center">
+        <p className="text-[14px] flex flex-row gap-1 items-center text-placholderText font-light mr-1">
           {t("authPages.signIn.bottomText")}
+          <Link
+            to={`/${currentSchoolName}/sign-up`}
+            className="text-main text-[16px] font-semibold cursor-pointer"
+          >
+            {t("authPages.signIn.bottomLinkText")}
+          </Link>
         </p>
-        <Link
-          to={`/${currentSchoolName}/sign-up`}
-          className="text-main text-[16px] font-semibold cursor-pointer"
+
+        <button
+          className="text-main text-sm"
+          onClick={() => setResetPasswordModalOpen(true)}
         >
-          {t("authPages.signIn.bottomLinkText")}
-        </Link>
+          {t("authPages.resetPassword.resetPasswordButton")}?
+        </button>
       </div>
       <Modal isOpen={isAiModalOpen} onClose={() => setIsAiModalOpen(false)}>
         <div className="flex flex-col items-center gap-1">
@@ -204,6 +220,26 @@ export const SignInPage = () => {
           >
             {t("authPages.signIn.aiAuthModalButton")}
           </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        title={t("authPages.resetPassword.modal.title")}
+        isOpen={resetPasswordModalOpen}
+        onClose={() => setResetPasswordModalOpen(false)}
+      >
+        <div>
+          <form onSubmit={submitResetPasswordHandler} className="flex flex-col mt-[10px] gap-2">
+            <Input
+              type="email"
+              placeholder={t("authPages.resetPassword.modal.emailInputPlaceholder")}
+              onChange={(event) => setResetEmail(event.target.value)}
+              value={resetEmail}
+            />
+            <Button className="bg-main text-white w-full">
+              {t("authPages.resetPassword.modal.submitButton")}
+            </Button>
+          </form>
         </div>
       </Modal>
     </div>

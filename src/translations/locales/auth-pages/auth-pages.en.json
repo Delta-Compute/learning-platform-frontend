@@ -50,6 +50,15 @@
       "iAmStudentButton": "I am a student",
       "iAmTeacherButton": "I am a teacher"
     },
+    "resetPassword": {
+      "resetPasswordButton": "Forgot password",
+      "modal": {
+        "title": "Password recovery",
+        "emailLabel": "Email",
+        "emailInputPlaceholder": "Enter your email",
+        "submitButton": "Submit"
+      }
+    },
     "joinYourSchool": {
       "headerTitle": "Join your school",
       "secretPageTitle": "Secret page",
