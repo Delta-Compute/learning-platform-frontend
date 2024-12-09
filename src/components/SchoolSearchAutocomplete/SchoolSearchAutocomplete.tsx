@@ -84,8 +84,6 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.3-4.3"/>
               </svg>
-
-              {isSchoolSearchingRefetching && <div className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
             </Combobox.Button>
           </div>
           <Transition
@@ -93,10 +91,9 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            className="white z-40"
           >
             <Combobox.Options
-              className="absolute mt-2 max-h-60 w-full overflow-auto rounded-[16px] bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+              className="absolute mt-2 max-h-60 w-full overflow-auto rounded-[16px] bg-white z-20 p-1 text-base shadow-lg focus:outline-none sm:text-sm"
             >
               {schools?.length === 0 && schoolName !== "" && !isSchoolSearchingRefetching ? (
                 <div className="relative cursor-default text-[14px] select-none px-4 py-2 text-gray-500">
@@ -113,7 +110,7 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
                       <>
                         <span
                           className={`block truncate ${
-                            selected ? 'font-medium' : 'font-normal'
+                            selected ? "font-medium" : "font-normal"
                           }`}
                         >
                           {school?.name}
@@ -123,6 +120,8 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
                   </Combobox.Option>
                 ))
               )}
+
+              {isSchoolSearchingRefetching && <div className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
             </Combobox.Options>
           </Transition>
         </div>
