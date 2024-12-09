@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { feedbackAndGeneralInformationInstruction, introductionWithAIInstruction } from "../../utils/conversation_config.ts";
+import { createSummaryOfStudent, feedbackAndGeneralInformationInstruction, introductionWithAIInstruction } from "../../utils/conversation_config.ts";
 
 
 import { Link, useNavigate } from "react-router-dom";
@@ -63,10 +63,10 @@ export const IntroducingWithAI = () => {
   const [natureLanguage, setNatureLanguage] = useState("");
   const [foreingLanguage, setForeingLanguage] = useState("");
   const [role, setRole] = useState("");
+  const [summary, setSummary] = useState("");
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
-  const startTimeRef = useRef<string>(new Date().toISOString());
 
   const [items, setItems] = useState<ItemType[]>([]);
 
@@ -79,6 +79,8 @@ export const IntroducingWithAI = () => {
 
     const conversation = items.map(item => item.formatted.transcript).join(" ");
 
+    const credentialsOfUser = conversation.split("===")[0];
+
     try {
       setLoading(true);
       const response = await openai.chat.completions.create({
@@ -90,7 +92,7 @@ export const IntroducingWithAI = () => {
           },
           {
             role: "user",
-            content: `${feedbackAndGeneralInformationInstruction(conversation)}`,
+            content: `${feedbackAndGeneralInformationInstruction(credentialsOfUser)}`,
           },
         ],
         max_tokens: 150,
@@ -100,11 +102,15 @@ export const IntroducingWithAI = () => {
 
         const parsedData = parseFeedbackString(response.choices[0].message.content);
 
+        console.log(parsedData, "parsedData");
+        
+
         setFirstName(parsedData.firstName);
         setLastName(parsedData.lastName);
         setNatureLanguage(parsedData.nativeLanguage);
         setForeingLanguage(parsedData.foreignLanguage);
         setRole(parsedData.role);
+        setSummary(parsedData.summary);
       }
       setLoading(false);
     } catch (error) {
@@ -122,7 +128,6 @@ export const IntroducingWithAI = () => {
     setConnectionLoading(true);
 
     // Set state variables
-    startTimeRef.current = new Date().toISOString();
     setIsConnected(true);
     setRealtimeEvents([]);
     setItems(client.conversation.getItems());
@@ -156,7 +161,8 @@ export const IntroducingWithAI = () => {
   }, []);
 
   const disconnectConversation = useCallback(async () => {
-    getFeedBackAndGeneralInformation();
+    await getFeedBackAndGeneralInformation();
+    
     setIsConnected(false);
     setRealtimeEvents([]);
 
@@ -265,7 +271,7 @@ export const IntroducingWithAI = () => {
   }, []);
 
   const handleNavigateToCreateProfile = () => {
-    navigate(`/${currentSchoolName}/join-your-school`, { state: { firstName, lastName, natureLanguage, foreingLanguage, role } });
+    navigate(`/${currentSchoolName}/join-your-school`, { state: { firstName, lastName, natureLanguage, foreingLanguage, role, summary } });
   };
 
   return (

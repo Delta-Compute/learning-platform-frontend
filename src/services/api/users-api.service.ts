@@ -45,7 +45,8 @@ export const updateUser = async (
   secretWords?: {
     color: string;
     number: string;
-  }
+  },
+  userSummary?: string
 ) => {
   try {
     const response = await apiClient.patch(`/users/${id}`, {
@@ -57,6 +58,7 @@ export const updateUser = async (
       email,
       schoolName,
       secretWords,
+      userSummary,
     });
 
     return response.data;

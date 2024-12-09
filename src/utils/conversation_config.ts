@@ -153,7 +153,11 @@ export const introductionWithAIInstruction = () => {
     Tell the teacher that you the AI can understand the learning style of each student and can give powerful guidance on how to improve the child’s educational journey
 
     If the user is student, then you have this instruction:
-    The AI should ask age of user. AI should speak to the user in a kind, slow and easy to understand voice based on the age of the student. The AI should then ask the student a question in the foreign language and tell them the AI is here to help practice any time like.
+    IMPORTANT
+    seperate these blocks with "===" but don't speak the code "==="
+    The AI should ask age of user. AI should speak to the user in a kind, slow and easy to understand voice based on the age of the student.
+    Make a trial lesson for him, ask him the level of the language he is learning, ask him about his hobbies, what he likes, his interests, and based on this, make a short lesson of the language he is learning, make it interesting for the student
+    the lesson should not last more than 5 minutes
 
     At the end of any instruction and when you have all information like last name, first name, foreing language, nature language, and role of the user, congratulate the user (teacher or student) by name and surname on the first successful interaction with the AI teacher and that the user's profile has been generated.
   `;
@@ -176,9 +180,11 @@ export const feedbackAndGeneralInformationInstruction = (
     **Native language**: The native language of the user
     **Foreign language**: The foreign language of the user
     **Role**: The role of the user, teacher or student
-    **Feedback**: The feedback for the user based on the conversation with AI
+    **Feedback**: The feedback for the user based on the conversation with AI, sturent's hobbies, interests, and what he likes
 
     IMPORTANT: The feedback must be based on the user's work and must be constructive.
+    write only in the structure of the information, do not write anything else
+    All of the fields and its values must be in latin letters
   `;
 };
 
@@ -274,9 +280,13 @@ export const getSummaryOfLesson = (conversation: string) => {
     `;
 };
 
-export const instructionsForFreeLesson = (studentName: string, nativeLanguage: string, foreignLanguage: string) => {
+export const instructionsForFreeLesson = (
+  studentName: string,
+  nativeLanguage: string,
+  foreignLanguage: string
+) => {
   console.log(studentName, nativeLanguage, foreignLanguage);
-  
+
   return `
     You are an AI language tutor talking with a student learning a foreign language.
     Ask student what level of foreing language he is learning, and then create a foreing language lesson for him based on his level.
@@ -289,3 +299,12 @@ export const instructionsForFreeLesson = (studentName: string, nativeLanguage: s
     Lesson must be short and productive, maximum 5 minutes.
   `;
 };
+
+export const createSummaryOfStudent = (conversation: string) => {
+  return `
+    You must analyze the conversation with AI and generate a short summary of the student.
+    here is the conversation with student: ${conversation}
+
+    summary must contain the level of language the student is learning, his hobbies, interests, and what he likes.
+    `;
+}

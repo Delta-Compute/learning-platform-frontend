@@ -4,7 +4,7 @@ export const parseFeedbackString = (str: string) => {
   const nativeLanguageMatch = str.match(/\*\*Native language\*\*: (.+)/);
   const foreignLanguageMatch = str.match(/\*\*Foreign language\*\*: (.+)/);
   const roleMatch = str.match(/\*\*Role\*\*: (.+)/);
-  // const feedbackMatch = str.match(/\*\*Feedback\*\*: (.+)/);
+  const feedbackMatch = str.match(/\*\*Feedback\*\*: (.+)/);
 
   return {
     firstName: firstNameMatch ? firstNameMatch[1].trim() : '',
@@ -12,6 +12,6 @@ export const parseFeedbackString = (str: string) => {
     nativeLanguage: nativeLanguageMatch ? nativeLanguageMatch[1].trim() : '',
     foreignLanguage: foreignLanguageMatch ? foreignLanguageMatch[1].trim() : '',
     role: roleMatch ? roleMatch[1].trim() : '',
-    // feedback: feedbackMatch ? feedbackMatch[1].trim() : '',
+    summary: feedbackMatch ? feedbackMatch[1].trim() : '',
   };
 };

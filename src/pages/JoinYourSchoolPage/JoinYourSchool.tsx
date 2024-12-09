@@ -23,7 +23,24 @@ const JoinYourSchoolPage = () => {
 
   const { user } = useContext(UserContext);
 
-  const { firstName, lastName, natureLanguage, foreingLanguage, role } = location.state as { firstName: string, lastName: string, natureLanguage: string, foreingLanguage: string, role: string };
+  console.log(user, 'user');
+  
+
+  const {
+    firstName,
+    lastName,
+    natureLanguage,
+    foreingLanguage,
+    role,
+    summary
+  } = location.state as {
+    firstName: string,
+    lastName: string,
+    natureLanguage: string,
+    foreingLanguage: string,
+    role: string,
+    summary: string
+  };
   const { mutate, isPending } = useUpdateUser();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
@@ -46,10 +63,11 @@ const JoinYourSchoolPage = () => {
       natureLanguage: natureLanguageUpdate,
       foreignLanguage: foreignLanguageUpdate,
       schoolName: selectedSchool?.name ?? "",
+      userSummary: summary ?? "",
     },
       {
         onSuccess: () => {
-          if (user?.auth !== UserAuthType.AI ) {
+          if (user?.auth !== UserAuthType.AI) {
             if (user?.role === "teacher") {
               navigate(`/${currentSchoolName}/classes`);
             } else {
@@ -68,7 +86,7 @@ const JoinYourSchoolPage = () => {
         setIsDropdownOpen(false);
       }
     };
-  
+
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
