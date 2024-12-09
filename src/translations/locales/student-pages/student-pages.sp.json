@@ -11,7 +11,8 @@
         "openAssignments": "Abrir",
         "closedAssignments": "Cerrado",
         "noOpenItemsTitle": "No hay asignaciones abiertas",
-        "noClosedItemsTitle": "No hay asignaciones cerradas"
+        "noClosedItemsTitle": "No hay asignaciones cerradas",
+        "startFreeFormLesson": "Comenzar lección libre"
       },
       "logoutButton": {
         "text": "Cierre de sesión"

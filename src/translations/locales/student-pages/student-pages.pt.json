@@ -11,7 +11,8 @@
         "openAssignments": "Aberto",
         "closedAssignments": "Fechado",
         "noOpenItemsTitle": "Não há atribuições em aberto",
-        "noClosedItemsTitle": "Não há atribuições fechadas"
+        "noClosedItemsTitle": "Não há atribuições fechadas",
+        "startFreeFormLesson": "Iniciar aula livre"
       },
       "logoutButton": {
         "text": "Sair"

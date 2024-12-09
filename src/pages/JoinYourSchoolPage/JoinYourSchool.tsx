@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 
 import { School } from "../../components";
+import { UserAuthType } from '../../types';
 
 const JoinYourSchoolPage = () => {
   const { t } = useTranslation();
@@ -48,7 +49,15 @@ const JoinYourSchoolPage = () => {
     },
       {
         onSuccess: () => {
-          navigate(`/${currentSchoolName}/secret-info-ai`);
+          if (user?.auth !== UserAuthType.AI ) {
+            if (user?.role === "teacher") {
+              navigate(`/${currentSchoolName}/classes`);
+            } else {
+              navigate(`/${currentSchoolName}/student-assignments`);
+            }
+          } else {
+            navigate(`/${currentSchoolName}/secret-info-ai`);
+          }
         }
       });
   };
@@ -150,7 +159,7 @@ const JoinYourSchoolPage = () => {
           <div>
             <label
               htmlFor="roleDropdown"
-              className="block text-sm font-normal mb-2 text-gray-700"
+              className="block text-sm font-normal mb-2"
             >
               {t("authPages.joinYourSchool.roleLabel")}
             </label>
@@ -159,7 +168,7 @@ const JoinYourSchoolPage = () => {
                 id="roleDropdown"
                 type="button"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="w-full border-[0.5px] rounded-[40px] p-[16px] text-gray-700 bg-white text-left focus:border-main focus:border-[1px]"
+                className="flex justify-start border-[1px] px-4 py-3 rounded-full focus:border-main w-full"
               >
                 {selectedRole || t("authPages.joinYourSchool.rolePlaceholder")}
               </button>

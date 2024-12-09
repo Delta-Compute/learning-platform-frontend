@@ -22,7 +22,7 @@ import { toast } from "react-hot-toast";
 // import GoogleIcon from "../../assets/icons/google-icon.svg";
 // import FacebookIcon from "../../assets/icons/fb-icon.svg";
 // import AppleIcon from "../../assets/icons/apple-icon.svg";
-import AILogo from "../../assets/icons/openai-logo.svg";
+import AILogo from "../../assets/icons/magic-wand.svg";
 import { cn } from '../../utils';
 
 type UserInfo = {
@@ -132,6 +132,7 @@ export const SignInPage = () => {
           }
           type="password"
           value={userInfo.password}
+          isPassword={true}
         />
         <Button
           className={`mt-5 bg-primary bg-main text-white`}

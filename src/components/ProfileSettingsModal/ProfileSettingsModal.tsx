@@ -19,7 +19,7 @@ export const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onCl
   const [userFirstName, setUserFirstName] = useState<string>(user?.firstName || "");
   const [userLastName, setUserLastName] = useState<string>(user?.lastName || "");
   const [userEmail, setUserEmail] = useState<string>(user?.email || "");
-  const [userNatureLanguage, setUserNatureLanguage] = useState<string>(user?.nativeLanguage || "");
+  const [userNatureLanguage, setUserNatureLanguage] = useState<string>(user?.natureLanguage || "");
   const [userForeignLanguage, setUserForeignLanguage] = useState<string>(user?.foreignLanguage || "");
 
   const handleCloseModalBlur = (e: React.MouseEvent<HTMLDivElement>) => {

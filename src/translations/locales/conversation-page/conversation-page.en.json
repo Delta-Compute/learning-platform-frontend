@@ -2,6 +2,7 @@
   "conversationPage": {
     "headerTitle": "AI Assistant",
     "secondTitleSecret": "Tell your favourite color and number",
+    "freeFormLessonTitle": "Press the button to start the trial lesson",
     "studentTimeTitle": "Time to discuss",
     "startTalkText": "Start talk",
     "connectingText": "Connecting... Please wait",
