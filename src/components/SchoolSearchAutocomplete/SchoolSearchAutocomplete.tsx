@@ -76,8 +76,16 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
               displayValue={(school: School | null) => school?.name || schoolName}
               onChange={(event) => setSchoolName(event.target.value)}
             />
-            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-              {/* Іконка чи кнопка */}
+            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                   className=""
+              >
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+              </svg>
+
+              {isSchoolSearchingRefetching && <div className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
             </Combobox.Button>
           </div>
           <Transition
@@ -85,8 +93,11 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            className="white z-40"
           >
-            <Combobox.Options className="absolute mt-2 max-h-60 w-full overflow-auto rounded-[16px] bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+            <Combobox.Options
+              className="absolute mt-2 max-h-60 w-full overflow-auto rounded-[16px] bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+            >
               {schools?.length === 0 && schoolName !== "" && !isSchoolSearchingRefetching ? (
                 <div className="relative cursor-default text-[14px] select-none px-4 py-2 text-gray-500">
                   Nothing found.
@@ -112,8 +123,6 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
                   </Combobox.Option>
                 ))
               )}
-
-              {isSchoolSearchingRefetching && <div className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
             </Combobox.Options>
           </Transition>
         </div>
