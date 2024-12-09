@@ -56,6 +56,7 @@ export const ResetPasswordPage = () => {
               id="email"
               type="email"
               name="email"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={changeInputHandler}
             />
@@ -66,6 +67,7 @@ export const ResetPasswordPage = () => {
               id="newPassword"
               type="password"
               name="newPassword"
+              placeholder="Enter new password"
               value={formData.newPassword}
               onChange={changeInputHandler}
             />
@@ -76,6 +78,7 @@ export const ResetPasswordPage = () => {
               id="code"
               type="text"
               name="code"
+              placeholder="Enter verification code"
               value={formData.code}
               onChange={changeInputHandler}
             />
