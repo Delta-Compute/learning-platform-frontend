@@ -112,7 +112,7 @@ const JoinYourSchoolPage = () => {
 
       <div className="flex flex-col flex-grow min-h-0 mt-20 p-4 max-w-md mx-auto w-full space-y-4">
         <div className="flex flex-col flex-grow min-h-0 space-y-4">
-          <div className=''>
+          <div>
             <label>{t("authPages.joinYourSchool.selectSchoolLabel")}</label>
 
             <SchoolSearchAutocomplete

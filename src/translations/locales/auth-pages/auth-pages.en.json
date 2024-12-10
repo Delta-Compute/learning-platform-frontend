@@ -50,6 +50,26 @@
       "iAmStudentButton": "I am a student",
       "iAmTeacherButton": "I am a teacher"
     },
+    "resetPassword": {
+      "resetPasswordButton": "Forgot password",
+      "headerTitle": "Password recovery",
+      "form": {
+        "emailLabel": "Email",
+        "emailInputPlaceholder": "Enter email",
+        "newPasswordLabel": "New password",
+        "newPasswordInputPlaceholder": "Enter new password",
+        "codeLabel": "Verification code",
+        "codeInputPlaceholder": "Enter verification code",
+        "submitButton": "Save"
+      },
+      "returnToSignInLinkText": "Return to sign in page",
+      "modal": {
+        "title": "Password recovery",
+        "emailLabel": "Email",
+        "emailInputPlaceholder": "Enter your email",
+        "submitButton": "Submit"
+      }
+    },
     "joinYourSchool": {
       "headerTitle": "Join your school",
       "secretPageTitle": "Secret page",

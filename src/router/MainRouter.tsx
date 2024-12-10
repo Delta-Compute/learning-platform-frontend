@@ -20,6 +20,7 @@ import {
   SignUpPage,
   StudentAssignmentsPage,
   UserTypeSelectionPage,
+  ResetPasswordPage,
 } from "../pages";
 
 import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
@@ -105,6 +106,7 @@ export const MainRouter = () => {
       <Route path="/follow-link" element={<FollowLinkPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
       <Route path="/classes" element={<ClassesPage />} />

@@ -5,6 +5,8 @@ import { apiClient } from "../../vars/axios-var.ts";
 
 import { School } from "../../context";
 
+import { toast } from "react-hot-toast";
+
 export const getUser = async (id: string): Promise<User | null> => {
   try {
     const response = await apiClient.get<User | null>(`/users/${id}`);
@@ -109,6 +111,36 @@ const findUserByEmail = async (email: string, schoolName: School, authType: User
   }
 };
 
+const sendResetVerificationCode = async (email: string, school: School) => {
+  try {
+    const response = await apiClient.post("/auth/send-reset-code", {
+      email,
+      school,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    toast.error(error.response.data.message as string);
+  }
+};
+
+const resetPassword = async (email: string, newPassword: string, code: string, school: School) => {
+  try {
+    const response = await apiClient.post("/auth/verify-reset-code", {
+      email,
+      newPassword,
+      code,
+      school,
+    });
+
+    toast.success("Successfully reset password");
+
+    return response.data;
+  } catch (error: any) {
+    toast.error(error.response.data.message as string);
+  }
+};
+
 export const UsersApiService = {
   getUser,
   updateUser,
@@ -116,4 +148,6 @@ export const UsersApiService = {
   signUp,
   getUsersByEmails,
   findUserByEmail,
+  sendResetVerificationCode,
+  resetPassword,
 };

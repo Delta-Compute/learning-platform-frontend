@@ -39,6 +39,26 @@
       "iAmStudentButton": "Soy estudiante",
       "iAmTeacherButton": "Soy profesor"
     },
+    "resetPassword": {
+      "resetPasswordButton": "Olvidé mi contraseña",
+      "headerTitle": "Recuperación de contraseña",
+      "form": {
+        "emailLabel": "Correo electrónico",
+        "emailInputPlaceholder": "introducir correo electrónico",
+        "newPasswordLabel": "Nueva contraseña",
+        "newPasswordInputPlaceholder": "Introducir nueva contraseña",
+        "codeLabel": "Código de verificación",
+        "codeInputPlaceholder": "Introduzca el código de verificación",
+        "submitButton": "Salvar"
+      },
+      "returnToSignInLinkText": "Volver a la página de inicio de sesión",
+      "modal": {
+        "title": "Recuperação da palavra-passe",
+        "emailLabel": "E-mail",
+        "emailInputPlaceholder": "Introduza o seu e-mail",
+        "submitButton": "Enviar"
+      }
+    },
     "joinYourSchool": {
       "headerTitle": "Únete a tu escuela",
       "secretPageTitle": "Pagina secreta",
