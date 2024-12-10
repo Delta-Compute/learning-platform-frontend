@@ -41,6 +41,17 @@
     },
     "resetPassword": {
       "resetPasswordButton": "Esqueci-me da palavra-passe",
+      "headerTitle": "Recuperação de palavra-passe",
+      "form": {
+        "emailLabel": "E-mail",
+        "emailInputPlaceholder": "Introduzir e-mail",
+        "newPasswordLabel": "Nova palavra-passe",
+        "newPasswordInputPlaceholder": "Introduzir nova palavra-passe",
+        "codeLabel": "Código de verificação",
+        "codeInputPlaceholder": "Introduzir o código de verificação",
+        "submitButton": "Salvar"
+      },
+      "returnToSignInLinkText": "Regressar à página de início de sessão",
       "modal": {
         "title": "Recuperação de senhas",
         "emailLabel": "Correio eletrónico",
