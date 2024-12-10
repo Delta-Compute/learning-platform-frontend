@@ -160,6 +160,8 @@ export const introductionWithAIInstruction = () => {
     the lesson should not last more than 5 minutes
 
     At the end of any instruction and when you have all information like last name, first name, foreing language, nature language, and role of the user, congratulate the user (teacher or student) by name and surname on the first successful interaction with the AI teacher and that the user's profile has been generated.
+
+    
   `;
 };
 

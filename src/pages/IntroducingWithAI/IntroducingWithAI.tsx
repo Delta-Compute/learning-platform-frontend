@@ -102,9 +102,6 @@ export const IntroducingWithAI = () => {
 
         const parsedData = parseFeedbackString(response.choices[0].message.content);
 
-        console.log(parsedData, "parsedData");
-        
-
         setFirstName(parsedData.firstName);
         setLastName(parsedData.lastName);
         setNatureLanguage(parsedData.nativeLanguage);
@@ -161,8 +158,6 @@ export const IntroducingWithAI = () => {
   }, []);
 
   const disconnectConversation = useCallback(async () => {
-    await getFeedBackAndGeneralInformation();
-    
     setIsConnected(false);
     setRealtimeEvents([]);
 
@@ -175,6 +170,7 @@ export const IntroducingWithAI = () => {
     const wavStreamPlayer = wavStreamPlayerRef.current;
 
     await wavStreamPlayer.interrupt();
+    await getFeedBackAndGeneralInformation();
   }, [items, getFeedBackAndGeneralInformation]);
 
 
@@ -245,6 +241,25 @@ export const IntroducingWithAI = () => {
 
     client.on("conversation.updated", async ({ item, delta }: any) => {
       const items = client.conversation.getItems();
+
+      async function conversationCheck (item: ItemType) {
+        if (item.formatted.transcript) {
+          const transcriptionText = item.formatted.transcript.toLowerCase();
+
+          console.log("Transcription:", transcriptionText);
+
+
+          const endKeywords = ["goodbye", "exit", "end", "stop", "thank you"];
+
+          if (endKeywords.some((keyword) => transcriptionText.includes(keyword))) {
+
+            disconnectConversation();
+            return;
+          }
+        }
+      };
+
+      await conversationCheck(item);
 
       if (delta?.audio) {
         wavStreamPlayer.add16BitPCM(delta.audio, item.id);

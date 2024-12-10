@@ -88,8 +88,6 @@ export const StudentAssignmentsPage = () => {
     verificationCodeMutation({ verificationCode, email: user?.email as string });
   };
 
-  console.log(studentClassRoom, 'studentClassRoom');
-
   return (
     <>
       {(isRefetching || isVerificationPending || isStudentInClassPending) && <Loader />}
