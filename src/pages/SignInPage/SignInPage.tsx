@@ -163,7 +163,7 @@ export const SignInPage = () => {
           {/*    alt="apple"*/}
           {/*  />*/}
           {/*</button>*/}
-          <button onClick={handleOpenAi} className="relative z-30">
+          <button onClick={handleOpenAi} className="relative z-30 p-1 border rounded-[4px]">
             <img
               src={AILogo}
               alt="aiLogo"
