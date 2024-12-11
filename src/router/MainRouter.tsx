@@ -33,6 +33,7 @@ import UserContext from "../context/UserContext";
 import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretInfoPage';
 import { CheckDataAI } from '../pages/CheckDataWithAI/CheckDataWithAI.tsx';
 import { FreeLessonPage } from '../pages/FreeLessonPage/FreeLessonPage.tsx';
+import { FeedbackAppPage } from '../pages/FeedbackAppPage/FeedbackAppPage.tsx';
 
 export const MainRouter = () => {
   const { schoolName } = useParams();
@@ -120,8 +121,8 @@ export const MainRouter = () => {
       <Route path="/secret-info-ai" element={<SecretInfo />} />
       <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
       <Route path="/check-data" element={<CheckDataAI />} />
-      <Route path="/auth-with-ai" element={<>Check information</>} />
       <Route path="/free-form-lesson" element={<FreeLessonPage />} />
+      <Route path="/feedback" element={<FeedbackAppPage />} />
 
       <Route
         path="/user-type-selection"

@@ -19,12 +19,14 @@ import { toast } from "react-hot-toast";
 
 import CopyIcon from "../../assets/icons/copy-icon.svg";
 import Header from '../../components/ui/header/Header';
+import { checkAndShowModal } from '../../utils/checkShowFeedbackModal';
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
   const { user, logout } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [openAssignment, setOpenAssignment] = useState<IAssignment[]>([]);
   const [closedAssignment, setClosedAssignment] = useState<IAssignment[]>([]);
   const [openedAssignmentId, setOpenedAssignmentId] = useState("");
@@ -60,6 +62,16 @@ export const StudentAssignmentsPage = () => {
 
   useEffect(() => {
     if (assignments) {
+      const check = checkAndShowModal(closedAssignment.length);
+
+      if (check) {
+        setIsFeedbackModalOpen(true);
+      }
+    }
+  }, [assignments, isRefetching, closedAssignment.length]);
+
+  useEffect(() => {
+    if (assignments) {
       const open = assignments.filter((assignment) => assignment.deadline > new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
       const closed = assignments.filter((assignment) => assignment.deadline <= new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
 
@@ -67,10 +79,6 @@ export const StudentAssignmentsPage = () => {
       setClosedAssignment(closed);
     }
   }, [assignments]);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch, user]);
 
   const handleAsignmentClick = (id: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -261,6 +269,13 @@ export const StudentAssignmentsPage = () => {
               {t("studentPages.studentAssignments.verificationModal.verifyButton")}
             </Button>
           </form>
+        </div>
+      </Modal>
+
+      <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)}>
+        <div className="flex flex-col gap-4">
+          <p className="text-center">{t("teacherPages.classes.classModal.createFeedbackQuestion")}</p>
+          <Button className="bg-[#CC1316] text-white" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
         </div>
       </Modal>
     </>

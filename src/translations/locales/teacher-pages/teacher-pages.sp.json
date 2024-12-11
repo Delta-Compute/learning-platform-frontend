@@ -12,6 +12,9 @@
       "assignmentsText": "Asignaciones",
       "classModal": {
         "title": "Crear una nueva clase",
+        "titleCreateFeedback": "Crear comentarios",
+        "createFeedbackQuestion": "¿Le gustaría dejar comentarios sobre el uso de la aplicación?",
+        "giveFeedbackButton": "Sí",
         "reportTitle": "Informe",
         "classNameLabel": "Nombre de la clase",
         "classNameInputPlaceholder": "Introduzca el nombre de la clase",

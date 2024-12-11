@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { feedbackAndGeneralInformationInstruction, introductionWithAIInstruction } from "../../utils/conversation_config.ts";
+import { feedbackOfWholeApp, instructionsForAIFeedbackApplication } from "../../utils/conversation_config.ts";
 
 
 import { Link, useNavigate } from "react-router-dom";
@@ -20,8 +20,9 @@ import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
 import { Button, Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
-import { parseFeedbackString } from '../../utils/informationParser.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
+import { parseFeedbackOfApp } from '../../utils/parsedFeedbackApp.ts';
+import UserContext from '../../context/UserContext.tsx';
 
 interface RealtimeEvent {
   time: string;
@@ -32,9 +33,11 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const IntroducingWithAI = () => {
+export const FeedbackAppPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
 
   const [loading, setLoading] = useState(false);
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -58,12 +61,11 @@ export const IntroducingWithAI = () => {
     }, 1500);
   }, []);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [natureLanguage, setNatureLanguage] = useState("");
-  const [foreingLanguage, setForeingLanguage] = useState("");
-  const [role, setRole] = useState("");
-  const [summary, setSummary] = useState("");
+  const [satisfaction, setSatisfaction] = useState("");
+  const [likedFeatures, setLikedFeatures] = useState("");
+  const [improvements, setImprovements] = useState("");
+  const [missingFeatures, setMissingFeatures] = useState("");
+  const [recommendation, setRecommendation] = useState("");
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -86,11 +88,11 @@ export const IntroducingWithAI = () => {
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that asks for personal information to create a profile for the user. Please ask for the user's first name, last name, native language, foreign language, and role.",
+            content: "Please provide feedback and general information about the application",
           },
           {
             role: "user",
-            content: `${feedbackAndGeneralInformationInstruction(conversation)}`,
+            content: `${feedbackOfWholeApp(conversation)}`,
           },
         ],
         max_tokens: 150,
@@ -98,14 +100,19 @@ export const IntroducingWithAI = () => {
 
       if (response.choices[0].message.content) {
 
-        const parsedData = parseFeedbackString(response.choices[0].message.content);
+        const parsedData = parseFeedbackOfApp(response.choices[0].message.content);
 
-        setFirstName(parsedData.firstName);
-        setLastName(parsedData.lastName);
-        setNatureLanguage(parsedData.nativeLanguage);
-        setForeingLanguage(parsedData.foreignLanguage);
-        setRole(parsedData.role);
-        setSummary(parsedData.summary);
+        console.log("response.choices[0].message.content", response.choices[0].message.content);
+
+
+        console.log("parsedData", parsedData);
+
+
+        setSatisfaction(parsedData.satisfaction);
+        setLikedFeatures(parsedData.likedFeatures);
+        setImprovements(parsedData.improvements);
+        setMissingFeatures(parsedData.missingFeatures);
+        setRecommendation(parsedData.recommendation);
       }
       setLoading(false);
     } catch (error) {
@@ -202,7 +209,9 @@ export const IntroducingWithAI = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: introductionWithAIInstruction() });
+    console.log("instructionsForAIFeedbackApplication", instructionsForAIFeedbackApplication(user?.firstName || ""));
+
+    client.updateSession({ instructions: instructionsForAIFeedbackApplication(user?.firstName || "") });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -220,6 +229,7 @@ export const IntroducingWithAI = () => {
         }
       });
     });
+
     client.on("error", (event: any) => {
       console.error(event);
     });
@@ -278,11 +288,7 @@ export const IntroducingWithAI = () => {
     return () => {
       client.reset();
     };
-  }, []);
-
-  const handleNavigateToCreateProfile = () => {
-    navigate(`/${currentSchoolName}/join-your-school`, { state: { firstName, lastName, natureLanguage, foreingLanguage, role, summary } });
-  };
+  }, [user?.id]);
 
   return (
     <div
@@ -293,9 +299,9 @@ export const IntroducingWithAI = () => {
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
-            <Link to={'/'}>
+            <button onClick={() => navigate(-1)}>
               <img src={`${LeftArrowIcon}`} />
-            </Link>
+            </button>
           </div>
           <div className="flex flex-col gap-[6px]">
             <h2 className="text-center text-[20px]">{t("conversationPage.headerTitle")}</h2>
@@ -306,13 +312,12 @@ export const IntroducingWithAI = () => {
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
               <div className="h-full justify-center flex items-center text-center">
-                <div>It's your first interaction with Teacher AI, introduce yourself</div>
+                <div>It's feedback create page with AI</div>
               </div>
             ) : (
               <div className="h-full flex justify-center items-center">
                 <Button
                   className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
-                  onClick={() => handleNavigateToCreateProfile()}
                 >
                   {t("authPages.introducingAIPage.createProfileButton")}
                 </Button>

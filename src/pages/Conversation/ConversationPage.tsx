@@ -13,9 +13,9 @@ import { IAssignment } from "../../types";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { Button, Loader } from "../../components";
+import { Button, Loader, Modal } from "../../components";
 import { AssignmentModal } from "./AssignmentModal";
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
@@ -23,6 +23,7 @@ import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 import { SpeakingDots } from '../../components/SpeakingDots/index';
 import {
   useGenerateAssignmentSummary,
+  useGetRoomsAssignments,
   useGetStudentAssignments,
   useWakeLock
 } from "../../hooks";
@@ -36,6 +37,8 @@ import { AssignmentsBasedOnLearningPlan } from "./AssignmentsBasedOnLearningPlan
 import { openai } from "../../vars/open-ai.ts";
 
 import { useTranslation } from "react-i18next";
+import { use } from 'i18next';
+import { checkAndShowModal } from '../../utils/checkShowFeedbackModal.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -72,6 +75,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
 
   const { data: assignments, isPending: isAssignmentsPending, refetch } = useGetStudentAssignments(user?.email ?? "");
 
+
   const { generateAssignmentSummary } = useGenerateAssignmentSummary();
 
   useEffect(() => {
@@ -81,6 +85,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [studentInstructions, setStudentInstructions] = useState("");
   const [classRoom, setClassRoom] = useState<Class | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
   const [currentAssignment, setCurrentAssignment] = useState<IAssignment | null>(null);
   const [classRoomId, setClassRoomId] = useState("");
@@ -97,7 +103,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const { data } = useClassById(params.classId as string);
+  const { data } = useClassById(params.classRoomId as string);
 
   useEffect(() => {
     setLoading(true);
@@ -106,11 +112,35 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     }, 1500);
   }, []);
 
+
   useEffect(() => {
     if (data) {
       setClassRoom(data);
     }
   }, [params.classId, data]);
+  
+  const {
+    data: assignmentsData,
+    isPending: isAssigmentsPending,
+    refetch: assignmentsRefetch,
+    isRefetching: isAssignmentsRefetching,
+  } = useGetRoomsAssignments(params.classRoomId as string);
+
+  useEffect(() => {
+    if (assignmentsData && assignmentsData.length > 0) {
+      const check = checkAndShowModal(assignmentsData.length);
+  
+      if (check) {
+        setIsFeedbackModalOpen(true);
+      }
+    }
+  }, [assignmentsData]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      assignmentsRefetch();
+    }, 1000);
+  }, [params.classRoomId, assignmentsRefetch]);
 
   const {
     data: studentsProgress,
@@ -189,10 +219,10 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         wavRecorder.begin(),
         wavStreamPlayer.connect()
       ]);
-  
+
       if (client.getTurnDetectionType() === "server_vad") {
         await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
-        
+
         setConnectionLoading(false);
       } else {
         toast.error("Something went wrong, please try again");
@@ -324,15 +354,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         const title = lines.find(line =>
           line.startsWith("**Title**") || line.startsWith("**Title:**")
         )?.replace(/^\*\*Title\**:?\s*/, "").trim();
-        
+
         const topic = lines.find(line =>
           line.startsWith("**Topic**") || line.startsWith("**Topic:**")
         )?.replace(/^\*\*Topic\**:?\s*/, "").trim();
-        
+
         const description = lines.find(line =>
           line.startsWith("**Description**") || line.startsWith("**Description:**")
         )?.replace(/^\*\*Description\**:?\s*/, "").trim();
-        
+
         const time = parseInt(
           lines.find(line =>
             line.startsWith("**Time**") || line.startsWith("**Time:**")
@@ -450,7 +480,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       data-component="ConsolePage"
       className="flex flex-col justify-between h-[100vh] w-full m-auto"
     >
-      {loading && <Loader />}
+      {(loading || isAssigmentsPending || isAssignmentsRefetching) && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
         <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
@@ -495,49 +525,6 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
                       flex
                     `}
                   >
-                    {/* <div className="max-w-[95%] flex gap-[8px]">
-                      <div>
-                        <div
-                          className={`${items.at(-1)?.role === "user" &&
-                            "justify-end"
-                            } flex`}
-                        >
-                          <span className="border-[1px] bg-gray-200 px-[10px] py-[6px] rounded-[8px]">
-                            {(items.at(-1)?.role === "assistant" ? "AI" : items.at(-1)?.role) || items.at(-1)?.type}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="bg-gray-300 rounded-[10px] p-[8px]">
-                        {items.at(-1)?.type ===
-                          "function_call_output" && (
-                            <div>{items.at(-1)?.formatted.output}</div>
-                          )}
-                        {!!items.at(-1)?.formatted.tool && (
-                          <div>
-                            {items.at(-1)?.formatted?.tool?.name}(
-                            {items.at(-1)?.formatted?.tool?.arguments})
-                          </div>
-                        )}
-                        {!items.at(-1)?.formatted.tool &&
-                          items.at(-1)?.role === "user" && (
-                            <div className="bg-red">
-                              {items.at(-1)?.formatted.transcript ||
-                                (items.at(-1)?.formatted.audio?.length
-                                  ? "(awaiting transcript)"
-                                  : items.at(-1)?.formatted.text ||
-                                  "(item sent)")}
-                            </div>
-                          )}
-                        {!items.at(-1)?.formatted.tool &&
-                          items.at(-1)?.role === "assistant" && (
-                            <div>
-                              {items.at(-1)?.formatted.transcript ||
-                                items.at(-1)?.formatted.text ||
-                                "(truncated)"}
-                            </div>
-                          )}
-                      </div>
-                    </div> */}
                   </div>
                 </div>
               </div>
@@ -673,7 +660,15 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         assignmentTime={assignmentTime}
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
+        onClassRoomAssignmentsRefetch={assignmentsRefetch}
       />}
+
+      <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)}>
+        <div className="flex flex-col gap-4">
+          <p className="text-center">{t("teacherPages.classes.classModal.createFeedbackQuestion")}</p>
+          <Button className="bg-[#CC1316] text-white" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
+        </div>
+      </Modal>
     </div>
   );
 };

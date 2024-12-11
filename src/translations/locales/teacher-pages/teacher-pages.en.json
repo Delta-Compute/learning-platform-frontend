@@ -12,6 +12,9 @@
       "assignmentsText": "Assignments",
       "classModal": {
         "title": "Create a new class",
+        "titleCreateFeedback": "Create feedback",
+        "createFeedbackQuestion": "Would you like to leave feedback about using the app?",
+        "giveFeedbackButton": "Yes",
         "reportTitle": "Report",
         "classNameLabel": "Class name",
         "classNameInputPlaceholder": "Enter class name",

@@ -92,7 +92,7 @@ export const ClassDetailPage = () => {
     isPending: isAssigmentsPending,
     refetch: assignmentsRefetch,
     isRefetching: isAssignmentsRefetching,
-  } = useGetRoomsAssignments(id as string);
+  } = useGetRoomsAssignments(id as string);  
 
   const { mutate, isPending: isAssignmentDeleting } = useDeleteAssignment();
 

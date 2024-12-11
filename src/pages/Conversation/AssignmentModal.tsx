@@ -6,7 +6,7 @@ import { addAssignment, ClassRoomProgressApiService } from "../../services";
 
 import { useGenerateAssignmentSummary } from "../../hooks";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions, useMutation, useQuery } from "@tanstack/react-query";
 
 import { Modal, Button } from "../../components";
 
@@ -30,6 +30,7 @@ interface AssignmentModalProps {
   assignmentDescription: string;
   assignmentTitle: string;
   assignmentTime: number;
+  onClassRoomAssignmentsRefetch: (options?: RefetchOptions) => Promise<QueryObserverResult<IAssignment[] | null, Error>>;
 }
 
 export const AssignmentModal: React.FC<AssignmentModalProps> = ({
@@ -39,6 +40,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   assignmentDescription,
   assignmentTitle,
   assignmentTime,
+  onClassRoomAssignmentsRefetch,
 }) => {
   const { t } = useTranslation();
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -126,7 +128,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
       );
 
       setNewAssignment(data);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -138,6 +140,9 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
     onSuccess: async () => {
       onClose();
       toast.success(t("conversationPage.assignmentModal.successfullyCreatedText"));
+      if (onClassRoomAssignmentsRefetch) {
+        await onClassRoomAssignmentsRefetch();
+      }
     },
     onError: () => {
       toast.error("Something went wrong");
@@ -288,7 +293,9 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
             disabled={isCreateAssignmentPending}
             onClick={() => {
               if (selectedClassRoom) {
-                createAssignmentMutation({ classRoomId: selectedClassRoom.id, description: assignmentDescription, title: assignmentTitle, topic: assignmentTopic, deadline: getDateTimeTimestamp() || 0, timeToDiscuss: assignmentTime });
+                createAssignmentMutation(
+                  { classRoomId: selectedClassRoom.id, description: assignmentDescription, title: assignmentTitle, topic: assignmentTopic, deadline: getDateTimeTimestamp() || 0, timeToDiscuss: assignmentTime },
+                );
               }
             }}
           >
