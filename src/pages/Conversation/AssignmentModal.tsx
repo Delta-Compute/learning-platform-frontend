@@ -30,7 +30,7 @@ interface AssignmentModalProps {
   assignmentDescription: string;
   assignmentTitle: string;
   assignmentTime: number;
-  onClassRoomAssignmentsRefetch: (options?: RefetchOptions) => Promise<QueryObserverResult<IAssignment[] | null, Error>>;
+  onClassRoomAssignmentsRefetch?: (options?: RefetchOptions) => Promise<QueryObserverResult<IAssignment[] | null, Error>>;
 }
 
 export const AssignmentModal: React.FC<AssignmentModalProps> = ({

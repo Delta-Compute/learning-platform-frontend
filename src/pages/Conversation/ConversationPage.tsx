@@ -37,7 +37,6 @@ import { AssignmentsBasedOnLearningPlan } from "./AssignmentsBasedOnLearningPlan
 import { openai } from "../../vars/open-ai.ts";
 
 import { useTranslation } from "react-i18next";
-import { use } from 'i18next';
 import { checkAndShowModal } from '../../utils/checkShowFeedbackModal.ts';
 
 interface RealtimeEvent {

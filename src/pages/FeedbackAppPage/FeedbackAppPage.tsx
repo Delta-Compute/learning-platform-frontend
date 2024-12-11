@@ -9,7 +9,7 @@ import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 import { feedbackOfWholeApp, instructionsForAIFeedbackApplication } from "../../utils/conversation_config.ts";
 
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 import CrossIconWhite from "../../assets/icons/cross-icon-white.svg";
@@ -20,8 +20,6 @@ import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
 import { Button, Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
-import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
-import { parseFeedbackOfApp } from '../../utils/parsedFeedbackApp.ts';
 import UserContext from '../../context/UserContext.tsx';
 
 interface RealtimeEvent {
@@ -40,7 +38,6 @@ export const FeedbackAppPage = () => {
   const { user } = useContext(UserContext);
 
   const [loading, setLoading] = useState(false);
-  const { currentSchoolName } = useContext(SchoolNamesContext);
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000, bufferLength: 4096 })
   );
@@ -61,11 +58,11 @@ export const FeedbackAppPage = () => {
     }, 1500);
   }, []);
 
-  const [satisfaction, setSatisfaction] = useState("");
-  const [likedFeatures, setLikedFeatures] = useState("");
-  const [improvements, setImprovements] = useState("");
-  const [missingFeatures, setMissingFeatures] = useState("");
-  const [recommendation, setRecommendation] = useState("");
+  // const [satisfaction, setSatisfaction] = useState("");
+  // const [likedFeatures, setLikedFeatures] = useState("");
+  // const [improvements, setImprovements] = useState("");
+  // const [missingFeatures, setMissingFeatures] = useState("");
+  // const [recommendation, setRecommendation] = useState("");
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -100,19 +97,13 @@ export const FeedbackAppPage = () => {
 
       if (response.choices[0].message.content) {
 
-        const parsedData = parseFeedbackOfApp(response.choices[0].message.content);
+        // const parsedData = parseFeedbackOfApp(response.choices[0].message.content);
 
-        console.log("response.choices[0].message.content", response.choices[0].message.content);
-
-
-        console.log("parsedData", parsedData);
-
-
-        setSatisfaction(parsedData.satisfaction);
-        setLikedFeatures(parsedData.likedFeatures);
-        setImprovements(parsedData.improvements);
-        setMissingFeatures(parsedData.missingFeatures);
-        setRecommendation(parsedData.recommendation);
+        // setSatisfaction(parsedData.satisfaction);
+        // setLikedFeatures(parsedData.likedFeatures);
+        // setImprovements(parsedData.improvements);
+        // setMissingFeatures(parsedData.missingFeatures);
+        // setRecommendation(parsedData.recommendation);
       }
       setLoading(false);
     } catch (error) {
