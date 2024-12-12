@@ -18,7 +18,7 @@ export const useGetStudentAssignments = (studentEmail: string) => {
 export const useGetRoomsAssignments = (classRoomId: string) => {
   const { ...rest } = useQuery({
     queryFn: () => AssignmentApiService.getAssignmentsByClassRoomId(classRoomId),
-    queryKey: ["assignments"],
+    queryKey: ["assignmentsAll"],
     staleTime: 5_000_000,
   });
 
@@ -30,7 +30,7 @@ export const useGetRoomsAssignments = (classRoomId: string) => {
 export const useGetAssigmentById = (id: string) => {
   const { ...rest } = useQuery({
     queryFn: () => AssignmentApiService.getAssignmentById(id),
-    queryKey: ["assignments"],
+    queryKey: ["assignmentsOne"],
     staleTime: 5_000_000,
   });
 

@@ -46,7 +46,6 @@ export const StudentAssignmentsPage = () => {
   const { mutate: verificationCodeMutation, isPending: isVerificationPending } = useMutation({
     mutationFn: (data: { verificationCode: string, email: string, }) => ClassRoomApiService.verifyClassRoomCodeAndAddEmail(data.verificationCode, data.email),
     onSuccess: () => {
-      toast.success(t("studentPages.studentAssignments.verificationModal.successfullyAddedToastText"));
       refetch();
       studentClassRoomRefetch();
       setIsVerifyClassRoomCodeModalOpen(false);
@@ -92,7 +91,10 @@ export const StudentAssignmentsPage = () => {
 
   const submitVerificationHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
+    if (!verificationCode) {
+      toast.error(t("studentPages.studentAssignments.verificationModal.emptyCodeToastText"));
+      return;
+    };
     verificationCodeMutation({ verificationCode, email: user?.email as string });
   };
 

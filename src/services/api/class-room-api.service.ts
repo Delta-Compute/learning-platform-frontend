@@ -3,6 +3,7 @@ import { ClassRoom } from "../../types";
 import { apiClient } from "../../vars/axios-var";
 
 import { School } from "../../context";
+import toast from 'react-hot-toast';
 
 export const getClassRoom = async (id: string): Promise<ClassRoom | null> => {
   try {
@@ -56,8 +57,10 @@ export const verifyClassRoomCodeAndAddEmail = async (
     await apiClient.patch(
       `/class-room/verification-code/${verificationCode}/${email}`
     );
-  } catch (error) {
-    console.log(error);
+
+    toast.success("Successfully joined the class");
+  } catch (error: any) {
+    toast.error(error.response.data.message);
   }
 };
 

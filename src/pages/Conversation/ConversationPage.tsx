@@ -116,8 +116,8 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     if (data) {
       setClassRoom(data);
     }
-  }, [params.classId, data]);
-  
+  }, [data]);
+
   const {
     data: assignmentsData,
     isPending: isAssigmentsPending,
@@ -128,18 +128,12 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
   useEffect(() => {
     if (assignmentsData && assignmentsData.length > 0) {
       const check = checkAndShowModal(assignmentsData.length);
-  
+
       if (check) {
         setIsFeedbackModalOpen(true);
       }
     }
   }, [assignmentsData]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      assignmentsRefetch();
-    }, 1000);
-  }, [params.classRoomId, assignmentsRefetch]);
 
   const {
     data: studentsProgress,
@@ -503,7 +497,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             {items.length === 0 && (
               <div className="h-full">
                 {role === "teacher" ? (
-                  <AssignmentsBasedOnLearningPlan />
+                  <AssignmentsBasedOnLearningPlan assignmentsRefetch={assignmentsRefetch} />
                 ) : (
                   <div className="flex justify-center items-center h-full">
                     <p>{t("conversationPage.startTalkText")}</p>

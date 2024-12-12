@@ -24,7 +24,8 @@
         "verificationCodeInputPlaceholder": "Introduzir o código de verificação",
         "verifyButton": "Enviar",
         "successfullyAddedToastText": "Aderiu com sucesso",
-        "errorToastText": "O código de verificação não está correto"
+        "errorToastText": "O código de verificação não está correto",
+        "emptyCodeToastText": "Por favor, introduza o código de verificação"
       },
       "inClassText": "Na aula"
     }

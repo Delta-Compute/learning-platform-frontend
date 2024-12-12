@@ -17,14 +17,15 @@
       "logoutButton": {
         "text": "Cierre de sesión"
       },
-      "joinToClassButton": "Join to class",
+      "joinToClassButton": "Unirse a la clase",
       "verificationModal": {
-        "title": "Join your class room",
-        "verificationCodeLabel": "Verification code",
-        "verificationCodeInputPlaceholder": "Enter verification code",
-        "verifyButton": "Submit",
-        "successfullyAddedToastText": "Successfully joined",
-        "errorToastText": "Verification code is not correct"
+        "title": "Únete a tu aula",
+        "verificationCodeLabel": "Código de verificación",
+        "verificationCodeInputPlaceholder": "Introduzca el código de verificación",
+        "verifyButton": "Enviar",
+        "successfullyAddedToastText": "Unido con éxito",
+        "errorToastText": "El código de verificación no es correcto",
+        "emptyCodeToastText": "Por favor, introduzca el código de verificación"
       },
       "inClassText": "In class"
     }

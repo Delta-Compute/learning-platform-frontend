@@ -24,7 +24,8 @@
         "verificationCodeInputPlaceholder": "Enter verification code",
         "verifyButton": "Submit",
         "successfullyAddedToastText": "Successfully joined",
-        "errorToastText": "Verification code is not correct"
+        "errorToastText": "Verification code is not correct",
+        "emptyCodeToastText": "Please enter verification code"
       },
       "inClassText": "In class"
     }
