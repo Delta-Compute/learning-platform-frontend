@@ -41,8 +41,6 @@ export const MainRouter = () => {
 
   const schoolPaths = Object.values(School);
 
-  const token= localStorage.getItem("token");
-
   useEffect(() => {
     if (user && user.school !== currentSchoolName) {
       navigate(`/${currentSchoolName}/initial`);
@@ -64,7 +62,7 @@ export const MainRouter = () => {
   return (
     <Routes>
       {/* auth pages */}
-      {token === null && (
+      {(user === null || user.school !== currentSchoolName) && (
         <>
           <Route path="/initial" element={<InitialPage />} />
           <Route path="/follow-link" element={<FollowLinkPage />} />
@@ -76,7 +74,7 @@ export const MainRouter = () => {
       )}
 
       {/*teacher pages*/}
-      {user?.role === UserRole.Teacher && user.firstName && user.lastName && (
+      {user?.role === UserRole.Teacher && user.school === currentSchoolName && user.firstName && user.lastName && (
         <>
           <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
           <Route path="/classes" element={<ClassesPage />} />
@@ -88,7 +86,7 @@ export const MainRouter = () => {
       )}
 
       {/*student pages*/}
-      {user?.role === UserRole.Student && user.firstName && user.lastName && (
+      {user?.role === UserRole.Student && user.school === currentSchoolName && user.firstName && user.lastName && (
         <>
           <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
           <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
