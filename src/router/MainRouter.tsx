@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 
 import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 
-import { UserRole } from "../types";
+// import { UserRole } from "../types";
 
 import {
   AssignmentDetailPage,
@@ -17,6 +17,7 @@ import {
   SignInPage,
   SignUpPage,
   StudentAssignmentsPage,
+  LiveKitConversationPage,
 } from "../pages";
 
 import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
@@ -61,7 +62,7 @@ export const MainRouter = () => {
   return (
     <Routes>
       {/* auth pages */}
-      {(user === null || user.school !== currentSchoolName) && (
+      {/*{(user === null || user.school !== currentSchoolName) && (*/}
         <>
           <Route path="/initial" element={<InitialPage />} />
           <Route path="/follow-link" element={<FollowLinkPage />} />
@@ -70,10 +71,10 @@ export const MainRouter = () => {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/*" element={<Navigate to={`/${currentSchoolName}/initial`} replace />} />
         </>
-      )}
+      {/* )} */}
 
       {/*teacher pages*/}
-      {user?.role === UserRole.Teacher && user.school === currentSchoolName && user.firstName && user.lastName && (
+      {/*{user?.role === UserRole.Teacher && user.school === currentSchoolName && user.firstName && user.lastName && (*/}
         <>
           <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
           <Route path="/classes" element={<ClassesPage />} />
@@ -81,12 +82,14 @@ export const MainRouter = () => {
           <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
-          <Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />
+          <Route path="/another" element={<>another page</>} />
+          <Route path="/livekit" element={<LiveKitConversationPage />} />
+          {/*<Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />*/}
         </>
-      )}
+      {/*)}*/}
 
       {/*student pages*/}
-      {user?.role === UserRole.Student && user.school === currentSchoolName && user.firstName && user.lastName && (
+      {/*{user?.role === UserRole.Student && user.school === currentSchoolName && user.firstName && user.lastName && (*/}
         <>
           <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
           <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
@@ -94,7 +97,7 @@ export const MainRouter = () => {
           <Route path="/feedback" element={<FeedbackAppPage />} />
           <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />
         </>
-      )}
+      {/*)}*/}
 
       {/* if register but without name and other fields */}
       <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
