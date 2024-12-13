@@ -17,7 +17,6 @@ import {
   SignInPage,
   SignUpPage,
   StudentAssignmentsPage,
-  UserTypeSelectionPage,
 } from "../pages";
 
 import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
@@ -81,6 +80,7 @@ export const MainRouter = () => {
           <Route path="/classes/:id" element={<ClassDetailPage />} />
           <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
+          <Route path="/feedback" element={<FeedbackAppPage />} />
           <Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />
         </>
       )}
@@ -90,18 +90,18 @@ export const MainRouter = () => {
         <>
           <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
           <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
+          <Route path="/free-form-lesson" element={<FreeLessonPage />} />
+          <Route path="/feedback" element={<FeedbackAppPage />} />
           <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />
         </>
       )}
 
-      <Route path="/user-type-selection" element={<UserTypeSelectionPage />} />
+      {/* if register but without name and other fields */}
       <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
       <Route path="/secret-info-ai" element={<SecretInfo />} />
       <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
       <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
       <Route path="/check-data" element={<CheckDataAI />} />
-      <Route path="/free-form-lesson" element={<FreeLessonPage />} />
-      <Route path="/feedback" element={<FeedbackAppPage />} />
     </Routes>
   );
 };

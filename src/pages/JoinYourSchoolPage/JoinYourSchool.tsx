@@ -23,9 +23,6 @@ const JoinYourSchoolPage = () => {
 
   const { user } = useContext(UserContext);
 
-  console.log(user, 'user');
-  
-
   const {
     firstName,
     lastName,
