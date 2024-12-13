@@ -34,6 +34,8 @@ import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretI
 import { CheckDataAI } from '../pages/CheckDataWithAI/CheckDataWithAI.tsx';
 import { FreeLessonPage } from '../pages/FreeLessonPage/FreeLessonPage.tsx';
 
+import { LiveKitConversationPage } from "../pages/LiveKit/LiveKitConversationPage";
+
 export const MainRouter = () => {
   const { schoolName } = useParams();
   const navigate = useNavigate();
@@ -128,6 +130,8 @@ export const MainRouter = () => {
         element={<UserTypeSelectionPage />}
       />
       <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
+
+      <Route path="/livekit" element={<LiveKitConversationPage />} />
 
       <Route path="/*" element={<Navigate to="/initial" replace />} />
     </Routes>
