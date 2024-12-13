@@ -199,8 +199,7 @@ export const FeedbackAppPage = () => {
     const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
-    // Set instructions
-    console.log("instructionsForAIFeedbackApplication", instructionsForAIFeedbackApplication(user?.firstName || ""));
+    // Set instructions for the AI
 
     client.updateSession({ instructions: instructionsForAIFeedbackApplication(user?.firstName || "") });
     // Set transcription, otherwise we don't get user transcriptions back

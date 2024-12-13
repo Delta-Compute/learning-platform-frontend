@@ -13,9 +13,10 @@ interface UpdateClassModalProps {
   onClose: () => void;
   onRefreshClasses: () => void;
   classItem: Class;
+  onDeleteClass: (classId: string) => void;
 }
 
-export const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefreshClasses, classItem }) => {
+export const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, onRefreshClasses, classItem, onDeleteClass }) => {
   const { t } = useTranslation();
   const [className, setClassName] = useState<string>(classItem?.name);
   const [classSubject, setClassSubject] = useState<string>(classItem?.subject);  
@@ -92,12 +93,20 @@ export const ClassSettingsModal: React.FC<UpdateClassModalProps> = ({ onClose, o
         {/*    </button>*/}
         {/*  </div>*/}
         {/*</div>*/}
+        <div className='flex flex-col gap-2'>
+        <button
+          onClick={() => onDeleteClass(classItem.id as string)}
+          className="w-full bg-main border-main text-white py-3 rounded-full font-semibold"
+        >
+          {t("teacherPages.classes.deteleClassText")}
+        </button>
         <button
           onClick={() => handleUpdateClass()}
-          className="w-full bg-main text-white py-3 rounded-full font-semibold"
+          className="w-full bg-white border py-3 rounded-full font-semibold"
         >
           {t("teacherPages.classes.classModal.submitSettingsButton")}
         </button>
+        </div>
       </div>
     </div>
   );

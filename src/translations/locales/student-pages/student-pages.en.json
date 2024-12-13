@@ -17,7 +17,7 @@
       "logoutButton": {
         "text": "Logout"
       },
-      "joinToClassButton": "Join to class",
+      "joinToClassButton": "Join a class",
       "verificationModal": {
         "title": "Join your class room",
         "verificationCodeLabel": "Verification code",

@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { Class } from '../../types/class';
 
-import { useClassById } from '../../hooks/api/classes';
+import { useClassById, useDeleteClassRoom } from '../../hooks/api/classes';
 
 import {
   Loader,
@@ -50,6 +50,10 @@ export const ClassDetailPage = () => {
   const { id } = useParams();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
+  const location = useLocation();
+  const { state } = location;
+  const isGear = state?.isGear || false;
+  const [isStudentsModalOpen, setIsStudentsModalOpen] = useState(false);
   const [classSettingsOpen, setClassSettingsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [classItem, setClassItem] = useState<Class | null>(null);
@@ -65,6 +69,13 @@ export const ClassDetailPage = () => {
     refetch: refetchClassRoom,
     isRefetching: isClassRoomRefetching,
   } = useClassById(id as string);
+
+  useEffect(() => {
+    if (!isClassRoomPending && isGear) {
+      setClassSettingsOpen(true);
+    }
+  }, [isClassRoomPending]);
+
   const dropdownRef = useRef(null);
 
   useClickOutside(dropdownRef, () => setIsFilterOpen(false));
@@ -92,7 +103,7 @@ export const ClassDetailPage = () => {
     isPending: isAssigmentsPending,
     refetch: assignmentsRefetch,
     isRefetching: isAssignmentsRefetching,
-  } = useGetRoomsAssignments(id as string);  
+  } = useGetRoomsAssignments(id as string);
 
   const { mutate, isPending: isAssignmentDeleting } = useDeleteAssignment();
 
@@ -128,6 +139,8 @@ export const ClassDetailPage = () => {
       toast.error("Something went wrong");
     },
   });
+
+  const { mutate: deleteClassMutate, isPending: isClassDeleting } = useDeleteClassRoom();
 
   const pdfUploadHandler = async (file: File) => {
     if (!file) {
@@ -257,6 +270,18 @@ export const ClassDetailPage = () => {
     }
   };
 
+  const handleDeleteClass = (classId: string) => {
+    deleteClassMutate(classId, {
+      onSuccess: () => {
+        toast.success(t("teacherPages.classes.classDeletedText"));
+        navigate(`/${currentSchoolName}/classes`);
+      },
+      onError: (error) => {
+        console.error("Class delete error:", error);
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-bg-color pb-10">
       {(
@@ -266,6 +291,7 @@ export const ClassDetailPage = () => {
         || isClassRoomRefetching
         || isUpdateClassRoomPending
         || isAssignmentDeleting
+        || isClassDeleting
       ) && <Loader />}
       <Header title={classItem?.name as string} linkTo={`/${currentSchoolName}/classes`} />
       <div className="px-4 mt-20 relative">
@@ -319,11 +345,8 @@ export const ClassDetailPage = () => {
           </div>
 
           <div className="flex justify-between">
-            <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
+            <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm" onClick={() => setIsStudentsModalOpen(true)}>
               {classItem?.studentEmails?.length} {t("teacherPages.class.studentsText")}
-            </span>
-            <span className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-3 rounded-full text-sm">
-              {classItem?.assignmentIds?.length} {t("teacherPages.class.assignmentsText")}
             </span>
             <span
               className="border-[0.5px] border-[#E9ECEF] text-gray-700 py-1 px-1 rounded-full text-sm"
@@ -450,8 +473,30 @@ export const ClassDetailPage = () => {
           </form>
         </div>
       </Modal>
-      {classSettingsOpen && <ClassSettingsModal isOpen={classSettingsOpen} onClose={() => setClassSettingsOpen(false)} onRefreshClasses={refetchClassRoom} classItem={classItem!} />}
+      {classSettingsOpen &&
+        <ClassSettingsModal
+          isOpen={classSettingsOpen}
+          onClose={() => setClassSettingsOpen(false)}
+          onRefreshClasses={refetchClassRoom}
+          classItem={classItem!}
+          onDeleteClass={handleDeleteClass}
+        />
+      }
       {isReportModalOpen && <ReportModal onClose={() => setIsReportModalOpen(false)} classItem={classItem!} />}
+      <Modal isOpen={isStudentsModalOpen} onClose={() => setIsStudentsModalOpen(false)}>
+        <div className="flex flex-col items-center">
+          <h2 className="text-[24px] font-semibold text-center mb-4 text-[#001434]">
+            {t("teacherPages.classes.studentsModalTitle")}
+          </h2>
+          <ul className="flex flex-col gap-2 pt-3">
+            {classItem?.studentEmails?.map((email, index) => (
+              <li key={index} className="flex items-center justify-between">
+                <p className="text-[16px] text-[#362D2E] font-light">{email}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -125,7 +125,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     isRefetching: isAssignmentsRefetching,
   } = useGetRoomsAssignments(params.classRoomId as string);
 
-  useEffect(() => {
+  const checkShowFeedbackModal = () => {
     if (assignmentsData && assignmentsData.length > 0) {
       const check = checkAndShowModal(assignmentsData.length);
 
@@ -133,7 +133,18 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         setIsFeedbackModalOpen(true);
       }
     }
-  }, [assignmentsData]);
+  };
+
+  const checkStudentAssignmentsShowFeedbackModal = () => {
+    if (assignments && assignments.length > 0) {
+      const closed = assignments.filter((assignment) => assignment.deadline <= new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
+      const check = checkAndShowModal(closed.length);
+
+      if (check) {
+        setIsFeedbackModalOpen(true);
+      }
+    }
+  };
 
   const {
     data: studentsProgress,
@@ -157,6 +168,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
       toast.success("Successfully updated");
 
       studentsProgressRefetch();
+      checkStudentAssignmentsShowFeedbackModal();
     },
     onError: () => {
       toast.success("Something went wrong");
@@ -497,7 +509,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
             {items.length === 0 && (
               <div className="h-full">
                 {role === "teacher" ? (
-                  <AssignmentsBasedOnLearningPlan assignmentsRefetch={assignmentsRefetch} />
+                  <AssignmentsBasedOnLearningPlan assignmentsRefetch={assignmentsRefetch} checkShowFeedbackModal={checkShowFeedbackModal} />
                 ) : (
                   <div className="flex justify-center items-center h-full">
                     <p>{t("conversationPage.startTalkText")}</p>
@@ -654,12 +666,16 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
         onClassRoomAssignmentsRefetch={assignmentsRefetch}
+        checkShowFeedbackModal={checkShowFeedbackModal}
       />}
 
       <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)}>
         <div className="flex flex-col gap-4">
           <p className="text-center">{t("teacherPages.classes.classModal.createFeedbackQuestion")}</p>
-          <Button className="bg-[#CC1316] text-white" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
+          <div className='flex gap-2'>
+            <Button className="bg-white w-[50%]" onClick={() => setIsFeedbackModalOpen(false)}>{t("teacherPages.classes.classModal.laterButton")}</Button>
+            <Button className="bg-[#CC1316] text-white w-[50%]" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
+          </div>
         </div>
       </Modal>
     </div>

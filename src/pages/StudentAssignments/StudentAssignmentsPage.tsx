@@ -19,7 +19,6 @@ import { toast } from "react-hot-toast";
 
 import CopyIcon from "../../assets/icons/copy-icon.svg";
 import Header from '../../components/ui/header/Header';
-import { checkAndShowModal } from '../../utils/checkShowFeedbackModal';
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
@@ -61,16 +60,6 @@ export const StudentAssignmentsPage = () => {
 
   useEffect(() => {
     if (assignments) {
-      const check = checkAndShowModal(closedAssignment.length);
-
-      if (check) {
-        setIsFeedbackModalOpen(true);
-      }
-    }
-  }, [assignments, isRefetching, closedAssignment.length]);
-
-  useEffect(() => {
-    if (assignments) {
       const open = assignments.filter((assignment) => assignment.deadline > new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
       const closed = assignments.filter((assignment) => assignment.deadline <= new Date().getTime()).sort((a, b) => b.deadline - a.deadline);
 
@@ -102,8 +91,8 @@ export const StudentAssignmentsPage = () => {
     <>
       {(isRefetching || isVerificationPending || isStudentInClassPending) && <Loader />}
 
-      <div className="fixed top-0 w-full py-[20px] border-b-[1px] bg-white">
-        <Header title={t("studentPages.studentAssignments.headerTitle")} linkTo={`/${currentSchoolName}/initial`} />
+      <div className="fixed top-0 w-full py-[20px] bg-white">
+        <Header title={t("studentPages.studentAssignments.headerTitle")} linkTo={`/${currentSchoolName}/initial`} noBackButton={true}/>
       </div>
 
       <div className="pt-[100px] pb-[150px] px-[20px]">
@@ -277,7 +266,10 @@ export const StudentAssignmentsPage = () => {
       <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)}>
         <div className="flex flex-col gap-4">
           <p className="text-center">{t("teacherPages.classes.classModal.createFeedbackQuestion")}</p>
-          <Button className="bg-[#CC1316] text-white" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
+          <div className='flex gap-2'>
+            <Button className="bg-white w-[50%]" onClick={() => setIsFeedbackModalOpen(false)}>{t("teacherPages.classes.classModal.laterButton")}</Button>
+            <Button className="bg-[#CC1316] text-white w-[50%]" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
+          </div>
         </div>
       </Modal>
     </>

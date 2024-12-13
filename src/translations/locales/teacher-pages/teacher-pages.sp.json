@@ -7,14 +7,18 @@
     },
     "classes": {
       "headerTitle": "Clases",
+      "deteleClassText": "Eliminar clase",
+      "classDeletedText": "Clase eliminada correctamente",
       "addAssignmentLinkText": "Añadir asignación",
       "studentsText": "Estudiantes",
       "assignmentsText": "Asignaciones",
+      "studentsModalTitle": "Estudiantes",
       "classModal": {
         "title": "Crear una nueva clase",
         "titleCreateFeedback": "Crear comentarios",
         "createFeedbackQuestion": "¿Le gustaría dejar comentarios sobre el uso de la aplicación?",
         "giveFeedbackButton": "Sí",
+        "laterButton": "Más tarde",
         "reportTitle": "Informe",
         "classNameLabel": "Nombre de la clase",
         "classNameInputPlaceholder": "Introduzca el nombre de la clase",

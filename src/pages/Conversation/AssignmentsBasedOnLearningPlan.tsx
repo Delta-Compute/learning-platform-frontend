@@ -25,9 +25,10 @@ interface Topic {
 
 interface AssignmentsBasedOnLearningPlanProps {
   assignmentsRefetch: (options?: RefetchOptions) => Promise<QueryObserverResult<IAssignment[] | null, Error>>;
+  checkShowFeedbackModal: () => void;
 }
 
-export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearningPlanProps> = ({ assignmentsRefetch }) => {
+export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearningPlanProps> = ({ assignmentsRefetch, checkShowFeedbackModal }) => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { classRoomId } = useParams();
@@ -166,6 +167,7 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
           isOpen={isAssignmentModalOpen}
           onClose={() => setIsAssignmentModalOpen(false)}
           onClassRoomAssignmentsRefetch={assignmentsRefetch}
+          checkShowFeedbackModal={checkShowFeedbackModal}
         />}
       </div>
     </div>

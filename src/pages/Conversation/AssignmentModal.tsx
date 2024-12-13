@@ -31,6 +31,7 @@ interface AssignmentModalProps {
   assignmentTitle: string;
   assignmentTime: number;
   onClassRoomAssignmentsRefetch?: (options?: RefetchOptions) => Promise<QueryObserverResult<IAssignment[] | null, Error>>;
+  checkShowFeedbackModal?: () => void;
 }
 
 export const AssignmentModal: React.FC<AssignmentModalProps> = ({
@@ -41,6 +42,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   assignmentTitle,
   assignmentTime,
   onClassRoomAssignmentsRefetch,
+  checkShowFeedbackModal,
 }) => {
   const { t } = useTranslation();
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -142,6 +144,9 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
       toast.success(t("conversationPage.assignmentModal.successfullyCreatedText"));
       if (onClassRoomAssignmentsRefetch) {
         await onClassRoomAssignmentsRefetch();
+      }
+      if (checkShowFeedbackModal) {
+        checkShowFeedbackModal();
       }
     },
     onError: () => {

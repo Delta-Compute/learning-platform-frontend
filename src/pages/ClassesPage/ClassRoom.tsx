@@ -4,26 +4,23 @@ import { useContext, useEffect, useState } from "react";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import { useDeleteClassRoom, useGetClassesTeacherId } from '../../hooks/api/classes';
+import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 import { Class } from "../../types/class";
 
-import { Loader, CreateClassModal, BottomNavigation, DropdownMenu, Modal, Button } from "../../components";
+import { Loader, CreateClassModal, BottomNavigation } from "../../components";
 
 import { useNavigate, Link } from "react-router-dom";
 
 import plus from "../../assets/icons/plus-icon.svg";
 import Header from '../../components/ui/header/Header';
-import menuIcon from "../../assets/icons/threeDots.svg";
-import { checkAndShowModal } from '../../utils/checkShowFeedbackModal';
+import settingsIcon from "../../assets/icons/settings-icon.svg";
 
 const ClassesPage = () => {
   const { t } = useTranslation();
-  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const { data, isPending, refetch, isRefetching } = useGetClassesTeacherId(user?.id as string);
-  const { mutate, isPending: isClassDeleting } = useDeleteClassRoom();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,38 +31,15 @@ const ClassesPage = () => {
     refetch();
   }, [user?.id, refetch]);
 
-  useEffect(() => {
-    if (data) {
-      const check = checkAndShowModal(data.length);
-      console.log("check", check);
-      
-      if (check) {
-        setIsFeedbackModalOpen(true);
-      }
-    }
-  }, [data, isPending]);
-
-
   const addClassModal = () => (
     <button className="bg-main text-white w-8 h-8 rounded-full flex items-center justify-center">
       <img className="w-[70%] h-[70%]" src={plus} onClick={openModal} />
     </button>
   );
 
-  const handleDeleteClass = (classId: string) => {
-    mutate(classId, {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: (error) => {
-        console.error("Class delete error:", error);
-      },
-    });
-  };
-
   return (
     <>
-      {(isPending || isRefetching || isClassDeleting) && <Loader />}
+      {(isPending || isRefetching) && <Loader />}
       <Header title={t("teacherPages.classes.headerTitle") as string} linkTo={`/${currentSchoolName}/classes`} modal={addClassModal()} />
       <ul className="space-y-4 p-4 pb-[60px] mt-[80px]">
         {data?.map((classItem: Class, index) => (
@@ -75,14 +49,7 @@ const ClassesPage = () => {
               }`}
           >
             <div className='absolute right-1 top-2'>
-              <DropdownMenu
-                menuItems={[{ title: "Delete" }]}
-                onClick={() => classItem.id && handleDeleteClass(classItem.id)}
-              >
-                <>
-                  <img src={menuIcon} alt="menu" className="w-[20px]" />
-                </>
-              </DropdownMenu>
+              <img src={settingsIcon} alt="settingsIcon" onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { isGear: true } })} />
             </div>
             <div className="bg-gray-200 h-[140px] rounded-[8px] overflow-hidden">
               {classItem.logo !== "" && (
@@ -95,7 +62,7 @@ const ClassesPage = () => {
             </div>
 
             <h2
-              onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { classItem } })}
+              onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`)}
               className="text-[24px] text-[#362D2E] font-semibold"
             >
               {classItem.name}
@@ -124,13 +91,6 @@ const ClassesPage = () => {
         onClose={closeModal}
         onRefreshClasses={refetch}
       />
-
-      <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)}>
-        <div className="flex flex-col gap-4">
-          <p className="text-center">{t("teacherPages.classes.classModal.createFeedbackQuestion")}</p>
-          <Button className="bg-[#CC1316] text-white" onClick={() => navigate(`/${currentSchoolName}/feedback`)}>{t("teacherPages.classes.classModal.giveFeedbackButton")}</Button>
-        </div>
-      </Modal>
 
       <BottomNavigation classRoomId={data && data.length > 0 ? data[0].id : undefined} />
     </>

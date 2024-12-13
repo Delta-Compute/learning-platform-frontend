@@ -7,14 +7,18 @@
     },
     "classes": {
       "headerTitle": "Classes",
+      "deteleClassText": "Delete class",
+      "classDeletedText": "Class deleted successfully",
       "addAssignmentLinkText": "Add assignment",
       "studentsText": "Students",
       "assignmentsText": "Assignments",
+      "studentsModalTitle": "Students",
       "classModal": {
         "title": "Create a new class",
         "titleCreateFeedback": "Create feedback",
         "createFeedbackQuestion": "Would you like to leave feedback about using the app?",
         "giveFeedbackButton": "Yes",
+        "laterButton": "Later",
         "reportTitle": "Report",
         "classNameLabel": "Class name",
         "classNameInputPlaceholder": "Enter class name",
