@@ -346,7 +346,7 @@ export const ClassDetailPage = () => {
                 className="flex items-center"
               >
                 <img src={copyIcon} alt="copy" />
-                <span className="text-[24px] w-full font-light truncate">
+                <span className="text-[24px] w-[130px] font-light truncate">
                   {classRoom?.verificationCode}
                 </span>
               </button>
