@@ -23,22 +23,29 @@ const client = new QueryClient();
 
 export const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
+import { ConnectionProvider } from "./pages/LiveKit/hooks";
+import { PlaygroundStateProvider } from "./pages/LiveKit/hooks/usePlaygroundState.tsx";
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={googleClientId}>
       <QueryClientProvider client={client}>
         <I18nextProvider i18n={i18n}>
-          <BrowserRouter>
-            <SchoolNamesContextProvider>
-              <ClassesContextProvider>
-                <UserContextProvider>
-                  <LanguageContextProvider>
-                    <App />
-                  </LanguageContextProvider>
-                </UserContextProvider>
-              </ClassesContextProvider>
-            </SchoolNamesContextProvider>
-          </BrowserRouter>
+          <PlaygroundStateProvider>
+            <ConnectionProvider>
+              <BrowserRouter>
+                <SchoolNamesContextProvider>
+                  <ClassesContextProvider>
+                    <UserContextProvider>
+                      <LanguageContextProvider>
+                        <App />
+                      </LanguageContextProvider>
+                    </UserContextProvider>
+                  </ClassesContextProvider>
+                </SchoolNamesContextProvider>
+              </BrowserRouter>
+            </ConnectionProvider>
+          </PlaygroundStateProvider>
         </I18nextProvider>
       </QueryClientProvider>
     </GoogleOAuthProvider>
