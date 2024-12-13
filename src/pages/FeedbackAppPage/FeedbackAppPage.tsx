@@ -21,6 +21,8 @@ import toast from 'react-hot-toast';
 import { Button, Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
 import UserContext from '../../context/UserContext.tsx';
+import { parseFeedbackOfApp } from '../../utils/parsedFeedbackApp.ts';
+import { useCreateFeedback } from '../../services/api/feedback.service.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -58,11 +60,11 @@ export const FeedbackAppPage = () => {
     }, 1500);
   }, []);
 
-  // const [satisfaction, setSatisfaction] = useState("");
-  // const [likedFeatures, setLikedFeatures] = useState("");
-  // const [improvements, setImprovements] = useState("");
-  // const [missingFeatures, setMissingFeatures] = useState("");
-  // const [recommendation, setRecommendation] = useState("");
+  const [satisfaction, setSatisfaction] = useState("");
+  const [likedFeatures, setLikedFeatures] = useState("");
+  const [improvements, setImprovements] = useState("");
+  const [missingFeatures, setMissingFeatures] = useState("");
+  const [recommendation, setRecommendation] = useState("");
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -73,6 +75,27 @@ export const FeedbackAppPage = () => {
   const [isConnected, setIsConnected] = useState(false);
 
   const [connectionLoading, setConnectionLoading] = useState(false);
+
+  const { mutate } = useCreateFeedback();
+
+  const handleCreateFeedback = async () => {
+    if (!satisfaction || !likedFeatures || !improvements || !missingFeatures || !recommendation) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+
+    const feedback = {
+      userId: user?.id || "",
+      satisfaction,
+      likedFeatures,
+      improvements,
+      missingFeatures,
+      recommendation
+    };
+
+    mutate(feedback);
+  };
+
 
   const getFeedBackAndGeneralInformation = async (): Promise<any> => {
 
@@ -97,13 +120,13 @@ export const FeedbackAppPage = () => {
 
       if (response.choices[0].message.content) {
 
-        // const parsedData = parseFeedbackOfApp(response.choices[0].message.content);
+        const parsedData = parseFeedbackOfApp(response.choices[0].message.content);
 
-        // setSatisfaction(parsedData.satisfaction);
-        // setLikedFeatures(parsedData.likedFeatures);
-        // setImprovements(parsedData.improvements);
-        // setMissingFeatures(parsedData.missingFeatures);
-        // setRecommendation(parsedData.recommendation);
+        setSatisfaction(parsedData.satisfaction);
+        setLikedFeatures(parsedData.likedFeatures);
+        setImprovements(parsedData.improvements);
+        setMissingFeatures(parsedData.missingFeatures);
+        setRecommendation(parsedData.recommendation);
       }
       setLoading(false);
     } catch (error) {
@@ -237,25 +260,6 @@ export const FeedbackAppPage = () => {
     client.on("conversation.updated", async ({ item, delta }: any) => {
       const items = client.conversation.getItems();
 
-      // async function conversationCheck (item: ItemType) {
-      //   if (item.formatted.transcript) {
-      //     const transcriptionText = item.formatted.transcript.toLowerCase();
-
-      //     console.log("Transcription:", transcriptionText);
-
-
-      //     const endKeywords = ["goodbye", "exit", "end", "stop", "thank you"];
-
-      //     if (endKeywords.some((keyword) => transcriptionText.includes(keyword))) {
-
-      //       disconnectConversation();
-      //       return;
-      //     }
-      //   }
-      // };
-
-      // await conversationCheck(item);
-
       if (delta?.audio) {
         wavStreamPlayer.add16BitPCM(delta.audio, item.id);
       }
@@ -305,12 +309,19 @@ export const FeedbackAppPage = () => {
                 <div>It's feedback create page with AI</div>
               </div>
             ) : (
-              <div className="h-full flex justify-center items-center">
+              <div className="h-full flex flex-col justify-center items-center">
                 <Button
                   className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
+                  onClick={handleCreateFeedback}
                 >
-                  {t("authPages.introducingAIPage.createProfileButton")}
+                  {t("conversationPage.createFeedbackButton")}
                 </Button>
+
+                <div className='w-full mt-[20px]'>
+                  {[satisfaction, likedFeatures, improvements, missingFeatures, recommendation].map((item) => (
+                    <p>{item}</p>
+                  ))}
+                </div>
               </div>
             )}
           </div>
