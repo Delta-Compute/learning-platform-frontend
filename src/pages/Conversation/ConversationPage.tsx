@@ -669,7 +669,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
         checkShowFeedbackModal={checkShowFeedbackModal}
       />}
 
-      <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={true} onClose={() => setIsFeedbackModalOpen(false)}>
+      <Modal title={t("teacherPages.classes.classModal.titleCreateFeedback")} isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)}>
         <div className="flex flex-col gap-4">
           <p className="text-center">{t("teacherPages.classes.classModal.createFeedbackQuestion")}</p>
           <div className='flex gap-2'>
