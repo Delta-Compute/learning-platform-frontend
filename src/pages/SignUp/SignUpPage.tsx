@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -215,11 +215,11 @@ export const SignUpPage = () => {
 
           {/*  />*/}
           {/*</button>*/}
-          <button onClick={handleOpenAi} className="relative z-30 p-1 border rounded-[4px]">
+          <button onClick={handleOpenAi} className="relative z-30 px-2 py-1 border bg-white rounded-[4px]">
             <img
               src={AILogo}
               alt="aiLogo"
-              className="w-[32px] h-[32px]"
+              className="w-[26px] h-[26px]"
             />
           </button>
         </div>

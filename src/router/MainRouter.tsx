@@ -1,11 +1,8 @@
 import { useContext, useEffect } from "react";
 
-import {
-  Navigate,
-  Route,
-  Routes, useNavigate,
-  useParams
-} from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
+
+import { UserRole } from "../types";
 
 import {
   AssignmentDetailPage,
@@ -15,12 +12,12 @@ import {
   InitialPage,
   IntroducingWithAI,
   ProfilePage,
+  ResetPasswordPage,
   SecretInfo,
   SignInPage,
   SignUpPage,
   StudentAssignmentsPage,
   UserTypeSelectionPage,
-  ResetPasswordPage,
 } from "../pages";
 
 import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
@@ -31,9 +28,9 @@ import { School } from "../context";
 import SchoolNamesContext from "../context/SchoolNamesContext";
 import UserContext from "../context/UserContext";
 import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretInfoPage';
-import { CheckDataAI } from '../pages/CheckDataWithAI/CheckDataWithAI.tsx';
-import { FreeLessonPage } from '../pages/FreeLessonPage/FreeLessonPage.tsx';
-import { FeedbackAppPage } from '../pages/FeedbackAppPage/FeedbackAppPage.tsx';
+import {CheckDataAI} from '../pages/CheckDataWithAI/CheckDataWithAI.tsx';
+import {FreeLessonPage} from '../pages/FreeLessonPage/FreeLessonPage.tsx';
+import {FeedbackAppPage} from '../pages/FeedbackAppPage/FeedbackAppPage.tsx';
 
 export const MainRouter = () => {
   const { schoolName } = useParams();
@@ -43,6 +40,8 @@ export const MainRouter = () => {
   const { user } = useContext(UserContext);
 
   const schoolPaths = Object.values(School);
+
+  const token= localStorage.getItem("token");
 
   useEffect(() => {
     if (user && user.school !== currentSchoolName) {
@@ -64,73 +63,47 @@ export const MainRouter = () => {
 
   return (
     <Routes>
-      {/*{!isUserRefetching && (*/}
-      {/*  <Routes>*/}
-      {/*    {user === null && (*/}
-      {/*      <>*/}
-      {/*        <Route path="/initial" element={<InitialPage />} />*/}
-      {/*        <Route path="/follow-link" element={<FollowLinkPage />} />*/}
-      {/*        <Route path="/sign-up" element={<SignUpPage />} />*/}
-      {/*        <Route path="/sign-in" element={<SignInPage />} />*/}
-      {/*      </>*/}
-      {/*    )}*/}
+      {/* auth pages */}
+      {token === null && (
+        <>
+          <Route path="/initial" element={<InitialPage />} />
+          <Route path="/follow-link" element={<FollowLinkPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/*" element={<Navigate to={`/${currentSchoolName}/initial`} replace />} />
+        </>
+      )}
 
-      {/*    {user?.role === UserRole.Teacher && user.firstName && user.lastName && (*/}
-      {/*      <>*/}
-      {/*        <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />*/}
-      {/*        <Route path="/classes" element={<ClassesPage />} />*/}
-      {/*        <Route path="/classes/:id" element={<ClassDetailPage />} />*/}
-      {/*        <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />*/}
-      {/*      </>*/}
-      {/*    )}*/}
+      {/*teacher pages*/}
+      {user?.role === UserRole.Teacher && user.firstName && user.lastName && (
+        <>
+          <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
+          <Route path="/classes" element={<ClassesPage />} />
+          <Route path="/classes/:id" element={<ClassDetailPage />} />
+          <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
+          <Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />
+        </>
+      )}
 
-      {/*    {user?.role === UserRole.Student && user.firstName && user.lastName && (*/}
-      {/*      <>*/}
-      {/*        <Route path="/student-assignments" element={<StudentAssignmentsPage />} />*/}
-      {/*        <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />*/}
-      {/*      </>*/}
-      {/*    )}*/}
+      {/*student pages*/}
+      {user?.role === UserRole.Student && user.firstName && user.lastName && (
+        <>
+          <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
+          <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
+          <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />
+        </>
+      )}
 
-      {/*    {user !== null && (!user.role || !user.firstName || !user.lastName) && (*/}
-      {/*      <>*/}
-      {/*        <Route*/}
-      {/*          path="/user-type-selection"*/}
-      {/*          element={<UserTypeSelectionPage />}*/}
-      {/*        />*/}
-      {/*        <Route path="/join-your-school" element={<JoinYourSchoolPage />} />*/}
-      {/*      </>*/}
-      {/*    )}*/}
-      {/*  </Routes>*/}
-      {/*)}*/}
-
-      <Route path="/initial" element={<InitialPage />} />
-      <Route path="/follow-link" element={<FollowLinkPage />} />
-      <Route path="/sign-up" element={<SignUpPage />} />
-      <Route path="/sign-in" element={<SignInPage />} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
-
-      <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
-      <Route path="/classes" element={<ClassesPage />} />
-      <Route path="/classes/:id" element={<ClassDetailPage />} />
-      <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
-
-      <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
-      <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
-      <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
-      <Route path="/profile/:userId" element={<ProfilePage />} />
+      <Route path="/user-type-selection" element={<UserTypeSelectionPage />} />
+      <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
       <Route path="/secret-info-ai" element={<SecretInfo />} />
       <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
+      <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
       <Route path="/check-data" element={<CheckDataAI />} />
       <Route path="/free-form-lesson" element={<FreeLessonPage />} />
       <Route path="/feedback" element={<FeedbackAppPage />} />
-
-      <Route
-        path="/user-type-selection"
-        element={<UserTypeSelectionPage />}
-      />
-      <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
-
-      <Route path="/*" element={<Navigate to="/initial" replace />} />
     </Routes>
   );
 };
