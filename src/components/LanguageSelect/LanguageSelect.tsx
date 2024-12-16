@@ -34,7 +34,7 @@ export const LanguageSelect = () => {
         {({ open }) => (
           <>
             <div className="relative">
-              <Listbox.Button className="bg-gray-100 p-[10px] rounded-[5px]">
+              <Listbox.Button className="bg-white border-[1px] p-[10px] rounded-[5px]">
                 <div className="flex items-center gap-2">
                   <svg
                     className="w-[20px] h-[20px]"
