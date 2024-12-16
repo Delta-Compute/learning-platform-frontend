@@ -4,14 +4,12 @@ import { User } from "../types";
 import { jwtDecode } from "jwt-decode";
 import { useGetUser } from "../hooks";
 
-let logoutTimer: any;
-
 interface UserContext {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   userId: string;
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
-  accessToken: string;
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
+  accessToken: string | null;
   isUserRefetching: boolean;
   isUserPending: boolean;
   logout: () => void;
@@ -26,7 +24,7 @@ export const UserContextProvider = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState("");
-  const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || "");
+  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem("token") || "");
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -43,16 +41,18 @@ export const UserContextProvider = ({
   } = useGetUser(userId);
 
   const getUserId = async () => {
-    try {
-      const decoded = jwtDecode(accessToken);
+    if (accessToken) {
+      try {
+        const decoded = jwtDecode(accessToken);
 
-      if (decoded?.sub) {
-        setUserId(decoded.sub);
-      } else {
-        console.error("Token does not contain 'sub'");
+        if (decoded?.sub) {
+          setUserId(decoded.sub);
+        } else {
+          console.error("Token does not contain 'sub'");
+        }
+      } catch (error) {
+        console.error("Failed to decode JWT token:", error);
       }
-    } catch (error) {
-      console.error("Failed to decode JWT token:", error);
     }
   };
 
@@ -77,8 +77,9 @@ export const UserContextProvider = ({
   useEffect(() => {
     if (accessToken) {
       const expirationTime = Number(localStorage.getItem("expirationTime")) * 1000;
+      const timer = setTimeout(logout, expirationTime);
 
-      logoutTimer = setTimeout(logout, expirationTime);
+      return () => clearTimeout(timer);
     }
   }, [accessToken, logout]);
 

@@ -3,7 +3,6 @@ import { ClassRoom } from "../../types";
 import { apiClient } from "../../vars/axios-var";
 
 import { School } from "../../context";
-import toast from 'react-hot-toast';
 
 export const getClassRoom = async (id: string): Promise<ClassRoom | null> => {
   try {
