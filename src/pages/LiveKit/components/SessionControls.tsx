@@ -1,24 +1,73 @@
+import { useState, useEffect } from "react";
+
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 
-import { useMediaDeviceSelect } from "@livekit/components-react";
+import {
+  TrackToggle,
+  useLocalParticipant,
+  useMediaDeviceSelect,
+} from "@livekit/components-react";
+import { Track } from "livekit-client";
 
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { useMultibandTrackVolume } from "../hooks";
+
+import { MultibandAudioVisualizer } from "../components";
+
+import { CheckIcon, ChevronDownIcon, Mic, MicOff } from "lucide-react";
 
 export const SessionControls = () => {
+  const localParticipant = useLocalParticipant();
   const deviceSelect = useMediaDeviceSelect({ kind: "audioinput" });
 
+  const [isMuted, setIsMuted] = useState(localParticipant.isMicrophoneEnabled);
+
+  const localMultibandVolume = useMultibandTrackVolume(
+    localParticipant.microphoneTrack?.track,
+    9,
+  );
+
+  useEffect(() => {
+    setIsMuted(localParticipant.isMicrophoneEnabled === false);
+  }, [localParticipant.isMicrophoneEnabled]);
+
   return (
-    <>
+    <div className="flex">
+      <div className="bg-gray-100 rounded-l-md flex items-center">
+        <TrackToggle
+          source={Track.Source.Microphone}
+          className={`${
+            isMuted ? " opacity-50" : ""
+          }`}
+          showIcon={false}
+        >
+          {isMuted ? (
+            <MicOff size={15} />
+          ) : (
+            <Mic size={15} />
+          )}
+        </TrackToggle>
+
+        <MultibandAudioVisualizer
+          state="speaking"
+          barWidth={2}
+          minBarHeight={2}
+          maxBarHeight={16}
+          frequencies={localMultibandVolume}
+          borderRadius={5}
+          gap={2}
+        />
+      </div>
       <Listbox>
-        <ListboxButton className="grid cursor-default grid-cols-1 rounded-md bg-gray-100 py-[12px] px-[14px]">
+        <ListboxButton className="grid cursor-default grid-cols-1 rounded-r-md bg-gray-100 py-[12px] px-[14px]">
           <ChevronDownIcon
-            className="size-5 text-gray-800"
+            className="text-gray-800"
+            size={15}
           />
         </ListboxButton>
         <div className="relative">
           <ListboxOptions
             transition
-            className="bottom-[60px] absolute border-[1px] rounded bg-white"
+            className="bottom-[50px] absolute border-[1px] left-[-60px] rounded bg-white"
           >
             {deviceSelect.devices.map((device) => (
               <ListboxOption
@@ -41,6 +90,6 @@ export const SessionControls = () => {
           </ListboxOptions>
         </div>
       </Listbox>
-    </>
+    </div>
   );
 };

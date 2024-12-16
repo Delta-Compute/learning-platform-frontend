@@ -107,7 +107,7 @@ export const Chat = () => {
         </div>
 
         <div className="flex items-center justify-center py-4 px-5">
-          {!isChatRunning ? (
+          {isChatRunning ? (
             <div className="relative w-full h-[80px] flex items-center">
               <div className="relative z-30">
                 <SessionControls />
