@@ -46,6 +46,7 @@ export function AgentProvider({ children }: { children: React.ReactNode }) {
     if (!room) {
       return;
     }
+
     const updateRawSegments = (
       segments: TranscriptionSegment[],
       participant?: Participant,
@@ -53,12 +54,15 @@ export function AgentProvider({ children }: { children: React.ReactNode }) {
     ) => {
       setRawSegments((prev) => {
         const newSegments = { ...prev };
+
         for (const segment of segments) {
           newSegments[segment.id] = { segment, participant, publication };
         }
+
         return newSegments;
       });
     };
+
     room.on(RoomEvent.TranscriptionReceived, updateRawSegments);
 
     return () => {
@@ -71,14 +75,14 @@ export function AgentProvider({ children }: { children: React.ReactNode }) {
       localParticipant.registerRpcMethod(
         "pg.toast",
         async (data: RpcInvocationData) => {
-          const { title, description, variant } = JSON.parse(data.payload);
-          console.log(title, description, variant);
+          const { title } = JSON.parse(data.payload);
+
           toast(`${title}`);
           return JSON.stringify({ shown: true });
         },
       );
     }
-  }, [localParticipant, toast]);
+  }, [localParticipant]);
 
   useEffect(() => {
     const sorted = Object.values(rawSegments).sort(

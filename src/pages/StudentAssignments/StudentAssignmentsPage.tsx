@@ -39,7 +39,7 @@ export const StudentAssignmentsPage = () => {
   const navigate = useNavigate();
 
   const [selectedTab, setSelectedTab] = useState("open");
-  const { data: assignments, refetch, isRefetching } = useGetStudentAssignments(user?.email as string);
+  const { data: assignments, refetch: refetchAssignments, isRefetching } = useGetStudentAssignments(user?.email as string);
 
   const {
     data: studentClassRoom,
@@ -51,8 +51,9 @@ export const StudentAssignmentsPage = () => {
     mutationFn: (data: { verificationCode: string, email: string }) => ClassRoomApiService.verifyClassRoomCodeAndAddEmail(data.verificationCode, data.email),
     onSuccess: () => {
       toast.success(t("studentPages.studentAssignments.verificationModal.successfullyAddedToastText"));
-      studentClassRoomRefetch();
       setIsVerifyClassRoomCodeModalOpen(false);
+      studentClassRoomRefetch();
+      refetchAssignments();
     },
     onError: (error) => {
       const errorMessage = error instanceof Error ? error.message : "Something went wrong";
@@ -62,8 +63,8 @@ export const StudentAssignmentsPage = () => {
   });
 
   useEffect(() => {
-    refetch();
-  }, [user?.id, refetch]);
+    refetchAssignments();
+  }, [user?.id, refetchAssignments]);
 
   useEffect(() => {
     if (assignments) {
