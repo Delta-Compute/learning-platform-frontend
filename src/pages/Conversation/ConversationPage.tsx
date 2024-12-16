@@ -487,7 +487,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
     >
       {(loading || isAssigmentsPending || isAssignmentsRefetching) && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
-        <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
+        <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-bg-color">
           <div className="absolute top-[20px] left-[20px]">
             <Link to={role === "teacher" ? `/${currentSchoolName}/classes` : `/${currentSchoolName}/student-assignments`}>
               <img src={`${LeftArrowIcon}`} />
