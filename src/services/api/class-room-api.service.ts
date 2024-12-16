@@ -71,8 +71,6 @@ export const findStudentInClassRoom = async (email: string, school: School) => {
       `/class-room/find-class-room/for-student/${email}/${school}`
     );
 
-    console.log("student in class room", email, response.data);
-
     return response.data;
   } catch (error) {
     console.log(error);
