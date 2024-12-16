@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 
 import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 
-// import { UserRole } from "../types";
+import { UserRole } from "../types";
 
 import {
   AssignmentDetailPage,
@@ -32,18 +32,23 @@ import {CheckDataAI} from '../pages/CheckDataWithAI/CheckDataWithAI.tsx';
 import {FreeLessonPage} from '../pages/FreeLessonPage/FreeLessonPage.tsx';
 import {FeedbackAppPage} from '../pages/FeedbackAppPage/FeedbackAppPage.tsx';
 
+
 export const MainRouter = () => {
   const { schoolName } = useParams();
   const navigate = useNavigate();
 
   const { currentSchoolName } = useContext(SchoolNamesContext);
-  const { user } = useContext(UserContext);
+  const { user, isUserPending, isUserRefetching } = useContext(UserContext);
+
+  const token = localStorage.getItem("token");
 
   const schoolPaths = Object.values(School);
 
   useEffect(() => {
     if (user && user.school !== currentSchoolName) {
       navigate(`/${currentSchoolName}/initial`);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
     }
 
     if (schoolName && schoolPaths.includes(schoolName as School)) {
@@ -61,8 +66,8 @@ export const MainRouter = () => {
 
   return (
     <Routes>
-      {/* auth pages */}
-      {/*{(user === null || user.school !== currentSchoolName) && (*/}
+      {/* auth pages if not is logged in*/}
+      {!token && (
         <>
           <Route path="/initial" element={<InitialPage />} />
           <Route path="/follow-link" element={<FollowLinkPage />} />
@@ -71,10 +76,10 @@ export const MainRouter = () => {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/*" element={<Navigate to={`/${currentSchoolName}/initial`} replace />} />
         </>
-      {/* )} */}
+      )}
 
       {/*teacher pages*/}
-      {/*{user?.role === UserRole.Teacher && user.school === currentSchoolName && user.firstName && user.lastName && (*/}
+      {user?.role === UserRole.Teacher && token && user?.firstName && (
         <>
           <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
           <Route path="/classes" element={<ClassesPage />} />
@@ -82,24 +87,23 @@ export const MainRouter = () => {
           <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
-          <Route path="/another" element={<>another page</>} />
           <Route path="/livekit" element={<LiveKitConversationPage />} />
-          {/*<Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />*/}
+          {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />}
         </>
-      {/*)}*/}
+      )}
 
       {/*student pages*/}
-      {/*{user?.role === UserRole.Student && user.school === currentSchoolName && user.firstName && user.lastName && (*/}
+      {user?.role === UserRole.Student && user.school === currentSchoolName && user.firstName && user.lastName && (
         <>
           <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
           <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
           <Route path="/free-form-lesson" element={<FreeLessonPage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
-          <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />
+          {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />}
         </>
-      {/*)}*/}
+      )}
 
-      {/* if register but without name and other fields */}
+      {/* if registered but without name and other fields */}
       <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
       <Route path="/secret-info-ai" element={<SecretInfo />} />
       <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />

@@ -6,6 +6,8 @@ import { User } from "../types";
 import { jwtDecode } from "jwt-decode";
 import { useGetUser } from "../hooks";
 
+let logoutTimer: any;
+
 interface UserContext {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -33,6 +35,10 @@ export const UserContextProvider = ({
     localStorage.removeItem("token");
     setUser(null);
     navigate("/");
+
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+    }
   };
 
   const { 
@@ -73,6 +79,14 @@ export const UserContextProvider = ({
       setUser(userData);
     }
   }, [userData, isUserRefetching]);
+
+  useEffect(() => {
+    if (accessToken) {
+      const expirationTime = Number(localStorage.getItem("expirationTime")) * 1000;
+
+      logoutTimer = setTimeout(logout, expirationTime);
+    }
+  }, [accessToken, logout]);
 
   return (
     <UserContext.Provider

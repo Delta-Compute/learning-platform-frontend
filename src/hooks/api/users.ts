@@ -14,6 +14,8 @@ import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
 import { toast } from "react-hot-toast";
 import { SecretWords } from '../../types/secretWords';
 
+import { jwtDecode } from "jwt-decode";
+
 export const useGetUser = (id: string) => {
   return useQuery({
     queryFn: () => UsersApiService.getUser(id),
@@ -79,6 +81,10 @@ export const useLogin = () => {
       UsersApiService.signIn(credentials),
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
+
+      const decodedToken = jwtDecode(data.accessToken);
+      localStorage.setItem("expirationTime", decodedToken.exp!.toString());
+
       const user: User | null = await UsersApiService.getUser(data.id);
 
       setUser(user);
