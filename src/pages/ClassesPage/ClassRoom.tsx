@@ -44,13 +44,19 @@ const ClassesPage = () => {
       <ul className="space-y-4 p-4 pb-[60px] mt-[80px]">
         {data?.map((classItem: Class, index) => (
           <li
-            key={index}
+            key={classItem.id}
             className={`relative bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data.length - 1 ? 'mb-[60px]' : ''
               }`}
           >
-            <div className='absolute right-1 top-2'>
-              <img src={settingsIcon} alt="settingsIcon" onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { isGear: true } })} />
-            </div>
+            <button
+              className="absolute right-1 top-2 p-1 bg-white rounded-full"
+              onClick={() => navigate(`/${currentSchoolName}/classes/${classItem.id}`, { state: { isGear: true } })}
+            >
+              <img
+                src={settingsIcon}
+                alt="settingsIcon"
+              />
+            </button>
             <div className="bg-gray-200 h-[140px] rounded-[8px] overflow-hidden">
               {classItem.logo !== "" && (
                 <img
