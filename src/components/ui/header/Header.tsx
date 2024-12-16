@@ -12,9 +12,9 @@ type Props = {
 
 const Header: FC<Props> = ({ linkTo, title, modal, noBackButton }) => {
   return (
-    <div className="p-5 fixed z-30 top-0 w-full bg-white border-b">
+    <div className="p-5 fixed z-30 top-0 w-full bg-bg-color">
       {!noBackButton && (
-        <div className="absolute top-[26px] left-p-5">
+        <div className="absolute top-[26px] left-p-5 bg-red-600">
           <Link to={linkTo}>
             <img src={`${LeftArrowIcon}`} />
           </Link>

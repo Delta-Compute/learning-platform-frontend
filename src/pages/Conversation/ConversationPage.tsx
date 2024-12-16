@@ -547,7 +547,7 @@ export const ConversationPage: React.FC<ConversationPageProps> = ({ role }) => {
           ${!isConnected ? "justify-end" : "justify-start"}
           flex items-end min-h-[90px] pt-[30px]
           pb-[20px] fixed bottom-0 z-0 px-[20px]
-          w-full bg-white
+          w-full
         `}
       >
         {isConnected && (

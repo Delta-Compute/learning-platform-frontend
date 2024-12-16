@@ -223,7 +223,7 @@ export const StudentAssignmentsPage = () => {
                 <span>{t("studentPages.studentAssignments.joinToClassButton")}</span>
               </button>
             ) : (
-              <div className="py-2 px-4 border-[1px] rounded-full flex items-center gap-2">
+              <div className="py-2 px-4 border-[1px] rounded-full flex items-center gap-2 bg-white">
                 <div className="w-2 h-2 rounded-full bg-green-400" />
                 <span>{t("studentPages.studentAssignments.inClassText")}: "{studentClassRoom?.name.toUpperCase()}"</span>
               </div>
