@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useParams } from "react-router-dom";
 
+import UserContext from '../../context/UserContext';
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { Loader } from "../../components";
@@ -17,7 +18,7 @@ import { IAssignment } from "../../types";
 import { format } from "date-fns";
 
 import MicrophoneIcon from "../../assets/icons/microphone-light.svg";
-import UserContext from '../../context/UserContext';
+import { ChevronDown } from "lucide-react";
 
 export const AssignmentDetailPage = () => {
   const { t } = useTranslation();
@@ -71,10 +72,10 @@ export const AssignmentDetailPage = () => {
                 {assignmentData && (
                   <div
                     className={`
-                    px-3 py-1 
-                    ${assignmentData.deadline >= new Date().getTime() ? "border-text-main-blue text-text-main-blue" : " border-text-light-green text-text-light-green"} 
-                    text-sm rounded-full border-[1px]
-                  `}
+                      px-3 py-1 
+                      ${assignmentData.deadline >= new Date().getTime() ? "border-text-main-blue text-text-main-blue" : " border-text-light-green text-text-light-green"} 
+                      text-sm rounded-full border-[1px]
+                    `}
                   >
                     {assignmentData.deadline >= new Date().getTime() ? t("teacherPages.assignment.assignmentStatus.inProgress") : t("teacherPages.assignment.assignmentStatus.completed")}
                   </div>
@@ -97,7 +98,7 @@ export const AssignmentDetailPage = () => {
             >
               <h2 className="text-lg font-semibold mb-2">{t("teacherPages.assignment.classSummaryText")}</h2>
               <button className={`text-gray-500 transform transition-transform duration-300 ${isSummaryOpen ? 'rotate-180' : ''}`}>
-                {"▲"}
+                <ChevronDown />
               </button>
             </div>
             <div
@@ -116,7 +117,7 @@ export const AssignmentDetailPage = () => {
             >
               <h2 className="text-lg font-semibold mb-2">{t("teacherPages.assignment.classProgressText")}</h2>
               <button className={`text-gray-500 transform transition-transform duration-300 ${isProgressOpen ? 'rotate-180' : ''}`}>
-                {"▲"}
+                <ChevronDown />
               </button>
             </div>
             <div

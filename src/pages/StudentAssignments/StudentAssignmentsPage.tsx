@@ -10,7 +10,10 @@ import { ClassRoomApiService } from "../../services";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import { useGetStudentAssignments, useFindStudentInClass } from "../../hooks";
+import {
+  useGetStudentAssignments,
+  useFindStudentInClass,
+} from "../../hooks";
 
 import { Loader, Modal, Button, Input } from "../../components";
 import { IAssignment } from "../../types";
@@ -19,6 +22,8 @@ import { toast } from "react-hot-toast";
 
 import CopyIcon from "../../assets/icons/copy-icon.svg";
 import Header from '../../components/ui/header/Header';
+
+import { ChevronDown, LogOut } from "lucide-react";
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
@@ -43,14 +48,16 @@ export const StudentAssignmentsPage = () => {
   } = useFindStudentInClass(user?.email as string, currentSchoolName);
 
   const { mutate: verificationCodeMutation, isPending: isVerificationPending } = useMutation({
-    mutationFn: (data: { verificationCode: string, email: string, }) => ClassRoomApiService.verifyClassRoomCodeAndAddEmail(data.verificationCode, data.email),
+    mutationFn: (data: { verificationCode: string, email: string }) => ClassRoomApiService.verifyClassRoomCodeAndAddEmail(data.verificationCode, data.email),
     onSuccess: () => {
-      refetch();
+      toast.success(t("studentPages.studentAssignments.verificationModal.successfullyAddedToastText"));
       studentClassRoomRefetch();
       setIsVerifyClassRoomCodeModalOpen(false);
     },
-    onError: () => {
-      toast.error(t("studentPages.studentAssignments.tabs.verificationModal.errorToastText"));
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+
+      toast.error(errorMessage);
     },
   });
 
@@ -80,10 +87,12 @@ export const StudentAssignmentsPage = () => {
 
   const submitVerificationHandler = (event: React.FormEvent) => {
     event.preventDefault();
+
     if (!verificationCode) {
       toast.error(t("studentPages.studentAssignments.verificationModal.emptyCodeToastText"));
       return;
     };
+
     verificationCodeMutation({ verificationCode, email: user?.email as string });
   };
 
@@ -158,6 +167,7 @@ export const StudentAssignmentsPage = () => {
               )}
             </ul>
           )}
+
           {selectedTab === "closed" && !isRefetching &&
             <ul className="py-[20px] flex flex-col gap-[8px]">
               {closedAssignment.length ? closedAssignment?.map((assignment) => (
@@ -174,7 +184,7 @@ export const StudentAssignmentsPage = () => {
                         handleAsignmentClick(assignment.id, e);
                       }}
                     >
-                      {"▲"}
+                      <ChevronDown />
                     </button>
                     <p className="font-semibold">
                       {t("studentPages.studentAssignments.assignment.title")}: <span className="font-light">{assignment.title}</span>
@@ -201,19 +211,23 @@ export const StudentAssignmentsPage = () => {
       </div>
 
       <div className="fixed bottom-5 right-2 flex items-center gap-2">
-        {studentClassRoom === "" ? (
-          <button
-            onClick={() => setIsVerifyClassRoomCodeModalOpen(true)}
-            className="flex items-center rounded-full border-[1px] gap-2 px-4 py-2 bg-white"
-          >
-            <img src={`${CopyIcon}`} alt="Class room code image" />
-            <span>{t("studentPages.studentAssignments.joinToClassButton")}</span>
-          </button>
-        ) : (
-          <div className="py-2 px-4 border-[1px] rounded-full flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-400" />
-            <span>{t("studentPages.studentAssignments.inClassText")}: "{studentClassRoom?.name.toUpperCase()}"</span>
-          </div>
+        {!isStudentInClassPending && (
+          <>
+            {studentClassRoom === "" ? (
+              <button
+                onClick={() => setIsVerifyClassRoomCodeModalOpen(true)}
+                className="flex items-center rounded-full border-[1px] gap-2 px-4 py-2 bg-white"
+              >
+                <img src={`${CopyIcon}`} alt="Class room code image" />
+                <span>{t("studentPages.studentAssignments.joinToClassButton")}</span>
+              </button>
+            ) : (
+              <div className="py-2 px-4 border-[1px] rounded-full flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-400" />
+                <span>{t("studentPages.studentAssignments.inClassText")}: "{studentClassRoom?.name.toUpperCase()}"</span>
+              </div>
+            )}
+          </>
         )}
 
         <button
@@ -223,22 +237,7 @@ export const StudentAssignmentsPage = () => {
           "
           onClick={logout}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-5 h-5"
-          >
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" x2="9" y1="12" y2="12" />
-          </svg>
+          <LogOut size={18} />
           <span>{t("studentPages.studentAssignments.logoutButton.text")}</span>
         </button>
       </div>

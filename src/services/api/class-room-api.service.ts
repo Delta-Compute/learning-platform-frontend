@@ -57,10 +57,12 @@ export const verifyClassRoomCodeAndAddEmail = async (
     await apiClient.patch(
       `/class-room/verification-code/${verificationCode}/${email}`
     );
-
-    toast.success("Successfully joined the class");
   } catch (error: any) {
-    toast.error(error.response.data.message);
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Something went wrong.");
+    }
+
+    throw new Error("Server connection error");
   }
 };
 

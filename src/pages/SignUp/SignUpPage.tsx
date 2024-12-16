@@ -69,21 +69,6 @@ export const SignUpPage = () => {
     toast.error("Something went wrong");
   };
 
-  // const appleSignUpHandler = () => {
-  //   const clientId = "com.example.client";
-  //   const redirectURI = `http://localhost:5173/${currentSchoolName}/introducing-with-ai`;
-  //   const scope = "email name";
-  //   const responseType = "code";
-  //
-  //   const url = `https://appleid.apple.com/auth/authorize?
-  //     response_type=${responseType}&
-  //     client_id=${clientId}&
-  //     redirect_uri=${encodeURIComponent(redirectURI)}&
-  //     scope=${scope}`;
-  //
-  //   window.location.href = url;
-  // };
-  
   const handleOpenAi = () => {
     setIsAiAuthOpen(true);
   };
@@ -118,15 +103,6 @@ export const SignUpPage = () => {
       auth: UserAuthType.AI,
     });
   };
-  
-  // const signUpFacebookHandler = (response: any) => {
-  //   if (response?.status === "unknown") {
-  //     console.error('Sorry!', 'Something went wrong with facebook Login.');
-  //     return;
-  //   };
-  //
-  //   console.log(response);
-  // };
 
   return (
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">

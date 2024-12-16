@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
-
 import { User } from "../types";
 import { jwtDecode } from "jwt-decode";
 import { useGetUser } from "../hooks";
@@ -26,19 +24,15 @@ export const UserContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState("");
   const [accessToken, setAccessToken] = useState<string>(localStorage.getItem("token") || "");
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("expirationTime");
+    setAccessToken(null);
     setUser(null);
-    navigate("/");
-
-    if (logoutTimer) {
-      clearTimeout(logoutTimer);
-    }
   };
 
   const { 

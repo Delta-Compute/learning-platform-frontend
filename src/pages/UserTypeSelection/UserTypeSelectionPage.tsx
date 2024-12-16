@@ -8,7 +8,7 @@ import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import { useUpdateUser } from "../../hooks/api/users";
+import { useUpdateUser } from "../../hooks/api/users.tsx";
 
 import UserType from "../../assets/icons/user-type-icon.svg";
 

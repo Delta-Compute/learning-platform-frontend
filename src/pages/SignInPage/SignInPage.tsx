@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
 import { Button, Loader, Input, Modal } from "../../components";
 
-import { useLogin } from "../../hooks/api/users";
+import { useLogin } from "../../hooks/api/users.tsx";
 import { useMutation } from "@tanstack/react-query";
 import { UsersApiService } from "../../services";
 
