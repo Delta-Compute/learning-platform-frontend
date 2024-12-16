@@ -68,10 +68,10 @@ export const ProfilePage = () => {
       </div>
       <div className="flex items-center justify-between py-4 border-b">
         <div className="flex space-x-4">
-          <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700">
+          <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700 bg-white">
             {`${data?.length} ${t("teacherPages.profile.classesCount")}`}
           </div>
-          <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700">
+          <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700 bg-white">
             {studentsCounter} {t("teacherPages.profile.studentsCount")}
           </div>
         </div>
@@ -89,6 +89,7 @@ export const ProfilePage = () => {
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
+              disabled={true}
               checked={darkModeOn}
               className="sr-only peer"
               onChange={(e) => setDarkModeOn(e.target.checked)}

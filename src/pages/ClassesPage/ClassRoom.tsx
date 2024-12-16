@@ -45,8 +45,9 @@ const ClassesPage = () => {
         {data?.map((classItem: Class, index) => (
           <li
             key={classItem.id}
-            className={`relative bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data.length - 1 ? 'mb-[60px]' : ''
-              }`}
+            className={`
+              relative bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data?.length - 1 ? 'mb-[60px]' : ''}
+            `}
           >
             <button
               className="absolute right-1 top-2 p-1 bg-white rounded-full"
