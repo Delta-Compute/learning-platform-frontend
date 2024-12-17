@@ -7,6 +7,8 @@ import { GooglePlacesSearchApi } from "../../services";
 
 import { Combobox, Transition } from "@headlessui/react";
 
+import { MapPin } from "lucide-react";
+
 export type School = {
   placeId: string;
   name: string;
@@ -108,20 +110,33 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
                   >
                     {({ selected }) => (
                       <>
-                        <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
+                        <div>
+                          <span
+                            className={`block truncate text-sm ${
+                              selected ? "font-medium" : "font-normal"
+                            }`}
+                          >
                           {school?.name}
                         </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-gray-600 mt-1">
+                          <MapPin size={15}  />
+                          <span
+                            className={`block truncate text-xs ${
+                              selected ? "font-medium" : "font-normal"
+                            }`}
+                          >
+                          {school?.address}
+                        </span>
+                        </div>
                       </>
                     )}
                   </Combobox.Option>
                 ))
               )}
 
-              {isSchoolSearchingRefetching && <div className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
+              {isSchoolSearchingRefetching && <div
+                className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
             </Combobox.Options>
           </Transition>
         </div>
