@@ -105,10 +105,10 @@ export const SignUpPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-[100dvh] py-12 mx-4 bg-bg-color">
+    <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {isPending && <Loader />}
       <Header linkTo={`${currentSchoolName}/initial`} title={t("authPages.signUp.headerTitle")} />
-      <div className="flex flex-col mt-12 w-full sm:w-[500px] sm:mx-auto sm:mt-10">
+      <div className="flex flex-col mt-12 w-full px-5 sm:w-[500px] sm:mx-auto sm:mt-10">
         <label className="text-text-color mt-2" htmlFor="email">{t("authPages.signUp.emailLabel")}</label>
         <Input
           id="email"

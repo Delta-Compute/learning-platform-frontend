@@ -47,8 +47,10 @@ export const ResetPasswordPage = () => {
   return (
     <div>
       {isResetPasswordPending && <Loader />}
+
       <Header linkTo={`/${currentSchoolName}/sign-in`} title={t("authPages.resetPassword.headerTitle")} />
-      <div className="px-5 py-[80px] h-[100dvh] bg-bg-color">
+
+      <div className="px-5 py-[80px] h-[100dvh] bg-bg-color sm:w-[500px] sm:mx-auto sm:mt-10">
         <form
           onSubmit={submitHandler}
           className="flex flex-col gap-2"
