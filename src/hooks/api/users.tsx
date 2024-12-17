@@ -26,6 +26,7 @@ export const useGetUser = (id: string) => {
 
 export const useUpdateUser = () => {
   const { setUser } = useContext(UserContext);
+
   return useMutation({
     mutationFn: (data: {
       id: string;
@@ -113,6 +114,10 @@ export const useSingUp = () => {
     onSuccess: async (data) => {
       localStorage.setItem("token", data.accessToken);
       const user: User | null = await UsersApiService.getUser(data.id);
+
+      const decodedToken = jwtDecode(data.accessToken);
+      localStorage.setItem("expirationTime", decodedToken.exp!.toString());
+
       if (user) {
         setUser(user);
         navigate(`/${currentSchoolName}/introducing-with-ai`);

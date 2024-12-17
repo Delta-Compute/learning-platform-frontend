@@ -94,6 +94,7 @@ export const UserContextProvider = ({
         isUserRefetching,
         isUserPending,
         logout,
+        // refetchUser,
       }}
     >
       {children}

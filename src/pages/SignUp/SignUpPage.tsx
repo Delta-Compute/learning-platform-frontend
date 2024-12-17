@@ -108,9 +108,10 @@ export const SignUpPage = () => {
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {isPending && <Loader />}
       <Header linkTo={`${currentSchoolName}/initial`} title={t("authPages.signUp.headerTitle")} />
-      <div className="flex flex-col  mt-12 mx-4">
-        <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.emailLabel")}</h3>
+      <div className="flex flex-col mt-12 w-full px-5 sm:w-[500px] sm:mx-auto sm:mt-10">
+        <label className="text-text-color mt-2" htmlFor="email">{t("authPages.signUp.emailLabel")}</label>
         <Input
+          id="email"
           placeholder={t("authPages.signUp.emailInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, email: e.target.value }))
@@ -118,8 +119,9 @@ export const SignUpPage = () => {
           type="email"
           value={userInfo.email}
         />
-        <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.passwordLabel")}</h3>
+        <label className="text-text-color mt-2" htmlFor="password">{t("authPages.signUp.passwordLabel")}</label>
         <Input
+          id="password"
           placeholder={t("authPages.signUp.passwordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({ ...prev, password: e.target.value }))
@@ -128,8 +130,9 @@ export const SignUpPage = () => {
           value={userInfo.password}
           isPassword={true}
         />
-        <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signUp.confirmPasswordLabel")}</h3>
+        <label className="text-text-color mt-2" htmlFor="confirmPassword">{t("authPages.signUp.confirmPasswordLabel")}</label>
         <Input
+          id="confirmPassword"
           placeholder={t("authPages.signUp.confirmPasswordInputPlaceholder")}
           onChange={(e) =>
             setUserInfo((prev) => ({

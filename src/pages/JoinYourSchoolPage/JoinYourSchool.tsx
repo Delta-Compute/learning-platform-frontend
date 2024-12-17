@@ -1,20 +1,19 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
-import { Input, Loader, SchoolSearchAutocomplete } from "../../components";
+import {Input, Loader, School, SchoolSearchAutocomplete} from "../../components";
 
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-import { useUpdateUser } from '../../hooks';
+import {useUpdateUser} from '../../hooks';
 
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
 
-import { School } from "../../components";
-import { UserAuthType } from '../../types';
+import {UserAuthType, UserRole} from '../../types';
 
 const JoinYourSchoolPage = () => {
   const { t } = useTranslation();
@@ -38,7 +37,7 @@ const JoinYourSchoolPage = () => {
     role: string,
     summary: string
   };
-  const { mutate, isPending } = useUpdateUser();
+  const { mutate, isPending} = useUpdateUser();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [natureLanguageUpdate, setNatureLanguageUpdate] = useState(natureLanguage);
@@ -65,7 +64,7 @@ const JoinYourSchoolPage = () => {
       {
         onSuccess: () => {
           if (user?.auth !== UserAuthType.AI) {
-            if (user?.role === "teacher") {
+            if (selectedRole.toLowerCase() === UserRole.Teacher) {
               navigate(`/${currentSchoolName}/classes`);
             } else {
               navigate(`/${currentSchoolName}/student-assignments`);
@@ -96,7 +95,7 @@ const JoinYourSchoolPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {isPending && <Loader />}
-      <div className="fixed z-[1] top-0 w-full bg-white pt-4 pb-[5px] flex justify-center items-center">
+      <div className="fixed z-[1] top-0 w-full pt-4 pb-[5px] flex justify-center items-center">
         <div className="absolute left-4 top-[22px]">
           <Link to={`/${currentSchoolName}/teacher-tasks`}>
             <img src={LeftArrowIcon} alt="Back" className="w-6 h-6" />
@@ -183,7 +182,7 @@ const JoinYourSchoolPage = () => {
                 id="roleDropdown"
                 type="button"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex justify-start border-[1px] px-4 py-3 rounded-full focus:border-main w-full"
+                className="flex justify-start border-[1px] px-4 py-3 rounded-full focus:border-main w-full bg-white"
               >
                 {selectedRole || t("authPages.joinYourSchool.rolePlaceholder")}
               </button>

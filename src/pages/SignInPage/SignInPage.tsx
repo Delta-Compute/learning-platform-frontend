@@ -123,7 +123,7 @@ export const SignInPage = () => {
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {(isPending || isResetPasswordPending) && <Loader />}
       <Header linkTo="/" title={t("authPages.signIn.headerTitle")} />
-      <div className="flex flex-col  mt-12 mx-4">
+      <div className="flex flex-col w-full px-5 sm:w-[500px] sm:mx-auto sm:mt-10">
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signIn.emailLabel")}</h3>
         <Input
           placeholder={t("authPages.signIn.emailInputPlaceholder")}

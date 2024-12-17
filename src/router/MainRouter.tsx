@@ -7,7 +7,7 @@ import { UserRole } from "../types";
 import {
   AssignmentDetailPage,
   ClassDetailPage,
-  ConversationPage,
+  ConversationPageOld,
   FollowLinkPage,
   InitialPage,
   IntroducingWithAI,
@@ -17,7 +17,6 @@ import {
   SignInPage,
   SignUpPage,
   StudentAssignmentsPage,
-  LiveKitConversationPage,
   ImprovingStudentLanguage,
 } from "../pages";
 
@@ -82,13 +81,12 @@ export const MainRouter = () => {
       {/*teacher pages*/}
       {user?.role === UserRole.Teacher && token && user?.firstName && (
         <>
-          <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
+          <Route path="/teacher-assignments/:classRoomId" element={<ConversationPageOld role="teacher" />} />
           <Route path="/classes" element={<ClassesPage />} />
           <Route path="/classes/:id" element={<ClassDetailPage />} />
           <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
-          <Route path="/livekit" element={<LiveKitConversationPage />} />
           {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />}
         </>
       )}
@@ -97,7 +95,7 @@ export const MainRouter = () => {
       {user?.role === UserRole.Student && user.school === currentSchoolName && user.firstName && user.lastName && (
         <>
           <Route path="/student-assignments" element={<StudentAssignmentsPage />} />
-          <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
+          <Route path="/student-assignments/:assignmentId" element={<ConversationPageOld role="student" />} />
           <Route path="/free-form-lesson" element={<FreeLessonPage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
           <Route path="/improving-lessons" element={<ImprovingStudentLanguage />} />

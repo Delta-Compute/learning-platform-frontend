@@ -41,13 +41,22 @@ const ClassesPage = () => {
     <>
       {(isPending || isRefetching) && <Loader />}
       <Header title={t("teacherPages.classes.headerTitle") as string} linkTo={`/${currentSchoolName}/classes`} modal={addClassModal()} />
-      <ul className="space-y-4 p-4 pb-[60px] mt-[80px]">
-        {data?.map((classItem: Class, index) => (
+
+      <ul
+        className="
+          p-4 pb-[60px] mt-[80px] grid
+          grid-cols-1 gap-2 sm:grid-cols-2
+          md:grid-cols-3 xl:grid-cols-4
+          xl:w-[1200px] xl:mx-auto
+        "
+      >
+        {data?.map((classItem: Class) => (
           <li
             key={classItem.id}
-            className={`
-              relative bg-white p-4 rounded-[16px] shadow flex flex-col space-y-2 ${index === data?.length - 1 ? 'mb-[60px]' : ''}
-            `}
+            className="
+              bg-white p-4 rounded-[16px] shadow flex flex-col
+              space-y-2 block
+            "
           >
             <button
               className="absolute right-1 top-2 p-1 bg-white rounded-full"
@@ -75,7 +84,12 @@ const ClassesPage = () => {
               {classItem.name}
             </h2>
 
-            <Link to={`/${currentSchoolName}/teacher-assignments/${classItem.id}`} className="text-text-light-blue">{t("teacherPages.classes.addAssignmentLinkText")}</Link>
+            <Link
+              to={`/${currentSchoolName}/teacher-assignments/${classItem.id}`}
+              className="text-text-light-blue"
+            >
+              {t("teacherPages.classes.addAssignmentLinkText")}
+            </Link>
 
             <div className="flex justify-between">
               <span className="text-gray-700 border-[0.5px] border-[#E9ECEF] py-1 px-3 rounded-full text-sm">
@@ -90,7 +104,9 @@ const ClassesPage = () => {
       </ul>
 
       <div className="mt-[100px]">
-        {data?.length === 0 && !isPending && !isRefetching && <p className="text-center text-gray-500">{t("teacherPages.classes.noClassesText")}</p>}
+        {data?.length === 0 && !isPending && !isRefetching && (
+          <p className="text-center text-gray-500">{t("teacherPages.classes.noClassesText")}</p>
+        )}
       </div>
 
       <CreateClassModal

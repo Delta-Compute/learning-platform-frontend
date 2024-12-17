@@ -19,8 +19,9 @@ import PauseIcon from "../../../assets/icons/pause-icon.svg";
 
 export const Chat = () => {
   const { disconnect } = useConnection();
-  const connectionState = useConnectionState();
   const { audioTrack, state } = useVoiceAssistant();
+  const connectionState = useConnectionState();
+
   const [isChatRunning, setIsChatRunning] = useState(false);
   const {
     agent,
