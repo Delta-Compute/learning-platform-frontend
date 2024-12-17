@@ -41,6 +41,7 @@ const ClassesPage = () => {
     <>
       {(isPending || isRefetching) && <Loader />}
       <Header title={t("teacherPages.classes.headerTitle") as string} linkTo={`/${currentSchoolName}/classes`} modal={addClassModal()} />
+
       <ul className="space-y-4 p-4 pb-[60px] mt-[80px]">
         {data?.map((classItem: Class, index) => (
           <li

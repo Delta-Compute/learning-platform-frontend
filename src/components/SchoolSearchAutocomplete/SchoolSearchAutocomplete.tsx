@@ -37,7 +37,7 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSchoolName(schoolName);
-    }, 500);
+    }, 300);
 
     return () => {
       clearTimeout(handler);
@@ -50,7 +50,7 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
     isRefetching: isSchoolSearchingRefetching
   } = useQuery({
     queryFn: () => GooglePlacesSearchApi.schoolSearch(debouncedSchoolName),
-    queryKey: ["schools", debouncedSchoolName],
+    queryKey: ["schools-search"],
     staleTime: 5_000_000,
     enabled: !!debouncedSchoolName,
   });
@@ -75,6 +75,7 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
           <div className="relative w-full cursor-default overflow-hidden rounded-full p-1 border-[1px] bg-white text-left">
             <Combobox.Input
               className="w-full border-none py-2 pl-3 pr-10"
+              placeholder="Search school"
               displayValue={(school: School | null) => school?.name || schoolName}
               onChange={(event) => setSchoolName(event.target.value)}
             />
@@ -86,9 +87,28 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.3-4.3"/>
               </svg>
+
+              {/*{isSchoolSearchingRefetching && <div*/}
+              {/*  className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>*/}
+              {/*}*/}
             </Combobox.Button>
           </div>
-          <Transition
+
+          {schools?.length === 0 && schoolName !== "" && !isSchoolSearchingRefetching && (
+            <div className="text-[14px] px-4 py-2 text-gray-700 absolute mt-2 max-h-60 w-full bg-white rounded-[16px] shadow-lg">
+              Nothing found.
+            </div>
+          )}
+
+          {isSchoolSearchingRefetching && (
+            <div
+              className="text-[14px] px-4 py-2 text-gray-700 absolute mt-2 max-h-60 w-full bg-white rounded-[16px] shadow-lg"
+            >
+              {t("authPages.joinYourSchool.loadingText")}
+            </div>
+          )}
+
+          {schools?.length !== 0 && schoolName !== "" && !isSchoolSearchingRefetching && (<Transition
             as={Fragment}
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
@@ -97,48 +117,39 @@ export const SchoolSearchAutocomplete: React.FC<SchoolSearchAutocompleteProps> =
             <Combobox.Options
               className="absolute mt-2 max-h-60 w-full overflow-auto rounded-[16px] bg-white z-40 p-1 text-base shadow-lg focus:outline-none sm:text-sm"
             >
-              {schools?.length === 0 && schoolName !== "" && !isSchoolSearchingRefetching ? (
-                <div className="relative cursor-default text-[14px] select-none px-4 py-2 text-gray-500">
-                  Nothing found.
-                </div>
-              ) : (
-                schools?.map((school) => (
-                  <Combobox.Option
-                    key={school?.placeId}
-                    value={school}
-                    className="p-2 text-[14px]"
-                  >
-                    {({ selected }) => (
-                      <>
-                        <div>
-                          <span
-                            className={`block truncate text-sm ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                          {school?.name}
-                        </span>
-                        </div>
-                        <div className="flex items-center gap-1 text-gray-600 mt-1">
-                          <MapPin size={15}  />
-                          <span
-                            className={`block truncate text-xs ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                          {school?.address}
-                        </span>
-                        </div>
-                      </>
-                    )}
-                  </Combobox.Option>
-                ))
-              )}
-
-              {isSchoolSearchingRefetching && <div
-                className="relative cursor-default text-[14px] px-4 py-2 text-gray-700">{t("authPages.joinYourSchool.loadingText")}</div>}
+              {schools?.map((school) => (
+                <Combobox.Option
+                  key={school?.placeId}
+                  value={school}
+                  className="p-2 text-[14px]"
+                >
+                  {({ selected }) => (
+                    <>
+                      <div>
+                        <span
+                          className={`block truncate text-sm ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
+                        >
+                        {school?.name}
+                      </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-gray-600 mt-1">
+                        <MapPin size={15}  />
+                        <span
+                          className={`block truncate text-xs ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
+                        >
+                        {school?.address}
+                      </span>
+                      </div>
+                    </>
+                  )}
+                </Combobox.Option>
+              ))}
             </Combobox.Options>
-          </Transition>
+          </Transition>)}
         </div>
       </Combobox>
     </div>
