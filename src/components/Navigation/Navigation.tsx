@@ -103,7 +103,11 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId )
 
   return (
     <div
-      className="fixed bottom-[10px] w-[90%] bg-white shadow-lg py-2 rounded-[40px] left-1/2 transform -translate-x-1/2"
+      className="
+        fixed bottom-[10px] w-[90%] bg-white shadow-lg py-2
+        rounded-[40px] left-1/2 transform -translate-x-1/2
+        md:w-[500px]
+      "
     >
       <ul className="flex justify-around items-center">
         {NAVIGATION_ITEMS.map((item, index) => (
