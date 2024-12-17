@@ -1,6 +1,7 @@
 {
   "studentPages": {
     "studentAssignments": {
+      "aiImprovingText": "IA",
       "headerTitle": "Atribuições",
       "assignment": {
         "title": "Título",

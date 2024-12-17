@@ -1,10 +1,18 @@
-export const parseFeedbackString = (str: string) => {
+export const parseFeedbackString = (str: string, isUpdate: boolean = false) => {
+  if (isUpdate) {
+    const feedbackMatch = str.match(/\*\*Feedback\*\*:([\s\S]*)/);
+
+    return {
+      summary: feedbackMatch ? feedbackMatch[1].trim() : '',
+    };
+  }
+
   const firstNameMatch = str.match(/\*\*First name\*\*: (.+)/);
   const lastNameMatch = str.match(/\*\*Last name\*\*: (.+)/);
   const nativeLanguageMatch = str.match(/\*\*Native language\*\*: (.+)/);
   const foreignLanguageMatch = str.match(/\*\*Foreign language\*\*: (.+)/);
   const roleMatch = str.match(/\*\*Role\*\*: (.+)/);
-  const feedbackMatch = str.match(/\*\*Feedback\*\*: (.+)/);
+  const feedbackMatch = str.match(/\*\*Feedback\*\*:([\s\S]*)/);
 
   return {
     firstName: firstNameMatch ? firstNameMatch[1].trim() : '',

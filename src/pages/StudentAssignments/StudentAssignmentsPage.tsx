@@ -212,6 +212,16 @@ export const StudentAssignmentsPage = () => {
       </div>
 
       <div className="fixed bottom-5 right-2 flex items-center gap-2">
+      <button
+          className="
+            rounded-full border-[1px] px-4 py-2
+            flex items-center gap-2 bg-white
+          "
+          onClick={() => navigate(`/${currentSchoolName}/improving-lessons`)}
+        >
+          <span>{t("studentPages.studentAssignments.aiImprovingText")}</span>
+        </button>
+
         {!isStudentInClassPending && (
           <>
             {studentClassRoom === "" ? (

@@ -6,7 +6,7 @@ import { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 // @ts-ignore
 import { WavRecorder, WavStreamPlayer } from "../../lib/wavtools/index.js";
 // @ts-ignore
-import { feedbackAndGeneralInformationInstruction, introductionWithAIInstruction } from "../../utils/conversation_config.ts";
+import { feedBackFroImprovingSummmary, lessonGenerationInstruction } from "../../utils/conversation_config.ts";
 
 
 import { Link, useNavigate } from "react-router-dom";
@@ -22,6 +22,8 @@ import { Button, Loader } from '../../components/index.ts';
 import { openai } from '../../vars/open-ai.ts';
 import { parseFeedbackString } from '../../utils/informationParser.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
+import UserContext from '../../context/UserContext.tsx';
+import { useUpdateUser } from '../../hooks/index.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -32,9 +34,10 @@ interface RealtimeEvent {
 
 const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
 
-export const IntroducingWithAI = () => {
+export const ImprovingStudentLanguage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const [loading, setLoading] = useState(false);
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -58,13 +61,24 @@ export const IntroducingWithAI = () => {
     }, 1500);
   }, []);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [natureLanguage, setNatureLanguage] = useState("");
-  const [foreingLanguage, setForeingLanguage] = useState("");
-  const [role, setRole] = useState("");
   const [summary, setSummary] = useState("");
-  
+
+  const { mutate, isPending } = useUpdateUser();
+
+
+  const updateUser = async () => {
+    await mutate({
+      id: user?.id as string,
+      userSummary: summary,
+    },
+      {
+        onSuccess: () => {
+          toast.success("Your profile has been updated successfully");
+          navigate(`/${currentSchoolName}/student-assignments`);
+        }
+      }
+    );
+  }
 
   const eventsScrollHeightRef = useRef(0);
   const eventsScrollRef = useRef<HTMLDivElement>(null);
@@ -91,7 +105,7 @@ export const IntroducingWithAI = () => {
           },
           {
             role: "user",
-            content: `${feedbackAndGeneralInformationInstruction(conversation)}`,
+            content: `${feedBackFroImprovingSummmary(conversation)}`,
           },
         ],
         max_tokens: 350,
@@ -99,13 +113,8 @@ export const IntroducingWithAI = () => {
 
       if (response.choices[0].message.content) {
 
-        const parsedData = parseFeedbackString(response.choices[0].message.content);
-        
-        setFirstName(parsedData.firstName || "");
-        setLastName(parsedData.lastName || "");
-        setNatureLanguage(parsedData.nativeLanguage || "");
-        setForeingLanguage(parsedData.foreignLanguage || "");
-        setRole(parsedData.role || "");
+        const parsedData = parseFeedbackString(response.choices[0].message.content, true);
+
         setSummary(parsedData.summary);
       }
       setLoading(false);
@@ -203,7 +212,7 @@ export const IntroducingWithAI = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: introductionWithAIInstruction() });
+    client.updateSession({ instructions: lessonGenerationInstruction(user?.userSummary || "", user?.firstName || "", user?.natureLanguage || "", user?.foreignLanguage || "") });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -260,20 +269,16 @@ export const IntroducingWithAI = () => {
     return () => {
       client.reset();
     };
-  }, []);
-
-  const handleNavigateToCreateProfile = () => {
-    navigate(`/${currentSchoolName}/join-your-school`, { state: { firstName, lastName, natureLanguage, foreingLanguage, role, summary } });
-  };
+  }, [user]);
 
   return (
     <div
       data-component="ConsolePage"
       className="flex flex-col justify-between h-[100vh] w-full m-auto"
     >
-      {loading && <Loader />}
+      {(loading || isPending) && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
-        <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full">
+        <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
           <div className="absolute top-[20px] left-[20px]">
             <Link to={'/'}>
               <img src={`${LeftArrowIcon}`} />
@@ -288,15 +293,15 @@ export const IntroducingWithAI = () => {
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
               <div className="h-full justify-center flex items-center text-center">
-                <div>It's your first interaction with Teacher AI, introduce yourself</div>
+                <div>It's you AI improving lessons page</div>
               </div>
             ) : (
               <div className="h-full flex justify-center items-center">
                 <Button
                   className="text-main border-main px-[22px] hover:bg-main-red hover:text-white"
-                  onClick={() => handleNavigateToCreateProfile()}
+                onClick={() => updateUser()}
                 >
-                  {t("authPages.introducingAIPage.createProfileButton")}
+                  {t("authPages.introducingAIPage.updateMyProfileButton")}
                 </Button>
               </div>
             )}
@@ -313,7 +318,7 @@ export const IntroducingWithAI = () => {
           ${!isConnected ? "justify-end" : "justify-start"}
           flex items-end min-h-[90px] pt-[30px]
           pb-[20px] fixed bottom-0 z-0 px-[20px]
-          w-full
+          w-full bg-white
         `}
       >
         {isConnected && (
