@@ -83,7 +83,8 @@
     },
     "introducingAIPage": {
       "createProfileButton": "Criar perfil",
-      "updateProfileButton": "Atualizar perfil"
+      "updateProfileButton": "Atualizar perfil",
+      "updateMyProfileButton": "Atualizar meu perfil"
     }
   }
 }

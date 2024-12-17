@@ -22,4 +22,5 @@ export type User = {
   foreignLanguage?: string;
   auth: UserAuthType;
   schoolName?: string;
+  userSummary?: string;
 };

@@ -12,3 +12,4 @@ export * from "./ProfilePage/ProfilePage";
 export * from "./SecretInfoAIPage/SecretInfoAIPage";
 export * from "./ResetPassword/ResetPasswordPage";
 export * from "./LiveKit/LiveKitConversationPage";
+export * from "./ImprovingStudentLanguage/ImprovingStudentLanguage";

@@ -94,7 +94,8 @@
     },
     "introducingAIPage": {
       "createProfileButton": "Create profile",
-      "updateProfileButton": "Update profile"
+      "updateProfileButton": "Update profile",
+      "updateMyProfileButton": "Update my profile"
     }
   }
 }

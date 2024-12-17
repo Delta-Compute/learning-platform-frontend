@@ -18,6 +18,7 @@ import {
   SignUpPage,
   StudentAssignmentsPage,
   LiveKitConversationPage,
+  ImprovingStudentLanguage,
 } from "../pages";
 
 import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
@@ -99,6 +100,7 @@ export const MainRouter = () => {
           <Route path="/student-assignments/:assignmentId" element={<ConversationPage role="student" />} />
           <Route path="/free-form-lesson" element={<FreeLessonPage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
+          <Route path="/improving-lessons" element={<ImprovingStudentLanguage />} />
           {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />}
         </>
       )}
