@@ -291,7 +291,7 @@ export const IntroducingWithAI = () => {
     >
       {loading && <Loader />}
       <div className="pt-[100px] h-[calc(100dvh-142px)]">
-        <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full bg-white">
+        <div className="p-[20px] border-b-[1px] fixed z-[1] top-0 w-full">
           <div className="absolute top-[20px] left-[20px]">
             <Link to={'/'}>
               <img src={`${LeftArrowIcon}`} />
@@ -331,7 +331,7 @@ export const IntroducingWithAI = () => {
           ${!isConnected ? "justify-end" : "justify-start"}
           flex items-end min-h-[90px] pt-[30px]
           pb-[20px] fixed bottom-0 z-0 px-[20px]
-          w-full bg-white
+          w-full
         `}
       >
         {isConnected && (

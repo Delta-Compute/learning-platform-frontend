@@ -104,7 +104,9 @@ const ClassesPage = () => {
       </ul>
 
       <div className="mt-[100px]">
-        {data?.length === 0 && !isPending && !isRefetching && <p className="text-center text-gray-500">{t("teacherPages.classes.noClassesText")}</p>}
+        {data?.length === 0 && !isPending && !isRefetching && (
+          <p className="text-center text-gray-500">{t("teacherPages.classes.noClassesText")}</p>
+        )}
       </div>
 
       <CreateClassModal

@@ -23,8 +23,7 @@ const client = new QueryClient();
 
 export const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-import { ConnectionProvider } from "./pages/LiveKit/hooks";
-import { PlaygroundStateProvider } from "./pages/LiveKit/hooks/usePlaygroundState.tsx";
+import { ConnectionProvider, PlaygroundStateProvider } from "./pages/LiveKit/hooks";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
