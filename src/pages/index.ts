@@ -1,4 +1,4 @@
-export * from "./Conversation/ConversationPage-old.tsx";
+export * from "./Conversation/ConversationPage-old";
 export * from "./Initial/InitialPage";
 export * from "./SignUp/SignUpPage";
 export * from "./FollowLink/FollowLinkPage";
@@ -11,4 +11,3 @@ export * from "./IntroducingWithAI/IntroducingWithAI"
 export * from "./ProfilePage/ProfilePage";
 export * from "./SecretInfoAIPage/SecretInfoAIPage";
 export * from "./ResetPassword/ResetPasswordPage";
-export * from "./LiveKit/LiveKitConversationPage";
