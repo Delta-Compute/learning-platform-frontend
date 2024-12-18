@@ -406,7 +406,7 @@ export const ConversationPageOld: React.FC<ConversationPageProps> = ({ role }) =
     return () => {
       client.reset();
     };
-  }, [user?.id, params.assignmentId, user?.role, user?.firstName, studentInstructions, classRoom]);
+  }, [studentInstructions, classRoom, user]);
 
   // update assignment summary
   const updateStudentStatusHandler = async () => {
@@ -444,7 +444,7 @@ export const ConversationPageOld: React.FC<ConversationPageProps> = ({ role }) =
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that selects key topics for students.",
+            content: "You are a helpful assistant that create feedback for student",
           },
           {
             role: "user",

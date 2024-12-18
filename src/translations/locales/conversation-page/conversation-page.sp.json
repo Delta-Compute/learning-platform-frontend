@@ -10,6 +10,7 @@
     "reachTimeLimitText": "Necesidad de alcanzar el límite de tiempo",
     "saveStudentFeedbackButton": "Salve",
     "assignmentsBasedOnPlanText": "Tareas basadas en el plan de aprendizaje",
+    "assignmentsBasedOnSummury": "Tareas basadas en su resumen",
     "assignButton": "Asignar",
     "loading": "Cargando...",
     "assignmentModal": {
