@@ -1,4 +1,4 @@
-import { Topic } from '../pages';
+import { Topic } from '../types/topic';
 
 export const teacherInstructions = (
   teacherName: string,
