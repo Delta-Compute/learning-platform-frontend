@@ -186,14 +186,14 @@ export const SignInPage = () => {
           {t("authPages.signIn.bottomText")}
           <Link
             to={`/${currentSchoolName}/sign-up`}
-            className="text-main text-[16px] font-semibold cursor-pointer"
+            className="text-main font-semibold cursor-pointer"
           >
             {t("authPages.signIn.bottomLinkText")}
           </Link>
         </p>
 
         <button
-          className="text-main text-sm"
+          className="text-main text-[14px] font-semibold"
           onClick={() => setResetPasswordModalOpen(true)}
         >
           {t("authPages.resetPassword.resetPasswordButton")}?
