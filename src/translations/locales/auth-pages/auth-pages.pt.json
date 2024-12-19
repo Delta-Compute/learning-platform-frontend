@@ -53,6 +53,9 @@
         "successText": "Atualizado com sucesso"
       },
       "returnToSignInLinkText": "Regressar à página de início de sessão",
+      "resendVerificationCode": "Reenviar o código de verificação",
+      "otherCodeTimerText": "Pode obter outro código depois de",
+      "resendCodeSuccessText": "Enviado com sucesso",
       "modal": {
         "title": "Recuperação de senhas",
         "emailLabel": "Correio eletrónico",

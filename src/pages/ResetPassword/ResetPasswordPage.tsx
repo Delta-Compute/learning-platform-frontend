@@ -23,7 +23,11 @@ export const ResetPasswordPage = () => {
   const location = useLocation();
   const recoveryEmail = location.state?.recoveryEmail || null;
 
-  let resendEmailCounter = 10; 
+  const [resendEmailCounter, setResendEmailCounter] = useState(
+    Number(localStorage.getItem("resend-email-timer")) || 30
+  ); 
+
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!recoveryEmail) navigate(`/${currentSchoolName}/initial`);
@@ -52,12 +56,31 @@ export const ResetPasswordPage = () => {
     }
   });
 
-  // const { mutate: sendEmailForVerificationCode, isPending } = useMutation({
-  //   mutationFn: (email: string) => UsersApiService.sendResetVerificationCode(email, currentSchoolName),
-  //   onSuccess: () => {
+  const { mutate: sendEmailForVerificationCode, isPending: isSendEmailPending } = useMutation({
+    mutationFn: () => UsersApiService.sendResetVerificationCode(recoveryEmail, currentSchoolName),
+    onSuccess: () => {
+      toast.success(t("authPages.resetPassword.resendCodeSuccessText"));
+      setResendEmailCounter(30);
+    }
+  });
 
-  //   }
-  // });
+  useEffect(() => {
+    if (resendEmailCounter > 0) {
+      intervalRef.current = setInterval(() => {
+        setResendEmailCounter((prevCounter) => prevCounter - 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [resendEmailCounter]);
+
+  useEffect(() => {
+    localStorage.setItem("resend-email-timer", resendEmailCounter.toString());
+  }, [resendEmailCounter]);
 
   const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -74,7 +97,7 @@ export const ResetPasswordPage = () => {
 
   return (
     <div>
-      {isResetPasswordPending && <Loader />}
+      {(isResetPasswordPending || isSendEmailPending) && <Loader />}
 
       <Header linkTo={`/${currentSchoolName}/sign-in`} title={t("authPages.resetPassword.headerTitle")} />
 
@@ -111,12 +134,15 @@ export const ResetPasswordPage = () => {
 
         <div className="mt-4">
           <Button
-            disabled={resendEmailCounter === 0}
-            className="w-full bg-white disabled:opacity-70"
+            disabled={resendEmailCounter !== 0 || isSendEmailPending}
+            className="w-full bg-white transition-all duration-55 disabled:opacity-70"
+            onClick={() => sendEmailForVerificationCode()}
           >
-            <span>Resend verification code</span>
+            {t("authPages.resetPassword.resendVerificationCode")}
           </Button>
-          {resendEmailCounter !== 0 && <p className="text-sm mt-2 text-gray-500">You can get other code after: {resendEmailCounter}s</p>}
+          {resendEmailCounter !== 0 && (
+            <p className="text-sm mt-2 text-gray-500">{t("authPages.resetPassword.otherCodeTimerText")}: {resendEmailCounter}s</p>
+          )}
         </div>
 
         <Link 

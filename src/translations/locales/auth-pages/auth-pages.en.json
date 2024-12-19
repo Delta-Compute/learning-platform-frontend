@@ -63,6 +63,9 @@
         "submitButton": "Save",
         "successText": "Successfully updated"
       },
+      "resendVerificationCode": "Resend verification code",
+      "otherCodeTimerText": "You can get other code after",
+      "resendCodeSuccessText": "Successfully sent",
       "returnToSignInLinkText": "Return to sign in page",
       "modal": {
         "title": "Password recovery",
