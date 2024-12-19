@@ -97,7 +97,7 @@ const JoinYourSchoolPage = () => {
       {isPending && <Loader />}
       <div className="fixed z-[1] top-0 w-full pt-4 pb-[5px] flex justify-center items-center">
         <div className="absolute left-4 top-[22px]">
-          <Link to={`/${currentSchoolName}/teacher-tasks`}>
+          <Link to={`/${currentSchoolName}/introducing-with-ai`}>
             <img src={LeftArrowIcon} alt="Back" className="w-6 h-6" />
           </Link>
         </div>
