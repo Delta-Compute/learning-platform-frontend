@@ -100,6 +100,10 @@ export const Chat: React.FC<ChatProps> = ({
     displayTranscriptions,
   } = useAgent();
 
+
+  console.log("displayTranscriptions", displayTranscriptions);
+  
+
   const {
     data: assignmentsData,
     refetch: assignmentsRefetch,
@@ -230,7 +234,7 @@ export const Chat: React.FC<ChatProps> = ({
             content: `${studentFeedbackInstructions(user?.firstName || '', studentsConversation)}`,
           },
         ],
-        max_tokens: 150,
+        max_tokens: 250,
       });
 
       if (response.choices[0].message.content) {

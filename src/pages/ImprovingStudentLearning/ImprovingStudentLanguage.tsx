@@ -296,7 +296,7 @@ export const ImprovingStudentLanguage = () => {
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
               <div className="h-full justify-center flex text-center">
-                <TasksForImproving feedback={user?.userSummary || ""} connectConversation={connectConversation} setTask={setTask}/>
+                {user?.userSummary && <TasksForImproving feedback={user?.userSummary || ""} connectConversation={connectConversation} setTask={setTask}/>}
               </div>
             ) : (
               <div className="h-full flex justify-center items-center">
