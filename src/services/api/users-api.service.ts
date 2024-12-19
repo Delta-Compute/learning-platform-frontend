@@ -5,8 +5,6 @@ import { apiClient } from "../../vars/axios-var.ts";
 
 import { School } from "../../context";
 
-import { toast } from "react-hot-toast";
-
 export const getUser = async (id: string): Promise<User | null> => {
   try {
     const response = await apiClient.get<User | null>(`/users/${id}`);

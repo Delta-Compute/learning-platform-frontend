@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
