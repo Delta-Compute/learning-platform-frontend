@@ -143,3 +143,5 @@ export const useGetUsersByEmails = (emails: string[], school: School) => {
     enabled: emails.length > 0,
   });
 };
+
+// export const useUpdatePassword

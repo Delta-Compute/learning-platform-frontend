@@ -23,6 +23,8 @@ export const ResetPasswordPage = () => {
   const location = useLocation();
   const recoveryEmail = location.state?.recoveryEmail || null;
 
+  let resendEmailCounter = 10; 
+
   useEffect(() => {
     if (!recoveryEmail) navigate(`/${currentSchoolName}/initial`);
   }, [recoveryEmail]);
@@ -49,6 +51,13 @@ export const ResetPasswordPage = () => {
       toast.error(errorMessage);
     }
   });
+
+  // const { mutate: sendEmailForVerificationCode, isPending } = useMutation({
+  //   mutationFn: (email: string) => UsersApiService.sendResetVerificationCode(email, currentSchoolName),
+  //   onSuccess: () => {
+
+  //   }
+  // });
 
   const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -99,6 +108,16 @@ export const ResetPasswordPage = () => {
           </div>
           <Button className="bg-main text-white mt-2">{t("authPages.resetPassword.form.submitButton")}</Button>
         </form>
+
+        <div className="mt-4">
+          <Button
+            disabled={resendEmailCounter === 0}
+            className="w-full bg-white disabled:opacity-70"
+          >
+            <span>Resend verification code</span>
+          </Button>
+          {resendEmailCounter !== 0 && <p className="text-sm mt-2 text-gray-500">You can get other code after: {resendEmailCounter}s</p>}
+        </div>
 
         <Link 
           className="mt-4 flex items-center gap-1 text-main" 

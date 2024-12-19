@@ -54,8 +54,10 @@ export const SignInPage = () => {
     onSuccess: () => {
       navigate(`/${currentSchoolName}/reset-password`, { state: { recoveryEmail: resetEmail } });
     },
-    onError: () => {
-      toast.error("Something went wrong! Check what you typing");
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+      
+      toast.error(errorMessage);
     },
   });
 
