@@ -1,4 +1,5 @@
-export * from "./Conversation/ConversationPage-old.tsx";
+export * from "./Conversation/ConversationPage-old";
+export * from "./Conversation/ConversationPage";
 export * from "./Initial/InitialPage";
 export * from "./SignUp/SignUpPage";
 export * from "./FollowLink/FollowLinkPage";

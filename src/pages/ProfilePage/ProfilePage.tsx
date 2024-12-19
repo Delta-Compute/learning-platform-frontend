@@ -14,6 +14,8 @@ import { Loader, ProfileSettingsModal, BottomNavigation } from '../../components
 
 import { useTranslation } from 'react-i18next';
 
+import { User } from "lucide-react";
+
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { userId } = useParams();
@@ -50,18 +52,11 @@ export const ProfilePage = () => {
       <div className="flex items-center gap-4">
         <div>
           <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              className="text-gray-500"
-            >
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
+            <User className="text-gray-500" />
           </div>
         </div>
-        <div>
-          <h2 className="text-xl font-semibold">{user?.firstName} {user?.lastName}</h2>
+        <div className="w-[50%]">
+          <p className="text-xl font-semibold">{user?.firstName} {user?.lastName}</p>
           <p className="text-sm text-gray-500">{user?.email}</p>
           {/* <span className="text-green-500 text-sm">online</span> */}
         </div>

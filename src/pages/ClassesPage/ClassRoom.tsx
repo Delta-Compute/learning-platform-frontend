@@ -16,6 +16,8 @@ import plus from "../../assets/icons/plus-icon.svg";
 import Header from '../../components/ui/header/Header';
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 
+import { Plus } from "lucide-react";
+
 const ClassesPage = () => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
@@ -86,9 +88,12 @@ const ClassesPage = () => {
 
             <Link
               to={`/${currentSchoolName}/teacher-assignments/${classItem.id}`}
-              className="text-text-light-blue"
+              className="text-text-light-blue flex items-center gap-1"
             >
-              {t("teacherPages.classes.addAssignmentLinkText")}
+              <span>
+                <Plus size={15} />
+              </span>
+              <span>{t("teacherPages.classes.addAssignmentLinkText")}</span>
             </Link>
 
             <div className="flex justify-between">

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { useConnection, usePlaygroundState } from "../hooks";
 
@@ -6,7 +6,11 @@ import { Loader2 } from "lucide-react";
 
 import MicrophoneIcon from "../../../assets/icons/microphone-light.svg";
 
-export const ConnectButton = () => {
+interface ConnectButtonProps {
+  onStartStudentTimer?: () => void;
+};
+
+export const ConnectButton: React.FC<ConnectButtonProps> = ({ onStartStudentTimer }) => {
   const { connect, disconnect, shouldConnect } = useConnection();
   const [connecting, setConnecting] = useState(false);
   const [initiateConnectionFlag, setInitiateConnectionFlag] = useState(false);
@@ -17,6 +21,7 @@ export const ConnectButton = () => {
       await disconnect();
     } else {
       await initiateConnection();
+      onStartStudentTimer && onStartStudentTimer();
     }
   };
 
@@ -45,7 +50,7 @@ export const ConnectButton = () => {
       disabled={connecting || shouldConnect}
       className="
         flex items-center justify-center border-[1px] rounded-full
-        w-[77.6px] h-[77.6px] relative disabled:opacity-40
+        w-[77.6px] h-[77.6px] relative bg-white disabled:opacity-40
       "
     >
       {connecting || shouldConnect ? (
