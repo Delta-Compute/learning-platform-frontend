@@ -21,7 +21,7 @@ export const ResetPasswordPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { recoveryEmail } = location.state || null;
+  const recoveryEmail = location.state?.recoveryEmail || null;
 
   useEffect(() => {
     if (!recoveryEmail) navigate(`/${currentSchoolName}/initial`);
@@ -41,6 +41,7 @@ export const ResetPasswordPage = () => {
     ),
     onSuccess: () => {
       navigate(`/${currentSchoolName}/sign-in`);
+      toast.success(t("authPages.resetPassword.form.successText"));
     },
     onError: (error) => {
       const errorMessage = error instanceof Error ? error.message : "Something went wrong";
@@ -82,6 +83,7 @@ export const ResetPasswordPage = () => {
               placeholder={t("authPages.resetPassword.form.newPasswordInputPlaceholder")}
               value={formData.newPassword}
               onChange={changeInputHandler}
+              isPassword={true}
             />
           </div>
           <div>

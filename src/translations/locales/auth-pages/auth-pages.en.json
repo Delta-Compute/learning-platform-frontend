@@ -60,7 +60,8 @@
         "newPasswordInputPlaceholder": "Enter new password",
         "codeLabel": "Verification code",
         "codeInputPlaceholder": "Enter verification code",
-        "submitButton": "Save"
+        "submitButton": "Save",
+        "successText": "Successfully updated"
       },
       "returnToSignInLinkText": "Return to sign in page",
       "modal": {

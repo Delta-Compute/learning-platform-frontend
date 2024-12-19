@@ -49,7 +49,8 @@
         "newPasswordInputPlaceholder": "Introduzir nova palavra-passe",
         "codeLabel": "Código de verificação",
         "codeInputPlaceholder": "Introduzir o código de verificação",
-        "submitButton": "Salvar"
+        "submitButton": "Salvar",
+        "successText": "Atualizado com sucesso"
       },
       "returnToSignInLinkText": "Regressar à página de início de sessão",
       "modal": {

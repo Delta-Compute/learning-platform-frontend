@@ -13,4 +13,5 @@ export * from "./ProfilePage/ProfilePage";
 export * from "./SecretInfoAIPage/SecretInfoAIPage";
 export * from "./ResetPassword/ResetPasswordPage";
 export * from "./LiveKit/LiveKitConversationPage";
-export * from "./ImprovingStudentLearning/ImprovingStudentLanguage.tsx";
+export * from "./ImprovingStudentLearning/ImprovingStudentLanguage";
+export * from "./ClassRooms/ClassRoomsPage";

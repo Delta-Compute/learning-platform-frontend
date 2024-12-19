@@ -22,7 +22,7 @@ import { IAssignment } from "../../types";
 import Header from "../../components/ui/header/Header";
 import Assignment from "../../components/ui/assignment/Assisgnment";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ClassRoomApiService } from "../../services";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
@@ -52,6 +52,9 @@ export const ClassDetailPage = () => {
 
   const location = useLocation();
   const { state } = location;
+
+  const queryClient = useQueryClient();
+
   const isGear = state?.isGear || false;
   const [isStudentsModalOpen, setIsStudentsModalOpen] = useState(false);
   const [classSettingsOpen, setClassSettingsOpen] = useState(false);
@@ -134,6 +137,7 @@ export const ClassDetailPage = () => {
       setStudentEmail("");
       toast.success(t("teacherPages.class.uploadPlanModal.successfullyUploadedText"));
       refetchClassRoom();
+      queryClient.invalidateQueries();
     },
     onError: () => {
       toast.error("Something went wrong");
@@ -275,6 +279,7 @@ export const ClassDetailPage = () => {
       onSuccess: () => {
         toast.success(t("teacherPages.classes.classDeletedText"));
         navigate(`/${currentSchoolName}/classes`);
+        queryClient.invalidateQueries();
       },
       onError: (error) => {
         console.error("Class delete error:", error);
@@ -473,6 +478,7 @@ export const ClassDetailPage = () => {
           </form>
         </div>
       </Modal>
+      
       {classSettingsOpen &&
         <ClassSettingsModal
           isOpen={classSettingsOpen}
@@ -482,6 +488,7 @@ export const ClassDetailPage = () => {
           onDeleteClass={handleDeleteClass}
         />
       }
+
       {isReportModalOpen && <ReportModal onClose={() => setIsReportModalOpen(false)} classItem={classItem!} />}
       <Modal isOpen={isStudentsModalOpen} onClose={() => setIsStudentsModalOpen(false)}>
         <div className="flex flex-col items-center">

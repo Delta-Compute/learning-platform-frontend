@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ClassesApiService, ClassRoomApiService } from "../../services";
 import { Class } from "../../types/class";
 
@@ -35,10 +35,13 @@ export const useClassById = (id: string) => {
 };
 
 export const useUpdateClass = (id: string) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: Omit<Class, "verificationCode">) =>
       ClassesApiService.updateClass(id, data),
     onSuccess: (data: Class) => {
+      queryClient.invalidateQueries();
       console.log("Class updated:", data);
     },
     onError: (error) => {
