@@ -52,7 +52,7 @@ export const SignInPage = () => {
   const { mutate: resetPasswordMutation, isPending: isResetPasswordPending } = useMutation({
     mutationFn: (data: { email: string }) => UsersApiService.sendResetVerificationCode(data.email, currentSchoolName),
     onSuccess: () => {
-      navigate(`/${currentSchoolName}/reset-password`);
+      navigate(`/${currentSchoolName}/reset-password`, { state: { recoveryEmail: resetEmail } });
     },
     onError: () => {
       toast.error("Something went wrong! Check what you typing");

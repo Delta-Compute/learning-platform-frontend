@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useMutation } from "@tanstack/react-query";
 import { UsersApiService } from "../../services";
@@ -12,12 +12,22 @@ import Header from "../../components/ui/header/Header";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
+import { ChevronLeft } from "lucide-react";
+import toast from "react-hot-toast";
+
 export const ResetPasswordPage = () => {
   const { t } = useTranslation();
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { recoveryEmail } = location.state || null;
+
+  useEffect(() => {
+    if (!recoveryEmail) navigate(`/${currentSchoolName}/initial`);
+  }, [recoveryEmail]);
+
   const [formData, setFormData] = useState({
-    email: "",
     newPassword: "",
     code: "",
   });
@@ -29,6 +39,14 @@ export const ResetPasswordPage = () => {
       data.code,
       currentSchoolName,
     ),
+    onSuccess: () => {
+      navigate(`/${currentSchoolName}/sign-in`);
+    },
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+
+      toast.error(errorMessage);
+    }
   });
 
   const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +59,7 @@ export const ResetPasswordPage = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    updatePasswordMutation({ ...formData });
+    updatePasswordMutation({ ...formData, email: recoveryEmail });
   };
 
   return (
@@ -55,17 +73,6 @@ export const ResetPasswordPage = () => {
           onSubmit={submitHandler}
           className="flex flex-col gap-2"
         >
-          <div>
-            <label htmlFor="email">{t("authPages.resetPassword.form.emailLabel")}</label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              placeholder={t("authPages.resetPassword.form.emailInputPlaceholder")}
-              value={formData.email}
-              onChange={changeInputHandler}
-            />
-          </div>
           <div>
             <label htmlFor="newPassword">{t("authPages.resetPassword.form.newPasswordLabel")}</label>
             <Input
@@ -91,7 +98,15 @@ export const ResetPasswordPage = () => {
           <Button className="bg-main text-white mt-2">{t("authPages.resetPassword.form.submitButton")}</Button>
         </form>
 
-        <Link className="mt-4 block text-main" to={`/${currentSchoolName}/sign-in`}>{t("authPages.resetPassword.returnToSignInLinkText")}</Link>
+        <Link 
+          className="mt-4 flex items-center gap-1 text-main" 
+          to={`/${currentSchoolName}/sign-in`}
+        >
+          <span>
+            <ChevronLeft size={16} />
+          </span>
+          <span>{t("authPages.resetPassword.returnToSignInLinkText")}</span>
+        </Link>
       </div>
     </div>
   );
