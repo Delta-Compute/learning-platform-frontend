@@ -19,9 +19,9 @@ import {
   SignUpPage,
   StudentAssignmentsPage,
   ImprovingStudentLanguage,
+  ClassRoomsPage,
 } from "../pages";
 
-import ClassesPage from "../pages/ClassesPage/ClassRoom.tsx";
 import JoinYourSchoolPage from "../pages/JoinYourSchoolPage/JoinYourSchool.tsx";
 
 import { School } from "../context";
@@ -32,7 +32,6 @@ import ConfirmSecretInfoPage from '../pages/ConfirmSecretInfoPage/ConfirmSecretI
 import {CheckDataAI} from '../pages/CheckDataWithAI/CheckDataWithAI.tsx';
 import {FreeLessonPage} from '../pages/FreeLessonPage/FreeLessonPage.tsx';
 import {FeedbackAppPage} from '../pages/FeedbackAppPage/FeedbackAppPage.tsx';
-
 
 export const MainRouter = () => {
   const { schoolName } = useParams();
@@ -83,7 +82,7 @@ export const MainRouter = () => {
       {user?.role === UserRole.Teacher && token && user?.firstName && (
         <>
           <Route path="/teacher-assignments/:classRoomId" element={<ConversationPage role="teacher" />} />
-          <Route path="/classes" element={<ClassesPage />} />
+          <Route path="/classes" element={<ClassRoomsPage />} />
           <Route path="/classes/:id" element={<ClassDetailPage />} />
           <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />

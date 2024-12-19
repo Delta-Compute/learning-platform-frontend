@@ -49,8 +49,12 @@
         "newPasswordInputPlaceholder": "Introducir nueva contraseña",
         "codeLabel": "Código de verificación",
         "codeInputPlaceholder": "Introduzca el código de verificación",
-        "submitButton": "Salvar"
+        "submitButton": "Salvar",
+        "successText": "Actualizado correctamente"
       },
+      "resendVerificationCode": "Reenviar código de verificación",
+      "otherCodeTimerText": "Puede obtener otro código después de",
+      "resendCodeSuccessText": "Enviado con éxito",
       "returnToSignInLinkText": "Volver a la página de inicio de sesión",
       "modal": {
         "title": "Recuperação da palavra-passe",

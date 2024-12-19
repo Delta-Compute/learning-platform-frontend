@@ -1,6 +1,6 @@
-import { useTranslation } from "react-i18next";
+import { useContext, useState, memo } from "react";
 
-import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
@@ -18,7 +18,7 @@ import settingsIcon from "../../assets/icons/settings-icon.svg";
 
 import { Plus } from "lucide-react";
 
-const ClassesPage = () => {
+export const ClassRoomsPage = memo(() => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -28,10 +28,6 @@ const ClassesPage = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  useEffect(() => {
-    refetch();
-  }, [user?.id, refetch]);
 
   const addClassModal = () => (
     <button className="bg-main text-white w-8 h-8 rounded-full flex items-center justify-center">
@@ -57,7 +53,7 @@ const ClassesPage = () => {
             key={classItem.id}
             className="
               bg-white p-4 rounded-[16px] shadow flex flex-col
-              space-y-2 block
+              space-y-2
             "
           >
             <button
@@ -123,6 +119,4 @@ const ClassesPage = () => {
       <BottomNavigation classRoomId={data && data.length > 0 ? data[0].id : undefined} />
     </>
   );
-};
-
-export default ClassesPage;
+});

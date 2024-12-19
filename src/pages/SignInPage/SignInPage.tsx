@@ -52,10 +52,12 @@ export const SignInPage = () => {
   const { mutate: resetPasswordMutation, isPending: isResetPasswordPending } = useMutation({
     mutationFn: (data: { email: string }) => UsersApiService.sendResetVerificationCode(data.email, currentSchoolName),
     onSuccess: () => {
-      navigate(`/${currentSchoolName}/reset-password`);
+      navigate(`/${currentSchoolName}/reset-password`, { state: { recoveryEmail: resetEmail } });
     },
-    onError: () => {
-      toast.error("Something went wrong! Check what you typing");
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+      
+      toast.error(errorMessage);
     },
   });
 
@@ -186,14 +188,14 @@ export const SignInPage = () => {
           {t("authPages.signIn.bottomText")}
           <Link
             to={`/${currentSchoolName}/sign-up`}
-            className="text-main text-[16px] font-semibold cursor-pointer"
+            className="text-main font-semibold cursor-pointer"
           >
             {t("authPages.signIn.bottomLinkText")}
           </Link>
         </p>
 
         <button
-          className="text-main text-sm"
+          className="text-main text-[14px] font-semibold"
           onClick={() => setResetPasswordModalOpen(true)}
         >
           {t("authPages.resetPassword.resetPasswordButton")}?

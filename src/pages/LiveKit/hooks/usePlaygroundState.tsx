@@ -73,7 +73,7 @@ function playgroundStateReducer(
       };
     case "SET_API_KEY":
       if (action.payload) {
-        localStorage.setItem(LS_OPENAI_API_KEY_NAME, action.payload);
+        // localStorage.setItem(LS_OPENAI_API_KEY_NAME, action.payload);
       } else {
         localStorage.removeItem(LS_OPENAI_API_KEY_NAME);
       }
