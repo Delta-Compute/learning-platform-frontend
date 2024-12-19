@@ -10,6 +10,7 @@
     "reachTimeLimitText": "Need to reach the time limit",
     "saveStudentFeedbackButton": "Save",
     "assignmentsBasedOnPlanText": "Assignments based on learning plan",
+    "assignmentsBasedOnSummury": "Assignments based on your summury",
     "assignButton": "Assign",
     "loading": "Loading...",
     "assignmentModal": {

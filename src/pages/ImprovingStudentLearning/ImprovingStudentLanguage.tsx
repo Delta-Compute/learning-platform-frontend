@@ -24,6 +24,8 @@ import { parseFeedbackString } from '../../utils/informationParser.ts';
 import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
 import UserContext from '../../context/UserContext.tsx';
 import { useUpdateUser } from '../../hooks/index.ts';
+import { TasksForImproving } from './TasksForImproving.tsx';
+import { Topic } from '../../types/topic.ts';
 
 interface RealtimeEvent {
   time: string;
@@ -62,6 +64,7 @@ export const ImprovingStudentLanguage = () => {
   }, []);
 
   const [summary, setSummary] = useState("");
+  const [task, setTask] = useState<Topic | null>(null);
 
   const { mutate, isPending } = useUpdateUser();
 
@@ -159,7 +162,7 @@ export const ImprovingStudentLanguage = () => {
         toast.error("Something went wrong, please try again");
       }
     } catch (error: any) {
-      toast.error("Something went wrong, please try again");
+      toast.error("Something went wrong, please try again", error);
     } finally {
       setConnectionLoading(false);
     }
@@ -212,7 +215,7 @@ export const ImprovingStudentLanguage = () => {
     const client = clientRef.current;
 
     // Set instructions
-    client.updateSession({ instructions: lessonGenerationInstruction(user?.userSummary || "", user?.firstName || "", user?.natureLanguage || "", user?.foreignLanguage || "") });
+    client.updateSession({ instructions: lessonGenerationInstruction(user?.firstName || "", user?.natureLanguage || "", user?.foreignLanguage || "", task || {title: "", topic: "", description: ""}) });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
@@ -269,7 +272,7 @@ export const ImprovingStudentLanguage = () => {
     return () => {
       client.reset();
     };
-  }, [user]);
+  }, [user, task]);
 
   return (
     <div
@@ -292,8 +295,8 @@ export const ImprovingStudentLanguage = () => {
         {!isConnected ? (
           <div className="px-[20px] pb-[200px] h-[calc(100dvh-170px)] w-full m-auto md:w-[700px]">
             {items.length === 0 ? (
-              <div className="h-full justify-center flex items-center text-center">
-                <div>It's you AI improving lessons page</div>
+              <div className="h-full justify-center flex text-center">
+                <TasksForImproving feedback={user?.userSummary || ""} connectConversation={connectConversation} setTask={setTask}/>
               </div>
             ) : (
               <div className="h-full flex justify-center items-center">
