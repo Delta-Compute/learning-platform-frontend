@@ -104,11 +104,15 @@ export const MainRouter = () => {
       )}
 
       {/* if registered but without name and other fields */}
-      <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
-      <Route path="/secret-info-ai" element={<SecretInfo />} />
-      <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
-      <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
-      <Route path="/check-data" element={<CheckDataAI />} />
+      {token && !user?.firstName && (
+        <>
+          <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
+          <Route path="/secret-info-ai" element={<SecretInfo />} />
+          <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
+          <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
+          <Route path="/check-data" element={<CheckDataAI />} />
+        </>
+      )}
     </Routes>
   );
 };
