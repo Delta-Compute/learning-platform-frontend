@@ -24,7 +24,8 @@ export const ResetPasswordPage = () => {
   const recoveryEmail = location.state?.recoveryEmail || null;
 
   const [resendEmailCounter, setResendEmailCounter] = useState(
-    Number(localStorage.getItem("resend-email-timer")) || 30
+    sessionStorage.getItem("resend-email-timer") ? 
+      Number(sessionStorage.getItem("resend-email-timer")) : 30
   ); 
 
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -79,7 +80,7 @@ export const ResetPasswordPage = () => {
   }, [resendEmailCounter]);
 
   useEffect(() => {
-    localStorage.setItem("resend-email-timer", resendEmailCounter.toString());
+    sessionStorage.setItem("resend-email-timer", resendEmailCounter.toString());
   }, [resendEmailCounter]);
 
   const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
