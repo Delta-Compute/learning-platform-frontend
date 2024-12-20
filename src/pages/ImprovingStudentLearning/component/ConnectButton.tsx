@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import { useConnection, usePlaygroundState } from "../hooks";
-
 import { Loader2 } from "lucide-react";
 
 import MicrophoneIcon from "../../../assets/icons/microphone-light.svg";
+import { Topic } from '../../../types/topic';
+import { User } from '../../../types';
+import { lessonGenerationInstruction } from '../../../utils';
+import { useConnection, usePlaygroundState } from '../../LiveKit/hooks';
 
 interface ConnectButtonProps {
-  onStartStudentTimer?: () => void;
+  isChosenTask?: boolean;
+  task?: Topic;
+  user?: User;
 };
 
-export const ConnectButton: React.FC<ConnectButtonProps> = ({ onStartStudentTimer }) => {  
+export const ConnectButton: React.FC<ConnectButtonProps> = ({ isChosenTask, task, user }) => {
   const { connect, disconnect, shouldConnect } = useConnection();
   const [connecting, setConnecting] = useState(false);
   const [initiateConnectionFlag, setInitiateConnectionFlag] = useState(false);
@@ -21,7 +25,6 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({ onStartStudentTime
       await disconnect();
     } else {
       await initiateConnection();
-      onStartStudentTimer && onStartStudentTimer();
     }
   };
 
@@ -42,6 +45,13 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({ onStartStudentTime
       setInitiateConnectionFlag(false);
     }
   }, [initiateConnectionFlag, initiateConnection, pgState.openaiAPIKey]);
+
+  useEffect(() => {
+    if (isChosenTask) {
+      pgState.instructions = lessonGenerationInstruction(user?.firstName || "", user?.natureLanguage || "", user?.foreignLanguage || "", task || { title: "", topic: "", description: "" });
+      initiateConnection();
+    }
+  }, [isChosenTask]);
 
   return (
     <button

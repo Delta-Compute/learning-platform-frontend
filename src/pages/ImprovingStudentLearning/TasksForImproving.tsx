@@ -11,11 +11,11 @@ import { Topic } from '../../types/topic';
 
 interface AssignmentsBasedOnLearningPlanProps {
   feedback: string;
-  connectConversation: () => void;
   setTask: Dispatch<SetStateAction<Topic | null>>;
+  setIsChosenTask: (isChosenTask: boolean) => void;
 }
 
-export const TasksForImproving: React.FC<AssignmentsBasedOnLearningPlanProps> = ({ feedback, connectConversation, setTask }) => {
+export const TasksForImproving: React.FC<AssignmentsBasedOnLearningPlanProps> = ({ feedback, setTask, setIsChosenTask }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [generatedAssignments, setGeneratedAssignments] = useState<Topic[] | null>(null);
@@ -103,10 +103,7 @@ export const TasksForImproving: React.FC<AssignmentsBasedOnLearningPlanProps> = 
 
   const handleSetChosenTopic = async (topic: Topic) => {
     setTask(topic);
-
-    setTimeout(() => {
-      connectConversation();
-    }, 100);
+    setIsChosenTask(true);
   };
 
   return (

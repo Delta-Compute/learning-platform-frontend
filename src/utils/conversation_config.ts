@@ -594,9 +594,9 @@ The student is learning ${studentForeignLanguage}.
 ---
 
 ### **TASK PROVIDED**:  
-- **Title**: ${task.title || "No title provided"}  
-- **Topic**: ${task.topic || "No topic provided"}  
-- **Description**: ${task.description || "No description provided"}  
+- **Title**: ${task.title}  
+- **Topic**: ${task.topic}  
+- **Description**: ${task.description}  
 
 ---
 
@@ -615,7 +615,7 @@ export const feedBackFroImprovingSummmary = (conversation: string) => {
     here is the conversation with student: ${conversation}
         YOU HABE A RULES FOR STRUCTURE OF THE ALL INFORMATION:
     - All of the points must be on new line and separated with new line
-    - All of the objects mus be started with ** and ended with **, example: **First name**: John
+    - All of the objects mus be started with ** and ended with **, example: **Feedback**: feedback for the student
     The structure of the must be:
 
   **Feedback**: Analyze the conversation with the student and generate a personalized feedback summary. The feedback should include the following sections:
