@@ -6,7 +6,6 @@ import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
-import { Class } from "../../types/class";
 
 import { Loader, CreateClassModal, BottomNavigation } from "../../components";
 
