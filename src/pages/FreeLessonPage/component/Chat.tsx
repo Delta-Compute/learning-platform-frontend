@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
-
-import SchoolNamesContext from "../../../context/SchoolNamesContext.tsx";
 
 import { ConnectionState } from "livekit-client";
 
@@ -21,7 +17,6 @@ import {
 } from "../../LiveKit/hooks/index.ts";
 import { VoiceId } from "../../LiveKit/data/index.ts";
 
-import { Button } from "../../../components/index.ts";
 import { ConnectButton, SessionControls } from "../../LiveKit/components/index.ts";
 
 import { openai } from "../../../vars/index.ts";
