@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -7,11 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-interface BottomNavigationProps {
-  classRoomId?: string | undefined;
-};
-
-export const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId ) => {
+export const BottomNavigation = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const { user } = useContext(UserContext);
@@ -30,7 +26,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId )
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           stroke="currentColor"
-          className={`${isActive(`/${currentSchoolName}/classes`) ? "text-[#000000]" : "text-[#ADB5BD]"} w-6 h-6`}
+          className={`${isActive(`/${currentSchoolName}/classes`) ? "text-black" : "text-[#ADB5BD]"} w-6 h-6`}
         >
           <path
             d="M1 9.9575C1 5.01069 4.94029 1 9.80019 1C14.6601 1 18.6004 5.01069 18.6004 9.9575C18.6004 14.8658 15.792 20.5947 11.4095 22.6419C10.9058 22.8777 10.3564 23 9.80019 23C9.24399 23 8.69458 22.8777 8.19086 22.6419C3.80836 20.5936 1 14.8669 1 9.9586V9.9575Z"
@@ -59,7 +55,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId )
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           stroke="currentColor"
-          className={`${isActive(`/ai`) ? "text-[#000000]" : "text-[#ADB5BD]"} w-6 h-6`}
+          className={`${isActive(`/ai`) ? "text-black" : "text-[#ADB5BD]"} w-6 h-6`}
         >
           <path
             d="M17.8365 3.32422L18.8364 1.20452C18.8634 1.14392 18.9073 1.09245 18.963 1.05633C19.0186 1.0202 19.0835 1.00098 19.1499 1.00098C19.2162 1.00098 19.2811 1.0202 19.3367 1.05633C19.3924 1.09245 19.4364 1.14392 19.4634 1.20452L20.4644 3.32422L22.6996 3.66632C22.9867 3.71032 23.1011 4.07992 22.8943 4.29112L21.2762 5.94112L21.6579 8.27092C21.7063 8.57012 21.406 8.79892 21.1497 8.65702L19.1499 7.55702L17.1501 8.65702C16.8938 8.79782 16.5935 8.57012 16.6419 8.27092L17.0236 5.94112L15.4066 4.29112C15.1976 4.07992 15.3131 3.71032 15.6002 3.66632L17.8365 3.32422Z"
@@ -75,7 +71,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId )
           />
         </svg>
       ),
-      path: classRoomId ? `/teacher-assignments/${classRoomId}` : `/classes`,
+      path: "teacher-assignments/1",
     },
     {
       title: t("teacherPages.navigation.profileText"),
@@ -87,7 +83,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ( classRoomId )
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           stroke="currentColor"
-          className={`${isActive(`/${currentSchoolName}/profile/${user?.id}`) ? "text-[#000000]" : "text-[#ADB5BD]"} w-6 h-6`}
+          className={`${isActive(`/${currentSchoolName}/profile/${user?.id}`) ? "text-black" : "text-[#ADB5BD]"} w-6 h-6`}
         >
           <path
             d="M23.1431 18V21.4286C23.1431 21.8833 22.9625 22.3193 22.641 22.6408C22.3195 22.9623 21.8835 23.1429 21.4289 23.1429H18.0003M18.0003 0.857178H21.4289C21.8835 0.857178 22.3195 1.03779 22.641 1.35928C22.9625 1.68077 23.1431 2.11681 23.1431 2.57146V6.00003M0.857422 6.00003V2.57146C0.857422 2.11681 1.03803 1.68077 1.35952 1.35928C1.68102 1.03779 2.11705 0.857178 2.57171 0.857178H6.00028M6.00028 23.1429H2.57171C2.11705 23.1429 1.68102 22.9623 1.35952 22.6408C1.03803 22.3193 0.857422 21.8833 0.857422 21.4286V18M12.0003 11.1429C12.9096 11.1429 13.7817 10.7817 14.4246 10.1387C15.0676 9.49571 15.4289 8.62363 15.4289 7.71432C15.4289 6.80501 15.0676 5.93294 14.4246 5.28995C13.7817 4.64697 12.9096 4.28575 12.0003 4.28575C11.091 4.28575 10.2189 4.64697 9.57591 5.28995C8.93293 5.93294 8.57171 6.80501 8.57171 7.71432C8.57171 8.62363 8.93293 9.49571 9.57591 10.1387C10.2189 10.7817 11.091 11.1429 12.0003 11.1429ZM18.5197 18.8572C18.0766 17.4763 17.2065 16.2719 16.0349 15.4173C14.8632 14.5628 13.4505 14.1023 12.0003 14.1023C10.5501 14.1023 9.13736 14.5628 7.96569 15.4173C6.79403 16.2719 5.92394 17.4763 5.48085 18.8572H18.5197Z"

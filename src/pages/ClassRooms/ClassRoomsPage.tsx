@@ -48,7 +48,7 @@ export const ClassRoomsPage = memo(() => {
           xl:w-[1200px] xl:mx-auto
         "
       >
-        {data?.map((classItem: Class) => (
+        {data?.map((classItem) => (
           <li
             key={classItem.id}
             className="
@@ -116,7 +116,7 @@ export const ClassRoomsPage = memo(() => {
         onRefreshClasses={refetch}
       />
 
-      <BottomNavigation classRoomId={data && data.length > 0 ? data[0].id : undefined} />
+      <BottomNavigation />
     </>
   );
 });
