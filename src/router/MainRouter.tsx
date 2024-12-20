@@ -111,7 +111,7 @@ export const MainRouter = () => {
           <Route path="/confirm-secret-info-ai" element={<ConfirmSecretInfoPage />} />
           <Route path="/introducing-with-ai" element={<IntroducingWithAI />} />
           <Route path="/check-data" element={<CheckDataAI />} />
-          {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/introducing-with-ai`} replace />} />}
+          {/* {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/introducing-with-ai`} replace />} />} */}
         </>
       )}
     </Routes>

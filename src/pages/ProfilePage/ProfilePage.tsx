@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 
 import { User } from "lucide-react";
 
+import { UserRole } from '../../types';
+
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { userId } = useParams();
@@ -117,7 +119,7 @@ export const ProfilePage = () => {
           <span className="ml-4">{t("teacherPages.profile.logoutText")}</span>
         </li>
       </ul>
-      <BottomNavigation />
+      <BottomNavigation userRole={UserRole.Teacher} />
       {openSettings && <ProfileSettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} user={user!} />}
     </div>
   );

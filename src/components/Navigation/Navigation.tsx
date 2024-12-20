@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +7,13 @@ import { Link, useLocation } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
-export const BottomNavigation = () => {
+import { UserRole } from "../../types";
+
+interface BottomNavigationProps {
+  userRole: UserRole;
+};
+
+export const BottomNavigation: React.FC<BottomNavigationProps> = ({ userRole }) => {
   const { t } = useTranslation();
   const location = useLocation();
   const { user } = useContext(UserContext);
@@ -17,6 +23,7 @@ export const BottomNavigation = () => {
 
   const NAVIGATION_ITEMS = [
     {
+      isShown: true,
       title: t("teacherPages.navigation.classesText"),
       icon: (
         <svg
@@ -46,6 +53,7 @@ export const BottomNavigation = () => {
       path: "classes",
     },
     {
+      isShown: userRole === UserRole.Teacher,
       title: "AI",
       icon: (
         <svg
@@ -74,6 +82,7 @@ export const BottomNavigation = () => {
       path: "teacher-assignments/1",
     },
     {
+      isShown: true,
       title: t("teacherPages.navigation.profileText"),
       icon: (
         <svg
@@ -113,7 +122,9 @@ export const BottomNavigation = () => {
           >
             <li className="flex flex-col gap-2 items-center">
               {item.icon}
-              <span className={`${isActive(`/${currentSchoolName}/${item.path}`) ? `text-black` : `text-gray-400`} text-xs`}>{item.title}</span>
+              <span className={`${isActive(`/${currentSchoolName}/${item.path}`) ? `text-black` : `text-gray-400`} text-xs`}>
+                {item.title}
+              </span>
             </li>
           </Link>
         ))}
