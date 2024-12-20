@@ -15,7 +15,7 @@ import {
   useFindStudentInClass,
 } from "../../hooks";
 
-import { Loader, Modal, Button, Input } from "../../components";
+import { Loader, Modal, Button, Input, BottomNavigation } from "../../components";
 import { IAssignment } from "../../types";
 
 import { toast } from "react-hot-toast";
@@ -23,11 +23,11 @@ import { toast } from "react-hot-toast";
 import CopyIcon from "../../assets/icons/copy-icon.svg";
 import Header from '../../components/ui/header/Header';
 
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 export const StudentAssignmentsPage = () => {
   const { t } = useTranslation();
-  const { user, logout } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
 
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
@@ -137,7 +137,7 @@ export const StudentAssignmentsPage = () => {
                             handleAsignmentClick(assignment.id, e);
                           }}
                         >
-                          {"▲"}
+                          <ChevronDown />
                         </button>
                         <p className="font-semibold">
                           Title: <span className="font-light">{assignment.title}</span>
@@ -211,17 +211,7 @@ export const StudentAssignmentsPage = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-5 right-2 flex items-center gap-2">
-      <button
-          className="
-            rounded-full border-[1px] px-4 py-2
-            flex items-center gap-2 bg-white
-          "
-          onClick={() => navigate(`/${currentSchoolName}/improving-lessons`)}
-        >
-          <span>{t("studentPages.studentAssignments.aiImprovingText")}</span>
-        </button>
-
+      <div className="fixed bottom-[84px] right-6 flex items-center">
         {!isStudentInClassPending && (
           <>
             {studentClassRoom === "" ? (
@@ -241,16 +231,7 @@ export const StudentAssignmentsPage = () => {
           </>
         )}
 
-        <button
-          className="
-            rounded-full border-[1px] px-4 py-2
-            flex items-center gap-2 bg-white
-          "
-          onClick={logout}
-        >
-          <LogOut size={18} />
-          <span>{t("studentPages.studentAssignments.logoutButton.text")}</span>
-        </button>
+        <BottomNavigation />
       </div>
 
       <Modal

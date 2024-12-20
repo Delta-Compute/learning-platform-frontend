@@ -8,19 +8,18 @@ import languageIcon from "../../assets/icons/languageButton.svg";
 import privacyIcon from "../../assets/icons/privacyIcon.svg";
 import termsIcon from "../../assets/icons/termsIcon.svg";
 import logoutIcon from "../../assets/icons/logoutIcon.svg";
-import { useParams } from 'react-router-dom';
+
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import { Loader, ProfileSettingsModal, BottomNavigation } from '../../components';
 
 import { useTranslation } from 'react-i18next';
 
-import { User } from "lucide-react";
+import { UserRole } from "../../types";
 
-import { UserRole } from '../../types';
+import { User } from "lucide-react";
 
 export const ProfilePage = () => {
   const { t } = useTranslation();
-  const { userId } = useParams();
   const { user, logout } = useContext(UserContext);
   const { language } = useContext(LanguageContext);
   const [darkModeOn, setDarkModeOn] = useState(false);
@@ -38,15 +37,19 @@ export const ProfilePage = () => {
     setStudentsCounter(counter);
   };
 
-  const { data, isPending, refetch } = useGetClassesTeacherId(userId as string);
-
-  useEffect(() => {
-    refetch()
-  }, [userId, refetch]);
+  const { data, isPending, refetch } = useGetClassesTeacherId(user?.id as string);
 
   useEffect(() => {
     countStudents();
   }, [refetch, data]);
+
+  const SettingsButton = () => {
+    return (
+      <button className="flex items-center justify-center w-10 h-10 rounded-full border bg-white hover:bg-gray-100">
+        <img src={settingsIcon} alt="settings" onClick={() => setOpenSettings(true)} />
+      </button>
+    );
+  };
 
   return (
     <div className="flex flex-col h-full p-4">
@@ -64,17 +67,20 @@ export const ProfilePage = () => {
         </div>
       </div>
       <div className="flex items-center justify-between py-4 border-b">
-        <div className="flex space-x-4">
-          <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700 bg-white">
-            {`${data?.length} ${t("teacherPages.profile.classesCount")}`}
-          </div>
-          <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700 bg-white">
-            {studentsCounter} {t("teacherPages.profile.studentsCount")}
-          </div>
-        </div>
-        <button className="flex items-center justify-center w-10 h-10 rounded-full border bg-white hover:bg-gray-100">
-          <img src={settingsIcon} alt="settings" onClick={() => setOpenSettings(true)} />
-        </button>
+        {user?.role === UserRole.Teacher && (
+          <>
+            <div className="flex space-x-4">
+              <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700 bg-white">
+                {`${data?.length ?? 0} ${t("teacherPages.profile.classesCount")}`}
+              </div>
+              <div className="px-4 py-2 border rounded-full text-sm font-medium text-gray-700 bg-white">
+                {studentsCounter ?? 0} {t("teacherPages.profile.studentsCount")}
+              </div>
+            </div>
+
+            <SettingsButton />
+          </>
+        )}
       </div>
 
       <ul className="flex flex-col gap-4 mt-2 last:mt-8">
@@ -112,14 +118,15 @@ export const ProfilePage = () => {
           <span className="ml-4">{t("teacherPages.profile.termsOfServiceText")}</span>
         </li>
         <li
-          className="flex items-center text-red-500 mt-6"
-          onClick={() => logout()}
+          className="flex items-center justify-between"
         >
-          <img src={logoutIcon} alt="logoutIcon" />
-          <span className="ml-4">{t("teacherPages.profile.logoutText")}</span>
+          <button onClick={() => logout()} className="text-red-500 flex items-center">
+            <img src={logoutIcon} alt="logoutIcon" />
+            <span className="ml-4">{t("teacherPages.profile.logoutText")}</span>
+          </button>
         </li>
       </ul>
-      <BottomNavigation userRole={UserRole.Teacher} />
+      <BottomNavigation />
       {openSettings && <ProfileSettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} user={user!} />}
     </div>
   );

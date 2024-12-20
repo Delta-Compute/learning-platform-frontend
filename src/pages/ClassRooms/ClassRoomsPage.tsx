@@ -117,7 +117,7 @@ export const ClassRoomsPage = memo(() => {
         onRefreshClasses={refetch}
       />
 
-      <BottomNavigation userRole={UserRole.Teacher} />
+      <BottomNavigation />
     </>
   );
 });
