@@ -85,7 +85,7 @@ export const MainRouter = () => {
           <Route path="/classes" element={<ClassRoomsPage />} />
           <Route path="/classes/:id" element={<ClassDetailPage />} />
           <Route path="/classes/:classRoomId/:assignmentId" element={<AssignmentDetailPage />} />
-          <Route path="/profile/:userId" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
           {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/classes`} replace />} />}
         </>
@@ -99,6 +99,7 @@ export const MainRouter = () => {
           <Route path="/free-form-lesson" element={<FreeLessonPage />} />
           <Route path="/feedback" element={<FeedbackAppPage />} />
           <Route path="/improving-lessons" element={<ImprovingStudentLanguage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           {!isUserPending && !isUserRefetching && <Route path="/*" element={<Navigate to={`/${currentSchoolName}/student-assignments`} replace />} />}
         </>
       )}

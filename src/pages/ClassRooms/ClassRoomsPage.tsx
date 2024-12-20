@@ -7,8 +7,6 @@ import SchoolNamesContext from "../../context/SchoolNamesContext";
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import UserContext from '../../context/UserContext';
 
-import { UserRole } from "../../types";
-
 import { Loader, CreateClassModal, BottomNavigation } from "../../components";
 
 import { useNavigate, Link } from "react-router-dom";
@@ -117,7 +115,7 @@ export const ClassRoomsPage = memo(() => {
         onRefreshClasses={refetch}
       />
 
-      <BottomNavigation userRole={UserRole.Teacher} />
+      <BottomNavigation />
     </>
   );
 });
