@@ -101,8 +101,13 @@ export const Chat: React.FC<ChatProps> = ({
   } = useAgent();
 
 
-  console.log("displayTranscriptions", displayTranscriptions);
-  
+    useEffect(() => {
+      if (displayTranscriptions.length > 0) {
+        if (displayTranscriptions && displayTranscriptions[displayTranscriptions.length - 1].segment.text.includes("Ending")) {
+          disconnectHandler();
+        }
+      }
+    }, [displayTranscriptions]);
 
   const {
     data: assignmentsData,

@@ -72,7 +72,7 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
             content: `${teacherInstuctionsWithLearningPlan(learningPlan)}`,
           },
         ],
-        max_tokens: 150,
+        max_tokens: 250,
       });
 
       let topics = "";
@@ -80,7 +80,6 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
       if (response.choices[0].message.content) {
         topics = response.choices[0].message.content.trim();
       }
-
       const topicArray = topics.trim().split("===");
 
       const topicsArrayChecked = [] as string[];
