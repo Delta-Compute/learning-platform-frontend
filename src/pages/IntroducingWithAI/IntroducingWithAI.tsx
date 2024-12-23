@@ -1,9 +1,3 @@
-import { useContext } from "react";
-
-import { Link } from "react-router-dom";
-import LeftArrowIcon from "../../assets/icons/left-arrow.svg";
-
-import SchoolNamesContext from '../../context/SchoolNamesContext.tsx';
 import { LiveKitRoom, RoomAudioRenderer } from '@livekit/components-react';
 import { AgentProvider } from '../LiveKit/hooks/useAgent.tsx';
 import { useConnection } from '../LiveKit/hooks/useConnection.tsx';
@@ -11,8 +5,6 @@ import { Chat } from './component';
 import { t } from 'i18next';
 
 export const IntroducingWithAI = () => {
-
-  const { currentSchoolName } = useContext(SchoolNamesContext);
   const { shouldConnect, wsUrl, token } = useConnection();
 
   return (
