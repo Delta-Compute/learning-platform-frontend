@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import { useConnection, usePlaygroundState } from "../hooks";
+import { useWakeLock } from "../../../hooks";
 
 import { Loader2 } from "lucide-react";
 
@@ -12,6 +13,7 @@ interface ConnectButtonProps {
 
 export const ConnectButton: React.FC<ConnectButtonProps> = ({ onStartStudentTimer }) => {  
   const { connect, disconnect, shouldConnect } = useConnection();
+  const { requestWakeLock } = useWakeLock();
   const [connecting, setConnecting] = useState(false);
   const [initiateConnectionFlag, setInitiateConnectionFlag] = useState(false);
   const { pgState } = usePlaygroundState();
@@ -27,6 +29,8 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({ onStartStudentTime
 
   const initiateConnection = useCallback(async () => {
     setConnecting(true);
+    requestWakeLock();
+
     try {
       await connect();
     } catch (error) {
