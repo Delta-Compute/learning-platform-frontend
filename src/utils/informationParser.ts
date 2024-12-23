@@ -1,9 +1,7 @@
 export const parseFeedbackString = (str: string, isUpdate: boolean = false) => {
   if (isUpdate) {
-    const feedbackMatch = str.match(/\*\*Feedback\*\*:([\s\S]*)/);
-
     return {
-      summary: feedbackMatch ? feedbackMatch[1].trim() : '',
+      summary: str,
     };
   }
 
