@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import SchoolNamesContext from "../../context/SchoolNamesContext";
 
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
-import UserContext from '../../context/UserContext';
+import UserContext from '../../context/UserContext';  
 
 import { Loader, CreateClassModal, BottomNavigation } from "../../components";
 
@@ -47,7 +47,7 @@ export const ClassRoomsPage = memo(() => {
           xl:w-[1200px] xl:mx-auto
         "
       >
-        {data?.map((classItem) => (
+        {!isPending && !isRefetching && data?.map((classItem) => (
           <li
             key={classItem.id}
             className="

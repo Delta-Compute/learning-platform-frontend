@@ -4,7 +4,7 @@ import { apiClient } from "../../vars/axios-var.ts";
 
 export const getClassesTeacherId = async (teacherId: string): Promise<Class[]> => {
   try {
-    const response = await apiClient.get<Class[]>("/class-room", { params: { teacherId } });
+    const response = await apiClient.get<Class[]>(`/class-room/teacher-class-rooms/${teacherId}`);
 
     return response.data as Class[];
   } catch (error) {

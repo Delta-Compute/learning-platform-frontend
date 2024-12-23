@@ -115,7 +115,7 @@ export const BottomNavigation = () => {
           >
             <li className="flex flex-col gap-2 items-center">
               {item.icon}
-              <span className={`${isActive(`/${currentSchoolName}/${item.path}`) ? `text-black` : `text-gray-400`} text-xs`}>
+              <span className={`${isActive(`/${currentSchoolName}/${item.path}`) ? "text-black" : "text-gray-400"} text-xs`}>
                 {item.title}
               </span>
             </li>

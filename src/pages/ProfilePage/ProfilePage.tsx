@@ -27,6 +27,8 @@ export const ProfilePage = () => {
 
   const [studentsCounter, setStudentsCounter] = useState(0);
 
+  const { data, isPending, refetch } = useGetClassesTeacherId(user?.id as string);
+
   const countStudents = () => {
     let counter = 0;
 
@@ -36,8 +38,6 @@ export const ProfilePage = () => {
 
     setStudentsCounter(counter);
   };
-
-  const { data, isPending, refetch } = useGetClassesTeacherId(user?.id as string);
 
   useEffect(() => {
     countStudents();
