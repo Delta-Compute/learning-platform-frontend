@@ -31,13 +31,6 @@ export const IntroducingWithAI = () => {
     >
       <AgentProvider>
         <div className="p-[20px] border-b-[1px] fixed z-10 top-0 w-full bg-bg-color">
-          <div className="absolute top-[20px] left-[20px]">
-            <Link
-              to={`/${currentSchoolName}/introducing-with-ai`}
-            >
-              <img src={`${LeftArrowIcon}`} />
-            </Link>
-          </div>
           <div className="flex flex-col gap-[6px]">
             <h2 className="text-center text-[20px]">{t("conversationPage.headerTitle")}</h2>
           </div>
