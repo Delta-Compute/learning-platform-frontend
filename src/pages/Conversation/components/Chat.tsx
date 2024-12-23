@@ -35,6 +35,7 @@ import {
   useClassById, 
   useGenerateAssignmentSummary,
   useGetStudentAssignments, 
+  useWakeLock,
 } from "../../../hooks";
 import { ClassRoomProgressApiService } from "../../../services";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -68,6 +69,8 @@ export const Chat: React.FC<ChatProps> = ({
 }) => {
   const params = useParams();
   const navigate = useNavigate();
+
+  const { releaseWakeLock } = useWakeLock();
 
   const { t } = useTranslation();
 
@@ -255,6 +258,8 @@ export const Chat: React.FC<ChatProps> = ({
   const disconnectHandler = async () => {
     try {
       await disconnect();
+
+      releaseWakeLock();
 
       onStopStudentTimer && onStopStudentTimer();
       getFeedbackToStudent();

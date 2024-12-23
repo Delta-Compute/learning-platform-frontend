@@ -35,7 +35,7 @@ export const SecretInfo = () => {
         <div className="p-[20px] border-b-[1px] fixed z-10 top-0 w-full bg-bg-color">
           <div className="absolute top-[20px] left-[20px]">
             <Link
-              to={`/${currentSchoolName}/initial`}
+              to={`/${currentSchoolName}/join-your-school`}
             >
               <img src={`${LeftArrowIcon}`} />
             </Link>

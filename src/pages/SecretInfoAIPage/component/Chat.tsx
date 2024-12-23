@@ -21,6 +21,8 @@ import {
 } from "../../LiveKit/hooks/index.ts";
 import { VoiceId } from "../../LiveKit/data/index.ts";
 
+import { useWakeLock } from "../../../hooks";
+
 import { Button } from "../../../components/index.ts";
 import { ConnectButton, SessionControls } from "../../LiveKit/components/index.ts";
 
@@ -32,7 +34,6 @@ import PauseIcon from "../../../assets/icons/pause-icon.svg";
 import { instructionsForSecretWords, getFavoiriteColorAndNumberInstructions } from '../../../utils/conversation_config.ts';
 import { parseSecrets } from '../../../utils/parseSecrets.ts';
 
-
 export const Chat: React.FC = () => {
   const navigate = useNavigate();
 
@@ -40,6 +41,8 @@ export const Chat: React.FC = () => {
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const [color, setColor] = useState("");
   const [number, setNumber] = useState("");
+
+  const { releaseWakeLock } = useWakeLock();
 
   const { disconnect } = useConnection();
   const { audioTrack, state } = useVoiceAssistant();
@@ -106,6 +109,8 @@ export const Chat: React.FC = () => {
   };
 
   const disconnectHandler = async () => {
+    releaseWakeLock();
+    
     try {
       await getFeedBackAndGeneralInformation();
       await disconnect();

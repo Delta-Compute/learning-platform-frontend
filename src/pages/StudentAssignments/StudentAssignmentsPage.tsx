@@ -237,10 +237,10 @@ export const StudentAssignmentsPage = () => {
       <Modal
         isOpen={isVerifyClassRoomCodeModalOpen}
         onClose={() => setIsVerifyClassRoomCodeModalOpen(false)}
+        title={t("studentPages.studentAssignments.verificationModal.title")}
       >
         <div>
-          <p className="text-center text-dark-blue font-semibold text-[18px]">{t("studentPages.studentAssignments.verificationModal.title")}</p>
-          <form onSubmit={submitVerificationHandler} className="mt-5 flex flex-col gap-2">
+          <form onSubmit={submitVerificationHandler} className="mt-2 flex flex-col gap-2">
             <Input
               className="w-full"
               placeholder={t("studentPages.studentAssignments.verificationModal.verificationCodeInputPlaceholder")}

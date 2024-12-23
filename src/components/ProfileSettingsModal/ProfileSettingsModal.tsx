@@ -84,9 +84,10 @@ export const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({ onCl
           <label className="ml-[8px] block text-sm font-normal mb-2 text-[16px]">{t("teacherPages.profile.emailModal")}</label>
           <Input
             value={userEmail}
+            disabled={true}
             type="text"
             placeholder={t("teacherPages.profile.emailInputPlaceholder")}
-            className="w-full"
+            className="w-full disabled:text-gray-400"
             onChange={(e) => setUserEmail(e.target.value)}
           />
         </div>

@@ -141,6 +141,18 @@ const resetPassword = async (email: string, newPassword: string, code: string, s
   }
 };
 
+const deleteUserAccount = async (userId: string) => {
+  try {
+    await apiClient.delete(`/users/${userId}`);
+  } catch(error: any) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Something went wrong.");
+    }
+
+    throw new Error("Server connection error");
+  }
+};
+
 export const UsersApiService = {
   getUser,
   updateUser,
@@ -150,4 +162,5 @@ export const UsersApiService = {
   findUserByEmail,
   sendResetVerificationCode,
   resetPassword,
+  deleteUserAccount,
 };

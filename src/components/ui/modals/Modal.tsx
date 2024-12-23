@@ -52,7 +52,8 @@ export const Modal: React.FC<ModalProps> = ({
     <>
       {isOpen && (
         <div
-          className="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-[#00143480] z-40">
+          className="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-[#00143480] z-40"
+        >
           <div
             ref={modalRef}
             className="
@@ -61,7 +62,7 @@ export const Modal: React.FC<ModalProps> = ({
               no-scrollbar p-[12px] sm:p-[20px]
             "
           >
-            {title && <p className="text-[24px] font-semibold text-center text-dark-blue">{title}</p>}
+            {title && <p className="text-[24px] font-semibold text-center text-text-dark-blue">{title}</p>}
             {children}
           </div>
         </div>

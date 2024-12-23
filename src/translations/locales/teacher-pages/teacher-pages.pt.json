@@ -109,7 +109,13 @@
       "nativeLanguage": "Língua nativa",
       "nativeLanguageInputPlaceholder": "Escolha a língua nativa",
       "foreignLanguage": "Língua estrangeira",
-      "foreignLanguageInputPlaceholder": "Escolha a língua estrangeira"
+      "foreignLanguageInputPlaceholder": "Escolha a língua estrangeira",
+      "deleteAccountButton": "Eliminar a conta",
+      "deleteAccountModal": {
+        "title": "Eliminar a conta",
+        "subTitle": "Tem a certeza? Esta ação não pode ser anulada.",
+        "deleteButton": "Apagar"
+      }
     }
   }
 }

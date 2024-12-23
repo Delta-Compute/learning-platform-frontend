@@ -109,7 +109,13 @@
       "nativeLanguage": "Nature language",
       "nativeLanguageInputPlaceholder": "Write a native language",
       "foreignLanguage": "Foreign language",
-      "foreignLanguageInputPlaceholder": "Write a foreign language"
+      "foreignLanguageInputPlaceholder": "Write a foreign language",
+      "deleteAccountButton": "Delete account",
+      "deleteAccountModal": {
+        "title": "Delete account",
+        "subTitle": "Are you sure? This action can not be undone.",
+        "deleteButton": "Delete"
+      }
     }
   }
 }
