@@ -144,4 +144,20 @@ export const useGetUsersByEmails = (emails: string[], school: School) => {
   });
 };
 
-// export const useUpdatePassword
+export const useDeleteUserAccount = () => {
+  const { logout } = useContext(UserContext);
+
+  const { ...rest } = useMutation({
+    mutationFn: (userId: string) => UsersApiService.deleteUserAccount(userId),
+    onSuccess: () => {
+      logout();
+    },
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+
+      toast.error(errorMessage);
+    }
+  });
+
+  return rest;
+};

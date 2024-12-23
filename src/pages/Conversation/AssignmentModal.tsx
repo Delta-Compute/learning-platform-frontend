@@ -6,7 +6,13 @@ import { addAssignment, ClassRoomProgressApiService } from "../../services";
 
 import { useGenerateAssignmentSummary } from "../../hooks";
 
-import { QueryObserverResult, RefetchOptions, useMutation, useQuery } from "@tanstack/react-query";
+import { 
+  QueryObserverResult, 
+  RefetchOptions, 
+  useMutation, 
+  useQuery, 
+  useQueryClient 
+} from "@tanstack/react-query";
 
 import { Modal, Button } from "../../components";
 
@@ -45,6 +51,7 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
   checkShowFeedbackModal,
 }) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { currentSchoolName } = useContext(SchoolNamesContext);
   const [time, setTime] = useState("00:00");
   const [selectedClassRoom, setSelectedClassRoom] = useState<{ id: string, name: string } | null>(null);
@@ -145,9 +152,12 @@ export const AssignmentModal: React.FC<AssignmentModalProps> = ({
       if (onClassRoomAssignmentsRefetch) {
         await onClassRoomAssignmentsRefetch();
       }
+
       if (checkShowFeedbackModal) {
         checkShowFeedbackModal();
       }
+
+      queryClient.invalidateQueries();
     },
     onError: () => {
       toast.error("Something went wrong");

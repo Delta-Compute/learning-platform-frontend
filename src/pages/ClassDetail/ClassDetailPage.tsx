@@ -460,7 +460,7 @@ export const ClassDetailPage = () => {
         onClose={() => setIsAddStudentModalOpen(false)}
       >
         <div>
-          <p className="font-semibold text-[20px] text-center">{t("teacherPages.class.addStudentModal.title")}</p>
+          <p className="font-semibold text-[20px] text-center text-text-dark-blue">{t("teacherPages.class.addStudentModal.title")}</p>
 
           <form onSubmit={submitStudentEmail} className="flex flex-col mt-[10px]">
             <Input

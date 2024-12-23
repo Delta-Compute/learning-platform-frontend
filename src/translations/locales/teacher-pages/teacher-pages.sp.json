@@ -109,7 +109,13 @@
       "nativeLanguage": "Lenguaje natural",
       "nativeLanguageInputPlaceholder": "Escribir una lengua materna",
       "foreignLanguage": "Lengua extranjera",
-      "foreignLanguageInputPlaceholder": "Escribir una lengua extranjera"
+      "foreignLanguageInputPlaceholder": "Escribir una lengua extranjera",
+      "deleteAccountButton": "Eliminar cuenta",
+      "deleteAccountModal": {
+        "title": "Eliminar cuenta",
+        "subTitle": "¿Está seguro? Esta acción no se puede deshacer.",
+        "deleteButton": "Borrar"
+      }
     }
   }
 }

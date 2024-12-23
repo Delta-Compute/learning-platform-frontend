@@ -1,6 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from "react";
+
 import UserContext from '../../context/UserContext';
 import LanguageContext from "../../context/LanguageContext";
+
+import { useGetClassesTeacherId } from '../../hooks/api/classes';
+import { useDeleteUserAccount } from "../../hooks";
+import { 
+  Loader, 
+  ProfileSettingsModal, 
+  BottomNavigation, 
+  Modal,
+  Button, 
+} from '../../components';
+
+import { useTranslation } from 'react-i18next';
+
+import { UserRole } from "../../types";
+
+import { User, UserMinus } from "lucide-react";
+
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import darkModeIcon from "../../assets/icons/darkmodeLogo.svg";
 import helpIcon from "../../assets/icons/helpIcon.svg";
@@ -9,15 +27,6 @@ import privacyIcon from "../../assets/icons/privacyIcon.svg";
 import termsIcon from "../../assets/icons/termsIcon.svg";
 import logoutIcon from "../../assets/icons/logoutIcon.svg";
 
-import { useGetClassesTeacherId } from '../../hooks/api/classes';
-import { Loader, ProfileSettingsModal, BottomNavigation } from '../../components';
-
-import { useTranslation } from 'react-i18next';
-
-import { UserRole } from "../../types";
-
-import { User } from "lucide-react";
-
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { user, logout } = useContext(UserContext);
@@ -25,9 +34,13 @@ export const ProfilePage = () => {
   const [darkModeOn, setDarkModeOn] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
 
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+
   const [studentsCounter, setStudentsCounter] = useState(0);
 
   const { data, isPending, refetch } = useGetClassesTeacherId(user?.id as string);
+
+  const { mutate: deleteAccountMutation, isPending: isDeleteAccountPending } = useDeleteUserAccount();
 
   const countStudents = () => {
     let counter = 0;
@@ -53,7 +66,7 @@ export const ProfilePage = () => {
 
   return (
     <div className="flex flex-col h-full p-4">
-      {isPending && <Loader />}
+      {(isPending || isDeleteAccountPending) && <Loader />}
       <div className="flex items-center gap-4">
         <div>
           <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
@@ -126,8 +139,36 @@ export const ProfilePage = () => {
           </button>
         </li>
       </ul>
+      
+      <div className="pt-5 mt-10 border-t-[1px]">
+        <button 
+          className="text-red-500 flex items-center gap-4"
+          onClick={() => setIsDeleteAccountModalOpen(true)}
+        >
+          <UserMinus />
+          <span>{t("teacherPages.profile.deleteAccountButton")}</span>
+        </button>
+      </div>
+
       <BottomNavigation />
       {openSettings && <ProfileSettingsModal isOpen={openSettings} onClose={() => setOpenSettings(false)} user={user!} />}
+
+      <Modal 
+        isOpen={isDeleteAccountModalOpen}
+        onClose={() => setIsDeleteAccountModalOpen(false)}
+        title={t("teacherPages.profile.deleteAccountModal.title")}
+      >
+        <div className="mt-2">
+          <p className="text-center text-gray-600 text-sm">{t("teacherPages.profile.deleteAccountModal.subTitle")}</p>
+
+          <Button 
+            className="w-full mt-5 bg-red-500 text-white"
+            onClick={() => user && user.id && deleteAccountMutation(user.id)}
+          >
+            {t("teacherPages.profile.deleteAccountModal.deleteButton")}
+          </Button> 
+        </div>
+      </Modal>  
     </div>
   );
 };
