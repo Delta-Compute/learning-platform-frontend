@@ -115,8 +115,9 @@ export const Chat: React.FC = () => {
     releaseWakeLock();
     
     try {
-      await getFeedBackAndGeneralInformation();
       await disconnect();
+
+      await getFeedBackAndGeneralInformation();
     } catch (error) {
       console.log(error);
     }
