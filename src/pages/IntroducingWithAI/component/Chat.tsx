@@ -68,6 +68,8 @@ export const Chat: React.FC = () => {
   }, [pgState]);
 
   const [hasSeenAgent, setHasSeenAgent] = useState(false);
+  console.log("displayTranscriptions", displayTranscriptions);
+  
 
   const getFeedBackAndGeneralInformation = async (): Promise<any> => {
 
@@ -171,6 +173,14 @@ export const Chat: React.FC = () => {
       if (appearanceTimer) clearTimeout(appearanceTimer);
     };
   }, [connectionState, agent, disconnect, hasSeenAgent]);
+
+  useEffect(() => {
+    if (displayTranscriptions.length > 0) {
+      if (displayTranscriptions && displayTranscriptions[displayTranscriptions.length - 1].segment.text.includes("Ending")) {
+        disconnectHandler();
+      }
+    }
+  }, [displayTranscriptions]);
 
 
   const renderVisualizer = () => (

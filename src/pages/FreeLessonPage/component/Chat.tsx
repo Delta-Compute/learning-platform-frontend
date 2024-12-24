@@ -54,6 +54,14 @@ export const Chat: React.FC = () => {
     pgState.instructions = instructionsForFreeLesson(user?.firstName || "", user?.natureLanguage || "", user?.foreignLanguage || "");
   }, [pgState, user]);
 
+  useEffect(() => {
+    if (displayTranscriptions.length > 0) {
+      if (displayTranscriptions && displayTranscriptions[displayTranscriptions.length - 1].segment.text.includes("Ending")) {
+        disconnectHandler();
+      }
+    }
+  }, [displayTranscriptions]);
+
   const [hasSeenAgent, setHasSeenAgent] = useState(false);
 
   const getFeedBackAndGeneralInformation = async (): Promise<any> => {

@@ -28,8 +28,6 @@ interface ChatProps {
 };
 
 export const Chat: React.FC<ChatProps> = ({ instruction }) => {
-  console.log(instruction);
-  
   const { t } = useTranslation();
   const { disconnect } = useConnection();
   const { audioTrack, state } = useVoiceAssistant();
@@ -39,6 +37,7 @@ export const Chat: React.FC<ChatProps> = ({ instruction }) => {
 
   const {
     agent,
+    displayTranscriptions,
   } = useAgent();
 
   // change information state
@@ -49,6 +48,14 @@ export const Chat: React.FC<ChatProps> = ({ instruction }) => {
   }, [pgState, instruction]);
 
   const [hasSeenAgent, setHasSeenAgent] = useState(false);
+
+  useEffect(() => {
+    if (displayTranscriptions.length > 0) {
+      if (displayTranscriptions && displayTranscriptions[displayTranscriptions.length - 1].segment.text.includes("Ending")) {
+        disconnectHandler();
+      }
+    }
+  }, [displayTranscriptions]);
 
 
   const disconnectHandler = async () => {
