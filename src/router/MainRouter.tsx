@@ -105,7 +105,7 @@ export const MainRouter = () => {
       )}
 
       {/* if registered but without name and other fields */}
-      {token && !user?.firstName && (
+      {user && token && user.role !== UserRole.Student && user.role !== UserRole.Teacher && (
         <>
           <Route path="/join-your-school" element={<JoinYourSchoolPage />} />
           <Route path="/secret-info-ai" element={<SecretInfo />} />
