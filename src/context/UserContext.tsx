@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { User } from "../types";
-import { jwtDecode } from "jwt-decode";
+import { useQueryClient } from "@tanstack/react-query";
+
 import { useGetUser } from "../hooks";
+
+import { User } from "../types";
+
+import { jwtDecode } from "jwt-decode";
 
 interface UserContext {
   user: User | null;
@@ -25,12 +29,14 @@ export const UserContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState("");
   const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem("token") || "");
+  const queryClient = useQueryClient();
 
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
     setAccessToken(null);
     setUser(null);
+    queryClient.clear();
   };
 
   const { 

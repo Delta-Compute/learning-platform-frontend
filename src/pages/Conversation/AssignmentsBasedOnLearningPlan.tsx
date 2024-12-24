@@ -35,7 +35,7 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
   const { data: classRoom } = useClassById(classRoomId as string);
 
   const [loading, setLoading] = useState(false);
-  const [generatedAssignments, setGeneratedAssignments] = useState<Topic[] | null>(null);
+  const [generatedAssignments, setGeneratedAssignments] = useState<Topic[]>([]);
   const [chosenTopic, setChosenTopic] = useState<Topic>({ title: "", topic: "", description: "", time: "" });
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
 
@@ -44,13 +44,17 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
       if (classRoom && classRoom.learningPlan) {
         setLoading(true);
 
-        const topics: Topic[] = (await getThreeTopics(classRoom.learningPlan)) || [];
+        try {
+          const topics: Topic[] = (await getThreeTopics(classRoom.learningPlan)) || [];
 
-        if (topics) {
-          setGeneratedAssignments(topics);
+          if (topics) {
+            setGeneratedAssignments(topics);
+          }
+        } catch(error) {
+          console.log(error, "can not generate assignments");
+        } finally {
+          setLoading(false);
         }
-
-        setLoading(false);
       }
     }
 
@@ -156,6 +160,10 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
               {task.title}
             </li>
           ))}
+
+          {generatedAssignments?.length === 0 && (
+            <p className="text-center text-sm text-gray-500">No learning plan</p>
+          )}
         </ul>
 
         {user?.role !== "student" && chosenTopic && <AssignmentModal

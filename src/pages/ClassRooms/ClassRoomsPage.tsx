@@ -1,4 +1,4 @@
-import { useContext, useState, memo } from "react";
+import { useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -17,7 +17,7 @@ import settingsIcon from "../../assets/icons/settings-icon.svg";
 
 import { Plus } from "lucide-react";
 
-export const ClassRoomsPage = memo(() => {
+export const ClassRoomsPage = () => {
   const { t } = useTranslation();
   const { user } = useContext(UserContext);
   const { currentSchoolName } = useContext(SchoolNamesContext);
@@ -118,4 +118,4 @@ export const ClassRoomsPage = memo(() => {
       <BottomNavigation />
     </>
   );
-});
+};
