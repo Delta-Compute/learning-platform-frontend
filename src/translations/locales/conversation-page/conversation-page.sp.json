@@ -24,6 +24,7 @@
       "deadlineLabel": "Plazo",
       "timeForTaskText": "Tiempo para la tarea",
       "successfullyCreatedText": "Asignación creada correctamente"
-    }
+    },
+    "noLearningPlanText": "Sin plan de aprendizaje"
   }
 }

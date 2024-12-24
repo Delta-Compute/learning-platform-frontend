@@ -24,6 +24,7 @@
       "deadlineLabel": "Prazo de entrega",
       "timeForTaskText": "Tempo para a tarefa",
       "successfullyCreatedText": "Atribuição criada com sucesso"
-    }
+    },
+    "noLearningPlanText": "Sem plano de aprendizagem"
   }
 }

@@ -161,8 +161,8 @@ export const AssignmentsBasedOnLearningPlan: React.FC<AssignmentsBasedOnLearning
             </li>
           ))}
 
-          {generatedAssignments?.length === 0 && (
-            <p className="text-center text-sm text-gray-500">No learning plan</p>
+          {(!classRoom || classRoom?.learningPlan === "") && (
+            <p className="text-center text-sm text-gray-500">{t("conversationPage.noLearningPlanText")}</p>
           )}
         </ul>
 

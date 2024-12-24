@@ -24,6 +24,7 @@
       "deadlineLabel": "Deadline",
       "timeForTaskText": "Time for task",
       "successfullyCreatedText": "Assignment successfully created"
-    }
+    },
+    "noLearningPlanText": "No learning plan"
   }
 }
