@@ -62,6 +62,10 @@ export const SignInPage = () => {
   });
 
   const handleLogin = async () => {
+    if (userInfo.email === "" || userInfo.password === "") {
+      return;
+    }
+
     await mutate({
       email: userInfo.email,
       password: userInfo.password,

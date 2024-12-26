@@ -97,8 +97,9 @@ export const useLogin = () => {
       );
     },
     onError: (error) => {
-      toast.error("Something went wrong");
-      console.error("Login failed:", error);
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+
+      toast.error(errorMessage);
     },
   });
 };
@@ -124,9 +125,9 @@ export const useSingUp = () => {
       }
     },
     onError: (error) => {
-      toast.error("Something went wrong");
+      const errorMessage = error instanceof Error ? error.message : "Something went wrong";
 
-      console.error("Sign up failed:", error);
+      toast.error(errorMessage);
     },
   });
 };

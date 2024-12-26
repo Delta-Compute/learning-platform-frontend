@@ -79,9 +79,12 @@ export const signIn = async (credentials: {
   try {
     const response = await apiClient.post("/auth/sign-in", credentials);
     return response.data;
-  } catch (error) {
-    console.error("Login error:", error);
-    throw error;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Something went wrong.");
+    }
+
+    throw new Error("Server connection error");
   }
 };
 
@@ -92,9 +95,12 @@ export const signUp = async (data: {
   try {
     const response = await apiClient.post("/auth/sign-up", data);
     return response.data;
-  } catch (error) {
-    console.error("Sign up error:", error);
-    throw error;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Something went wrong.");
+    }
+
+    throw new Error("Server connection error");
   }
 };
 

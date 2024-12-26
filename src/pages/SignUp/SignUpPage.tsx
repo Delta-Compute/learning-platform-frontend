@@ -46,6 +46,13 @@ export const SignUpPage = () => {
   const { isPending, mutate } = useSingUp();
 
   const onSignUp = async () => {
+    if (
+      userInfo.email === "" || userInfo.password === "" ||
+      userInfo.confirmPassword === ""
+    ) {
+      return;
+    }
+
     await mutate({
       email: userInfo.email,
       password: userInfo.password,
