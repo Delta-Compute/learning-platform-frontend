@@ -41,7 +41,7 @@ export const ClassRoomsPage = () => {
 
       <ul
         className="
-          p-4 pb-[60px] mt-[80px] grid
+          p-4 pb-[60px] mt-[70px] grid
           grid-cols-1 gap-2 sm:grid-cols-2
           md:grid-cols-3 xl:grid-cols-4
           xl:w-[1200px] xl:mx-auto

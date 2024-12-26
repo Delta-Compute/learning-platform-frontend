@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
 import UserContext from '../../context/UserContext';
-import LanguageContext from "../../context/LanguageContext";
 
 import { useGetClassesTeacherId } from '../../hooks/api/classes';
 import { useDeleteUserAccount } from "../../hooks";
@@ -11,6 +10,7 @@ import {
   BottomNavigation, 
   Modal,
   Button, 
+  LanguageSelect,
 } from '../../components';
 
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,6 @@ import logoutIcon from "../../assets/icons/logoutIcon.svg";
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { user, logout } = useContext(UserContext);
-  const { language } = useContext(LanguageContext);
   const [darkModeOn, setDarkModeOn] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
 
@@ -117,10 +116,14 @@ export const ProfilePage = () => {
           <img src={helpIcon} alt="helpIcon" />
           <span className="ml-4">{t("teacherPages.profile.helpText")}</span>
         </li>
-        <li className="flex items-center">
-          <img src={languageIcon} alt="languageIcon" />
-          <span className="ml-4">{t("teacherPages.profile.languageText")}</span>
-          <span className="ml-auto capitalize">{language}</span>
+        <li className="flex items-center justify-between">
+          <div className="flex items-center">
+            <img src={languageIcon} alt="languageIcon" />
+            <span className="ml-4">{t("teacherPages.profile.languageText")}</span>
+          </div>
+          <LanguageSelect
+            buttonClassName="border-none bg-transparent p-0 capitalize" 
+          />
         </li>
         <li className="flex items-center">
           <img src={privacyIcon} alt="privacyIcon" />

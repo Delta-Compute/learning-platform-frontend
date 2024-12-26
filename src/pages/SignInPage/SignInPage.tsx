@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 import Header from "../../components/ui/header/Header";
-import { Button, Loader, Input, Modal } from "../../components";
+import { Button, Loader, Input, Modal, LanguageSelect } from "../../components";
 
 import { useLogin } from "../../hooks/api/users.tsx";
 import { useMutation } from "@tanstack/react-query";
@@ -124,6 +124,11 @@ export const SignInPage = () => {
   return (
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {(isPending || isResetPasswordPending) && <Loader />}
+
+      <div className="fixed top-[10px] right-[10px] z-40">
+        <LanguageSelect isLanguageIconVisible={true} />
+      </div>
+      
       <Header linkTo="/" title={t("authPages.signIn.headerTitle")} />
       <div className="flex flex-col w-full mt-[30px] px-5 sm:w-[500px] sm:mx-auto sm:mt-10">
         <h3 className="text-[16px] text-text-color mt-2">{t("authPages.signIn.emailLabel")}</h3>

@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { Link } from "react-router-dom";
 
+import { LanguageSelect } from "../../components";
+
 import SchoolNamesContext, { School } from "../../context/SchoolNamesContext";
 import { SCHOOL_LOGOS } from "./data/school-logos";
 
@@ -18,6 +20,10 @@ export const InitialPage = () => {
         h-[100dvh] flex flex-col justify-between pb-4
       `}
     >
+      <div className="fixed top-[10px] right-[10px] z-40">
+        <LanguageSelect isLanguageIconVisible={true} />
+      </div>
+
       {currentSchoolName === School.MapleBear && (
         <div className="relative flex items-center justify-center min-h-[300px] m-auto w-[393px] mt-[70px] maple-bear-logo-box">
           <h3 className="text-[24px] mt-[40px] text-main font-normal">

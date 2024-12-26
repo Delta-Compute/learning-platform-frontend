@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import LeftArrowIcon from "../../../assets/icons/left-arrow.svg";
 import { FC } from "react";
-import { cn } from '../../../utils';
 
 type Props = {
   linkTo: string;
@@ -20,7 +19,7 @@ const Header: FC<Props> = ({ linkTo, title, modal, noBackButton }) => {
           </Link>
         </div>
       )}
-      <div className={cn("flex justify-between", modal ? "max-w-custom" : "w-full")}>
+      <div className="flex justify-between">
         <h2 className="text-left ml-8 text-[24px] text-text-color truncate max-w-custom">{title} </h2>
         {modal ? modal : null}
       </div>

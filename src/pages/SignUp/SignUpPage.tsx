@@ -8,7 +8,7 @@ import { UserAuthType } from "../../types";
 
 import { Link } from "react-router-dom";
 import Header from "../../components/ui/header/Header";
-import { Button, Loader, Input, Modal } from "../../components";
+import { Button, Loader, Input, Modal, LanguageSelect } from "../../components";
 
 import { useSingUp } from '../../hooks';
 
@@ -107,6 +107,11 @@ export const SignUpPage = () => {
   return (
     <div className="flex flex-col h-[100dvh] py-12 bg-bg-color">
       {isPending && <Loader />}
+
+      <div className="fixed top-[10px] right-[10px] z-40">
+        <LanguageSelect isLanguageIconVisible={true} />
+      </div>
+
       <Header linkTo={`${currentSchoolName}/initial`} title={t("authPages.signUp.headerTitle")} />
       <div className="flex flex-col mt-6 w-full px-5 sm:w-[500px] sm:mx-auto sm:mt-10">
         <label className="text-text-color mt-2" htmlFor="email">{t("authPages.signUp.emailLabel")}</label>
