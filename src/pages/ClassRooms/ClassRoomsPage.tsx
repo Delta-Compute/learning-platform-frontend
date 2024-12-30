@@ -37,7 +37,7 @@ export const ClassRoomsPage = () => {
   return (
     <>
       {(isPending || isRefetching) && <Loader />}
-      <Header title={t("teacherPages.classes.headerTitle") as string} linkTo={`/${currentSchoolName}/classes`} modal={addClassModal()} />
+      <Header noBackButton={true} title={t("teacherPages.classes.headerTitle") as string} linkTo={`/${currentSchoolName}/classes`} modal={addClassModal()} />
 
       <ul
         className="

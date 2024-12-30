@@ -20,7 +20,7 @@ const Header: FC<Props> = ({ linkTo, title, modal, noBackButton }) => {
         </div>
       )}
       <div className="flex justify-between">
-        <h2 className="text-left ml-8 text-[24px] text-text-color truncate max-w-custom">{title} </h2>
+        <h2 className={`${!noBackButton && "ml-8"} text-[24px] truncate max-w-custom`}>{title} </h2>
         {modal ? modal : null}
       </div>
     </div>

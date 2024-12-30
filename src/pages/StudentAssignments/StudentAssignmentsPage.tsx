@@ -21,7 +21,6 @@ import { IAssignment } from "../../types";
 import { toast } from "react-hot-toast";
 
 import CopyIcon from "../../assets/icons/copy-icon.svg";
-import Header from '../../components/ui/header/Header';
 
 import { ChevronDown } from "lucide-react";
 
@@ -102,7 +101,9 @@ export const StudentAssignmentsPage = () => {
       {(isRefetching || isVerificationPending || isStudentInClassPending) && <Loader />}
 
       <div className="fixed top-0 w-full py-[20px] bg-white">
-        <Header title={t("studentPages.studentAssignments.headerTitle")} linkTo={`/${currentSchoolName}/initial`} noBackButton={true}/>
+        <div className="p-5 fixed z-30 top-0 w-full bg-bg-color border-b-[1px]">
+          <p className="text-center text-[24px]">{t("studentPages.studentAssignments.headerTitle")}</p>
+        </div>
       </div>
 
       <div className="pt-[100px] pb-[150px] px-[20px]">
