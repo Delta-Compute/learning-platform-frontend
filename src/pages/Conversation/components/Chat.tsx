@@ -9,18 +9,18 @@ import SchoolNamesContext from "../../../context/SchoolNamesContext";
 
 import { IAssignment } from "../../../types";
 
-import { 
-  teacherInstructions, 
-  studentInstructionsForAI, 
+import {
+  teacherInstructions,
+  studentInstructionsForAI,
   studentFeedbackInstructions,
 } from "../../../utils/conversation_config.ts";
 
 import { ConnectionState } from "livekit-client";
 
-import { 
-  BarVisualizer, 
-  useConnectionState, 
-  useVoiceAssistant, 
+import {
+  BarVisualizer,
+  useConnectionState,
+  useVoiceAssistant,
 } from "@livekit/components-react";
 
 import {
@@ -30,11 +30,11 @@ import {
 } from "../../LiveKit/hooks";
 import { VoiceId } from "../../LiveKit/data";
 
-import { 
-  useGetRoomsAssignments, 
-  useClassById, 
+import {
+  useGetRoomsAssignments,
+  useClassById,
   useGenerateAssignmentSummary,
-  useGetStudentAssignments, 
+  useGetStudentAssignments,
   useWakeLock,
 } from "../../../hooks";
 import { ClassRoomProgressApiService } from "../../../services";
@@ -104,13 +104,13 @@ export const Chat: React.FC<ChatProps> = ({
   } = useAgent();
 
 
-    useEffect(() => {
-      if (displayTranscriptions.length > 0) {
-        if (displayTranscriptions && displayTranscriptions[displayTranscriptions.length - 1].segment.text.includes("Ending")) {
-          disconnectHandler();
-        }
+  useEffect(() => {
+    if (displayTranscriptions.length > 0) {
+      if (displayTranscriptions && displayTranscriptions[displayTranscriptions.length - 1].segment.text.includes("Ending")) {
+        disconnectHandler();
       }
-    }, [displayTranscriptions]);
+    }
+  }, [displayTranscriptions]);
 
   const {
     data: assignmentsData,
@@ -170,10 +170,10 @@ export const Chat: React.FC<ChatProps> = ({
       toast.success("Something went wrong");
     }
   });
-  
+
   const { generateAssignmentSummary } = useGenerateAssignmentSummary();
 
-    // update assignment summary
+  // update assignment summary
   const updateStudentStatusHandler = async () => {
     updateStudentStatus({
       classRoomId: classRoomId,
@@ -198,11 +198,11 @@ export const Chat: React.FC<ChatProps> = ({
       studentAssignments.map(assignment => {
         if (assignment.id === params.assignmentId) {
           pgState.instructions = studentInstructionsForAI(
-            user.firstName!, 
-            user.foreignLanguage, 
-            assignment.topic, 
-            user.natureLanguage, 
-            (assignment.timeToDiscuss / 60).toString(), 
+            user.firstName!,
+            user.foreignLanguage,
+            assignment.topic,
+            user.natureLanguage,
+            (assignment.timeToDiscuss / 60).toString(),
             assignment.description,
           );
           setClassRoomId(assignment.classRoomId);
@@ -211,14 +211,14 @@ export const Chat: React.FC<ChatProps> = ({
       });
     }
   }, [user, studentAssignments, classRoomId]);
-  
+
   // instructions for teacher
   useEffect(() => {
     if (role === "teacher" && user && classRoom) {
       pgState.instructions = teacherInstructions(
-        user.firstName!, 
-        classRoom.learningPlan || "", 
-        user?.natureLanguage, 
+        user.firstName!,
+        classRoom.learningPlan || "",
+        user?.natureLanguage,
         user?.foreignLanguage
       );
     }
@@ -263,7 +263,7 @@ export const Chat: React.FC<ChatProps> = ({
 
       onStopStudentTimer && onStopStudentTimer();
       getFeedbackToStudent();
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -315,22 +315,22 @@ export const Chat: React.FC<ChatProps> = ({
 
   useEffect(() => {
     let transcriptions;
-    
+
     if (displayTranscriptions.length > 0) transcriptions = displayTranscriptions.at(-1)?.segment.text;
 
     if (transcriptions && role === "teacher") {
       const extractField = (text: string, key: string) => {
         const regex = new RegExp(`\\*\\*${key}\\*\\*:\\s*(.*?)(?=\\*\\*|$)`, "gs");
         const match = regex.exec(text);
-        
+
         return match ? match[1].trim() : undefined;
       };
-    
+
       const title = extractField(transcriptions, "Title");
       const topic = extractField(transcriptions, "Topic");
       const description = extractField(transcriptions, "Description");
       const time = parseInt(extractField(transcriptions, "Time") || "1", 10);
-    
+
       setAssignment({
         title: title ?? "",
         topic: topic ?? "",
@@ -379,9 +379,9 @@ export const Chat: React.FC<ChatProps> = ({
             {displayTranscriptions.length === 0 && (
               <div className="h-full">
                 {role === "teacher" ? (
-                  <AssignmentsBasedOnLearningPlan 
-                    assignmentsRefetch={assignmentsRefetch} 
-                    checkShowFeedbackModal={checkShowFeedbackModal} 
+                  <AssignmentsBasedOnLearningPlan
+                    assignmentsRefetch={assignmentsRefetch}
+                    checkShowFeedbackModal={checkShowFeedbackModal}
                   />
                 ) : (
                   <div className="flex justify-center items-center w-full h-[100dvh] absolute left-0 top-0">
@@ -408,7 +408,7 @@ export const Chat: React.FC<ChatProps> = ({
                     flex items-center justify-center bg-white
                   "
                 >
-                  <img src={`${PauseIcon}`} alt="pause"/>
+                  <img src={`${PauseIcon}`} alt="pause" />
                 </button>
               </div>
             </div>
@@ -426,7 +426,7 @@ export const Chat: React.FC<ChatProps> = ({
               {t("conversationPage.assignButton")}
             </Button>
           </div>
-        )}    
+        )}
 
         {displayTranscriptions.length > 0 && !isChatRunning && role === "student" && currentAssignment && timeCounter && (
           <div className="absolute right-[20px] bottom-[20px]">

@@ -50,6 +50,18 @@ body {
   --main: #163B89;
 }
 
+.cna-light {
+  --main: #144092;
+}
+
+.colegio-bis-light {
+  --main: #39254C;
+}
+
+.colegio-dante-light {
+  --main: #D4A00F;
+}
+
 .bg-main {
   background-color: var(--main) !important;
 }
